@@ -1,0 +1,36 @@
+.container{
+    background: #0160b2;
+    height: 80px;
+    top:0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:0 30px 0 30px ;
+}
+.menu_bar{
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    justify-content: flex-start;
+}
+.user_content{
+    justify-content: flex-end;
+    display: flex;
+}
+.user_email{
+    font-size: 25px;
+    color: white;
+    padding-left: 10px;
+}
+.menu_down{
+    font-size: 30px;
+    color: white;
+    padding-left: 10px;
+    cursor: pointer;
+}
+.page_title{
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
