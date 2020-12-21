@@ -23,6 +23,8 @@ export const signUp: RequestHandler = async (req, res) => {
     currency,
   };
 
+  console.log(newUser);
+
   await newUser
     .save()
     .then(() => res.json(registeredUser))
