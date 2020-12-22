@@ -1,0 +1,72 @@
+.modal_wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1050;
+}
+.container {
+  width: 400px;
+  min-height: 400px;
+  text-align: center;
+  border: 100px solid #0160b2;
+  border-top: 50px solid #0160b2;
+  border-bottom: 50px solid #0160b2;
+  margin: 200px auto auto;
+  background: white;
+}
+.menu {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.content {
+  display: flex;
+  padding: 0 20px 0 20px;
+}
+.content_titles {
+  text-align: left;
+  margin-right: 10px;
+  font-size: 20px;
+}
+.title {
+  margin-bottom: 26px;
+}
+.content_inputs {
+}
+
+.input {
+  font-size: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.description{
+  width: 90%;
+  font-size: 20px;
+}
+.buttons_content{
+  display: flex;
+  width: 85%;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.save_button{
+  margin-right: 10px;
+  padding: 10px 100px 10px 100px;
+  border-radius: 5px;
+  background: coral;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.continue_button{
+  padding: 10px 20px 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
