@@ -2,7 +2,7 @@ import { Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../../models/user/user.model";
 
-type User = {
+export interface User {
   _id: string;
   username: string;
   password: string;
@@ -10,7 +10,7 @@ type User = {
   type: string;
   createdAt: string;
   updatedAt: string;
-};
+}
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
   User.findOne({ username: req.body.username }, (err: any, user: User) => {

@@ -1,7 +1,7 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response } from "express";
 import User from "../../models/user/user.model";
 
-export const signUp: RequestHandler = async (req, res) => {
+export const signUp: RequestHandler = async (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
   const email = req.body.email;
@@ -29,4 +29,8 @@ export const signUp: RequestHandler = async (req, res) => {
     .catch((err) => {
       res.status(400).json("Error: " + err);
     });
+};
+
+export const getById: RequestHandler = (req, res) => {
+  console.log("tova e functiqta");
 };
