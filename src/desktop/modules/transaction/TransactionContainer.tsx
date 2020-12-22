@@ -22,14 +22,25 @@ interface State {
       year: number;
     };
   }[];
+  transaction: {
+    type: string;
+    date: string;
+    account?: string;
+    from?: string;
+    to?: string;
+    category?: string;
+    amount: number;
+    note: string;
+    description:string;
+  };
   events: {
     date: {
       day: number;
       month: number;
       year: number;
     };
-    income: number;
-    expense: number;
+    income?: number;
+    expense?: number;
   }[];
 }
 class TransactionContainer extends React.Component {
@@ -37,11 +48,21 @@ class TransactionContainer extends React.Component {
     isAddTransactionOpen: false,
     weeks: [],
     week: [],
+    transaction: {
+      type: "income",
+      date: "",
+      account: "",
+      from: "",
+      category:"",
+      to: "",
+      amount: 0,
+      note: "",
+      description:""
+    },
     events: [
       {
         date: { day: 12, month: 11, year: 2020 },
         income: 100.2,
-        expense: 100.3,
       },
       {
         date: { day: 11, month: 11, year: 2020 },
@@ -62,10 +83,21 @@ class TransactionContainer extends React.Component {
     if (this.state.isAddTransactionOpen) {
       this.setState({ isAddTransactionOpen: false });
     } else {
-      this.setState({ isAddTransactionOpen: true });
+      this.setState({
+        isAddTransactionOpen: true,
+        transaction: { ...this.state.transaction, date: date },
+      });
     }
-
   };
+  handleInputChange=(event:any)=>{
+    this.setState({
+      ...this.state,
+      transaction:{
+        ...this.state.transaction,
+        [event.target.name]:[event.target.value]
+      }
+    })
+  }
 
   handleSetWeeks = () => {
     if (this.state.week.length > 1) {
@@ -121,7 +153,7 @@ class TransactionContainer extends React.Component {
   };
 
   render() {
-    const {week,isAddTransactionOpen}=this.state;
+    const { week, isAddTransactionOpen, transaction } = this.state;
     return (
       <div className={TransactionStyl.container}>
         <div className={TransactionStyl.menu}>
@@ -140,7 +172,11 @@ class TransactionContainer extends React.Component {
           onActiveStartDateChange={(date) => console.log(date)}
           onChange={(date) => this.handleChange()}
         />
-        <AddTransactionModal isAddTransactionOpen={isAddTransactionOpen}/>
+        <AddTransactionModal
+          isAddTransactionOpen={isAddTransactionOpen}
+          transaction={transaction}
+          handleInputChange={this.handleInputChange}
+        />
         <div>
           {week.map((w) => (
             <div>
