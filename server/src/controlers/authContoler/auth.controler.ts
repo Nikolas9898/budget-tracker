@@ -1,7 +1,36 @@
+import User, { UserInterface } from "../../models/user/user.model";
 import { Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../../models/user/user.model";
-import { UserInterface } from "../../models/user/user.model";
+
+export const signUp: RequestHandler = async (req: Request, res: Response) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const email = req.body.email;
+  const type = req.body.type;
+  const currency = req.body.currency;
+
+  const newUser = new User({
+    username,
+    password,
+    email,
+    type,
+    currency,
+  });
+
+  let registeredUser = {
+    username,
+    email,
+    type,
+    currency,
+  };
+
+  await newUser
+    .save()
+    .then(() => res.json(registeredUser))
+    .catch((err) => {
+      res.status(400).json("Error: " + err);
+    });
+};
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
   User.findOne(

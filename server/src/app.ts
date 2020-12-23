@@ -1,9 +1,9 @@
-import express from "express";
 import cors from "cors";
+import express from "express";
 import userRoutes from "./routes/user/user.route";
-import signInRoute from "./routes/signIn/signIn.route";
-const port = 5000;
+import signInRoute from "./routes/authentication/authentication.route";
 
+const port = 5000;
 const app = express();
 
 app.set("port", port);
