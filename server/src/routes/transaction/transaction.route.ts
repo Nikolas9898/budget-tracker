@@ -1,7 +1,13 @@
 import { Router } from "express";
+import { tokenAuth } from "../../middleware/tokenAuthentication";
+import * as transactionControler from "../../controlers/transactionControler/transaction.controler";
+
 const router = Router();
 
-import * as userController from "../../controlers/userControler/user.controler";
-import { tokenAuth } from "../../middleware/tokenAuthentication";
+router.post(
+  "/transaction/create/transfer",
+  tokenAuth,
+  transactionControler.createTransfer
+);
 
 export default router;
