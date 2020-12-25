@@ -6,7 +6,7 @@ export interface TransactionInterface {
   _id: string;
   from?: Date;
   type: string;
-  fees: number;
+  fees?: number;
   note?: String;
   userId: string;
   amount: number;

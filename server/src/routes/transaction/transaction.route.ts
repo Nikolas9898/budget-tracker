@@ -4,10 +4,11 @@ import * as transactionControler from "../../controlers/transactionControler/tra
 
 const router = Router();
 
-router.post(
-  "/transaction/create/transfer",
-  tokenAuth,
-  transactionControler.createTransfer
-);
+router.post("/transfer/create", tokenAuth, transactionControler.createTransfer);
 
+router.post(
+  "/transaction/create/:type",
+  tokenAuth,
+  transactionControler.createTransaction
+);
 export default router;
