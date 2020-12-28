@@ -23,7 +23,7 @@ export const tokenAuth: RequestHandler = async (
       { _id: decodedToken.id },
       (err: any, user: UserInterface) => {
         try {
-          next();
+          return next();
         } catch (error) {
           res.json({ msg: error });
         }

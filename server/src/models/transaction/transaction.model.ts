@@ -6,7 +6,7 @@ export interface TransactionInterface {
   _id: string;
   from?: Date;
   type: string;
-  fees: number;
+  fees?: number;
   note?: String;
   userId: string;
   amount: number;
@@ -42,10 +42,14 @@ const transactionSchema = new Schema(
       required: true,
     },
     from: {
-      type: Date,
+      type: String,
+      minlength: 3,
+      trim: true,
     },
     to: {
-      type: Date,
+      type: String,
+      minlength: 3,
+      trim: true,
     },
     fees: {
       type: Number,

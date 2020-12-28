@@ -1,7 +1,27 @@
 import { Router } from "express";
+import { tokenAuth } from "../../middleware/tokenAuthentication";
+import * as transactionControler from "../../controlers/transactionControler/transaction.controler";
+
 const router = Router();
 
-import * as userController from "../../controlers/userControler/user.controler";
-import { tokenAuth } from "../../middleware/tokenAuthentication";
+router.post("/transfer/create", tokenAuth, transactionControler.createTransfer);
+
+router.post(
+  "/transaction/create/:type",
+  tokenAuth,
+  transactionControler.createTransaction
+);
+
+router.get(
+  "/transaction/specificDatePeriod",
+  tokenAuth,
+  transactionControler.getTransactionInSpecificDatePeriod
+);
+
+router.get(
+  "/transaction/:id",
+  tokenAuth,
+  transactionControler.getTransactionById
+);
 
 export default router;
