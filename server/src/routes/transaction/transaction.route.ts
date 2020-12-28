@@ -11,4 +11,17 @@ router.post(
   tokenAuth,
   transactionControler.createTransaction
 );
+
+router.get(
+  "/transaction/specificDatePeriod",
+  tokenAuth,
+  transactionControler.getTransactionInSpecificDatePeriod
+);
+
+router.get(
+  "/transaction/:id",
+  tokenAuth,
+  transactionControler.getTransactionById
+);
+
 export default router;

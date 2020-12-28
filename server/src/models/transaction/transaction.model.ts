@@ -42,10 +42,14 @@ const transactionSchema = new Schema(
       required: true,
     },
     from: {
-      type: Date,
+      type: String,
+      minlength: 3,
+      trim: true,
     },
     to: {
-      type: Date,
+      type: String,
+      minlength: 3,
+      trim: true,
     },
     fees: {
       type: Number,

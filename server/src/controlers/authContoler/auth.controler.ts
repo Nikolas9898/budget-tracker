@@ -28,12 +28,12 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
     .save()
     .then(() => res.json(registeredUser))
     .catch((err) => {
-      res.status(400).json("Error: " + err);
+      res.status(400).json({ errorMSG: err });
     });
 };
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
-  User.findOne(
+  await User.findOne(
     { username: req.body.username },
     (err: any, user: UserInterface) => {
       try {
