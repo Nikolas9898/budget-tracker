@@ -4,13 +4,17 @@ import * as transactionControler from "../../controlers/transactionControler/tra
 
 const router = Router();
 
-router.post("/transfer/create", tokenAuth, transactionControler.createTransfer);
-
 router.post(
   "/transaction/create/:type",
   tokenAuth,
   transactionControler.createTransaction
 );
+
+// router.post(
+//   "/transaction/create/:type",
+//   tokenAuth,
+//   transactionControler.createTransaction
+// );
 
 router.get(
   "/transaction/specificDatePeriod",
@@ -22,6 +26,12 @@ router.get(
   "/transaction/:id",
   tokenAuth,
   transactionControler.getTransactionById
+);
+
+router.put(
+  "/transaction/edit/:id",
+  tokenAuth,
+  transactionControler.editTransaction
 );
 
 export default router;

@@ -43,12 +43,10 @@ const transactionSchema = new Schema(
     },
     from: {
       type: String,
-      minlength: 3,
       trim: true,
     },
     to: {
       type: String,
-      minlength: 3,
       trim: true,
     },
     fees: {
