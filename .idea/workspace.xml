@@ -2,12 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1cc0ffbc-a50f-4766-90ae-9ec2eaa22938" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionStyle.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/TransactionContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/TransactionContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainerStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainerStyle.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/components/LoginForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/components/LoginForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/components/RegistrationForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/components/RegistrationForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/TransactionContainer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/TransactionStyle.module.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/pages/transactionPage/TransactionPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/pages/transactionPage/TransactionPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/routes.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +42,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/desktop/modules/transaction" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
@@ -45,6 +53,8 @@
       <recent name="$PROJECT_DIR$/src/desktop/modules/transaction" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer" />
+      <recent name="$PROJECT_DIR$/src/desktop/modules/transaction" />
       <recent name="$PROJECT_DIR$/src/desktop" />
     </key>
   </component>
@@ -59,6 +69,12 @@
       <workItem from="1608217208368" duration="13749000" />
       <workItem from="1608234772453" duration="4672000" />
       <workItem from="1608383741610" duration="17559000" />
+      <workItem from="1608924539286" duration="7230000" />
+      <workItem from="1608990406289" duration="5017000" />
+      <workItem from="1609055067343" duration="18669000" />
+      <workItem from="1609078935156" duration="19615000" />
+      <workItem from="1609325584927" duration="862000" />
+      <workItem from="1609418967620" duration="10928000" />
     </task>
     <servers />
   </component>

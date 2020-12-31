@@ -12,7 +12,7 @@ type Props = {
 
 const LoginForm: React.FC<Props> = ({ Submit, errors, handleInput }) => {
   return (
-    <div>
+    <div className={LoginContainerStyle.login_content}>
       <label className={LoginContainerStyle.login_label}>Email</label>
       <input className={LoginContainerStyle.input} name="email" onChange={handleInput} />
       {errors.email && (

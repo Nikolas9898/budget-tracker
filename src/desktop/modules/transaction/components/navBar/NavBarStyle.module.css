@@ -1,0 +1,51 @@
+.container{
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+.container_navigation{
+margin-right: 30px;
+    padding-left: 0px;
+    display: flex;
+    justify-content: space-between;
+    background: #0160b2;
+    width: 40%;
+    min-width: 366px;
+}
+.title{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    padding: 12px;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+}
+.title_selected{
+    background: darkblue;
+    font-weight: bold;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    padding: 12px;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+}
+.change_month_content{
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+    font-size: 20px;
+}
+.change_month_button{
+    cursor: pointer;
+
+}
