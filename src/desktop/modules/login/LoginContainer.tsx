@@ -3,6 +3,8 @@ import LoginContainerStyle from "./LoginContainerStyle.module.css";
 import LoginForm from "./components/LoginForm";
 import RegistrationForm from "./components/RegistrationForm";
 import SocialNetworks from "./components/SocialNetworks";
+import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
+
 
 const LoginContainer = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -81,7 +83,6 @@ const LoginContainer = () => {
   };
   const handleRegister = () => {
     const errors = validateForm();
-    console.log(errors);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
 
     if (!isValid) {
@@ -98,44 +99,27 @@ const LoginContainer = () => {
   return (
     <div className={LoginContainerStyle.container}>
       <div className={LoginContainerStyle.login_form}>
-        <div className={LoginContainerStyle.select_login}>
-          <div
-            onClick={handleChoose}
-            className={`${
-              isLogin
-                ? LoginContainerStyle.select_title_selected
-                : LoginContainerStyle.select_title
-            }`}
-          >
-            Sign In
-          </div>
-          <div
-            onClick={handleChoose}
-            className={`${
-              isLogin
-                ? LoginContainerStyle.select_title
-                : LoginContainerStyle.select_title_selected
-            }`}
-          >
-            Register
-          </div>
-        </div>
-        <div className={LoginContainerStyle.login_content}>
-          {isLogin ? (
+        <Tabs selectedTabClassName={LoginContainerStyle.selected_tab}>
+          <TabList className={LoginContainerStyle.tab_list}>
+            <Tab className={LoginContainerStyle.tab}>Sign In</Tab>
+            <Tab className={LoginContainerStyle.tab}>Register</Tab>
+          </TabList>
+          <TabPanel>
             <LoginForm
               Submit={handleLogin}
               errors={errors}
               handleInput={handleInputChange}
             />
-          ) : (
+          </TabPanel>
+          <TabPanel>
             <RegistrationForm
               Submit={handleRegister}
               errors={errors}
               handleInput={handleInputChange}
             />
-          )}
-        </div>
-        <SocialNetworks />
+          </TabPanel>
+        </Tabs>
+        <SocialNetworks/>
       </div>
     </div>
   );
