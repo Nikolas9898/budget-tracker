@@ -34,4 +34,9 @@ router.put(
   transactionControler.editTransaction
 );
 
+router.delete(
+  "/transaction/delete/:id",
+  transactionControler.deleteTransactionById
+);
+
 export default router;

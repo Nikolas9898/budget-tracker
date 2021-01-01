@@ -129,6 +129,22 @@ export const getTransactionById = async (req: Request, res: Response) => {
   );
 };
 
+export const deleteTransactionById: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  const id = req.params.id;
+
+  Transaction.findByIdAndDelete({ _id: id }, (err) => {
+    if (err) {
+      return res.json({ errorMsg: err });
+    } else {
+      let error = "Deleted successfully";
+      return res.status(400).json({ errorMsg: error });
+    }
+  });
+};
+
 export const editTransaction = async (req: Request, res: Response) => {
   const id: any = req.params.id;
 
@@ -148,6 +164,11 @@ export const editTransaction = async (req: Request, res: Response) => {
   const transaction: any = await Transaction.findOne({
     _id: id,
   });
+
+  if (!transaction) {
+    let error = "No such transaction available";
+    return res.status(400).json({ errorMsg: error });
+  }
 
   if (transaction.userId !== userId) {
     return res.status(400).json({
