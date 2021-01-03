@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Calendar from "react-calendar";
 import TransactionStyl from "./TransactionStyle.module.css";
 import AddTransactionModal from "../components/addTransactionModal/AddTransactionModal";
-import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
-import WeeklyContainer from "../weeklyContainer/WeeklyContainer";
-import DailyContainer from "../dailyContainer/DailyContainer";
+
 import NavBar from "../components/navBar/NavBar";
-import Moment from "moment";
 
 export interface State {
   isAddTransactionOpen: boolean;

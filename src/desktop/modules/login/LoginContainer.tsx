@@ -5,9 +5,8 @@ import RegistrationForm from "./components/RegistrationForm";
 import SocialNetworks from "./components/SocialNetworks";
 import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
 
-
 const LoginContainer = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  // const [isLogin, setIsLogin] = useState(true);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -25,15 +24,15 @@ const LoginContainer = () => {
       [e.currentTarget.name]: e.currentTarget.value,
     });
 
-  const handleChoose = () => {
-    if (isLogin) {
-      setIsLogin(false);
-      setErrors({ email: "", password: "", confirmPassword: "" });
-    } else {
-      setIsLogin(true);
-      setErrors({ email: "", password: "", confirmPassword: "" });
-    }
-  };
+  // const handleChoose = () => {
+  //   if (isLogin) {
+  //     setIsLogin(false);
+  //     setErrors({ email: "", password: "", confirmPassword: "" });
+  //   } else {
+  //     setIsLogin(true);
+  //     setErrors({ email: "", password: "", confirmPassword: "" });
+  //   }
+  // };
   const validateForm = () => {
     const isValidEmail = RegExp(
       "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
@@ -119,7 +118,7 @@ const LoginContainer = () => {
             />
           </TabPanel>
         </Tabs>
-        <SocialNetworks/>
+        <SocialNetworks />
       </div>
     </div>
   );
