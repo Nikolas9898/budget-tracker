@@ -1,0 +1,28 @@
+.wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: #0160b2;
+  width: 300px;
+  height: 100vh;
+  box-shadow: 17px 2px 18px 5px rgba(0, 0, 0, 0.52);
+}
+.close_button {
+  font-size: 40px;
+  color: white;
+  cursor: pointer;
+  margin-left: 85%;
+  margin-top: 10px;
+}
+.content {
+  padding: 30px;
+  margin-top: 70px;
+  display: grid;
+}
+.title {
+  font-size: 30px;
+  color: white;
+  margin-top: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
