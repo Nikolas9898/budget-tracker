@@ -37,7 +37,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
   await User.findOne(
-    { username: req.body.username },
+    { email: req.body.email },
     (err: any, user: UserInterface) => {
       try {
         const passMatch = user.password === req.body.password;
