@@ -6,6 +6,7 @@ export interface UserInterface {
   password: string;
   email: string;
   type: string;
+  categories: { name: string }[];
   createdAt: string;
   updatedAt: string;
 }

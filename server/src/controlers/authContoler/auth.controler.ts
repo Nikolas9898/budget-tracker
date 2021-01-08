@@ -51,6 +51,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
           username: user.username,
           email: user.email,
           type: user.type,
+          categorie: user.categories,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
