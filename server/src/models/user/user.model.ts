@@ -6,6 +6,7 @@ export interface UserInterface {
   password: string;
   email: string;
   type: string;
+  categories: { name: string }[];
   createdAt: string;
   updatedAt: string;
 }
@@ -23,6 +24,13 @@ const userSchema = new Schema(
       required: true,
       trim: true,
       minlength: 3,
+    },
+    categories: {
+      type: [
+        {
+          name: String,
+        },
+      ],
     },
     email: {
       type: String,

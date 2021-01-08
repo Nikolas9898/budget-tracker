@@ -8,6 +8,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
   const email = req.body.email;
   const type = req.body.type;
   const currency = req.body.currency;
+  const categories = req.body.categories;
 
   const newUser = new User({
     username,
@@ -15,6 +16,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
     email,
     type,
     currency,
+    categories,
   });
 
   let registeredUser = {
@@ -22,6 +24,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
     email,
     type,
     currency,
+    categories,
   };
 
   await newUser
@@ -48,6 +51,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
           username: user.username,
           email: user.email,
           type: user.type,
+          categorie: user.categories,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
