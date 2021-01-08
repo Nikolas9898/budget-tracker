@@ -2,6 +2,7 @@ import NavBar from "../components/navBar/NavBar";
 import Moment from "moment";
 import React from "react";
 import WeeklyStyle from "./WeeklyStyle.module.css";
+import InfoRow from "../components/infoRow/InfoRow";
 
 export interface State {
   date: any;
@@ -54,21 +55,7 @@ componentDidMount() {
           handleNextMonth={this.handleNextMonth}
           date={this.state.date}
         />
-
-        <div className={WeeklyStyle.info_row}>
-          <div>
-            <label className={WeeklyStyle.info_title}>Income</label>
-            <div className={WeeklyStyle.income}>{(0 / 100).toFixed(2)}</div>
-          </div>
-          <div>
-            <label className={WeeklyStyle.info_title}>Expense</label>
-            <div className={WeeklyStyle.expense}>{(0 / 100).toFixed(2)}</div>
-          </div>
-          <div>
-            <label className={WeeklyStyle.info_title}>Total</label>
-            <div className={WeeklyStyle.total}>{(0 / 100).toFixed(2)}</div>
-          </div>
-        </div>
+        <InfoRow/>
         {this.state.weeks.map((w) => (
           <div className={WeeklyStyle.container_row}>
             <div className={WeeklyStyle.date}>
