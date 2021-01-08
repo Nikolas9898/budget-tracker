@@ -24,6 +24,13 @@ const userSchema = new Schema(
       trim: true,
       minlength: 3,
     },
+    categories: {
+      type: [
+        {
+          name: String,
+        },
+      ],
+    },
     email: {
       type: String,
       unique: true,
