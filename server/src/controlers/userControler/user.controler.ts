@@ -12,6 +12,7 @@ export const getById: RequestHandler = (req: Request, res: Response) => {
         username: user.username,
         email: user.email,
         type: user.type,
+        categories: user.categories,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       };
