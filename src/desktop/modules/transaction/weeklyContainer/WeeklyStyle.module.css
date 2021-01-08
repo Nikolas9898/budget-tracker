@@ -5,6 +5,8 @@
 .container_row {
   border-top: dimgrey 2px solid;
   height: 80px;
+  width: 70%;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-around;
