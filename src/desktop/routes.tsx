@@ -9,12 +9,12 @@ const Routes = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/login" exact component={LoginPage} />
+        <Route path="/authentication" exact component={LoginPage} />
         <Route path="/" exact component={HomePage} />
         <Route path="/transaction/monthly" exact component={TransactionPage} />
         <Route path="/transaction/daily" exact component={TransactionPage} />
         <Route path="/transaction/yearly" exact component={TransactionPage} />
-        <Route path="/transaction/weekly" exact component={WeeklyPage}/>
+        <Route path="/transaction/weekly" exact component={WeeklyPage} />
         <Route path="/transaction/period" exact component={TransactionPage} />
       </Switch>
     </Router>

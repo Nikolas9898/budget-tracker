@@ -5,6 +5,10 @@ import RegistrationForm from "./components/RegistrationForm";
 import SocialNetworks from "./components/SocialNetworks";
 import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
 
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../../store/reducers/userReducer";
+import { singIn } from "../../store/actions/usersActions";
+
 const LoginContainer = () => {
   // const [isLogin, setIsLogin] = useState(true);
   const [user, setUser] = useState({
@@ -12,6 +16,11 @@ const LoginContainer = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const qE = useSelector((state: State) => state.user);
+
+  const dispatch = useDispatch();
+
   const [errors, setErrors] = useState({
     email: "",
     password: "",
@@ -46,14 +55,14 @@ const LoginContainer = () => {
     if (!isValidEmail.test(user.email)) {
       errors.email = "Please enter a valid email.";
     }
-    if (
-      user.password !== user.confirmPassword ||
-      !user.password.match(/^[0-9a-zA-Z]+$/) ||
-      user.password.length > 20 ||
-      user.password.length < 6
-    ) {
-      errors.confirmPassword = "The password does not match. ";
-    }
+    // if (
+    //   user.password !== user.confirmPassword ||
+    //   !user.password.match(/^[0-9a-zA-Z]+$/) ||
+    //   user.password.length > 20 ||
+    //   user.password.length < 6
+    // ) {
+    //   errors.confirmPassword = "The password does not match. ";
+    // }
     if (
       !user.password.match(/^[0-9a-zA-Z]+$/) ||
       user.password.length > 20 ||
@@ -77,6 +86,7 @@ const LoginContainer = () => {
       });
       return;
     } else {
+      dispatch(singIn(user));
       setErrors({ email: "", password: "", confirmPassword: "" });
     }
   };
@@ -98,6 +108,7 @@ const LoginContainer = () => {
   return (
     <div className={LoginContainerStyle.container}>
       <div className={LoginContainerStyle.login_form}>
+        {console.log(qE)}
         <Tabs selectedTabClassName={LoginContainerStyle.selected_tab}>
           <TabList className={LoginContainerStyle.tab_list}>
             <Tab className={LoginContainerStyle.tab}>Sign In</Tab>
