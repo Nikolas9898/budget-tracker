@@ -5,7 +5,7 @@ import * as transactionControler from "../../controlers/transactionControler/tra
 const router = Router();
 
 router.post(
-  "/transaction/create/:type",
+  "/transaction/create",
   tokenAuth,
   transactionControler.createTransaction
 );

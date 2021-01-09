@@ -1,70 +1,89 @@
 import { Schema, model } from "mongoose";
 
 export interface TransactionInterface {
-  to?: Date;
-  date: Date;
-  _id: string;
-  from?: Date;
-  type: string;
-  fees?: number;
-  note?: String;
-  userId: string;
-  amount: number;
-  category: string;
-  currency: string;
-  createdAt: string;
-  updatedAt: string;
-  description?: String;
+  events: [
+    {
+      to?: Date;
+      date: Date;
+      _id: string;
+      from?: Date;
+      type: string;
+      fees?: number;
+      note?: String;
+      userId: string;
+      amount: number;
+      category: string;
+      currency: string;
+      createdAt: string;
+      updatedAt: string;
+      description?: String;
+    }
+  ];
 }
 
 const transactionSchema = new Schema(
   {
-    type: {
-      trim: true,
-      type: String,
-      minlength: 3,
-    },
-    amount: {
-      trim: true,
-      type: Number,
-      required: true,
-    },
+    events: [
+      {
+        type: {
+          trim: true,
+          type: String,
+          minlength: 3,
+        },
+        amount: {
+          trim: true,
+          type: Number,
+          required: true,
+        },
+
+        date: {
+          type: Date,
+          required: true,
+        },
+        category: {
+          trim: true,
+          type: String,
+          minlength: 2,
+          required: true,
+        },
+        from: {
+          type: String,
+          trim: true,
+        },
+        to: {
+          type: String,
+          trim: true,
+        },
+        fees: {
+          type: Number,
+        },
+        currency: {
+          trim: true,
+          type: String,
+          minlength: 2,
+          required: true,
+        },
+        note: {
+          type: String,
+          minlength: 3,
+        },
+        description: {
+          type: String,
+          minlength: 3,
+        },
+      },
+    ],
     userId: {
       trim: true,
       type: String,
       minlength: 3,
       require: true,
     },
-    category: {
-      trim: true,
-      type: String,
-      minlength: 2,
-      required: true,
-    },
-    from: {
-      type: String,
-      trim: true,
-    },
-    to: {
-      type: String,
-      trim: true,
-    },
-    fees: {
+    expense: {
       type: Number,
     },
-    currency: {
-      trim: true,
-      type: String,
-      minlength: 2,
-      required: true,
-    },
-    note: {
-      type: String,
-      minlength: 3,
-    },
-    description: {
-      type: String,
-      minlength: 3,
+    income: {
+      type: Number,
     },
   },
   {

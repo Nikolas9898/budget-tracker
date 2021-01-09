@@ -8,73 +8,95 @@ export const createTransaction: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const to = req.body.to;
-  const type = req.params.type.toLowerCase();
-  const from = req.body.from;
-  const note = req.body.note;
-  const fees = req.body.fees;
-  const userId = req.body.userId;
-  const amount = req.body.amount;
-  const currency = req.body.currency;
-  const category = req.body.category;
-  const description = req.body.description;
+  const userId = tokenDecoder(req.headers.authorization);
+  const events = req.body.events;
   const createdAt = req.body.createdAt;
 
-  const newTransaction = new Transaction({
-    to,
-    type,
-    from,
-    note,
-    fees,
+  const transaction: any = await Transaction.findOne({
+    createdAt: createdAt,
     userId,
-    amount,
-    currency,
-    category,
-    description,
-    createdAt,
   });
 
-  await newTransaction
-    .save()
-    .then(() => res.json(newTransaction))
-    .catch((err) => {
-      res.status(400).json({ errorMsg: err });
+  if (!transaction) {
+    let expense = 0;
+    let income = 0;
+    events.map((event: any) => {
+      if (event.type.toLowerCase() === "income") {
+        income = income + event.amount;
+      } else {
+        expense = expense + event.amount;
+      }
     });
+
+    const newTransaction = new Transaction({
+      events,
+      createdAt,
+      userId,
+      expense,
+      income,
+    });
+
+    await newTransaction
+      .save()
+      .then(() => res.json(newTransaction))
+      .catch((err) => {
+        res.status(400).json({ errorMsg: err });
+      });
+  } else {
+    transaction.events.push(events[0]);
+    let expense = 0;
+    let income = 0;
+    transaction.events.map((event: any) => {
+      if (event.type.toLowerCase() === "income") {
+        income = income + event.amount;
+      } else {
+        expense = expense + event.amount;
+      }
+    });
+
+    transaction.income = income;
+    transaction.expense = expense;
+
+    try {
+      transaction.save();
+      res.json(transaction);
+    } catch (error) {
+      res.json({ errorMSG: error });
+    }
+  }
+
+  // const to = req.body.to;
+  // const type = req.params.type.toLowerCase();
+  // const from = req.body.from;
+  // const note = req.body.note;
+  // const fees = req.body.fees;
+  // const userId = req.body.userId;
+  // const amount = req.body.amount;
+  // const currency = req.body.currency;
+  // const category = req.body.category;
+  // const description = req.body.description;
+
+  // const newTransaction = new Transaction({
+  //   to,
+  //   type,
+  //   from,
+  //   note,
+  //   fees,
+  //   userId,
+  //   amount,
+  //   currency,
+  //   category,
+  //   description,
+  //   createdAt,
+  // });
+
+  // await newTransaction
+  //   .save()
+  //   .then(() => res.json(newTransaction))
+  //   .catch((err) => {
+  //     res.status(400).json({ errorMsg: err });
+  //   });
 };
-
-// export const createTransaction: RequestHandler = async (
-//   req: Request,
-//   res: Response
-// ) => {
-//   const type = req.params.type.toLowerCase();
-//   const note = req.body.note;
-//   const fees = req.body.fees;
-//   const userId = req.body.userId;
-//   const amount = req.body.amount;
-//   const currency = req.body.currency;
-//   const category = req.body.category;
-//   const description = req.body.description;
-//   const createdAt = req.body.createdAt;
-
-//   const newTransaction = new Transaction({
-//     type,
-//     note,
-//     fees,
-//     userId,
-//     amount,
-//     currency,
-//     category,
-//     description,
-//     createdAt,
-//   });
-
-//   await newTransaction
-//     .save()
-//     .then(() => res.json(newTransaction))
-//     .catch((err) => {
-//       res.status(400).json({ errorMsg: err });
-//     });
-// };
 
 export const getTransactionInSpecificDatePeriod: RequestHandler = async (
   req: Request,
