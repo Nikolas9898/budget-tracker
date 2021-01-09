@@ -4,10 +4,12 @@ import LoginForm from "./components/LoginForm";
 import RegistrationForm from "./components/RegistrationForm";
 import SocialNetworks from "./components/SocialNetworks";
 import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
-
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../store/reducers/userReducer";
 import { singIn } from "../../store/actions/usersActions";
+import axios from "axios";
+import { sign } from "crypto";
 
 const LoginContainer = () => {
   // const [isLogin, setIsLogin] = useState(true);
@@ -16,6 +18,7 @@ const LoginContainer = () => {
     password: "",
     confirmPassword: "",
   });
+  const history = useHistory();
 
   const qE = useSelector((state: State) => state.user);
 
@@ -73,7 +76,7 @@ const LoginContainer = () => {
 
     return errors;
   };
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const errors = validateForm();
 
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
@@ -86,7 +89,15 @@ const LoginContainer = () => {
       });
       return;
     } else {
-      dispatch(singIn(user));
+      // dispatch(singIn(user));
+
+      let loggedUser = await axios.post(`http://localhost:5000/signIn`, user);
+
+      if (loggedUser.data.user) {
+        dispatch(singIn(loggedUser.data));
+        history.push("./transaction/monthly");
+      }
+
       setErrors({ email: "", password: "", confirmPassword: "" });
     }
   };

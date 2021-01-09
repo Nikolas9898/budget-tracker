@@ -1,3 +1,5 @@
+import { useHistory } from "react-router-dom";
+
 import { SIGN_IN } from "../types";
 import axios from "axios";
 
@@ -6,15 +8,20 @@ interface User {
   password: string;
 }
 
-export const singIn = (user: { email: string; password: string }) => async (
-  dispatch: any
-) => {
+export const singIn = (user: {
+  email: string;
+  password: string;
+  categories: [];
+  createdAt: string;
+  username: string;
+  updatedAt: string;
+  type: string;
+  id: string;
+}) => async (dispatch: any) => {
   try {
-    const res = await axios.post<User>(`http://localhost:5000/signIn`, user);
-
-    dispatch({
+    await dispatch({
       type: SIGN_IN,
-      payload: res.data,
+      payload: user,
     });
   } catch (e) {
     console.log(e);
