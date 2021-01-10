@@ -17,7 +17,7 @@ router.post(
 // );
 
 router.get(
-  "/transaction/specificDatePeriod",
+  "/transaction/specificDatePeriod/:from/:to",
   tokenAuth,
   transactionControler.getTransactionInSpecificDatePeriod
 );

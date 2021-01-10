@@ -79,7 +79,11 @@ const NavBar: React.FC<Props> = ({
         >
           {"<"}
         </div>
-        {Moment(date).format("MMMM")}
+        { window.location.pathname === "/transaction/yearly"?
+            Moment(date).format("YYYY"):
+            Moment(date).format("MMMM")
+        }
+
         <div
           className={NavBarStyle.change_month_button}
           onClick={() => handleNextMonth()}
