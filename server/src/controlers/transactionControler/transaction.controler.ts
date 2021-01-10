@@ -102,10 +102,9 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const from = req.body.from;
-  const to = req.body.to;
+  const from = req.params.from;
+  const to = req.params.to;
   const userId = tokenDecoder(req.headers.authorization);
-
   if (from === "" || to === "") {
     return res.status(400).json({
       errorMSG: "Please ensure you pick two dates",

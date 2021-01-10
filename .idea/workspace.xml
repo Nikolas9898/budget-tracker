@@ -2,19 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1cc0ffbc-a50f-4766-90ae-9ec2eaa22938" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionStyle.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainerStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainerStyle.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/components/LoginForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/components/LoginForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/components/RegistrationForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/components/RegistrationForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/TransactionContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/TransactionStyle.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/pages/transactionPage/TransactionPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/pages/transactionPage/TransactionPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controlers/transactionControler/transaction.controler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controlers/transactionControler/transaction.controler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/transaction/transaction.route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/transaction/transaction.route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/navBar/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/navBar/NavBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/pages/transactionPage/MonthlyPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/pages/transactionPage/MonthlyPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/pages/transactionPage/TransactionPage.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/routes.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +39,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Home/AllForYou" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
@@ -80,5 +77,8 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

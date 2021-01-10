@@ -2,9 +2,13 @@ import React from "react";
 import Calendar from "react-calendar";
 import TransactionStyl from "./TransactionStyle.module.css";
 import AddTransactionModal from "../components/addTransactionModal/AddTransactionModal";
-
 import NavBar from "../components/navBar/NavBar";
-
+import moment from "moment";
+import axios from "axios";
+import { tokenAuth } from "../../../../../server/src/middleware/tokenAuthentication";
+type Props = {
+  filters: any;
+};
 export interface State {
   isAddTransactionOpen: boolean;
   transaction: {
@@ -37,7 +41,10 @@ export interface State {
     expense: number;
   }[];
 }
-class TransactionContainer extends React.Component {
+class TransactionContainer extends React.Component<Props> {
+  constructor(props: any) {
+    super(props);
+  }
   state: State = {
     isAddTransactionOpen: false,
     date: new Date(),
@@ -78,11 +85,44 @@ class TransactionContainer extends React.Component {
       },
     ],
   };
+
   componentDidMount() {
-    this.setState({
-      month: new Date(),
-    });
+    if (this.props.filters.date) {
+      this.setState({
+        date: new Date(parseInt(this.props.filters.date)),
+      });
+      this.getTransactions(new Date(parseInt(this.props.filters.date)));
+    } else {
+      this.setState({
+        date: new Date(),
+      });
+      this.getTransactions(new Date());
+    }
   }
+
+  getTransactions = (date: any) => {
+    let firstDay = moment(
+      new Date(date.getFullYear(), date.getMonth(), 1)
+    ).toISOString();
+    let lastDay = moment(
+      new Date(date.getFullYear(), date.getMonth() + 1, 0)
+    ).toISOString();
+    let config = {
+      headers: {
+        Authorization:
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+      },
+    };
+    axios
+      .get(
+        `http://localhost:5000/transaction/specificDatePeriod/${firstDay}/${lastDay}`,
+        config
+      )
+      .then((products) => {
+        console.log(products);
+      });
+  };
   validateForm = (value: State["transaction"]) => {
     let errors = {
       account: "",
