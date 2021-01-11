@@ -10,7 +10,7 @@ type Props = {
   handleOpenTransaction: (date: any) => void;
   handleOpenInfoModal: (date: any) => void;
   transaction: State["transaction"];
-  selectedDay: State["selectedDay"];
+  specificDay: State["specificDay"];
 };
 
 const InfoModal: React.FC<Props> = ({
@@ -18,7 +18,8 @@ const InfoModal: React.FC<Props> = ({
   handleOpenTransaction,
   handleOpenInfoModal,
   transaction,
-  selectedDay,
+
+  specificDay,
 }) => {
   return (
     <div onClick={() => handleOpenInfoModal("")}>
@@ -29,32 +30,29 @@ const InfoModal: React.FC<Props> = ({
               {moment(transaction.date).format("DD.MM.YYYY(dddd)")}
             </div>
             <div className={InfoModalStyle.content}>
-              {console.log(transaction)}
               <table>
-                {
-                  selectedDay.map(transaction=>(
-                      <tr>
-                        <th className={InfoModalStyle.content_row}>
-                          {transaction.category}
-                          {transaction.from}
-                        </th>
-                        <th className={InfoModalStyle.content_row}>
-                          {transaction.account}
-                          {transaction.to}
-                        </th>
-                        <th className={InfoModalStyle.content_row}>
-                          {transaction.type==="income"?
-                                (parseFloat(transaction.amount)/100).toFixed(2)
-                              :null}
-                        </th>
-                        <th className={InfoModalStyle.content_row}>
-                          {transaction.type!=="income"?
-                              (parseFloat(transaction.amount)/100).toFixed(2)
-                              :null}
-                        </th>
-                      </tr>
-                  ))
-                }
+                {specificDay.events.map((transaction) => (
+                  <tr>
+                    <th className={InfoModalStyle.content_row}>
+                      {transaction.category}
+                      {transaction.from}
+                    </th>
+                    <th className={InfoModalStyle.content_row}>
+                      {transaction.account}
+                      {transaction.to}
+                    </th>
+                    <th className={InfoModalStyle.content_row}>
+                      {transaction.type === "income"
+                        ? (parseFloat(transaction.amount) / 100).toFixed(2)
+                        : ""}
+                    </th>
+                    <th className={InfoModalStyle.content_row}>
+                      {transaction.type !== "income"
+                        ? (parseFloat(transaction.amount) / 100).toFixed(2)
+                        : ""}
+                    </th>
+                  </tr>
+                ))}
               </table>
             </div>
             <FontAwesomeIcon

@@ -230,4 +230,38 @@ export const editTransaction = async (req: Request, res: Response) => {
   res.json("Update successful");
 };
 
-export const getYearlyAndWeekly = async (req: Request, res: Response) => {};
+export const getYearlyAndWeekly = async (req: Request, res: Response) => {
+  const userId = tokenDecoder(req.headers.authorization);
+
+  const months = req.body;
+
+  let newResults: any = [];
+
+  Promise.all(
+    months.map(async (month: any, index: number) => {
+      await Transaction.find(
+        {
+          createdAt: {
+            $gte: new Date(new Date(month.from).setHours(0o0, 0o0, 0o0)),
+            $lt: new Date(new Date(month.to).setHours(23, 59, 59)),
+          },
+          userId,
+        },
+        async (err: any, transactions: any) => {
+          try {
+            await transactions.map((transaction: any) => {
+              months[index].expense += transaction.expense;
+              months[index].income += transaction.income;
+
+              newResults = months;
+            });
+          } catch (error) {
+            res.status(400).json({ errorMsg: error });
+          }
+        }
+      );
+    })
+  ).then(() => {
+    res.json(months);
+  });
+};

@@ -25,7 +25,6 @@ export interface State {
     note: string;
     description: string;
   };
-  selectedDay: State["transaction"][];
   isTransfer: boolean;
   errors: {
     account?: string;
@@ -35,6 +34,19 @@ export interface State {
     amount: string;
   };
   date: any;
+  specificDay: {
+    events: {
+      type: string;
+      date: any;
+      account?: string;
+      from?: string;
+      to?: string;
+      category?: string;
+      amount: string;
+      note: string;
+      description: string;
+    }[];
+  };
   events: {
     createdAt: any;
     events: State["transaction"];
@@ -50,7 +62,6 @@ class TransactionContainer extends React.Component<Props> {
     isInfoTransactionOpen: false,
     isAddTransactionOpen: false,
     date: new Date(),
-    selectedDay: [],
     isTransfer: false,
     transaction: {
       type: "income",
@@ -62,6 +73,9 @@ class TransactionContainer extends React.Component<Props> {
       amount: "0",
       note: "kkkkkkk",
       description: "kkkkkkkkkk",
+    },
+    specificDay: {
+      events: [],
     },
     errors: {
       account: "",
@@ -75,7 +89,6 @@ class TransactionContainer extends React.Component<Props> {
 
   componentDidMount() {
     if (this.props.filters.date) {
-      console.log(new Date(parseInt(this.props.filters.date)), new Date());
       this.setState({
         date: new Date(parseInt(this.props.filters.date)),
       });
@@ -170,16 +183,11 @@ class TransactionContainer extends React.Component<Props> {
     if (this.state.isInfoTransactionOpen) {
       this.setState({
         isInfoTransactionOpen: false,
-        selectedDay: [],
+        specificDay: {
+          events: [],
+        },
       });
     } else {
-      this.state.events.map((event) => {
-        if (new Date(date).getDate() === new Date(event.createdAt).getDate()) {
-          this.setState({
-            selectedDay: event.events,
-          });
-        }
-      });
       this.setState({
         isInfoTransactionOpen: true,
         transaction: { ...this.state.transaction, date: new Date(date) },
@@ -266,11 +274,15 @@ class TransactionContainer extends React.Component<Props> {
     }
   };
 
+  handleGetSpecificDay = async (event: any) => {
+    await this.setState({ specificDay: event });
+  };
+
   handleSetEvent = (date: any, view: any) => {
     return (
       <div>
         {this.state.events.map((event) => (
-          <div>
+          <div onClick={() => this.handleGetSpecificDay(event)}>
             {view === "month" &&
             date.getDate() === new Date(event.createdAt).getDate() &&
             date.getMonth() === new Date(event.createdAt).getMonth() &&
@@ -297,7 +309,7 @@ class TransactionContainer extends React.Component<Props> {
       errors,
       isTransfer,
       isInfoTransactionOpen,
-      selectedDay,
+      specificDay,
     } = this.state;
     return (
       <div className={TransactionStyl.wrapper}>
@@ -317,7 +329,7 @@ class TransactionContainer extends React.Component<Props> {
           />
         </div>
         <InfoModal
-          selectedDay={selectedDay}
+          specificDay={specificDay}
           transaction={transaction}
           isInfoTransactionOpen={isInfoTransactionOpen}
           handleOpenTransaction={this.handleOpenTransaction}
