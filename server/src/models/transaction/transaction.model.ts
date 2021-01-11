@@ -19,6 +19,7 @@ export interface TransactionInterface {
       description?: String;
     }
   ];
+  userId: string;
 }
 
 const transactionSchema = new Schema(
@@ -35,7 +36,9 @@ const transactionSchema = new Schema(
           type: Number,
           required: true,
         },
-
+        account: {
+          type: String,
+        },
         date: {
           type: Date,
           required: true,
@@ -43,8 +46,6 @@ const transactionSchema = new Schema(
         category: {
           trim: true,
           type: String,
-          minlength: 2,
-          required: true,
         },
         from: {
           type: String,

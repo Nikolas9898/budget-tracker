@@ -155,15 +155,19 @@ export const deleteTransactionById: RequestHandler = async (
   res: Response
 ) => {
   const id = req.params.id;
+  const userId = tokenDecoder(req.headers.authorization);
 
-  Transaction.findByIdAndDelete({ _id: id }, (err) => {
-    if (err) {
-      return res.json({ errorMsg: err });
-    } else {
-      let error = "Deleted successfully";
-      return res.status(400).json({ errorMsg: error });
+  const transaction = Transaction.findOneAndDelete(
+    { _id: id, userId },
+    (err) => {
+      if (err) {
+        return res.json({ errorMsg: err });
+      } else {
+        let msg = "Deleted successfully";
+        return res.status(400).json({ msg });
+      }
     }
-  });
+  );
 };
 
 export const editTransaction = async (req: Request, res: Response) => {
@@ -225,3 +229,5 @@ export const editTransaction = async (req: Request, res: Response) => {
 
   res.json("Update successful");
 };
+
+export const getYearlyAndWeekly = async (req: Request, res: Response) => {};
