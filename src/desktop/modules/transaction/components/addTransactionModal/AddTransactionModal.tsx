@@ -1,45 +1,119 @@
 import React from "react";
 import AddTransactionStyl from "./AddTransactionStyle.module.css";
+import { State } from "../../monthlyContainer/TransactionContainer";
+import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
+import Form from "./form/Form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+
 
 type Props = {
   isAddTransactionOpen: boolean;
+  transaction: State["transaction"];
+  errors: State["errors"];
+  handleInputChange: (event: {
+    target: {
+      value: string;
+      name: string;
+    };
+  }) => void;
+  handleSave: () => void;
+  isTransfer: boolean;
+  handleOpenTransaction:(date:any)=>void;
 };
 
-const AddTransactionModal: React.FC<Props> = ({ isAddTransactionOpen }) => {
+const AddTransactionModal: React.FC<Props> = ({
+  isAddTransactionOpen,
+  transaction,
+  handleInputChange,
+  errors,
+  handleSave,
+  isTransfer,
+  handleOpenTransaction,
+}) => {
   return (
     <div>
       {isAddTransactionOpen ? (
         <div className={AddTransactionStyl.modal_wrapper}>
           <div className={AddTransactionStyl.container}>
-            <div className={AddTransactionStyl.menu}>
-              <div>Income</div>
-              <div>Expense</div>
-              <div>Transfer</div>
-            </div>
-            <div className={AddTransactionStyl.content}>
-              <div className={AddTransactionStyl.content_titles}>
-                <div className={AddTransactionStyl.title}>Day</div>
-                <div className={AddTransactionStyl.title}>Account</div>
-                <div className={AddTransactionStyl.title}>Category</div>
-                <div className={AddTransactionStyl.title}>Amount</div>
-                <div className={AddTransactionStyl.title}>Note</div>
-              </div>
-              <div className={AddTransactionStyl.content_inputs}>
-                <input type="text" className={AddTransactionStyl.input} />
-                <input type="text" className={AddTransactionStyl.input} />
-                <input type="text" className={AddTransactionStyl.input} />
-                <input type="text" className={AddTransactionStyl.input} />
-                <input type="text" className={AddTransactionStyl.input} />
-              </div>
-            </div>
+            <FontAwesomeIcon
+              className={AddTransactionStyl.close_button}
+              onClick={()=>handleOpenTransaction("")}
+              icon={faTimesCircle}
+            />
+            <Tabs selectedTabClassName={AddTransactionStyl.selected_tab}>
+              <TabList className={AddTransactionStyl.tab_list}>
+                <Tab
+                  className={AddTransactionStyl.tab}
+                  onClick={() =>
+                    handleInputChange({
+                      target: { value: "income", name: "type" },
+                    })
+                  }
+                >
+                  <span>Income</span>
+                </Tab>
+                <Tab
+                  className={AddTransactionStyl.tab}
+                  onClick={() =>
+                    handleInputChange({
+                      target: { value: "expense", name: "type" },
+                    })
+                  }
+                >
+                  <span>Expense</span>
+                </Tab>
+                <Tab
+                  className={AddTransactionStyl.tab}
+                  onClick={() =>
+                    handleInputChange({
+                      target: { value: "transfer", name: "type" },
+                    })
+                  }
+                >
+                  <span>Transfer</span>
+                </Tab>
+              </TabList>
+
+              <TabPanel>
+                <Form
+                  isTransfer={isTransfer}
+                  transaction={transaction}
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                />
+              </TabPanel>
+              <TabPanel>
+                <Form
+                  isTransfer={isTransfer}
+                  transaction={transaction}
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                />
+              </TabPanel>
+              <TabPanel>
+                <Form
+                  isTransfer={isTransfer}
+                  transaction={transaction}
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                />
+              </TabPanel>
+            </Tabs>
+
             <input
               type="text"
               className={AddTransactionStyl.description}
               placeholder="Description"
             />
+
             <div className={AddTransactionStyl.buttons_content}>
-              <button className={AddTransactionStyl.save_button}>Save</button>
-              <button className={AddTransactionStyl.continue_button}>Continue</button>
+              <button
+                className={AddTransactionStyl.save_button}
+                onClick={() => handleSave()}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>

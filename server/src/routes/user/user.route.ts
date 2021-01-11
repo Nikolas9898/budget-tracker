@@ -1,8 +1,9 @@
 import { Router } from "express";
-const router = Router();
-
+import { tokenAuth } from "../../middleware/tokenAuthentication";
 import * as userController from "../../controlers/userControler/user.controler";
 
-router.post("/signUp", userController.signUp);
+const router = Router();
+
+router.get("/user/:id", tokenAuth, userController.getById);
 
 export default router;

@@ -1,80 +1,84 @@
-.container{
-    margin: auto;
-    width: 800px;
-    max-width: 100%;
+.container {
+  margin: auto;
+  width: 800px;
+  max-width: 100%;
 }
-.login_form{
-    margin-top: 150px;
-    width: 100%;
-    background: #c9d6ef;
-    height: 100%;
-    border: #0160b2 solid 2px;
+.login_form {
+  margin-top: 150px;
+  width: 100%;
+  background: #c9d6ef;
+  height: 100%;
+  border: #0160b2 solid 2px;
 }
-.select_login{
-    margin: auto;
-    display: flex;
-    border-bottom: dodgerblue solid 2px;
-    width: 80%;
+.tab_list {
+  margin: auto;
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: dodgerblue solid 2px;
+  width: 80%;
 }
-.select_title{
-    font-size: 20px;
-    margin: 50px 19% 0 19%;
-    cursor: pointer;
-
+.tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
 }
-.select_title_selected{
-    font-weight: bold;
-    font-size: 22px;
-    margin: 50px 19% 0 19%;
-    cursor: pointer;
+.selected_tab {
+  font-weight: bold;
+  font-size: 20px;
 }
-.login_content{
-    margin: auto;
-    width: 40%;
-    margin-top: 50px;
+.login_content {
+  margin: auto;
+  width: 40%;
+  margin-top: 50px;
 }
-.input{
-    width: 98%;
-    font-size: 30px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    background: #0160b2;
-    color: white;
+.input {
+  width: 98%;
+  font-size: 30px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background: #0160b2;
+  color: white;
 }
-.login_button{
-    width: 100%;
-    font-size: 30px;
-    margin-bottom: 40px;
-    margin-top: 30px;
-    color: white;
-    background: darkorange;
-    cursor: pointer;
-    padding: 5px 0 5px 0;
+.login_button {
+  width: 100%;
+  font-size: 30px;
+  margin-bottom: 40px;
+  margin-top: 30px;
+  color: white;
+  background: darkorange;
+  cursor: pointer;
+  padding: 5px 0 5px 0;
 }
-.login_label{
-    font-size: 20px;
-    margin-left: 4px;
-    margin-top: 20px;
+.login_label {
+  font-size: 20px;
+  margin-left: 4px;
+  margin-top: 20px;
 }
-.social_container{
-    width: 40%;
-    margin: auto;
-    background: white;
-    height: 80px;
-    display: flex;
-    align-items: center;
-   justify-content: space-evenly;
-    margin-bottom: 20px;
+.social_container {
+  width: 40%;
+  margin: auto;
+  background: white;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
 }
-.social_icon{
-    padding: 5px;
-    font-size: 40px;
-    cursor: pointer;
+.social_icon {
+  padding: 5px;
+  font-size: 40px;
+  cursor: pointer;
 }
 .social_icon:hover {
-    color: royalblue;
+  color: royalblue;
 }
-.error_msg{
-    color: red;
-    margin-bottom: 20px;
+.error_msg {
+  color: red;
+  margin-bottom: 20px;
 }

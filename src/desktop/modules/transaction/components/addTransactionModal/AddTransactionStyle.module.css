@@ -16,14 +16,7 @@
   margin: 200px auto auto;
   background: white;
 }
-.menu {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-evenly;
-  margin-bottom: 30px;
-  font-size: 20px;
-  cursor: pointer;
-}
+
 .content {
   display: flex;
   padding: 0 20px 0 20px;
@@ -34,29 +27,28 @@
   font-size: 20px;
 }
 .title {
-  margin-bottom: 26px;
+  margin-bottom: 38px;
 }
-.content_inputs {
+.input_container {
+  height: 60px;
 }
-
 .input {
   font-size: 20px;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
-.description{
+.description {
   width: 90%;
   font-size: 20px;
 }
-.buttons_content{
+.buttons_content {
   display: flex;
-  width: 85%;
+  width: 60%;
   margin: auto;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.save_button{
-  margin-right: 10px;
+.save_button {
   padding: 10px 100px 10px 100px;
   border-radius: 5px;
   background: coral;
@@ -64,9 +56,40 @@
   font-weight: bold;
   cursor: pointer;
 }
-.continue_button{
+.continue_button {
   padding: 10px 20px 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+}
+.error_msg {
+  color: red;
+}
+.selected_tab {
+  border-radius: 6px;
+  border: coral 2px solid;
+  font-weight: bold;
+  color: coral;
+}
+.tab_list {
+  display: flex;
+  justify-content: space-evenly;
+}
+.tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+}
+.close_button {
+  font-size: 30px;
+  cursor: pointer;
+  margin-left: 370px;
+}
+.close_button:hover {
+  color: coral;
 }

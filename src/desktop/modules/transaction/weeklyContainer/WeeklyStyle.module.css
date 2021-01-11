@@ -1,0 +1,53 @@
+.wrapper {
+  width: 90%;
+  margin: auto;
+}
+.container_row {
+  border-top: dimgrey 2px solid;
+  height: 80px;
+  width: 70%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.date {
+  font-size: 20px;
+  color: dimgrey;
+  font-weight: bold;
+  padding: 10px;
+  border: dimgrey 5px solid;
+  border-radius: 10px;
+}
+.income {
+  font-size: 25px;
+  color: dodgerblue;
+  font-weight: bold;
+  padding: 10px;
+}
+.expense {
+    font-size: 25px;
+    color: coral;
+    font-weight: bold;
+    padding: 10px;
+}
+.info_row{
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.info_title{
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  justify-content: space-evenly;
+  color: dimgrey;
+  font-weight: bold;
+}
+.total{
+  font-size: 25px;
+  color: dimgrey;
+  font-weight: bold;
+  padding: 10px;
+}

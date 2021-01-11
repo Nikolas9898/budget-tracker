@@ -1,0 +1,45 @@
+.wrapper {
+  margin: auto;
+  width: 90%;
+}
+.container {
+  width: 60%;
+  margin: auto;
+}
+.calendar button {
+  height: 60px;
+  display: flex;
+  border: #0160b2 2px solid;
+  cursor: pointer;
+}
+.content_day {
+  margin-top: 15px;
+}
+.income {
+  color: green;
+}
+.expense {
+  color: red;
+}
+.selected_tab {
+  background: darkblue;
+  font-weight: bold;
+}
+.tab_list {
+  padding-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  background: #0160b2;
+  width: 40%;
+}
+.tab {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+  color: white;
+}

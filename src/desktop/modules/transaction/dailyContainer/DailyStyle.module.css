@@ -1,0 +1,63 @@
+.wrapper {
+    width: 90%;
+    margin: auto;
+}
+.table{
+    width: 70%;
+    margin: auto;
+}
+.container{
+    border-top: dimgrey 3px solid;
+    border-bottom: lightgray 10px solid;
+}
+.content_row {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: lightgray 2px solid;
+}
+.date_content{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.date{
+    font-size: 40px;
+    font-weight: bolder;
+    padding: 10px;
+}
+.date_year{
+    color: dimgrey;
+    padding: 3px;
+}
+.date_day{
+    color: white;
+    background: dimgrey;
+    text-align: center;
+    padding: 3px;
+    border-radius: 5px;
+}
+.income {
+    font-size: 25px;
+    color: dodgerblue;
+    font-weight: bold;
+    padding: 10px;
+}
+.expense {
+    font-size: 25px;
+    color: coral;
+    font-weight: bold;
+    padding: 10px;
+}
+.category{
+    font-size: 20px;
+}
+.add_button{
+    margin-top: 50px;
+    font-size: 70px;
+    float: right;
+    margin-bottom: 50px;
+    color: coral;
+    cursor: pointer;
+}
