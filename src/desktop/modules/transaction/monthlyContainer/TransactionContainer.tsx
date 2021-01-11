@@ -53,8 +53,8 @@ class TransactionContainer extends React.Component<Props> {
       category: "",
       to: "",
       amount: "0",
-      note: "",
-      description: "",
+      note: "kkkkkkk",
+      description: "kkkkkkkkkk",
     },
     errors: {
       account: "",
@@ -68,7 +68,7 @@ class TransactionContainer extends React.Component<Props> {
 
   componentDidMount() {
     if (this.props.filters.date) {
-      console.log(new Date(parseInt(this.props.filters.date)),new Date())
+      console.log(new Date(parseInt(this.props.filters.date)), new Date());
       this.setState({
         date: new Date(parseInt(this.props.filters.date)),
       });
@@ -113,17 +113,17 @@ class TransactionContainer extends React.Component<Props> {
       amount: "",
     };
 
-    if (value.account === "") {
+    if (value.account === "" && !(value.type === "transfer")) {
       errors.account = "Please select a account";
     }
     if (value.type === "transfer" && value.from === "") {
-      errors.from = "Please select a account";
+      errors.from = "Please select  from";
     }
-    if (value.category === "") {
+    if (value.category === "" && !(value.type === "transfer")) {
       errors.category = "Please select a category";
     }
     if (value.type === "transfer" && value.to === "") {
-      errors.to = "Please select a account";
+      errors.to = "Please select  to";
     }
     if (value.amount === "") {
       errors.amount = "Please select a amount";
@@ -137,7 +137,7 @@ class TransactionContainer extends React.Component<Props> {
     this.setState({
       date: new Date(newMonth),
     });
-    this.getTransactions(new Date(newMonth))
+    this.getTransactions(new Date(newMonth));
   };
   handlePreviousMonth = () => {
     let Month = new Date(this.state.date).getMonth();
@@ -146,7 +146,7 @@ class TransactionContainer extends React.Component<Props> {
     this.setState({
       date: new Date(newMonth),
     });
-    this.getTransactions(new Date(newMonth))
+    this.getTransactions(new Date(newMonth));
   };
   handleOpenTransaction = (date: any) => {
     if (this.state.isAddTransactionOpen) {
@@ -168,20 +168,11 @@ class TransactionContainer extends React.Component<Props> {
         [event.target.name]: event.target.value,
       },
     });
-
-    if (event.target.name === "type" && event.target.value === "transfer") {
-      this.setState({
-        isTransfer: true,
-      });
-    } else {
-      this.setState({
-        isTransfer: false,
-      });
-    }
   };
 
   handleSave = () => {
-    const errors = this.validateForm(this.state.transaction);
+    const { transaction } = this.state;
+    const errors = this.validateForm(transaction);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
 
     if (!isValid) {
@@ -190,7 +181,55 @@ class TransactionContainer extends React.Component<Props> {
     } else {
       this.setState({ ...this.state, errors: {} });
     }
-    console.log(this.state.transaction);
+    let incomeOrExpense = {
+      events: [
+        {
+          type: transaction.type.toLowerCase(),
+          currency:'BG',
+          date: transaction.date.toISOString(),
+          account: transaction.account,
+          category: transaction.category,
+          amount: parseFloat(transaction.amount) * 100,
+          note: transaction.note,
+          description: transaction.description,
+        },
+      ],
+      createdAt: transaction.date.toISOString(),
+    };
+
+    let transfer = {
+      events: [
+        {
+          type: transaction.type.toLowerCase(),
+          currency:'BG',
+          date: transaction.date.toISOString(),
+          from: transaction.from,
+          to: transaction.to,
+          amount: parseFloat(transaction.amount) * 100,
+          note: transaction.note,
+          description: transaction.description,
+        },
+      ],
+      createdAt: transaction.date.toISOString(),
+    };
+
+    let config = {
+      headers: {
+        Authorization:
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+      },
+    };
+
+    if (transaction.type === "transfer") {
+      axios.post(`http://localhost:5000/transaction/create`, transfer, config);
+    } else {
+      axios.post(
+        `http://localhost:5000/transaction/create`,
+        incomeOrExpense,
+        config
+      );
+    }
   };
 
   handleSetEvent = (date: any, view: any) => {
@@ -234,7 +273,7 @@ class TransactionContainer extends React.Component<Props> {
         <div className={TransactionStyl.container}>
           <Calendar
             activeStartDate={this.state.date}
-            onChange={(date) => console.log(date)}
+            // onChange={(date) => console.log(date)}
             className={TransactionStyl.calendar}
             onClickDay={(date) => this.handleOpenTransaction(date)}
             showNavigation={false}
