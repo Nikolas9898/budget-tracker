@@ -40,7 +40,8 @@ router.delete(
   transactionControler.deleteTransactionById
 );
 router.post(
-  "/transaction/getYearlyAndWeekly",
+  "/transaction/getYearlyOrWeekly",
+  tokenAuth,
   transactionControler.getYearlyAndWeekly
 );
 
