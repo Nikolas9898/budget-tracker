@@ -21,7 +21,9 @@ class YearlyContainer extends React.Component {
   }
   setYear = () => {
     let months = [];
+
     const { date } = this.state;
+
     if (date.getFullYear() === new Date().getFullYear()) {
       for (let i = 0; i <= date.getMonth(); i++) {
         this.state.months.push({ date: new Date().setMonth(i) });
@@ -29,7 +31,7 @@ class YearlyContainer extends React.Component {
     }
     if (date.getFullYear() < new Date().getFullYear()) {
       for (let i = 0; i <= 11; i++) {
-        this.state.months.push({ date: new Date().setMonth(i) });
+        this.state.months.push({ date: new Date(date).setMonth(i) });
       }
     }
     this.setState({});
@@ -78,6 +80,7 @@ class YearlyContainer extends React.Component {
                     : YearlyStyle.month
                 }
               >
+                {console.log( Moment(month.date).format("MMM.YYYY"))}
                 {Moment(month.date).format("MMM")}
               </div>
               <div className={YearlyStyle.income}>

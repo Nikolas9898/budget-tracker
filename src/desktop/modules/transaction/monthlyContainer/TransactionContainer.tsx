@@ -32,11 +32,7 @@ export interface State {
   };
   date: any;
   events: {
-    date: {
-      day: number;
-      month: number;
-      year: number;
-    };
+    createdAt: any;
     income: number;
     expense: number;
   }[];
@@ -67,27 +63,12 @@ class TransactionContainer extends React.Component<Props> {
       to: "",
       amount: "",
     },
-    events: [
-      {
-        date: { day: 1, month: 0, year: 2021 },
-        income: 1000200,
-        expense: 0,
-      },
-      {
-        date: { day: 11, month: 11, year: 2020 },
-        income: 10022,
-        expense: 10003,
-      },
-      {
-        date: { day: 1, month: 11, year: 2020 },
-        income: 10002,
-        expense: 10003,
-      },
-    ],
+    events: [],
   };
 
   componentDidMount() {
     if (this.props.filters.date) {
+      console.log(new Date(parseInt(this.props.filters.date)),new Date())
       this.setState({
         date: new Date(parseInt(this.props.filters.date)),
       });
@@ -119,8 +100,8 @@ class TransactionContainer extends React.Component<Props> {
         `http://localhost:5000/transaction/specificDatePeriod/${firstDay}/${lastDay}`,
         config
       )
-      .then((products) => {
-        console.log(products);
+      .then((data) => {
+        this.setState({ events: data.data });
       });
   };
   validateForm = (value: State["transaction"]) => {
@@ -156,6 +137,7 @@ class TransactionContainer extends React.Component<Props> {
     this.setState({
       date: new Date(newMonth),
     });
+    this.getTransactions(new Date(newMonth))
   };
   handlePreviousMonth = () => {
     let Month = new Date(this.state.date).getMonth();
@@ -164,6 +146,7 @@ class TransactionContainer extends React.Component<Props> {
     this.setState({
       date: new Date(newMonth),
     });
+    this.getTransactions(new Date(newMonth))
   };
   handleOpenTransaction = (date: any) => {
     if (this.state.isAddTransactionOpen) {
@@ -216,9 +199,9 @@ class TransactionContainer extends React.Component<Props> {
         {this.state.events.map((event) => (
           <div>
             {view === "month" &&
-            date.getDate() === event.date.day &&
-            date.getMonth() === event.date.month &&
-            date.getFullYear() === event.date.year ? (
+            date.getDate() === new Date(event.createdAt).getDate() &&
+            date.getMonth() === new Date(event.createdAt).getMonth() &&
+            date.getFullYear() === new Date(event.createdAt).getFullYear() ? (
               <div className={TransactionStyl.content_day}>
                 <div className={TransactionStyl.income}>
                   ${(event.income / 100).toFixed(2)}
@@ -249,7 +232,6 @@ class TransactionContainer extends React.Component<Props> {
           date={this.state.date}
         />
         <div className={TransactionStyl.container}>
-          {/*{console.log(this.state.date)}*/}
           <Calendar
             activeStartDate={this.state.date}
             onChange={(date) => console.log(date)}
