@@ -36,7 +36,12 @@ router.put(
 
 router.delete(
   "/transaction/delete/:id",
+  tokenAuth,
   transactionControler.deleteTransactionById
+);
+router.post(
+  "/transaction/getYearlyAndWeekly",
+  transactionControler.getYearlyAndWeekly
 );
 
 export default router;
