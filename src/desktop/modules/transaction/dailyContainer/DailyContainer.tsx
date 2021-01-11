@@ -112,12 +112,12 @@ const DailyContainer = () => {
                   {event.from} {event.to}
                 </div>
                 <div className={DailyStyle.income}>
-                  {event.type === "Income"
+                  {event.type === "income"
                     ? <div>$ {(event.amount / 100).toFixed(2)}</div>
                     : null}
                 </div>
                 <div className={DailyStyle.expense}>
-                  {event.type === "Expense"||event.type === "Transfer"
+                  {event.type === "expense"||event.type === "transfer"
                     ? <div>${(event.amount / 100).toFixed(2)}</div>
                     : null}
                 </div>
