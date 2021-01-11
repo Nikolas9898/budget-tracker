@@ -35,11 +35,9 @@ const Form: React.FC<Props> = ({
 
       <div className={AddTransactionStyl.content_inputs}>
         <div className={AddTransactionStyl.input_container}>
-          <input
-            type="text"
-            className={AddTransactionStyl.input}
-            value={Moment(transaction.date).format("DD/M/Y(dd)")}
-          />
+
+           {Moment(transaction.date).format("DD/M/Y(dd)")}
+            {Moment(transaction.date).format("HH:HH")}
         </div>
 
         <div className={AddTransactionStyl.input_container}>
@@ -90,21 +88,33 @@ const Form: React.FC<Props> = ({
                     <option value="accounts">Accounts</option>
                   </React.Fragment>:
                   <React.Fragment>
-                    <option value=""> </option>
-                    <option value="food">Food</option>
-                    <option value="culture">Culture</option>
-                    <option value="socialLife">Accounts</option>
-                    <option value="selfDevelopment">Self Development</option>
-                    <option value="transportation">Transportation</option>
-                    <option value="household">Household</option>
-                    <option value="apparel">Apparel</option>
-                    <option value="beauty">Beauty</option>
-                    <option value="health">Health</option>
-                    <option value="education">Education</option>
-                    <option value="gift">Gift</option>
-                    <option value="other">Other</option>
+                    {transaction.type==="expense"?
+                        <React.Fragment>
+                          <option value=""> </option>
+                          <option value="food">Food</option>
+                          <option value="culture">Culture</option>
+                          <option value="socialLife">Accounts</option>
+                          <option value="selfDevelopment">Self Development</option>
+                          <option value="transportation">Transportation</option>
+                          <option value="household">Household</option>
+                          <option value="apparel">Apparel</option>
+                          <option value="beauty">Beauty</option>
+                          <option value="health">Health</option>
+                          <option value="education">Education</option>
+                          <option value="gift">Gift</option>
+                          <option value="other">Other</option>
+                        </React.Fragment>:
+                        <React.Fragment>
+                          <option value=""> </option>
+                          <option value="salary">Salary</option>
+                          <option value="other">Other</option>
+                          <option value="bonus">Bonus</option>
+                          <option value="petty cash">Petty cash</option>
+                        </React.Fragment>
+                    }
                   </React.Fragment>
             }
+
           </select>
           {errors.category && (
             <div className={AddTransactionStyl.error_msg}>
