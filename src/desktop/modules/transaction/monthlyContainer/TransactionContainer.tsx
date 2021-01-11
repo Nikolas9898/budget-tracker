@@ -6,11 +6,14 @@ import NavBar from "../components/navBar/NavBar";
 import moment from "moment";
 import axios from "axios";
 import { tokenAuth } from "../../../../../server/src/middleware/tokenAuthentication";
+import InfoModal from "../components/infoModal/InfoModal";
 type Props = {
   filters: any;
 };
 export interface State {
   isAddTransactionOpen: boolean;
+  isInfoTransactionOpen: boolean;
+
   transaction: {
     type: string;
     date: any;
@@ -22,6 +25,7 @@ export interface State {
     note: string;
     description: string;
   };
+  selectedDay: State["transaction"][];
   isTransfer: boolean;
   errors: {
     account?: string;
@@ -33,6 +37,7 @@ export interface State {
   date: any;
   events: {
     createdAt: any;
+    events: State["transaction"];
     income: number;
     expense: number;
   }[];
@@ -42,8 +47,10 @@ class TransactionContainer extends React.Component<Props> {
     super(props);
   }
   state: State = {
+    isInfoTransactionOpen: false,
     isAddTransactionOpen: false,
     date: new Date(),
+    selectedDay: [],
     isTransfer: false,
     transaction: {
       type: "income",
@@ -156,6 +163,25 @@ class TransactionContainer extends React.Component<Props> {
     } else {
       this.setState({
         isAddTransactionOpen: true,
+      });
+    }
+  };
+  handleOpenInfoModal = (date: any) => {
+    if (this.state.isInfoTransactionOpen) {
+      this.setState({
+        isInfoTransactionOpen: false,
+        selectedDay: [],
+      });
+    } else {
+      this.state.events.map((event) => {
+        if (new Date(date).getDate() === new Date(event.createdAt).getDate()) {
+          this.setState({
+            selectedDay: event.events,
+          });
+        }
+      });
+      this.setState({
+        isInfoTransactionOpen: true,
         transaction: { ...this.state.transaction, date: new Date(date) },
       });
     }
@@ -185,8 +211,10 @@ class TransactionContainer extends React.Component<Props> {
       events: [
         {
           type: transaction.type.toLowerCase(),
-          currency:'BG',
-          date: transaction.date.toISOString(),
+          currency: "BG",
+          date: new Date(
+            new Date(transaction.date).setHours(16, 33, 22)
+          ).toISOString(),
           account: transaction.account,
           category: transaction.category,
           amount: parseFloat(transaction.amount) * 100,
@@ -194,15 +222,19 @@ class TransactionContainer extends React.Component<Props> {
           description: transaction.description,
         },
       ],
-      createdAt: transaction.date.toISOString(),
+      createdAt: new Date(
+        new Date(transaction.date).setHours(0o0, 0o0, 0o0)
+      ).toISOString(),
     };
 
     let transfer = {
       events: [
         {
           type: transaction.type.toLowerCase(),
-          currency:'BG',
-          date: transaction.date.toISOString(),
+          currency: "BG",
+          date: new Date(
+            new Date(transaction.date).setHours(13, 21, 30)
+          ).toISOString(),
           from: transaction.from,
           to: transaction.to,
           amount: parseFloat(transaction.amount) * 100,
@@ -210,7 +242,9 @@ class TransactionContainer extends React.Component<Props> {
           description: transaction.description,
         },
       ],
-      createdAt: transaction.date.toISOString(),
+      createdAt: new Date(
+        new Date(transaction.date).setHours(0o0, 0o0, 0o0)
+      ).toISOString(),
     };
 
     let config = {
@@ -262,6 +296,8 @@ class TransactionContainer extends React.Component<Props> {
       transaction,
       errors,
       isTransfer,
+      isInfoTransactionOpen,
+      selectedDay,
     } = this.state;
     return (
       <div className={TransactionStyl.wrapper}>
@@ -275,11 +311,18 @@ class TransactionContainer extends React.Component<Props> {
             activeStartDate={this.state.date}
             // onChange={(date) => console.log(date)}
             className={TransactionStyl.calendar}
-            onClickDay={(date) => this.handleOpenTransaction(date)}
+            onClickDay={(date) => this.handleOpenInfoModal(date)}
             showNavigation={false}
             tileContent={({ date, view }) => this.handleSetEvent(date, view)}
           />
         </div>
+        <InfoModal
+          selectedDay={selectedDay}
+          transaction={transaction}
+          isInfoTransactionOpen={isInfoTransactionOpen}
+          handleOpenTransaction={this.handleOpenTransaction}
+          handleOpenInfoModal={this.handleOpenInfoModal}
+        />
         <AddTransactionModal
           handleOpenTransaction={this.handleOpenTransaction}
           isTransfer={isTransfer}

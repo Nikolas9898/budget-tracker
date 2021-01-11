@@ -1,0 +1,36 @@
+.modal_wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1050;
+}
+.container {
+    width: 600px;
+    min-height: 400px;
+    background: #0160b2;
+    margin: 200px auto auto;
+    color: white;
+}
+.date{
+    padding: 10px;
+    font-size: 20px;
+}
+.content {
+    margin-top: 40px;
+    margin-left: 20px;
+    min-height: 230px;
+}
+.content_row {
+    align-items: center;
+    padding-right: 60px;
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+.add_button{
+    cursor: pointer;
+    font-size: 40px;
+    margin-left: 510px;
+    padding: 20px;
+}
