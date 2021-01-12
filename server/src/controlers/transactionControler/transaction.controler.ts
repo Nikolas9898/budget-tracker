@@ -237,7 +237,7 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
 
   let newResults: any = [];
 
-  Promise.all(
+ await Promise.all(
     months.map(async (month: any, index: number) => {
       await Transaction.find(
         {
