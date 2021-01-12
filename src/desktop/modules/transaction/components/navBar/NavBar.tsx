@@ -81,7 +81,7 @@ const NavBar: React.FC<Props> = ({
         </div>
         { window.location.pathname === "/transaction/yearly"?
             Moment(date).format("YYYY"):
-            Moment(date).format("MMMM")
+            Moment(date).format("MMM YYYY")
         }
 
         <div
