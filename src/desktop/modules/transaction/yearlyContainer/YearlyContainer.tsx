@@ -10,12 +10,16 @@ import moment from "moment";
 export interface State {
   date: any;
   months: { from: any; to: any; expense: number; income: number }[];
+  sumIncome: number;
+  sumExpense: number;
 }
 
 class YearlyContainer extends React.Component {
   state: State = {
     date: new Date(),
     months: [],
+    sumIncome: 0,
+    sumExpense: 0,
   };
 
   componentDidMount() {
@@ -26,20 +30,14 @@ class YearlyContainer extends React.Component {
 
     const { date } = this.state;
 
-
-
-
     if (date.getFullYear() === new Date().getFullYear()) {
       for (let i = 0; i <= date.getMonth(); i++) {
-
-
-
         await months.push({
           from: moment(
-            new Date(date.getFullYear(), date.getMonth()+i, 2)
+            new Date(date.getFullYear(), date.getMonth() + i, 2)
           ).toISOString(),
           to: moment(
-            new Date(date.getFullYear(), date.getMonth()+i+1, 1)
+            new Date(date.getFullYear(), date.getMonth() + i + 1, 1)
           ).toISOString(),
           income: 0,
           expense: 0,
@@ -50,10 +48,10 @@ class YearlyContainer extends React.Component {
       for (let i = 0; i <= 11; i++) {
         await months.push({
           from: moment(
-            new Date(date.getFullYear(), date.getMonth()+i, 2)
+            new Date(date.getFullYear(), date.getMonth() + i, 2)
           ).toISOString(),
           to: moment(
-            new Date(date.getFullYear(), date.getMonth()+i+1, 1)
+            new Date(date.getFullYear(), date.getMonth() + i + 1, 1)
           ).toISOString(),
           income: 0,
           expense: 0,
@@ -63,8 +61,8 @@ class YearlyContainer extends React.Component {
     let config = {
       headers: {
         Authorization:
-            "Bearer " +
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
       },
     };
 
@@ -75,8 +73,12 @@ class YearlyContainer extends React.Component {
         config
       )
       .then((data) => {
-        console.log(data)
-        this.setState({ months: data.data });
+        console.log(data);
+        this.setState({
+          months: data.data.months,
+          sumIncome: data.data.sumIncome,
+          sumExpense: data.data.sumExpense,
+        });
       });
   };
   handleNextYear = async () => {
@@ -103,7 +105,7 @@ class YearlyContainer extends React.Component {
     this.setYear();
   };
   render() {
-    const { date, months } = this.state;
+    const { date, months,sumExpense,sumIncome } = this.state;
     return (
       <div className={YearlyStyle.wrapper}>
         <NavBar
@@ -111,14 +113,16 @@ class YearlyContainer extends React.Component {
           handleNextMonth={this.handleNextYear}
           date={date}
         />
-        <InfoRow />
+        <InfoRow
+            sumIncome={sumIncome}
+        sumExpense={sumExpense}
+        />
         <div className={YearlyStyle.table}>
           {months.reverse().map((month) => (
             <Link
               className={YearlyStyle.content_row}
               to={`/transaction/monthly?date=${month.from}`}
             >
-
               <div
                 className={
                   new Date(date).getMonth() ===
@@ -133,11 +137,11 @@ class YearlyContainer extends React.Component {
               </div>
               <div className={YearlyStyle.income}>
                 {" "}
-                $ {(month.income/100).toFixed(2)}
+                $ {(month.income / 100).toFixed(2)}
               </div>
               <div className={YearlyStyle.expense}>
                 {" "}
-                $ {(month.expense/100).toFixed(2)}
+                $ {(month.expense / 100).toFixed(2)}
               </div>
             </Link>
           ))}

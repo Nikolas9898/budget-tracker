@@ -9,12 +9,16 @@ import axios from "axios";
 export interface State {
   date: any;
   weeks: { from: any; to: any; income: number; expense: number }[];
+  sumIncome: number;
+  sumExpense: number;
 }
 
 class WeeklyContainer extends React.Component {
   state: State = {
     date: new Date(),
     weeks: [],
+    sumIncome: 0,
+    sumExpense: 0,
   };
   componentDidMount() {
     this.TakeWeeks(new Date());
@@ -125,10 +129,16 @@ class WeeklyContainer extends React.Component {
         config
       )
       .then((data) => {
-        this.setState({ weeks: data.data });
+        console.log(data);
+        this.setState({
+          weeks: data.data.months,
+          sumIncome: data.data.sumIncome,
+          sumExpense: data.data.sumExpense,
+        });
       });
   };
   render() {
+    const { sumIncome, sumExpense } = this.state;
     return (
       <div className={WeeklyStyle.wrapper}>
         <NavBar
@@ -136,7 +146,7 @@ class WeeklyContainer extends React.Component {
           handleNextMonth={this.handleNextMonth}
           date={this.state.date}
         />
-        <InfoRow />
+        <InfoRow sumExpense={sumExpense} sumIncome={sumIncome} />
         {this.state.weeks.reverse().map((w) => (
           <div className={WeeklyStyle.container_row}>
             <div className={WeeklyStyle.date}>
