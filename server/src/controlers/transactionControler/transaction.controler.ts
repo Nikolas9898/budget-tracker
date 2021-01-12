@@ -269,14 +269,12 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
       });
     })
   ).then(() => {
-    console.log(months);
-
     let sumExpense = 0;
     let sumIncome = 0;
 
     months.map((month: any) => {
-      sumExpense += sumExpense + month.expense;
-      sumIncome += sumIncome + month.income;
+      sumExpense += month.expense;
+      sumIncome += month.income;
     });
 
     res.json({ months, sumExpense, sumIncome });
