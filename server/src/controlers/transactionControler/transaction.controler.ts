@@ -111,7 +111,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
     });
   }
 
-  await Transaction.find(
+   Transaction.find(
     {
       createdAt: {
         $gte: new Date(new Date(from).setHours(0o0, 0o0, 0o0)),

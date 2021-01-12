@@ -5,7 +5,6 @@ import AddTransactionModal from "../components/addTransactionModal/AddTransactio
 import NavBar from "../components/navBar/NavBar";
 import moment from "moment";
 import axios from "axios";
-import { tokenAuth } from "../../../../../server/src/middleware/tokenAuthentication";
 import InfoModal from "../components/infoModal/InfoModal";
 type Props = {
   filters: any;
@@ -92,26 +91,11 @@ class TransactionContainer extends React.Component<Props> {
   };
 
   componentDidMount() {
-    var date = new Date();
-    var firstDay = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      2
-    ).toISOString();
-    var lastDay = new Date(
-      date.getFullYear(),
-      date.getMonth() + 1,
-      1
-    ).toISOString();
-
-    console.log(firstDay);
-    console.log(lastDay);
-
     if (this.props.filters.date) {
       this.setState({
-        date: new Date(parseInt(this.props.filters.date)),
+        date: new Date(this.props.filters.date),
       });
-      this.getTransactions(new Date(parseInt(this.props.filters.date)));
+      this.getTransactions(new Date(this.props.filters.date));
     } else {
       this.setState({
         date: new Date(),
@@ -121,11 +105,18 @@ class TransactionContainer extends React.Component<Props> {
   }
 
   getTransactions = (date: any) => {
-    let firstDay = moment(
-      new Date(date.getFullYear(), date.getMonth(), 1)
+    let firstDay=moment(date).startOf('month').startOf('week').get('date')
+    let firstMonth=moment(date).startOf('month').startOf('week').get('month')
+    let firstYear=moment(date).startOf('month').startOf('week').get("year")
+    let lastDay=moment(date).endOf('month').endOf('week').get('date')
+    let lastMonth=moment(date).endOf('month').endOf('week').get('month')
+    let lastYear=moment(date).endOf('month').endOf('week').get("year")
+
+    let from = moment(
+      new Date(firstYear, firstMonth, firstDay)
     ).toISOString();
-    let lastDay = moment(
-      new Date(date.getFullYear(), date.getMonth() + 1, 0)
+    let to = moment(
+      new Date(lastYear, lastMonth, lastDay)
     ).toISOString();
     let config = {
       headers: {
@@ -136,7 +127,7 @@ class TransactionContainer extends React.Component<Props> {
     };
     axios
       .get(
-        `http://localhost:5000/transaction/specificDatePeriod/${firstDay}/${lastDay}`,
+        `http://localhost:5000/transaction/specificDatePeriod/${from}/${to}`,
         config
       )
       .then((data) => {
@@ -288,13 +279,49 @@ class TransactionContainer extends React.Component<Props> {
     };
 
     if (transaction.type === "transfer") {
-      axios.post(`http://localhost:5000/transaction/create`, transfer, config);
+      axios
+        .post(`http://localhost:5000/transaction/create`, transfer, config)
+        .then(() => {
+          this.getTransactions(transaction.date);
+          this.setState({
+            isAddTransactionOpen: false,
+            transaction: {
+              type: "income",
+              date: "",
+              account: "",
+              from: "",
+              category: "",
+              to: "",
+              amount: "0",
+              note: "kkkkkkk",
+              description: "kkkkkkkkkk",
+            },
+          });
+        });
     } else {
-      axios.post(
-        `http://localhost:5000/transaction/create`,
-        incomeOrExpense,
-        config
-      );
+      axios
+        .post(
+          `http://localhost:5000/transaction/create`,
+          incomeOrExpense,
+          config
+        )
+        .then(() => {
+          this.getTransactions(transaction.date);
+          this.setState({
+            isAddTransactionOpen: false,
+            transaction: {
+              type: "income",
+              date: "",
+              account: "",
+              from: "",
+              category: "",
+              to: "",
+              amount: "0",
+              note: "kkkkkkk",
+              description: "kkkkkkkkkk",
+            },
+          });
+        });
     }
   };
 

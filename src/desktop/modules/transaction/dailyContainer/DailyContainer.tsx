@@ -82,7 +82,7 @@ const DailyContainer = () => {
       />
       <InfoRow />
       <div className={DailyStyle.table}>
-        {transactions.map((transaction) => (
+        {transactions.sort(function(a, b){return new Date(a.createdAt).getDate()-new Date(b.createdAt).getDate()}).reverse().map((transaction) => (
           <div className={DailyStyle.container}>
             <div className={DailyStyle.content_row}>
               <div className={DailyStyle.date_content}>

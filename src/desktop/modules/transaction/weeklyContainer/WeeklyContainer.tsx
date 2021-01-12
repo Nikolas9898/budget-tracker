@@ -3,21 +3,22 @@ import Moment from "moment";
 import React from "react";
 import WeeklyStyle from "./WeeklyStyle.module.css";
 import InfoRow from "../components/infoRow/InfoRow";
+import moment from "moment";
+import axios from "axios";
 
 export interface State {
   date: any;
-  weeks: { From: any; To: any }[];
+  weeks: { from: any; to: any; income: number; expense: number }[];
 }
 
 class WeeklyContainer extends React.Component {
   state: State = {
     date: new Date(),
-    weeks: [
-    ],
+    weeks: [],
   };
-componentDidMount() {
-  this.TakeWeeks(new Date())
-}
+  componentDidMount() {
+    this.TakeWeeks(new Date());
+  }
 
   handleNextMonth = () => {
     let Month = new Date(this.state.date).getMonth();
@@ -26,7 +27,7 @@ componentDidMount() {
     this.setState({
       date: new Date(newMonth),
     });
-    this.TakeWeeks(newMonth)
+    this.TakeWeeks(newMonth);
   };
   handlePreviousMonth = () => {
     let Month = new Date(this.state.date).getMonth();
@@ -35,18 +36,98 @@ componentDidMount() {
     this.setState({
       date: new Date(newMonth),
     });
-    this.TakeWeeks(newMonth)
+    this.TakeWeeks(newMonth);
   };
-  TakeWeeks=(date:any)=>{
-    let from=Moment(date).startOf('month').startOf('week').get('date')
-    let to=Moment(date).startOf('month').endOf('week').get('date')
-    const newWeek={
-     From:new Date(2020,11,from),
-      To:new Date(2020,11,to)
-    }
-   this.setState({weeks:[...this.state.weeks,newWeek]})
 
-  }
+  TakeWeeks = async (date: any) => {
+    let firstWeekDay = moment(date)
+      .startOf("month")
+      .startOf("week")
+      .get("date");
+    let firstWeekMonth = moment(date)
+      .startOf("month")
+      .startOf("week")
+      .get("month");
+    let firstWeekYear = moment(date)
+      .startOf("month")
+      .startOf("week")
+      .get("year");
+
+    let firstWeekLastDay = moment(date)
+      .startOf("month")
+      .endOf("week")
+      .get("date");
+    let firstWeekLastMonth = moment(date)
+      .startOf("month")
+      .endOf("week")
+      .get("month");
+    let firstWeekLastYear = moment(date)
+      .startOf("month")
+      .endOf("week")
+      .get("year");
+
+    let lastWeekDay = moment(date).endOf("month").startOf("week").get("date");
+
+    let lastWeekMonth = moment(date)
+      .endOf("month")
+      .startOf("week")
+      .get("month");
+
+    let lastWeekYear = moment(date).endOf("month").startOf("week").get("year");
+
+    let lastWeekLastDay = moment(date).endOf("month").endOf("week").get("date");
+    let lastWeekLastMonth = moment(date)
+      .endOf("month")
+      .endOf("week")
+      .get("month");
+    let lastWeekLastYear = moment(date)
+      .endOf("month")
+      .endOf("week")
+      .get("year");
+
+    let weeks = [];
+
+    weeks.push({
+      from: new Date(firstWeekYear, firstWeekMonth, firstWeekDay),
+      to: new Date(firstWeekLastYear, firstWeekLastMonth, firstWeekLastDay),
+      income: 0,
+      expense: 0,
+    });
+
+    for (let i = firstWeekLastDay + 1; i <= lastWeekDay - 7; i = i + 7) {
+      weeks.push({
+        from: new Date(date.getFullYear(), date.getMonth(), i),
+        to: new Date(date.getFullYear(), date.getMonth(), i + 6),
+        income: 0,
+        expense: 0,
+      });
+    }
+
+    weeks.push({
+      from: new Date(lastWeekYear, lastWeekMonth, lastWeekDay),
+      to: new Date(lastWeekLastYear, lastWeekLastMonth, lastWeekLastDay),
+      income: 0,
+      expense: 0,
+    });
+
+    let config = {
+      headers: {
+        Authorization:
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+      },
+    };
+
+    axios
+      .post(
+        `http://localhost:5000/transaction/getYearlyOrWeekly`,
+        weeks,
+        config
+      )
+      .then((data) => {
+        this.setState({ weeks: data.data });
+      });
+  };
   render() {
     return (
       <div className={WeeklyStyle.wrapper}>
@@ -55,14 +136,18 @@ componentDidMount() {
           handleNextMonth={this.handleNextMonth}
           date={this.state.date}
         />
-        <InfoRow/>
-        {this.state.weeks.map((w) => (
+        <InfoRow />
+        {this.state.weeks.reverse().map((w) => (
           <div className={WeeklyStyle.container_row}>
             <div className={WeeklyStyle.date}>
-              {Moment(w.From).format("DD.MM")} ~ {Moment(w.To).format("DD.MM")}
+              {Moment(w.from).format("DD.MM")} ~ {Moment(w.to).format("DD.MM")}
             </div>
-            <div className={WeeklyStyle.income}>$ {(0 / 100).toFixed(2)}</div>
-            <div className={WeeklyStyle.expense}>$ {(0 / 100).toFixed(2)}</div>
+            <div className={WeeklyStyle.income}>
+              $ {(w.income / 100).toFixed(2)}
+            </div>
+            <div className={WeeklyStyle.expense}>
+              $ {(w.expense / 100).toFixed(2)}
+            </div>
           </div>
         ))}
       </div>
