@@ -3,11 +3,13 @@ import Moment from "moment";
 import NavBar from "../components/navBar/NavBar";
 import YearlyStyle from "./YearlyStyle.module.css";
 import InfoRow from "../components/infoRow/InfoRow";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
+import axios from "axios";
+import moment from "moment";
 
 export interface State {
   date: any;
-  months: { date: any }[];
+  months: { from: any; to: any; expense: number; income: number }[];
 }
 
 class YearlyContainer extends React.Component {
@@ -19,22 +21,63 @@ class YearlyContainer extends React.Component {
   componentDidMount() {
     this.setYear();
   }
-  setYear = () => {
+  setYear = async () => {
     let months = [];
 
     const { date } = this.state;
 
+
+
+
     if (date.getFullYear() === new Date().getFullYear()) {
       for (let i = 0; i <= date.getMonth(); i++) {
-        this.state.months.push({ date: new Date().setMonth(i) });
+
+
+
+        await months.push({
+          from: moment(
+            new Date(date.getFullYear(), date.getMonth()+i, 2)
+          ).toISOString(),
+          to: moment(
+            new Date(date.getFullYear(), date.getMonth()+i+1, 1)
+          ).toISOString(),
+          income: 0,
+          expense: 0,
+        });
       }
     }
     if (date.getFullYear() < new Date().getFullYear()) {
       for (let i = 0; i <= 11; i++) {
-        this.state.months.push({ date: new Date(date).setMonth(i) });
+        await months.push({
+          from: moment(
+            new Date(date.getFullYear(), date.getMonth()+i, 2)
+          ).toISOString(),
+          to: moment(
+            new Date(date.getFullYear(), date.getMonth()+i+1, 1)
+          ).toISOString(),
+          income: 0,
+          expense: 0,
+        });
       }
     }
-    this.setState({});
+    let config = {
+      headers: {
+        Authorization:
+            "Bearer " +
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+      },
+    };
+
+    axios
+      .post(
+        `http://localhost:5000/transaction/getYearlyOrWeekly`,
+        months,
+        config
+      )
+      .then((data) => {
+        console.log(data)
+        this.setState({ months: data.data });
+      });
   };
   handleNextYear = async () => {
     let Year = this.state.date.getFullYear();
@@ -71,25 +114,30 @@ class YearlyContainer extends React.Component {
         <InfoRow />
         <div className={YearlyStyle.table}>
           {months.reverse().map((month) => (
-            <Link className={YearlyStyle.content_row} to={`/transaction/monthly?date=${month.date}`}>
+            <Link
+              className={YearlyStyle.content_row}
+              to={`/transaction/monthly?date=${month.from}`}
+            >
+
               <div
                 className={
-                  new Date(date).getMonth() === new Date(month.date).getMonth()&&
-                  new Date(date).getFullYear()===new Date(month.date).getFullYear()
+                  new Date(date).getMonth() ===
+                    new Date(month.from).getMonth() &&
+                  new Date().getFullYear() ===
+                    new Date(month.from).getFullYear()
                     ? YearlyStyle.month_selected
                     : YearlyStyle.month
                 }
               >
-                {console.log( Moment(month.date).format("MMM.YYYY"))}
-                {Moment(month.date).format("MMM")}
+                {Moment(month.from).format("MMM")}
               </div>
               <div className={YearlyStyle.income}>
                 {" "}
-                $ {(10000 / 100).toFixed(2)}
+                $ {(month.income/100).toFixed(2)}
               </div>
               <div className={YearlyStyle.expense}>
                 {" "}
-                $ {(10000 / 100).toFixed(2)}
+                $ {(month.expense/100).toFixed(2)}
               </div>
             </Link>
           ))}
