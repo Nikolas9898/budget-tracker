@@ -111,11 +111,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
     });
   }
 
-<<<<<<< HEAD
   Transaction.find(
-=======
-   Transaction.find(
->>>>>>> e982d3ea45bb43cc383c3f09e1ab0e6bf1e2230f
     {
       createdAt: {
         $gte: new Date(new Date(from).setHours(0o0, 0o0, 0o0)),
