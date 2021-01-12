@@ -9,6 +9,8 @@ import moment from "moment";
 import axios from "axios";
 
 type Props = {
+  sumIncome: number;
+  sumExpense: number;
   transactions: {
     createdAt: any;
     income: number;
@@ -30,7 +32,8 @@ type Props = {
 const DailyContainer = () => {
   const [transactions, setTransactions] = useState<Props["transactions"]>([]);
   const [date, setDate] = useState(new Date());
-
+  const [sumIncome, setSumIncome] = useState(0);
+  const [sumExpense, setSumExpense] = useState(0);
   useEffect(() => {
     getTransactions(new Date());
   }, []);
@@ -55,7 +58,10 @@ const DailyContainer = () => {
         config
       )
       .then((data) => {
-        setTransactions(data.data);
+        console.log(data);
+        setTransactions(data.data.transactions);
+        setSumExpense(data.data.sumExpense)
+        setSumIncome(data.data.sumIncome)
       });
   };
 
@@ -80,51 +86,58 @@ const DailyContainer = () => {
         handleNextMonth={handleNextMonth}
         date={date}
       />
-      <InfoRow />
+      <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
       <div className={DailyStyle.table}>
-        {transactions.sort(function(a, b){return new Date(a.createdAt).getDate()-new Date(b.createdAt).getDate()}).reverse().map((transaction) => (
-          <div className={DailyStyle.container}>
-            <div className={DailyStyle.content_row}>
-              <div className={DailyStyle.date_content}>
-                <div className={DailyStyle.date}>
-                  {Moment(transaction.createdAt).format("DD")}
-                </div>
-                <div>
-                  <div className={DailyStyle.date_year}>
-                    {Moment(transaction.createdAt).format("MM.YYYY")}
-                  </div>
-                  <div className={DailyStyle.date_day}>
-                    {Moment(transaction.createdAt).format("ddd")}
-                  </div>
-                </div>
-              </div>
-              <div className={DailyStyle.income}>
-                $ {(transaction.income / 100).toFixed(2)}
-              </div>
-              <div className={DailyStyle.expense}>
-                $ {(transaction.expense / 100).toFixed(2)}
-              </div>
-            </div>
-            {transaction.events.map((event) => (
+        {transactions
+          .sort(function (a, b) {
+            return (
+              new Date(a.createdAt).getDate() - new Date(b.createdAt).getDate()
+            );
+          })
+          .reverse()
+          .map((transaction) => (
+            <div className={DailyStyle.container}>
               <div className={DailyStyle.content_row}>
-                <div className={DailyStyle.category}>
-                  {event.category} {event.account}
-                  {event.from} {event.to}
+                <div className={DailyStyle.date_content}>
+                  <div className={DailyStyle.date}>
+                    {Moment(transaction.createdAt).format("DD")}
+                  </div>
+                  <div>
+                    <div className={DailyStyle.date_year}>
+                      {Moment(transaction.createdAt).format("MM.YYYY")}
+                    </div>
+                    <div className={DailyStyle.date_day}>
+                      {Moment(transaction.createdAt).format("ddd")}
+                    </div>
+                  </div>
                 </div>
                 <div className={DailyStyle.income}>
-                  {event.type === "income"
-                    ? <div>$ {(event.amount / 100).toFixed(2)}</div>
-                    : null}
+                  $ {(transaction.income / 100).toFixed(2)}
                 </div>
                 <div className={DailyStyle.expense}>
-                  {event.type === "expense"||event.type === "transfer"
-                    ? <div>${(event.amount / 100).toFixed(2)}</div>
-                    : null}
+                  $ {(transaction.expense / 100).toFixed(2)}
                 </div>
               </div>
-            ))}
-          </div>
-        ))}
+              {transaction.events.map((event) => (
+                <div className={DailyStyle.content_row}>
+                  <div className={DailyStyle.category}>
+                    {event.category} {event.account}
+                    {event.from} {event.to}
+                  </div>
+                  <div className={DailyStyle.income}>
+                    {event.type === "income" ? (
+                      <div>$ {(event.amount / 100).toFixed(2)}</div>
+                    ) : null}
+                  </div>
+                  <div className={DailyStyle.expense}>
+                    {event.type === "expense" || event.type === "transfer" ? (
+                      <div>${(event.amount / 100).toFixed(2)}</div>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
         <FontAwesomeIcon
           className={DailyStyle.add_button}
           icon={faPlusCircle}

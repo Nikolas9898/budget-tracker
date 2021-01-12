@@ -4,11 +4,10 @@
     <list default="true" id="1cc0ffbc-a50f-4766-90ae-9ec2eaa22938" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/controlers/transactionControler/transaction.controler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controlers/transactionControler/transaction.controler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/navBar/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/navBar/NavBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoRow/InfoRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoRow/InfoRow.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyContainer.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +69,7 @@
       <workItem from="1609418967620" duration="10928000" />
       <workItem from="1610310462482" duration="5190000" />
       <workItem from="1610381230865" duration="15222000" />
-      <workItem from="1610476965980" duration="3892000" />
+      <workItem from="1610476965980" duration="6432000" />
     </task>
     <servers />
   </component>
