@@ -131,7 +131,7 @@ class TransactionContainer extends React.Component<Props> {
         config
       )
       .then((data) => {
-        this.setState({ events: data.data });
+        this.setState({ events: data.data.transactions });
       });
   };
   validateForm = (value: State["transaction"]) => {
