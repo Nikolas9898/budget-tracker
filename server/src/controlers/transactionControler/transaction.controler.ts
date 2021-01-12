@@ -105,6 +105,10 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
   const from = req.params.from;
   const to = req.params.to;
   const userId = tokenDecoder(req.headers.authorization);
+
+  let sumExpense = 0;
+  let sumIncome = 0;
+
   if (from === "" || to === "") {
     return res.status(400).json({
       errorMSG: "Please ensure you pick two dates",
@@ -119,9 +123,14 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
       },
       userId,
     },
-    (err: any, transaction: any) => {
+    (err: any, transactions: any) => {
       try {
-        res.json(transaction);
+        transactions.map((month: any) => {
+          sumExpense += month.expense;
+          sumIncome += month.income;
+        });
+
+        res.json({ transactions, sumExpense, sumIncome });
       } catch (error) {
         res.status(400).json({ errorMsg: error });
       }
@@ -234,6 +243,8 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
   const userId = tokenDecoder(req.headers.authorization);
 
   const months = req.body;
+  let sumExpense = 0;
+  let sumIncome = 0;
 
   Promise.all(
     months.map(async (month: any, index: number) => {
@@ -269,9 +280,6 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
       });
     })
   ).then(() => {
-    let sumExpense = 0;
-    let sumIncome = 0;
-
     months.map((month: any) => {
       sumExpense += month.expense;
       sumIncome += month.income;
