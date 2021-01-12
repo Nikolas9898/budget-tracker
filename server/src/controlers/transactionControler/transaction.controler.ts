@@ -111,7 +111,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
     });
   }
 
-  await Transaction.find(
+  Transaction.find(
     {
       createdAt: {
         $gte: new Date(new Date(from).setHours(0o0, 0o0, 0o0)),
@@ -235,33 +235,50 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
 
   const months = req.body;
 
-  let newResults: any = [];
-
- await Promise.all(
+  Promise.all(
     months.map(async (month: any, index: number) => {
-      await Transaction.find(
-        {
-          createdAt: {
-            $gte: new Date(new Date(month.from).setHours(0o0, 0o0, 0o0)),
-            $lt: new Date(new Date(month.to).setHours(23, 59, 59)),
-          },
-          userId,
-        },
-        async (err: any, transactions: any) => {
-          try {
-            await transactions.map((transaction: any) => {
-              months[index].expense += transaction.expense;
-              months[index].income += transaction.income;
-
-              newResults = months;
-            });
-          } catch (error) {
-            res.status(400).json({ errorMsg: error });
+      Promise.all(
+        await Transaction.find(
+          {
+            createdAt: {
+              $gte: new Date(new Date(month.from).setHours(0o0, 0o0, 0o0)),
+              $lt: new Date(new Date(month.to).setHours(23, 59, 59)),
+            },
+            userId,
           }
+          // async (err: any, transactions: any) => {
+          //   try {
+          //     transactions.map((transaction: any) => {
+          //       months[index].expense += transaction.expense;
+          //       months[index].income += transaction.income;
+          //     });
+          //   } catch (error) {
+          //     res.status(400).json({ errorMsg: error });
+          //   }
+          // }
+        )
+      ).then((transactions) => {
+        try {
+          transactions.map((transaction: any) => {
+            months[index].expense += transaction.expense;
+            months[index].income += transaction.income;
+          });
+        } catch (error) {
+          res.status(400).json({ errorMsg: error });
         }
-      );
+      });
     })
   ).then(() => {
-    res.json(months);
+    console.log(months);
+
+    let sumExpense = 0;
+    let sumIncome = 0;
+
+    months.map((month: any) => {
+      sumExpense += sumExpense + month.expense;
+      sumIncome += sumIncome + month.income;
+    });
+
+    res.json({ months, sumExpense, sumIncome });
   });
 };
