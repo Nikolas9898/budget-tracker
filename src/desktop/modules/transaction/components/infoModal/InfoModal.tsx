@@ -11,6 +11,7 @@ type Props = {
   handleOpenInfoModal: (date: any) => void;
   transaction: State["transaction"];
   specificDay: State["specificDay"];
+  selectedDay: State["selectedDay"];
 };
 
 const InfoModal: React.FC<Props> = ({
@@ -18,7 +19,7 @@ const InfoModal: React.FC<Props> = ({
   handleOpenTransaction,
   handleOpenInfoModal,
   transaction,
-
+  selectedDay,
   specificDay,
 }) => {
   return (
@@ -31,7 +32,7 @@ const InfoModal: React.FC<Props> = ({
             </div>
             <div className={InfoModalStyle.content}>
               <table>
-                {specificDay.events.map((transaction) => (
+                {selectedDay.map((transaction) => (
                   <tr>
                     <th className={InfoModalStyle.content_row}>
                       {transaction.category}

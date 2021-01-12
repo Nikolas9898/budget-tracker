@@ -25,6 +25,8 @@ export interface State {
     note: string;
     description: string;
   };
+  selectedDay: State["transaction"][];
+
   isTransfer: boolean;
   errors: {
     account?: string;
@@ -74,6 +76,8 @@ class TransactionContainer extends React.Component<Props> {
       note: "kkkkkkk",
       description: "kkkkkkkkkk",
     },
+    selectedDay: [],
+
     specificDay: {
       events: [],
     },
@@ -88,6 +92,21 @@ class TransactionContainer extends React.Component<Props> {
   };
 
   componentDidMount() {
+    var date = new Date();
+    var firstDay = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      2
+    ).toISOString();
+    var lastDay = new Date(
+      date.getFullYear(),
+      date.getMonth() + 1,
+      1
+    ).toISOString();
+
+    console.log(firstDay);
+    console.log(lastDay);
+
     if (this.props.filters.date) {
       this.setState({
         date: new Date(parseInt(this.props.filters.date)),
@@ -183,11 +202,16 @@ class TransactionContainer extends React.Component<Props> {
     if (this.state.isInfoTransactionOpen) {
       this.setState({
         isInfoTransactionOpen: false,
-        specificDay: {
-          events: [],
-        },
+        selectedDay: [],
       });
     } else {
+      this.state.events.map((event) => {
+        if (new Date(date).getDate() === new Date(event.createdAt).getDate()) {
+          this.setState({
+            selectedDay: event.events,
+          });
+        }
+      });
       this.setState({
         isInfoTransactionOpen: true,
         transaction: { ...this.state.transaction, date: new Date(date) },
@@ -310,6 +334,7 @@ class TransactionContainer extends React.Component<Props> {
       isTransfer,
       isInfoTransactionOpen,
       specificDay,
+      selectedDay,
     } = this.state;
     return (
       <div className={TransactionStyl.wrapper}>
@@ -329,6 +354,7 @@ class TransactionContainer extends React.Component<Props> {
           />
         </div>
         <InfoModal
+          selectedDay={selectedDay}
           specificDay={specificDay}
           transaction={transaction}
           isInfoTransactionOpen={isInfoTransactionOpen}
