@@ -58,10 +58,9 @@ const DailyContainer = () => {
         config
       )
       .then((data) => {
-        console.log(data);
         setTransactions(data.data.transactions);
-        setSumExpense(data.data.sumExpense)
-        setSumIncome(data.data.sumIncome)
+        setSumExpense(data.data.sumExpense);
+        setSumIncome(data.data.sumIncome);
       });
   };
 

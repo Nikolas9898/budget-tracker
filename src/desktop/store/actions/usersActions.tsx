@@ -1,12 +1,4 @@
-import { useHistory } from "react-router-dom";
-
 import { SIGN_IN } from "../types";
-import axios from "axios";
-
-interface User {
-  email: string;
-  password: string;
-}
 
 export const singIn = (user: {
   email: string;

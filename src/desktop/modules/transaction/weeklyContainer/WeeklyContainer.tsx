@@ -129,7 +129,6 @@ class WeeklyContainer extends React.Component {
         config
       )
       .then((data) => {
-        console.log(data);
         this.setState({
           weeks: data.data.months,
           sumIncome: data.data.sumIncome,

@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 
-
 export interface State {
   date: any;
   months: { from: any; to: any; expense: number; income: number }[];
@@ -74,7 +73,6 @@ class YearlyContainer extends React.Component {
         config
       )
       .then((data) => {
-        console.log(data);
         this.setState({
           months: data.data.months,
           sumIncome: data.data.sumIncome,
@@ -106,7 +104,7 @@ class YearlyContainer extends React.Component {
     this.setYear();
   };
   render() {
-    const { date, months,sumExpense,sumIncome } = this.state;
+    const { date, months, sumExpense, sumIncome } = this.state;
     return (
       <div className={YearlyStyle.wrapper}>
         <NavBar
@@ -114,10 +112,7 @@ class YearlyContainer extends React.Component {
           handleNextMonth={this.handleNextYear}
           date={date}
         />
-        <InfoRow
-            sumIncome={sumIncome}
-        sumExpense={sumExpense}
-        />
+        <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
         <div className={YearlyStyle.table}>
           {months.reverse().map((month) => (
             <Link
