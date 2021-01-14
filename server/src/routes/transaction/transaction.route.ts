@@ -29,9 +29,14 @@ router.get(
 );
 
 router.put(
-  "/transaction/edit/:id",
+  "/transaction/event/edit/:transactionId/:event_id",
   tokenAuth,
-  transactionControler.editTransaction
+  transactionControler.editTransactionEvent
+);
+router.put(
+  "/transaction/event/delete/:transactionId/:event_id",
+  tokenAuth,
+  transactionControler.deleteTransactionEvent
 );
 
 router.delete(
@@ -39,6 +44,7 @@ router.delete(
   tokenAuth,
   transactionControler.deleteTransactionById
 );
+
 router.post(
   "/transaction/getYearlyOrWeekly",
   tokenAuth,

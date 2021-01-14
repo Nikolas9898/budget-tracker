@@ -166,77 +166,87 @@ export const deleteTransactionById: RequestHandler = async (
   const id = req.params.id;
   const userId = tokenDecoder(req.headers.authorization);
 
-  const transaction = Transaction.findOneAndDelete(
-    { _id: id, userId },
-    (err) => {
-      if (err) {
-        return res.json({ errorMsg: err });
-      } else {
-        let msg = "Deleted successfully";
-        return res.status(400).json({ msg });
-      }
-    }
-  );
-};
-
-export const editTransaction = async (req: Request, res: Response) => {
-  const id: any = req.params.id;
-
-  const type = req.body.type.toLowerCase();
-  const fees = req.body.fees;
-  const note = req.body.note;
-  const amount = req.body.amount;
-  const from = req.body.from;
-  const to = req.body.to;
-  const currency = req.body.currency;
-  const category = req.body.category;
-  const description = req.body.description;
-  const createdAt = req.body.createdAt;
-
-  const userId = tokenDecoder(req.headers.authorization);
-
   const transaction: any = await Transaction.findOne({
     _id: id,
+    userId,
   });
+  console.log(transaction);
 
-  if (!transaction) {
-    let error = "No such transaction available";
-    return res.status(400).json({ errorMsg: error });
+  try {
+    transaction.remove();
+    res.json({ msg: "Deleted successfullu" });
+  } catch (error) {
+    res.json({ errroMsg: error });
   }
+};
 
-  if (transaction.userId !== userId) {
-    return res.status(400).json({
-      errorMsg: "You are not authorized to update other people tranzactions",
+// Edits specifid transaction event
+
+export const editTransactionEvent: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  const id = req.params.transactionId;
+  const event_id = req.params.event_id;
+  const event = req.body;
+  const userId = tokenDecoder(req.headers.authorization);
+
+  try {
+    const transaction: any = await Transaction.findOne({
+      _id: id,
+      userId,
     });
+
+    if (transaction === null) {
+      return res.json({
+        errorMsg: "Not authorized or transaction does not exist",
+      });
+    } else {
+      let newEvents = transaction.events;
+
+      newEvents.splice(newEvents.indexOf(event_id), 1, event);
+
+      transaction.events = newEvents;
+
+      transaction.save();
+      res.json(transaction);
+    }
+  } catch (error) {
+    res.json({ errorMsg: error });
   }
+};
 
-  if (type == "transfer") {
-    transaction.type = type;
-    transaction.from = from;
-    transaction.to = to;
-    transaction.fees = fees;
-    transaction.note = note;
-    transaction.amount = amount;
-    transaction.currency = currency;
-    transaction.category = category;
-    transaction.description = description;
-    transaction.createdAt = createdAt;
-  } else {
-    transaction.type = type;
-    transaction.fees = fees;
-    transaction.note = note;
-    transaction.from = "";
-    transaction.to = "";
-    transaction.amount = amount;
-    transaction.currency = currency;
-    transaction.category = category;
-    transaction.description = description;
-    transaction.createdAt = createdAt;
+export const deleteTransactionEvent: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  const id = req.params.transactionId;
+  const event_id = req.params.event_id;
+  const userId = tokenDecoder(req.headers.authorization);
+
+  try {
+    const transaction: any = await Transaction.findOne({
+      _id: id,
+      userId,
+    });
+
+    if (transaction === null) {
+      return res.json({
+        errorMsg: "Not authorized or transaction does not exist",
+      });
+    } else {
+      const newEvents = transaction.events.filter(
+        (event: any) => event._id != event_id
+      );
+
+      transaction.events = newEvents;
+
+      transaction.save();
+      res.json(transaction);
+    }
+  } catch (error) {
+    res.json({ errorMsg: error });
   }
-
-  await transaction.save();
-
-  res.json("Update successful");
 };
 
 export const getYearlyAndWeekly = async (req: Request, res: Response) => {
