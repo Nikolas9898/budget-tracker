@@ -56,9 +56,6 @@ export interface State {
   }[];
 }
 class TransactionContainer extends React.Component<Props> {
-  constructor(props: any) {
-    super(props);
-  }
   state: State = {
     isInfoTransactionOpen: false,
     isAddTransactionOpen: false,
@@ -105,19 +102,15 @@ class TransactionContainer extends React.Component<Props> {
   }
 
   getTransactions = (date: any) => {
-    let firstDay=moment(date).startOf('month').startOf('week').get('date')
-    let firstMonth=moment(date).startOf('month').startOf('week').get('month')
-    let firstYear=moment(date).startOf('month').startOf('week').get("year")
-    let lastDay=moment(date).endOf('month').endOf('week').get('date')
-    let lastMonth=moment(date).endOf('month').endOf('week').get('month')
-    let lastYear=moment(date).endOf('month').endOf('week').get("year")
+    let firstDay = moment(date).startOf("month").startOf("week").get("date");
+    let firstMonth = moment(date).startOf("month").startOf("week").get("month");
+    let firstYear = moment(date).startOf("month").startOf("week").get("year");
+    let lastDay = moment(date).endOf("month").endOf("week").get("date");
+    let lastMonth = moment(date).endOf("month").endOf("week").get("month");
+    let lastYear = moment(date).endOf("month").endOf("week").get("year");
 
-    let from = moment(
-      new Date(firstYear, firstMonth, firstDay)
-    ).toISOString();
-    let to = moment(
-      new Date(lastYear, lastMonth, lastDay)
-    ).toISOString();
+    let from = moment(new Date(firstYear, firstMonth, firstDay)).toISOString();
+    let to = moment(new Date(lastYear, lastMonth, lastDay)).toISOString();
     let config = {
       headers: {
         Authorization:
