@@ -206,6 +206,18 @@ export const editTransactionEvent: RequestHandler = async (
 
       newEvents.splice(newEvents.indexOf(event_id), 1, event);
 
+      let expense = 0;
+      let income = 0;
+      newEvents.map((event: any) => {
+        if (event.type.toLowerCase() === "income") {
+          income = income + event.amount;
+        } else {
+          expense = expense + event.amount;
+        }
+      });
+      transaction.expense = expense;
+      transaction.income = income;
+
       transaction.events = newEvents;
 
       transaction.save();
@@ -215,6 +227,8 @@ export const editTransactionEvent: RequestHandler = async (
     res.json({ errorMsg: error });
   }
 };
+
+// delete specific transaction event
 
 export const deleteTransactionEvent: RequestHandler = async (
   req: Request,
@@ -235,10 +249,21 @@ export const deleteTransactionEvent: RequestHandler = async (
         errorMsg: "Not authorized or transaction does not exist",
       });
     } else {
+      let expense = 0;
+      let income = 0;
       const newEvents = transaction.events.filter(
         (event: any) => event._id != event_id
       );
 
+      newEvents.map((event: any) => {
+        if (event.type.toLowerCase() === "income") {
+          income = income + event.amount;
+        } else {
+          expense = expense + event.amount;
+        }
+      });
+      transaction.expense = expense;
+      transaction.income = income;
       transaction.events = newEvents;
 
       transaction.save();
