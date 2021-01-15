@@ -27,7 +27,7 @@ const RegistrationForm: React.FC<Props> = ({ Submit, errors, handleInput }) => {
       )}
       <label className={LoginContainerStyle.login_label}>Password</label>
       <input
-        // type="password"
+        type="password"
         className={LoginContainerStyle.input}
         name="password"
         onChange={handleInput}
@@ -41,7 +41,7 @@ const RegistrationForm: React.FC<Props> = ({ Submit, errors, handleInput }) => {
         Confirm Password
       </label>
       <input
-        // type="password"
+        type="password"
         className={LoginContainerStyle.input}
         name="confirmPassword"
         onChange={handleInput}

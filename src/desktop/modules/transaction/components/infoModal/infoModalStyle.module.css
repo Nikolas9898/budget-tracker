@@ -23,12 +23,13 @@
     min-height: 230px;
 }
 .content_row {
-    max-width: 100px;
+    min-width: 100px;
     align-items: center;
-    padding-right: 60px;
+    padding-right: 10px;
     padding-bottom: 10px;
     font-size: 20px;
     flex-wrap: wrap;
+    word-break: break-all;
 }
 .add_button{
     cursor: pointer;
@@ -41,7 +42,7 @@
 }
 .delete{
     cursor:pointer;
-    padding-left:10px;
+    padding-left:20px;
 }
 .delete:hover{
      color: red;
@@ -49,7 +50,7 @@
  }
 .edit{
     cursor:pointer;
-    padding-left:10px;
+    padding-left:20px;
 }
 .edit:hover{
     color: yellow;

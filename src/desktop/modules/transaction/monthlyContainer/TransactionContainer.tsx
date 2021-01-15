@@ -7,7 +7,6 @@ import axios from "axios";
 import InfoModal from "../components/infoModal/InfoModal";
 import NewCalendar from "./NewCalendar";
 
-
 type Props = {
   filters: any;
 };
@@ -16,6 +15,7 @@ export interface State {
   isInfoTransactionOpen: boolean;
 
   transaction: {
+    _id?: string;
     type: string;
     date: any;
     account?: string;
@@ -26,7 +26,13 @@ export interface State {
     note: string;
     description: string;
   };
-  selectedDay: State["transaction"][];
+  selectedDay: {
+    _id?: string;
+    createdAt?: any;
+    events: State["transaction"][];
+    income?: number;
+    expense?: number;
+  };
   isTransfer: boolean;
   errors: {
     account?: string;
@@ -37,6 +43,7 @@ export interface State {
   };
   date: any;
   transactions: {
+    _id: string;
     createdAt: any;
     events: State["transaction"][];
     income: number;
@@ -60,10 +67,12 @@ class TransactionContainer extends React.Component<Props> {
       category: "",
       to: "",
       amount: "0",
-      note: "kkkkkkk",
-      description: "kkkkkkkkkk",
+      note: "",
+      description: "",
     },
-    selectedDay: [],
+    selectedDay: {
+      events:[]
+    },
     errors: {
       account: "",
       from: "",
@@ -143,8 +152,26 @@ class TransactionContainer extends React.Component<Props> {
     }
     return errors;
   };
+  handleDelete = (transactionId: any, eventId: any) => {
+    let config = {
+      headers: {
+        Authorization:
+            "Bearer " +
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+      },
+    };
+let data={}
+    axios
+      .put(
+        `http://localhost:5000/transaction/event/delete/${transactionId}/${eventId}`,
+        data,config
+      )
+      .then(() => {
+        this.getTransactions(this.state.date);
+      });
+  };
   handleNextMonth = async () => {
-    const{date}=this.state;
+    const { date } = this.state;
     let Month = new Date(date).getMonth();
     let Year = date.getFullYear();
     let newMonth = new Date(Year, Month + 1);
@@ -156,7 +183,7 @@ class TransactionContainer extends React.Component<Props> {
     this.setCalendar(new Date(newMonth));
   };
   handlePreviousMonth = async () => {
-    const{date}=this.state;
+    const { date } = this.state;
     let Month = new Date(date).getMonth();
     let Year = date.getFullYear();
     let newMonth = new Date(Year, Month - 1);
@@ -179,12 +206,12 @@ class TransactionContainer extends React.Component<Props> {
     }
   };
   handleOpenInfoModal = (date: any) => {
-    const{isInfoTransactionOpen,transactions,transaction}=this.state;
+    const { isInfoTransactionOpen, transactions, transaction } = this.state;
 
     if (isInfoTransactionOpen) {
       this.setState({
         isInfoTransactionOpen: false,
-        selectedDay: [],
+        selectedDay: {events:[]},
       });
     } else {
       transactions.map((transaction) => {
@@ -195,7 +222,7 @@ class TransactionContainer extends React.Component<Props> {
             new Date(transaction.createdAt).getMonth()
         ) {
           this.setState({
-            selectedDay: transaction.events,
+            selectedDay: transaction,
           });
         }
       });
@@ -289,8 +316,8 @@ class TransactionContainer extends React.Component<Props> {
               category: "",
               to: "",
               amount: "0",
-              note: "kkkkkkk",
-              description: "kkkkkkkkkk",
+              note: "",
+              description: "",
             },
           });
         });
@@ -313,8 +340,8 @@ class TransactionContainer extends React.Component<Props> {
               category: "",
               to: "",
               amount: "0",
-              note: "kkkkkkk",
-              description: "kkkkkkkkkk",
+              note: "",
+              description: "",
             },
           });
         });
@@ -350,7 +377,7 @@ class TransactionContainer extends React.Component<Props> {
   // };
 
   setCalendar = (date: any) => {
-    const{calendarDates}=this.state;
+    const { calendarDates } = this.state;
     let firstDay = moment(date).startOf("month").get("date");
     let firstMonth = moment(date).startOf("month").get("month");
     let firstYear = moment(date).startOf("month").get("year");
@@ -369,11 +396,7 @@ class TransactionContainer extends React.Component<Props> {
 
     for (let i = 1; i <= toDate.getDate(); i++) {
       calendarDates.push({
-        date: new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          i
-        ),
+        date: new Date(date.getFullYear(), date.getMonth(), i),
       });
     }
     if (toDate.getDay() !== 6) this.setLastWeek(date);
@@ -437,6 +460,7 @@ class TransactionContainer extends React.Component<Props> {
           date={date}
         />
         <InfoModal
+          handleDelete={this.handleDelete}
           selectedDay={selectedDay}
           transaction={transaction}
           isInfoTransactionOpen={isInfoTransactionOpen}

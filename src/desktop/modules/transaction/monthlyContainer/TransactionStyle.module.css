@@ -91,4 +91,5 @@
 .calendar_events_content {
   font-size: 18px;
   padding-left: 10px;
+  overflow: hidden;
 }

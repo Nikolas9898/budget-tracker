@@ -4,19 +4,12 @@
     <list default="true" id="1cc0ffbc-a50f-4766-90ae-9ec2eaa22938" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/layout/sideBar/SideBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/layout/sideBar/SideBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/infoModalStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/infoModalStyle.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/navBar/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/layout/navBarMenu/NavBarMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/navBar/NavBarStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/layout/navBarMenu/NavBarMenuStyle.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionStyle.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/routes.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +84,8 @@
       <workItem from="1610658672123" duration="5684000" />
       <workItem from="1610664373569" duration="2914000" />
       <workItem from="1610709688523" duration="13392000" />
-      <workItem from="1610729526087" duration="5403000" />
+      <workItem from="1610729526087" duration="6054000" />
+      <workItem from="1610741909185" duration="6795000" />
     </task>
     <servers />
   </component>
