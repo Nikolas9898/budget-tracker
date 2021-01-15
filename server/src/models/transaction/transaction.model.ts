@@ -66,11 +66,9 @@ const transactionSchema = new Schema(
         },
         note: {
           type: String,
-          minlength: 3,
         },
         description: {
           type: String,
-          minlength: 3,
         },
       },
     ],
