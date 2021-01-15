@@ -21,7 +21,7 @@ const LoginForm: React.FC<Props> = ({ Submit, errors, handleInput }) => {
         </div>
       )}
       <label className={LoginContainerStyle.login_label}>Password</label>
-      <input  className={LoginContainerStyle.input} name="password" onChange={handleInput} />
+      <input type="password" className={LoginContainerStyle.input} name="password" onChange={handleInput} />
       {errors.password && (
         <div className={LoginContainerStyle.error_msg}>
           <span>{errors.password}</span>

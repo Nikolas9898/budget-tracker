@@ -1,6 +1,6 @@
 import React from "react";
 import Moment from "moment";
-import NavBar from "../components/navBar/NavBar";
+import NavBarMenu from "../../../layout/navBarMenu/NavBarMenu";
 import YearlyStyle from "./YearlyStyle.module.css";
 import InfoRow from "../components/infoRow/InfoRow";
 import { Link } from "react-router-dom";
@@ -107,7 +107,7 @@ class YearlyContainer extends React.Component {
     const { date, months, sumExpense, sumIncome } = this.state;
     return (
       <div className={YearlyStyle.wrapper}>
-        <NavBar
+        <NavBarMenu
           handlePreviousMonth={this.handlePreviousYear}
           handleNextMonth={this.handleNextYear}
           date={date}

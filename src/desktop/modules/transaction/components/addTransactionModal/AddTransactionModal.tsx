@@ -102,9 +102,11 @@ const AddTransactionModal: React.FC<Props> = ({
             </Tabs>
 
             <input
-              type="text"
-              className={AddTransactionStyl.description}
-              placeholder="Description"
+                type="text"
+                className={AddTransactionStyl.input}
+                name="description"
+                value={transaction.description}
+                onChange={handleInputChange}
             />
 
             <div className={AddTransactionStyl.buttons_content}>

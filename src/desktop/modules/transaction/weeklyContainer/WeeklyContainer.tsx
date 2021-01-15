@@ -1,4 +1,4 @@
-import NavBar from "../components/navBar/NavBar";
+import NavBarMenu from "../../../layout/navBarMenu/NavBarMenu";
 import Moment from "moment";
 import React from "react";
 import WeeklyStyle from "./WeeklyStyle.module.css";
@@ -140,7 +140,7 @@ class WeeklyContainer extends React.Component {
     const { sumIncome, sumExpense } = this.state;
     return (
       <div className={WeeklyStyle.wrapper}>
-        <NavBar
+        <NavBarMenu
           handlePreviousMonth={this.handlePreviousMonth}
           handleNextMonth={this.handleNextMonth}
           date={this.state.date}

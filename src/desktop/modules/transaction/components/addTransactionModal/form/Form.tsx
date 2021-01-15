@@ -19,12 +19,12 @@ const Form: React.FC<Props> = ({
     <div className={AddTransactionStyl.content}>
       <div className={AddTransactionStyl.content_titles}>
         <div className={AddTransactionStyl.title}>Day</div>
-        {  transaction.type === "transfer" ? (
+        {transaction.type === "transfer" ? (
           <div className={AddTransactionStyl.title}>From</div>
         ) : (
           <div className={AddTransactionStyl.title}>Account</div>
         )}
-        {  transaction.type === "transfer" ? (
+        {transaction.type === "transfer" ? (
           <div className={AddTransactionStyl.title}>To</div>
         ) : (
           <div className={AddTransactionStyl.title}>Category</div>
@@ -35,9 +35,8 @@ const Form: React.FC<Props> = ({
 
       <div className={AddTransactionStyl.content_inputs}>
         <div className={AddTransactionStyl.input_container}>
-
-           {Moment(transaction.date).format("DD/M/Y(dd)")}
-            {Moment(transaction.date).format("HH:HH")}
+          {Moment(transaction.date).format("DD/M/Y(dd)")}
+          {Moment(transaction.date).format("HH:HH")}
         </div>
 
         <div className={AddTransactionStyl.input_container}>
@@ -62,9 +61,9 @@ const Form: React.FC<Props> = ({
             </div>
           )}
           {errors.from && (
-              <div className={AddTransactionStyl.error_msg}>
-                <span>{errors.from}</span>
-              </div>
+            <div className={AddTransactionStyl.error_msg}>
+              <span>{errors.from}</span>
+            </div>
           )}
         </div>
 
@@ -73,48 +72,48 @@ const Form: React.FC<Props> = ({
             className={AddTransactionStyl.input}
             value={
               transaction.type === "transfer"
-                  ? transaction.to
-                  : transaction.category
+                ? transaction.to
+                : transaction.category
             }
             onChange={handleInputChange}
             name={transaction.type === "transfer" ? "to" : "category"}
           >
-            {
-              transaction.type==="transfer"?
+            {transaction.type === "transfer" ? (
+              <React.Fragment>
+                <option value=""> </option>
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
+                <option value="accounts">Accounts</option>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {transaction.type === "expense" ? (
                   <React.Fragment>
                     <option value=""> </option>
-                    <option value="cash">Cash</option>
-                    <option value="card">Card</option>
-                    <option value="accounts">Accounts</option>
-                  </React.Fragment>:
-                  <React.Fragment>
-                    {transaction.type==="expense"?
-                        <React.Fragment>
-                          <option value=""> </option>
-                          <option value="food">Food</option>
-                          <option value="culture">Culture</option>
-                          <option value="socialLife">Accounts</option>
-                          <option value="selfDevelopment">Self Development</option>
-                          <option value="transportation">Transportation</option>
-                          <option value="household">Household</option>
-                          <option value="apparel">Apparel</option>
-                          <option value="beauty">Beauty</option>
-                          <option value="health">Health</option>
-                          <option value="education">Education</option>
-                          <option value="gift">Gift</option>
-                          <option value="other">Other</option>
-                        </React.Fragment>:
-                        <React.Fragment>
-                          <option value=""> </option>
-                          <option value="salary">Salary</option>
-                          <option value="other">Other</option>
-                          <option value="bonus">Bonus</option>
-                          <option value="petty cash">Petty cash</option>
-                        </React.Fragment>
-                    }
+                    <option value="food">Food</option>
+                    <option value="culture">Culture</option>
+                    <option value="socialLife">Accounts</option>
+                    <option value="selfDevelopment">Self Development</option>
+                    <option value="transportation">Transportation</option>
+                    <option value="household">Household</option>
+                    <option value="apparel">Apparel</option>
+                    <option value="beauty">Beauty</option>
+                    <option value="health">Health</option>
+                    <option value="education">Education</option>
+                    <option value="gift">Gift</option>
+                    <option value="other">Other</option>
                   </React.Fragment>
-            }
-
+                ) : (
+                  <React.Fragment>
+                    <option value=""> </option>
+                    <option value="salary">Salary</option>
+                    <option value="other">Other</option>
+                    <option value="bonus">Bonus</option>
+                    <option value="petty cash">Petty cash</option>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            )}
           </select>
           {errors.category && (
             <div className={AddTransactionStyl.error_msg}>
@@ -122,9 +121,9 @@ const Form: React.FC<Props> = ({
             </div>
           )}
           {errors.to && (
-              <div className={AddTransactionStyl.error_msg}>
-                <span>{errors.to}</span>
-              </div>
+            <div className={AddTransactionStyl.error_msg}>
+              <span>{errors.to}</span>
+            </div>
           )}
         </div>
 
@@ -143,7 +142,13 @@ const Form: React.FC<Props> = ({
           )}
         </div>
 
-        <input type="text" className={AddTransactionStyl.input} />
+        <input
+          type="text"
+          className={AddTransactionStyl.input}
+          name="note"
+          value={transaction.note}
+          onChange={handleInputChange}
+        />
       </div>
     </div>
   );
