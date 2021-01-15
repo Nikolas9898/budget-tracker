@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../components/navBar/NavBar";
+import NavBarMenu from "../../../layout/navBarMenu/NavBarMenu";
 import DailyStyle from "./DailyStyle.module.css";
 import InfoRow from "../components/infoRow/InfoRow";
 import Moment from "moment";
@@ -80,7 +80,7 @@ const DailyContainer = () => {
   };
   return (
     <div className={DailyStyle.wrapper}>
-      <NavBar
+      <NavBarMenu
         handlePreviousMonth={handlePreviousMonth}
         handleNextMonth={handleNextMonth}
         date={date}

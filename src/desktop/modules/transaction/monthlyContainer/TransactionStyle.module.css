@@ -12,14 +12,16 @@
   border: #0160b2 2px solid;
   cursor: pointer;
 }
-.content_day {
-  margin-top: 15px;
-}
 .income {
   color: green;
 }
 .expense {
   color: red;
+  margin-top: 3px;
+}
+.total {
+  color: dimgrey;
+  margin-top: 3px;
 }
 .selected_tab {
   background: darkblue;
@@ -42,4 +44,51 @@
   padding: 12px;
   cursor: pointer;
   color: white;
+}
+.days_wrapper {
+  width: 100%;
+  min-width: 650px;
+  display: flex;
+}
+.day_container {
+  width: 12%;
+  font-size: 30px;
+  padding: 10px;
+  text-align: center;
+}
+.calendar_wrapper {
+  width: 100%;
+  min-width: 650px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.calendar_date_box_container {
+  flex-basis: 13.2857%;
+  max-width: 13.2857%;
+  height: 100px;
+  border: #0160b2 solid 2px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.calendar_date_box_container_other_month {
+  flex-basis: 13.2857%;
+  max-width: 13.2857%;
+  height: 100px;
+  border: #0160b2 solid 2px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  background: lightgray;
+}
+.calendar_date {
+  padding: 5px;
+}
+.current_date {
+  padding: 5px;
+  background: #0160b2;
+  color: white;
+}
+.calendar_events_content {
+  font-size: 18px;
+  padding-left: 10px;
 }
