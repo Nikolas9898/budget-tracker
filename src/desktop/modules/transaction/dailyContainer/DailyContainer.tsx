@@ -120,8 +120,15 @@ const DailyContainer = () => {
               {transaction.events.map((event) => (
                 <div className={DailyStyle.content_row}>
                   <div className={DailyStyle.category}>
-                    {event.category} {event.account}
-                    {event.from} {event.to}
+                    {event.category}
+                    {event.from}
+                  </div>
+                  <div className={DailyStyle.category}>
+                    <div>
+                      {event.note}
+                    </div>
+                   {event.account}
+                   {event.to}
                   </div>
                   <div className={DailyStyle.income}>
                     {event.type === "income" ? (
@@ -135,6 +142,8 @@ const DailyContainer = () => {
                   </div>
                 </div>
               ))}
+              <div>
+              </div>
             </div>
           ))}
         <FontAwesomeIcon

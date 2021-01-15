@@ -249,6 +249,15 @@ export const deleteTransactionEvent: RequestHandler = async (
         errorMsg: "Not authorized or transaction does not exist",
       });
     } else {
+      if(transaction.events.length===1){
+        try {
+          transaction.remove();
+        return   res.json({ msg: "Deleted successfullu" });
+        } catch (error) {
+        return   res.json({ errroMsg: error });
+        }
+      }
+
       let expense = 0;
       let income = 0;
       const newEvents = transaction.events.filter(
