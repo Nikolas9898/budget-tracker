@@ -21,6 +21,7 @@ export interface State {
     account?: string;
     from?: string;
     to?: string;
+    fees:string;
     category?: string;
     amount: string;
     note: string;
@@ -65,6 +66,7 @@ class TransactionContainer extends React.Component<Props> {
       account: "",
       from: "",
       category: "",
+      fees:"0",
       to: "",
       amount: "0",
       note: "",
@@ -198,6 +200,18 @@ let data={}
     if (this.state.isAddTransactionOpen) {
       this.setState({
         isAddTransactionOpen: false,
+        transaction: {
+          type: "income",
+          date: "",
+          account: "",
+          from: "",
+          category: "",
+          fees:'',
+          to: "",
+          amount: "0",
+          note: "",
+          description: "",
+        }
       });
     } else {
       this.setState({
@@ -284,6 +298,18 @@ let data={}
           from: transaction.from,
           to: transaction.to,
           amount: parseFloat(transaction.amount) * 100,
+          note: transaction.fees==="0"?'':transaction.note,
+          description: transaction.description,
+        },
+        {
+          type: "expense",
+          currency: "BG",
+          date: new Date(
+              new Date(transaction.date).setHours(16, 33, 22)
+          ).toISOString(),
+          account: transaction.from,
+          category: "other",
+          amount: parseFloat(transaction.fees) * 100,
           note: transaction.note,
           description: transaction.description,
         },
@@ -292,7 +318,12 @@ let data={}
         new Date(transaction.date).setHours(0o0, 0o0, 0o0)
       ).toISOString(),
     };
-
+    if(transaction.fees==="0"){
+      transfer={
+        ...transfer,
+        events:[transfer.events[0]]
+      }
+    }
     let config = {
       headers: {
         Authorization:

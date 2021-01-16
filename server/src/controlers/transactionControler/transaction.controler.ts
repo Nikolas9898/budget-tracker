@@ -23,7 +23,7 @@ export const createTransaction: RequestHandler = async (
     events.map((event: any) => {
       if (event.type.toLowerCase() === "income") {
         income = income + event.amount;
-      } else {
+      } if (event.type.toLowerCase() === "expense") {
         expense = expense + event.amount;
       }
     });
@@ -49,7 +49,7 @@ export const createTransaction: RequestHandler = async (
     transaction.events.map((event: any) => {
       if (event.type.toLowerCase() === "income") {
         income = income + event.amount;
-      } else {
+      } if (event.type.toLowerCase() === "expense") {
         expense = expense + event.amount;
       }
     });
@@ -211,7 +211,7 @@ export const editTransactionEvent: RequestHandler = async (
       newEvents.map((event: any) => {
         if (event.type.toLowerCase() === "income") {
           income = income + event.amount;
-        } else {
+        } if (event.type.toLowerCase() === "expense") {
           expense = expense + event.amount;
         }
       });
@@ -267,7 +267,7 @@ export const deleteTransactionEvent: RequestHandler = async (
       newEvents.map((event: any) => {
         if (event.type.toLowerCase() === "income") {
           income = income + event.amount;
-        } else {
+        } if (event.type.toLowerCase() === "expense") {
           expense = expense + event.amount;
         }
       });

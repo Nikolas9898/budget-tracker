@@ -1,0 +1,29 @@
+.account{
+    height: 80px;
+    width: 220px;
+    font-size: 25px;
+    color: dimgrey;
+}
+.category{
+    height: 80px;
+    width: 220px;
+    font-size: 25px;
+    color: dimgrey;
+}
+.income{
+    height: 80px;
+    width: 400px;
+    font-size: 25px;
+    color: dodgerblue;
+}
+.expense{
+    height: 80px;
+    width: 400px;
+    font-size: 25px;
+    color: coral;
+}
+.transfer{
+    height: 80px;
+    width: 400px;
+    font-size: 25px;
+}

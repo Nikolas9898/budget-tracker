@@ -32,6 +32,19 @@
 .input_container {
   height: 60px;
 }
+.amount_container{
+  display: flex;
+  align-items: center;
+}
+.fees{
+  padding: 5px;
+  border: dimgrey solid 2px;
+  color: dimgrey;
+  margin-left:7px;
+  cursor: pointer;
+  border-radius: 12px;
+
+}
 .input {
   font-size: 20px;
   width: 100%;

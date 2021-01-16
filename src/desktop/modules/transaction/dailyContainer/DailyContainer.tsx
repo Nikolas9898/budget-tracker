@@ -7,25 +7,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import axios from "axios";
+import DailyTableRow from "./components/dailyTableRow/DailyTableRow";
+import { TabList } from "react-tabs";
 
 type Props = {
   sumIncome: number;
   sumExpense: number;
+  event: {
+    type: string;
+    date: any;
+    account?: string;
+    from?: string;
+    to?: string;
+    category?: string;
+    amount: number;
+    fees: number;
+    note: string;
+    description: string;
+  };
   transactions: {
     createdAt: any;
     income: number;
     expense: number;
-    events: {
-      type: string;
-      date: any;
-      account?: string;
-      from?: string;
-      to?: string;
-      category?: string;
-      amount: number;
-      note: string;
-      description: string;
-    }[];
+    events: Props["event"][];
   }[];
 };
 
@@ -63,7 +67,6 @@ const DailyContainer = () => {
         setSumIncome(data.data.sumIncome);
       });
   };
-
   const handlePreviousMonth = () => {
     let Month = new Date(date).getMonth();
     let Year = date.getFullYear();
@@ -111,41 +114,20 @@ const DailyContainer = () => {
                   </div>
                 </div>
                 <div className={DailyStyle.income}>
-                  $ {(transaction.income / 100).toFixed(2)}
+                   {(transaction.income / 100).toFixed(2)}
                 </div>
                 <div className={DailyStyle.expense}>
-                  $ {(transaction.expense / 100).toFixed(2)}
+                   {(transaction.expense / 100).toFixed(2)}
                 </div>
               </div>
-              {transaction.events.map((event) => (
-                <div className={DailyStyle.content_row}>
-                  <div className={DailyStyle.category}>
-                    {event.category}
-                    {event.from}
-                  </div>
-                  <div className={DailyStyle.category}>
-                    <div>
-                      {event.note}
-                    </div>
-                   {event.account}
-                   {event.to}
-                  </div>
-                  <div className={DailyStyle.income}>
-                    {event.type === "income" ? (
-                      <div>$ {(event.amount / 100).toFixed(2)}</div>
-                    ) : null}
-                  </div>
-                  <div className={DailyStyle.expense}>
-                    {event.type === "expense" || event.type === "transfer" ? (
-                      <div>${(event.amount / 100).toFixed(2)}</div>
-                    ) : null}
-                  </div>
-                </div>
-              ))}
-              <div>
-              </div>
+              <table>
+                {transaction.events.map((event) => (
+                  <DailyTableRow event={event}/>
+                ))}
+              </table>
             </div>
           ))}
+
         <FontAwesomeIcon
           className={DailyStyle.add_button}
           icon={faPlusCircle}
