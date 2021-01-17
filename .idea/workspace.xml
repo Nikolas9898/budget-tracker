@@ -4,12 +4,11 @@
     <list default="true" id="1cc0ffbc-a50f-4766-90ae-9ec2eaa22938" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/controlers/transactionControler/transaction.controler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controlers/transactionControler/transaction.controler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/infoModalStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/infoModalStyle.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/components/dailyTableRow/DailyTableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/components/dailyTableRow/DailyTableRow.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,5 +97,17 @@
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx</url>
+          <line>126</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

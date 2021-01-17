@@ -13,7 +13,7 @@ type Props = {
 export interface State {
   isAddTransactionOpen: boolean;
   isInfoTransactionOpen: boolean;
-
+  isEditTransactionOpen: boolean;
   transaction: {
     _id?: string;
     type: string;
@@ -59,6 +59,7 @@ class TransactionContainer extends React.Component<Props> {
   state: State = {
     isInfoTransactionOpen: false,
     isAddTransactionOpen: false,
+    isEditTransactionOpen: false,
     date: new Date(),
     isTransfer: false,
     transaction: {
@@ -126,6 +127,18 @@ class TransactionContainer extends React.Component<Props> {
         config
       )
       .then((data) => {
+        data.data.transactions.map((transaction: any) => {
+          if (
+            new Date(this.state.selectedDay.createdAt).getDate() ===
+              new Date(transaction.createdAt).getDate() &&
+            new Date(this.state.selectedDay.createdAt).getMonth() ===
+              new Date(transaction.createdAt).getMonth()
+          ) {
+            this.setState({
+              selectedDay: transaction,
+            });
+          }
+        });
         this.setState({ transactions: data.data.transactions });
       });
   };
@@ -142,13 +155,19 @@ class TransactionContainer extends React.Component<Props> {
     if (value.account === "" && !(value.type === "transfer")) {
       errors.account = "Please select a account";
     }
-    if (value.type === "transfer" && value.from === "") {
+    if (
+      value.type === "transfer" &&
+      (value.from === "" || value.from === undefined)
+    ) {
       errors.from = "Please select  from";
     }
     if (value.category === "" && !(value.type === "transfer")) {
       errors.category = "Please select a category";
     }
-    if (value.type === "transfer" && value.to === "") {
+    if (
+      value.type === "transfer" &&
+      (value.to === "" || value.to === undefined)
+    ) {
       errors.to = "Please select  to";
     }
     if (value.amount === "") {
@@ -179,6 +198,20 @@ class TransactionContainer extends React.Component<Props> {
         this.getTransactions(this.state.date);
       });
   };
+  handleOpenEdit = (event: any) => {
+    const { isEditTransactionOpen } = this.state;
+
+    isEditTransactionOpen
+      ? this.setState({ isEditTransactionOpen: false })
+      : this.setState({
+          isEditTransactionOpen: true,
+          transaction: {
+           ...event,
+            amount: (event.amount/100).toFixed(2),
+
+          },
+        });
+  };
   handleNextMonth = async () => {
     const { date } = this.state;
     let Month = new Date(date).getMonth();
@@ -203,6 +236,59 @@ class TransactionContainer extends React.Component<Props> {
     this.getTransactions(new Date(newMonth));
     this.setCalendar(new Date(newMonth));
   };
+  handleNextDay = async () => {
+    const { selectedDay, transactions } = this.state;
+
+    let date = new Date(selectedDay.createdAt);
+
+    let newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 1
+    );
+
+    await this.setState({
+      selectedDay: { createdAt: newDate, events: [] },
+      date: newDate,
+    });
+
+    await transactions.map((transaction) => {
+      if (
+        newDate.getDate() === new Date(transaction.createdAt).getDate() &&
+        newDate.getMonth() === new Date(transaction.createdAt).getMonth()
+      ) {
+        this.setState({
+          selectedDay: transaction,
+        });
+      }
+    });
+  };
+  handlePreviousDay = async () => {
+    const { selectedDay, transactions } = this.state;
+
+    let date = new Date(selectedDay.createdAt);
+
+    let newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() - 1
+    );
+    this.setState({
+      selectedDay: { createdAt: newDate, events: [] },
+      date: newDate,
+    });
+
+    await transactions.map((transaction) => {
+      if (
+        newDate.getDate() === new Date(transaction.createdAt).getDate() &&
+        newDate.getMonth() === new Date(transaction.createdAt).getMonth()
+      ) {
+        this.setState({
+          selectedDay: transaction,
+        });
+      }
+    });
+  };
   handleOpenTransaction = () => {
     if (this.state.isAddTransactionOpen) {
       this.setState({
@@ -223,18 +309,26 @@ class TransactionContainer extends React.Component<Props> {
     } else {
       this.setState({
         isAddTransactionOpen: true,
+        transaction: {
+          ...this.state.transaction,
+          date: this.state.selectedDay.createdAt,
+        },
       });
     }
   };
   handleOpenInfoModal = (date: any) => {
     const { isInfoTransactionOpen, transactions, transaction } = this.state;
-
     if (isInfoTransactionOpen) {
       this.setState({
         isInfoTransactionOpen: false,
         selectedDay: { events: [] },
       });
     } else {
+      this.setState({
+        isInfoTransactionOpen: true,
+        selectedDay: { createdAt: new Date(date), events: [] },
+      });
+
       transactions.map((transaction) => {
         if (
           new Date(date).getDate() ===
@@ -242,14 +336,10 @@ class TransactionContainer extends React.Component<Props> {
           new Date(date).getMonth() ===
             new Date(transaction.createdAt).getMonth()
         ) {
-          return this.setState({
+          this.setState({
             selectedDay: transaction,
           });
         }
-      });
-      this.setState({
-        isInfoTransactionOpen: true,
-        transaction: { ...transaction, date: new Date(date) },
       });
     }
   };
@@ -264,7 +354,7 @@ class TransactionContainer extends React.Component<Props> {
   };
 
   handleSave = () => {
-    const { transaction } = this.state;
+    const { transaction, isEditTransactionOpen, selectedDay } = this.state;
     const errors = this.validateForm(transaction);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
 
@@ -272,8 +362,17 @@ class TransactionContainer extends React.Component<Props> {
       this.setState({ errors: errors });
       return;
     } else {
-      this.setState({ ...this.state, errors: {} });
+      this.setState({ ...this.state, errors: {}, isAddTransactionOpen: false });
     }
+
+    let config = {
+      headers: {
+        Authorization:
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+      },
+    };
+
     let incomeOrExpense = {
       events: [
         {
@@ -305,7 +404,18 @@ class TransactionContainer extends React.Component<Props> {
           from: transaction.from,
           to: transaction.to,
           amount: parseFloat(transaction.amount) * 100,
-          fees: parseFloat(transaction.fees) * 100,
+          note: transaction.fees === "0" ? transaction.note : "",
+          description: transaction.description,
+        },
+        {
+          type: "expense",
+          currency: "BG",
+          date: new Date(
+            new Date(transaction.date).setHours(16, 33, 22)
+          ).toISOString(),
+          account: transaction.from,
+          category: "other",
+          amount: parseFloat(transaction.fees) * 100,
           note: transaction.note,
           description: transaction.description,
         },
@@ -315,90 +425,113 @@ class TransactionContainer extends React.Component<Props> {
       ).toISOString(),
     };
 
-    let config = {
-      headers: {
-        Authorization:
-          "Bearer " +
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
-      },
-    };
+    if (transaction.fees === "0") {
+      transfer = {
+        ...transfer,
+        events: [transfer.events[0]],
+      };
+    }
 
-    if (transaction.type === "transfer") {
-      axios
-        .post(`http://localhost:5000/transaction/create`, transfer, config)
-        .then(() => {
-          this.getTransactions(this.state.date);
-          this.setState({
-            isAddTransactionOpen: false,
-            transaction: {
-              type: "income",
-              date: "",
-              account: "",
-              from: "",
-              fees: "0",
-              category: "",
-              to: "",
-              amount: "0",
-              note: "",
-              description: "",
-            },
+    if (isEditTransactionOpen) {
+      if (transaction.type === "transfer") {
+        axios
+          .put(
+            `http://localhost:5000/transaction/event/edit/${selectedDay._id}/${transaction._id}`,
+            transfer.events[0],
+            config
+          )
+          .then(() => {
+            this.getTransactions(this.state.date);
+            this.setState({
+              transaction: {
+                type: "income",
+                date: "",
+                account: "",
+                from: "",
+                fees: "0",
+                category: "",
+                to: "",
+                amount: "0",
+                note: "",
+                description: "",
+              },
+            });
           });
-        });
+      } else {
+        axios
+          .put(
+            `http://localhost:5000/transaction/event/edit/${selectedDay._id}/${transaction._id}`,
+              incomeOrExpense.events[0],
+            config
+          )
+          .then(() => {
+            this.getTransactions(this.state.date);
+            this.setState({
+              selectedDay: { createdAt: transaction.date, events: [] },
+              transaction: {
+                type: "income",
+                date: "",
+                account: "",
+                from: "",
+                category: "",
+                fees: "0",
+                to: "",
+                amount: "0",
+                note: "",
+                description: "",
+              },
+            });
+          });
+      }
     } else {
-      axios
-        .post(
-          `http://localhost:5000/transaction/create`,
-          incomeOrExpense,
-          config
-        )
-        .then(() => {
-          this.getTransactions(this.state.date);
-          this.setState({
-            isAddTransactionOpen: false,
-            transaction: {
-              type: "income",
-              date: "",
-              account: "",
-              from: "",
-              category: "",
-              fees: "0",
-              to: "",
-              amount: "0",
-              note: "",
-              description: "",
-            },
+      if (transaction.type === "transfer") {
+        axios
+          .post(`http://localhost:5000/transaction/create`, transfer, config)
+          .then(() => {
+            this.getTransactions(this.state.date);
+            this.setState({
+              transaction: {
+                type: "income",
+                date: "",
+                account: "",
+                from: "",
+                fees: "0",
+                category: "",
+                to: "",
+                amount: "0",
+                note: "",
+                description: "",
+              },
+            });
           });
-        });
+      } else {
+        axios
+          .post(
+            `http://localhost:5000/transaction/create`,
+            incomeOrExpense,
+            config
+          )
+          .then(() => {
+            this.getTransactions(this.state.date);
+            this.setState({
+              selectedDay: { createdAt: transaction.date, events: [] },
+              transaction: {
+                type: "income",
+                date: "",
+                account: "",
+                from: "",
+                category: "",
+                fees: "0",
+                to: "",
+                amount: "0",
+                note: "",
+                description: "",
+              },
+            });
+          });
+      }
     }
   };
-
-  handleGetSpecificDay = async (event: any) => {
-    await this.setState({ specificDay: event });
-  };
-
-  // handleSetEvent = (date: any, view: any) => {
-  //   return (
-  //     <div>
-  //       {this.state.events.map((event) => (
-  //         <div onClick={() => this.handleGetSpecificDay(event)}>
-  //           {view === "month" &&
-  //           date.getDate() === new Date(event.createdAt).getDate() &&
-  //           date.getMonth() === new Date(event.createdAt).getMonth() &&
-  //           date.getFullYear() === new Date(event.createdAt).getFullYear() ? (
-  //             <div className={TransactionStyl.content_day}>
-  //               <div className={TransactionStyl.income}>
-  //                 ${(event.income / 100).toFixed(2)}
-  //               </div>
-  //               <div className={TransactionStyl.expense}>
-  //                 ${(event.expense / 100).toFixed(2)}
-  //               </div>
-  //             </div>
-  //           ) : null}
-  //         </div>
-  //       ))}
-  //     </div>
-  //   );
-  // };
 
   setCalendar = (date: any) => {
     const { calendarDates } = this.state;
@@ -468,6 +601,7 @@ class TransactionContainer extends React.Component<Props> {
       transactions,
       calendarDates,
       isAddTransactionOpen,
+      isEditTransactionOpen,
       isInfoTransactionOpen,
     } = this.state;
     return (
@@ -486,16 +620,20 @@ class TransactionContainer extends React.Component<Props> {
         <InfoModal
           handleDelete={this.handleDelete}
           selectedDay={selectedDay}
-          transaction={transaction}
+          handleNextDay={this.handleNextDay}
           isInfoTransactionOpen={isInfoTransactionOpen}
+          handlePreviousDay={this.handlePreviousDay}
           handleOpenInfoModal={this.handleOpenInfoModal}
           handleOpenTransaction={this.handleOpenTransaction}
+          handleOpenEdit={this.handleOpenEdit}
         />
         <AddTransactionModal
+          isEditTransactionOpen={isEditTransactionOpen}
           errors={errors}
-          isTransfer={isTransfer}
           transaction={transaction}
+          isTransfer={isTransfer}
           handleSave={this.handleSave}
+          handleOpenEdit={this.handleOpenEdit}
           handleInputChange={this.handleInputChange}
           isAddTransactionOpen={isAddTransactionOpen}
           handleOpenTransaction={this.handleOpenTransaction}
@@ -524,3 +662,27 @@ export default TransactionContainer;
 /*  tileContent={({ date, view }) => this.handleSetEvent(date, view)}*/
 
 /*/>*/
+
+// handleSetEvent = (date: any, view: any) => {
+//   return (
+//     <div>
+//       {this.state.events.map((event) => (
+//         <div onClick={() => this.handleGetSpecificDay(event)}>
+//           {view === "month" &&
+//           date.getDate() === new Date(event.createdAt).getDate() &&
+//           date.getMonth() === new Date(event.createdAt).getMonth() &&
+//           date.getFullYear() === new Date(event.createdAt).getFullYear() ? (
+//             <div className={TransactionStyl.content_day}>
+//               <div className={TransactionStyl.income}>
+//                 ${(event.income / 100).toFixed(2)}
+//               </div>
+//               <div className={TransactionStyl.expense}>
+//                 ${(event.expense / 100).toFixed(2)}
+//               </div>
+//             </div>
+//           ) : null}
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };

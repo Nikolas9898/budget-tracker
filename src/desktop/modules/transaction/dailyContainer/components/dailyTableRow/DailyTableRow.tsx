@@ -50,9 +50,6 @@ const DailyTableRow: React.FC<Props> = ({ event }) => {
           {event.type === "expense" || event.type === "transfer"
             ? (event.amount / 100).toFixed(2)
             : null}
-          <div className={DailyTableRowStyle.fees}>
-            {event.type === "transfer" ? (event.fees / 100).toFixed(2) : null}
-          </div>
         </div>
       </th>
     </tr>

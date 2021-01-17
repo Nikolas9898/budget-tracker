@@ -23,12 +23,9 @@ export const createTransaction: RequestHandler = async (
     events.map((event: any) => {
       if (event.type.toLowerCase() === "income") {
         income += event.amount;
-      } else {
+      }
+      if (event.type.toLowerCase() === "expense") {
         expense += event.amount;
-
-        if (event.fees) {
-          expense += event.fees;
-        }
       }
     });
 
@@ -47,22 +44,21 @@ export const createTransaction: RequestHandler = async (
         res.status(400).json({ errorMsg: err });
       });
   } else {
-    transaction.events.push(events[0]);
+    if(transaction.events.length===2){
+      transaction.events.push(events[0],events[1]);
+    }else{
+      transaction.events.push(events[0]);
+    }
+
     let expense = 0;
     let income = 0;
     transaction.events.map((event: any) => {
       if (event.type.toLowerCase() === "income") {
         income += event.amount;
-      } else {
-        expense += event.amount;
-
-        if (event.fees) {
-          expense += event.fees;
-        }
       }
-      // if (event.type.toLowerCase() === "expense") {
-      //   expense = expense + event.amount;
-      // }
+      if (event.type.toLowerCase() === "expense") {
+        expense += event.amount;
+      }
     });
 
     transaction.income = income;
@@ -221,12 +217,9 @@ export const editTransactionEvent: RequestHandler = async (
       newEvents.map((event: any) => {
         if (event.type.toLowerCase() === "income") {
           income += event.amount;
-        } else {
+        }
+        if (event.type.toLowerCase() === "expense") {
           expense += event.amount;
-
-          if (event.fees) {
-            expense += event.fees;
-          }
         }
       });
       transaction.expense = expense;
@@ -281,12 +274,9 @@ export const deleteTransactionEvent: RequestHandler = async (
       newEvents.map((event: any) => {
         if (event.type.toLowerCase() === "income") {
           income += event.amount;
-        } else {
+        }
+        if (event.type.toLowerCase() === "expense") {
           expense += event.amount;
-
-          if (event.fees) {
-            expense += event.fees;
-          }
         }
       });
       transaction.expense = expense;
