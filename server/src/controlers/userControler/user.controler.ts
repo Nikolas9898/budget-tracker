@@ -2,8 +2,10 @@ import { RequestHandler, Request, Response } from "express";
 import { tokenDecoder } from "../../middleware/tokenDecoder";
 import User, { UserInterface } from "../../models/user/user.model";
 
-export const getById: RequestHandler = (req: Request, res: Response) => {
-  User.findById({ _id: req.params.id }, (err: any, user: UserInterface) => {
+export const getLoggedUser: RequestHandler = (req: Request, res: Response) => {
+  const userId = tokenDecoder(req.headers.authorization);
+
+  User.findById({ _id: userId }, (err: any, user: UserInterface) => {
     try {
       if (!user) return res.json({ errorMSG: "No existing user" });
 

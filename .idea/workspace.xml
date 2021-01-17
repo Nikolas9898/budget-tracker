@@ -2,14 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1cc0ffbc-a50f-4766-90ae-9ec2eaa22938" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/desktop/helpers/AuthRoute.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/controlers/transactionControler/transaction.controler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controlers/transactionControler/transaction.controler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/infoModalStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/infoModalStyle.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/components/dailyTableRow/DailyTableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/components/dailyTableRow/DailyTableRow.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controlers/userControler/user.controler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controlers/userControler/user.controler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/user/user.route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/user/user.route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/routes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/store/actions/usersActions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/store/actions/usersActions.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +92,7 @@
       <workItem from="1610741909185" duration="8060000" />
       <workItem from="1610795624817" duration="9990000" />
       <workItem from="1610808584735" duration="21644000" />
+      <workItem from="1610914591785" duration="11831000" />
     </task>
     <servers />
   </component>
@@ -104,7 +108,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx</url>
           <line>126</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

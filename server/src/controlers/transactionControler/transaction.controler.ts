@@ -17,6 +17,41 @@ export const createTransaction: RequestHandler = async (
     userId,
   });
 
+  if (events[0].type === "transfer" && events[0].fees > 0) {
+
+    if (transaction === null) {
+      events[0] = {
+        ...events[0],
+        note: "",
+      };
+      events.push({
+        type: "expense",
+        currency: "BG",
+        date: events[0].date,
+        category: "other",
+        account: events[0].from,
+        amount: events[0].fees,
+        note: events[0].note,
+        description: events[0].description,
+      });
+    } else {
+      transaction.events.push({
+        ...events[0],
+        note: "",
+      });
+      transaction.events.push({
+        type: "expense",
+        currency: "BG",
+        date: events[0].date,
+        category: "other",
+        account: events[0].from,
+        amount: events[0].fees,
+        note: events[0].note,
+        description: events[0].description,
+      });
+    }
+  }
+
   if (!transaction) {
     let expense = 0;
     let income = 0;
@@ -44,14 +79,13 @@ export const createTransaction: RequestHandler = async (
         res.status(400).json({ errorMsg: err });
       });
   } else {
-    if(transaction.events.length===2){
-      transaction.events.push(events[0],events[1]);
-    }else{
+    let expense = 0;
+    let income = 0;
+    if(events[0].fees ===0||events[0].type!=="transfer"){
       transaction.events.push(events[0]);
     }
 
-    let expense = 0;
-    let income = 0;
+
     transaction.events.map((event: any) => {
       if (event.type.toLowerCase() === "income") {
         income += event.amount;
@@ -210,11 +244,46 @@ export const editTransactionEvent: RequestHandler = async (
     } else {
       let newEvents = transaction.events;
 
-      newEvents.splice(newEvents.indexOf(event_id), 1, event);
+      let oldIndex = newEvents.findIndex(
+        (ev: any) => ev._id.toString() === event_id.toString()
+      );
+
+
+      await newEvents.splice(oldIndex, 1, event);
+
+      if(event.type!=="transfer"&&newEvents[oldIndex-1].type==="transfer"){
+        newEvents[oldIndex-1].fees=event.amount
+      }
+
+      if (event.type === "transfer"&&event.fees>0&& event.type !== newEvents[oldIndex].type) {
+        newEvents.splice(oldIndex+1, 0, {
+          type: "expense",
+          currency: "BG",
+          date: event.date,
+          category: "other",
+          account: event.from,
+          amount: event.fees,
+          note: event.note,
+          description: event.description,
+        });
+      }
+
+      if (event.type === "transfer" && event.type === newEvents[oldIndex].type) {
+        newEvents.splice(oldIndex+1, 1, {
+          type: "expense",
+          currency: "BG",
+          date: event.date,
+          category: "other",
+          account: event.from,
+          amount: event.fees,
+          note: event.note,
+          description: event.description,
+        });
+      }
 
       let expense = 0;
       let income = 0;
-      newEvents.map((event: any) => {
+      await newEvents.map((event: any) => {
         if (event.type.toLowerCase() === "income") {
           income += event.amount;
         }

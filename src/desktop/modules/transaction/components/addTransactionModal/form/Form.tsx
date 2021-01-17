@@ -172,7 +172,7 @@ const Form: React.FC<Props> = ({
               )}
               <div
                 className={AddTransactionStyl.fees}
-                onClick={() => setFeesIsOpen(!feesIsOpen)}
+                onClick={() =>{handleInputChange({target:{value:"0",name:"fees"}}); setFeesIsOpen(!feesIsOpen)}}
               >
                 X
               </div>

@@ -206,9 +206,9 @@ class TransactionContainer extends React.Component<Props> {
       : this.setState({
           isEditTransactionOpen: true,
           transaction: {
-           ...event,
-            amount: (event.amount/100).toFixed(2),
-
+            ...event,
+            amount: (event.amount / 100).toFixed(2),
+            fees: (event.fees / 100).toFixed(2),
           },
         });
   };
@@ -362,7 +362,12 @@ class TransactionContainer extends React.Component<Props> {
       this.setState({ errors: errors });
       return;
     } else {
-      this.setState({ ...this.state, errors: {}, isAddTransactionOpen: false });
+      this.setState({
+        ...this.state,
+        errors: {},
+        isAddTransactionOpen: false,
+        isEditTransactionOpen: false,
+      });
     }
 
     let config = {
@@ -392,7 +397,6 @@ class TransactionContainer extends React.Component<Props> {
         new Date(transaction.date).setHours(0o0, 0o0, 0o0)
       ).toISOString(),
     };
-
     let transfer = {
       events: [
         {
@@ -402,20 +406,9 @@ class TransactionContainer extends React.Component<Props> {
             new Date(transaction.date).setHours(13, 21, 30)
           ).toISOString(),
           from: transaction.from,
+          fees: parseFloat(transaction.fees) * 100,
           to: transaction.to,
           amount: parseFloat(transaction.amount) * 100,
-          note: transaction.fees === "0" ? transaction.note : "",
-          description: transaction.description,
-        },
-        {
-          type: "expense",
-          currency: "BG",
-          date: new Date(
-            new Date(transaction.date).setHours(16, 33, 22)
-          ).toISOString(),
-          account: transaction.from,
-          category: "other",
-          amount: parseFloat(transaction.fees) * 100,
           note: transaction.note,
           description: transaction.description,
         },
@@ -424,13 +417,6 @@ class TransactionContainer extends React.Component<Props> {
         new Date(transaction.date).setHours(0o0, 0o0, 0o0)
       ).toISOString(),
     };
-
-    if (transaction.fees === "0") {
-      transfer = {
-        ...transfer,
-        events: [transfer.events[0]],
-      };
-    }
 
     if (isEditTransactionOpen) {
       if (transaction.type === "transfer") {
@@ -461,7 +447,7 @@ class TransactionContainer extends React.Component<Props> {
         axios
           .put(
             `http://localhost:5000/transaction/event/edit/${selectedDay._id}/${transaction._id}`,
-              incomeOrExpense.events[0],
+            incomeOrExpense.events[0],
             config
           )
           .then(() => {
