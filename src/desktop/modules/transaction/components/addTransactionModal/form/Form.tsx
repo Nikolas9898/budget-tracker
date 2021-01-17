@@ -158,17 +158,25 @@ const Form: React.FC<Props> = ({
           <div className={AddTransactionStyl.input_container}>
             <div className={AddTransactionStyl.amount_container}>
               <input
-                  type="text"
-                  className={AddTransactionStyl.input}
-                  name="fees"
-                  value={transaction.fees}
-                  onChange={handleInputChange}
+                type="text"
+                className={AddTransactionStyl.input}
+                name="fees"
+                value={transaction.fees}
+                onChange={handleInputChange}
               />
-              <div  className={AddTransactionStyl.fees} onClick={() => setFeesIsOpen(!feesIsOpen)}>
+
+              {errors.fees && (
+                <div className={AddTransactionStyl.error_msg}>
+                  <span>{errors.fees}</span>
+                </div>
+              )}
+              <div
+                className={AddTransactionStyl.fees}
+                onClick={() => setFeesIsOpen(!feesIsOpen)}
+              >
                 X
               </div>
             </div>
-
           </div>
         ) : null}
 

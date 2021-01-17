@@ -22,9 +22,13 @@ export const createTransaction: RequestHandler = async (
     let income = 0;
     events.map((event: any) => {
       if (event.type.toLowerCase() === "income") {
-        income = income + event.amount;
-      } if (event.type.toLowerCase() === "expense") {
-        expense = expense + event.amount;
+        income += event.amount;
+      } else {
+        expense += event.amount;
+
+        if (event.fees) {
+          expense += event.fees;
+        }
       }
     });
 
@@ -48,10 +52,17 @@ export const createTransaction: RequestHandler = async (
     let income = 0;
     transaction.events.map((event: any) => {
       if (event.type.toLowerCase() === "income") {
-        income = income + event.amount;
-      } if (event.type.toLowerCase() === "expense") {
-        expense = expense + event.amount;
+        income += event.amount;
+      } else {
+        expense += event.amount;
+
+        if (event.fees) {
+          expense += event.fees;
+        }
       }
+      // if (event.type.toLowerCase() === "expense") {
+      //   expense = expense + event.amount;
+      // }
     });
 
     transaction.income = income;
@@ -170,7 +181,6 @@ export const deleteTransactionById: RequestHandler = async (
     _id: id,
     userId,
   });
-  console.log(transaction);
 
   try {
     transaction.remove();
@@ -210,9 +220,13 @@ export const editTransactionEvent: RequestHandler = async (
       let income = 0;
       newEvents.map((event: any) => {
         if (event.type.toLowerCase() === "income") {
-          income = income + event.amount;
-        } if (event.type.toLowerCase() === "expense") {
-          expense = expense + event.amount;
+          income += event.amount;
+        } else {
+          expense += event.amount;
+
+          if (event.fees) {
+            expense += event.fees;
+          }
         }
       });
       transaction.expense = expense;
@@ -249,12 +263,12 @@ export const deleteTransactionEvent: RequestHandler = async (
         errorMsg: "Not authorized or transaction does not exist",
       });
     } else {
-      if(transaction.events.length===1){
+      if (transaction.events.length === 1) {
         try {
           transaction.remove();
-        return   res.json({ msg: "Deleted successfullu" });
+          return res.json({ msg: "Deleted successfullu" });
         } catch (error) {
-        return   res.json({ errroMsg: error });
+          return res.json({ errroMsg: error });
         }
       }
 
@@ -266,9 +280,13 @@ export const deleteTransactionEvent: RequestHandler = async (
 
       newEvents.map((event: any) => {
         if (event.type.toLowerCase() === "income") {
-          income = income + event.amount;
-        } if (event.type.toLowerCase() === "expense") {
-          expense = expense + event.amount;
+          income += event.amount;
+        } else {
+          expense += event.amount;
+
+          if (event.fees) {
+            expense += event.fees;
+          }
         }
       });
       transaction.expense = expense;

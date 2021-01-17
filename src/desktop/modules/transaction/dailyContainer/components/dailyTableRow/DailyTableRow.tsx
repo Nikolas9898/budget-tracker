@@ -1,5 +1,4 @@
 import React from "react";
-import DailyStyle from "../../DailyStyle.module.css";
 import DailyTableRowStyle from "./DailyTableRow.module.css";
 
 type Props = {
@@ -18,22 +17,6 @@ type Props = {
   };
 };
 const DailyTableRow: React.FC<Props> = ({ event }) => {
-  const handleViewAmount = (event: Props["event"]) => {
-    switch (event.type) {
-      case "expense":
-        return (
-          <div className={DailyTableRowStyle.expense}>
-            {(event.amount / 100).toFixed(2)}
-          </div>
-        );
-      case "transfer":
-        return (
-          <div className={DailyTableRowStyle.transfer}>
-            {(event.amount / 100).toFixed(2)}
-          </div>
-        );
-    }
-  };
   return (
     <tr>
       <th className={DailyTableRowStyle.account}>
@@ -63,7 +46,14 @@ const DailyTableRow: React.FC<Props> = ({ event }) => {
             : DailyTableRowStyle.transfer
         }
       >
-          {event.type === "expense"||event.type === "transfer" ? (event.amount / 100).toFixed(2) : null}
+        <div>
+          {event.type === "expense" || event.type === "transfer"
+            ? (event.amount / 100).toFixed(2)
+            : null}
+          <div className={DailyTableRowStyle.fees}>
+            {event.type === "transfer" ? (event.fees / 100).toFixed(2) : null}
+          </div>
+        </div>
       </th>
     </tr>
   );

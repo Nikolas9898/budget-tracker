@@ -21,7 +21,7 @@ export interface State {
     account?: string;
     from?: string;
     to?: string;
-    fees:string;
+    fees: string;
     category?: string;
     amount: string;
     note: string;
@@ -41,6 +41,7 @@ export interface State {
     to?: string;
     category?: string;
     amount: string;
+    fees?: string;
   };
   date: any;
   transactions: {
@@ -66,14 +67,14 @@ class TransactionContainer extends React.Component<Props> {
       account: "",
       from: "",
       category: "",
-      fees:"0",
+      fees: "0",
       to: "",
       amount: "0",
       note: "",
       description: "",
     },
     selectedDay: {
-      events:[]
+      events: [],
     },
     errors: {
       account: "",
@@ -135,6 +136,7 @@ class TransactionContainer extends React.Component<Props> {
       category: "",
       to: "",
       amount: "",
+      fees: "",
     };
 
     if (value.account === "" && !(value.type === "transfer")) {
@@ -152,21 +154,26 @@ class TransactionContainer extends React.Component<Props> {
     if (value.amount === "") {
       errors.amount = "Please select a amount";
     }
+
+    if (parseFloat(value.fees) > parseFloat(value.amount)) {
+      errors.fees = "Fees can't be greater then amount";
+    }
     return errors;
   };
   handleDelete = (transactionId: any, eventId: any) => {
     let config = {
       headers: {
         Authorization:
-            "Bearer " +
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
       },
     };
-let data={}
+    let data = {};
     axios
       .put(
         `http://localhost:5000/transaction/event/delete/${transactionId}/${eventId}`,
-        data,config
+        data,
+        config
       )
       .then(() => {
         this.getTransactions(this.state.date);
@@ -206,12 +213,12 @@ let data={}
           account: "",
           from: "",
           category: "",
-          fees:'',
+          fees: "",
           to: "",
           amount: "0",
           note: "",
           description: "",
-        }
+        },
       });
     } else {
       this.setState({
@@ -225,7 +232,7 @@ let data={}
     if (isInfoTransactionOpen) {
       this.setState({
         isInfoTransactionOpen: false,
-        selectedDay: {events:[]},
+        selectedDay: { events: [] },
       });
     } else {
       transactions.map((transaction) => {
@@ -235,7 +242,7 @@ let data={}
           new Date(date).getMonth() ===
             new Date(transaction.createdAt).getMonth()
         ) {
-          this.setState({
+          return this.setState({
             selectedDay: transaction,
           });
         }
@@ -298,18 +305,7 @@ let data={}
           from: transaction.from,
           to: transaction.to,
           amount: parseFloat(transaction.amount) * 100,
-          note: transaction.fees==="0"?'':transaction.note,
-          description: transaction.description,
-        },
-        {
-          type: "expense",
-          currency: "BG",
-          date: new Date(
-              new Date(transaction.date).setHours(16, 33, 22)
-          ).toISOString(),
-          account: transaction.from,
-          category: "other",
-          amount: parseFloat(transaction.fees) * 100,
+          fees: parseFloat(transaction.fees) * 100,
           note: transaction.note,
           description: transaction.description,
         },
@@ -318,12 +314,7 @@ let data={}
         new Date(transaction.date).setHours(0o0, 0o0, 0o0)
       ).toISOString(),
     };
-    if(transaction.fees==="0"){
-      transfer={
-        ...transfer,
-        events:[transfer.events[0]]
-      }
-    }
+
     let config = {
       headers: {
         Authorization:
@@ -336,7 +327,7 @@ let data={}
       axios
         .post(`http://localhost:5000/transaction/create`, transfer, config)
         .then(() => {
-          this.getTransactions(transaction.date);
+          this.getTransactions(this.state.date);
           this.setState({
             isAddTransactionOpen: false,
             transaction: {
@@ -344,6 +335,7 @@ let data={}
               date: "",
               account: "",
               from: "",
+              fees: "0",
               category: "",
               to: "",
               amount: "0",
@@ -369,6 +361,7 @@ let data={}
               account: "",
               from: "",
               category: "",
+              fees: "0",
               to: "",
               amount: "0",
               note: "",
@@ -514,30 +507,20 @@ let data={}
 
 export default TransactionContainer;
 
-{
-  /*<Calendar*/
-}
-{
-  /*  activeStartDate={this.state.date}*/
-}
-{
-  /*  // onChange={(date) => console.log(date)}*/
-}
-{
-  /*  calendarType={"US"}*/
-}
-{
-  /*  className={TransactionStyl.calendar}*/
-}
-{
-  /*  onClickDay={(date) => this.handleOpenInfoModal(date)}*/
-}
-{
-  /*  showNavigation={false}*/
-}
-{
-  /*  tileContent={({ date, view }) => this.handleSetEvent(date, view)}*/
-}
-{
-  /*/>*/
-}
+/*<Calendar*/
+
+/*  activeStartDate={this.state.date}*/
+
+/*  // onChange={(date) => console.log(date)}*/
+
+/*  calendarType={"US"}*/
+
+/*  className={TransactionStyl.calendar}*/
+
+/*  onClickDay={(date) => this.handleOpenInfoModal(date)}*/
+
+/*  showNavigation={false}*/
+
+/*  tileContent={({ date, view }) => this.handleSetEvent(date, view)}*/
+
+/*/>*/

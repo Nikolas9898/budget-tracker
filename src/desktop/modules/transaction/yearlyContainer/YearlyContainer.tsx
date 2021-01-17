@@ -114,8 +114,9 @@ class YearlyContainer extends React.Component {
         />
         <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
         <div className={YearlyStyle.table}>
-          {months.reverse().map((month) => (
+          {months.reverse().map((month, index) => (
             <Link
+              key={index}
               className={YearlyStyle.content_row}
               to={`/transaction/monthly?date=${month.from}`}
             >

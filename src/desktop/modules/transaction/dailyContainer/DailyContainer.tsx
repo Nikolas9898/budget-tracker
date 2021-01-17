@@ -8,12 +8,12 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import axios from "axios";
 import DailyTableRow from "./components/dailyTableRow/DailyTableRow";
-import { TabList } from "react-tabs";
 
 type Props = {
   sumIncome: number;
   sumExpense: number;
   event: {
+    _id: string;
     type: string;
     date: any;
     account?: string;
@@ -26,6 +26,7 @@ type Props = {
     description: string;
   };
   transactions: {
+    _id: string;
     createdAt: any;
     income: number;
     expense: number;
@@ -98,7 +99,7 @@ const DailyContainer = () => {
           })
           .reverse()
           .map((transaction) => (
-            <div className={DailyStyle.container}>
+            <div key={transaction._id} className={DailyStyle.container}>
               <div className={DailyStyle.content_row}>
                 <div className={DailyStyle.date_content}>
                   <div className={DailyStyle.date}>
@@ -114,15 +115,15 @@ const DailyContainer = () => {
                   </div>
                 </div>
                 <div className={DailyStyle.income}>
-                   {(transaction.income / 100).toFixed(2)}
+                  {(transaction.income / 100).toFixed(2)}
                 </div>
                 <div className={DailyStyle.expense}>
-                   {(transaction.expense / 100).toFixed(2)}
+                  {(transaction.expense / 100).toFixed(2)}
                 </div>
               </div>
               <table>
                 {transaction.events.map((event) => (
-                  <DailyTableRow event={event}/>
+                  <DailyTableRow event={event} key={event._id} />
                 ))}
               </table>
             </div>

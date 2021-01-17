@@ -146,16 +146,17 @@ class WeeklyContainer extends React.Component {
           date={this.state.date}
         />
         <InfoRow sumExpense={sumExpense} sumIncome={sumIncome} />
-        {this.state.weeks.reverse().map((w) => (
-          <div className={WeeklyStyle.container_row}>
+        {this.state.weeks.reverse().map((week, index) => (
+          <div key={index} className={WeeklyStyle.container_row}>
             <div className={WeeklyStyle.date}>
-              {Moment(w.from).format("DD.MM")} ~ {Moment(w.to).format("DD.MM")}
+              {Moment(week.from).format("DD.MM")} ~{" "}
+              {Moment(week.to).format("DD.MM")}
             </div>
             <div className={WeeklyStyle.income}>
-              $ {(w.income / 100).toFixed(2)}
+              $ {(week.income / 100).toFixed(2)}
             </div>
             <div className={WeeklyStyle.expense}>
-              $ {(w.expense / 100).toFixed(2)}
+              $ {(week.expense / 100).toFixed(2)}
             </div>
           </div>
         ))}

@@ -82,12 +82,7 @@ const MonthlyContainer = () => {
         handleNextMonth={handleNextMonth}
         date={date}
       />
-      {
-          transactions.map((transaction) => {
-              transaction.events.map(event=>{
-            console.log(event)
-        })
-      })}
+
       <div style={{ width: "400px" }}>
         <PieChart
           animate={true}
