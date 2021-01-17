@@ -9,6 +9,7 @@ export const singIn = (user: {
   updatedAt: string;
   type: string;
   id: string;
+  token: string;
 }) => async (dispatch: any) => {
   try {
     await dispatch({
@@ -17,9 +18,5 @@ export const singIn = (user: {
     });
   } catch (e) {
     console.log(e);
-    // dispatch({
-    //   type: USERS_ERROR,
-    //   payload: console.log(e),
-    // });
   }
 };

@@ -5,13 +5,11 @@ import RegistrationForm from "./components/RegistrationForm";
 import SocialNetworks from "./components/SocialNetworks";
 import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { State } from "../../store/reducers/userReducer";
+import { useDispatch } from "react-redux";
 import { singIn } from "../../store/actions/usersActions";
 import axios from "axios";
 
 const LoginContainer = () => {
-  // const [isLogin, setIsLogin] = useState(true);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -19,7 +17,7 @@ const LoginContainer = () => {
   });
   const history = useHistory();
 
-  const qE = useSelector((state: State) => state.user);
+  // const qE = useSelector((state: State) => state.user);
 
   const dispatch = useDispatch();
 
@@ -118,7 +116,6 @@ const LoginContainer = () => {
   return (
     <div className={LoginContainerStyle.container}>
       <div className={LoginContainerStyle.login_form}>
-        {console.log(qE)}
         <Tabs selectedTabClassName={LoginContainerStyle.selected_tab}>
           <TabList className={LoginContainerStyle.tab_list}>
             <Tab className={LoginContainerStyle.tab}>Sign In</Tab>
