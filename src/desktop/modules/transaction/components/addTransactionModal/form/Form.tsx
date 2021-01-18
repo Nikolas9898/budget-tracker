@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AddTransactionStyl from "../AddTransactionStyle.module.css";
 import Moment from "moment";
 import { State } from "../../../monthlyContainer/TransactionContainer";
@@ -15,6 +15,7 @@ const Form: React.FC<Props> = ({
   errors,
   isTransfer,
 }) => {
+  const [feesIsOpen, setFeesIsOpen] = useState(false);
   return (
     <div className={AddTransactionStyl.content}>
       <div className={AddTransactionStyl.content_titles}>
@@ -30,6 +31,9 @@ const Form: React.FC<Props> = ({
           <div className={AddTransactionStyl.title}>Category</div>
         )}
         <div className={AddTransactionStyl.title}>Amount</div>
+        {feesIsOpen ? (
+          <div className={AddTransactionStyl.title}>Fees</div>
+        ) : null}
         <div className={AddTransactionStyl.title}>Note</div>
       </div>
 
@@ -38,7 +42,6 @@ const Form: React.FC<Props> = ({
           {Moment(transaction.date).format("DD/M/Y(dd)")}
           {Moment(transaction.date).format("HH:HH")}
         </div>
-
         <div className={AddTransactionStyl.input_container}>
           <select
             className={AddTransactionStyl.input}
@@ -128,19 +131,54 @@ const Form: React.FC<Props> = ({
         </div>
 
         <div className={AddTransactionStyl.input_container}>
-          <input
-            type="number"
-            name="amount"
-            className={AddTransactionStyl.input}
-            value={transaction.amount}
-            onChange={handleInputChange}
-          />
+          <div className={AddTransactionStyl.amount_container}>
+            <input
+              type="number"
+              name="amount"
+              className={AddTransactionStyl.input}
+              value={transaction.amount}
+              onChange={handleInputChange}
+            />
+            {transaction.type === "transfer" && !feesIsOpen ? (
+              <div
+                className={AddTransactionStyl.fees}
+                onClick={() => setFeesIsOpen(!feesIsOpen)}
+              >
+                Fees
+              </div>
+            ) : null}
+          </div>
           {errors.amount && (
             <div className={AddTransactionStyl.error_msg}>
               <span>{errors.amount}</span>
             </div>
           )}
         </div>
+        {feesIsOpen ? (
+          <div className={AddTransactionStyl.input_container}>
+            <div className={AddTransactionStyl.amount_container}>
+              <input
+                type="text"
+                className={AddTransactionStyl.input}
+                name="fees"
+                value={transaction.fees}
+                onChange={handleInputChange}
+              />
+
+              {errors.fees && (
+                <div className={AddTransactionStyl.error_msg}>
+                  <span>{errors.fees}</span>
+                </div>
+              )}
+              <div
+                className={AddTransactionStyl.fees}
+                onClick={() =>{handleInputChange({target:{value:"0",name:"fees"}}); setFeesIsOpen(!feesIsOpen)}}
+              >
+                X
+              </div>
+            </div>
+          </div>
+        ) : null}
 
         <input
           type="text"

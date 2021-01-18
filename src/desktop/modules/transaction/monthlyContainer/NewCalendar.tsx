@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TransactionStyle from "./TransactionStyle.module.css";
 import TransactionStyl from "./TransactionStyle.module.css";
 import { State } from "./TransactionContainer";
@@ -16,7 +16,7 @@ const NewCalendar: React.FC<Props> = ({
   transactions,
   handleOpenInfoModal,
 }) => {
-  const [days, setDays] = useState(["Su", "M", "T", "W", "Th", "F", "Sa"]);
+  const [days] = useState([ "M", "T", "W", "Th", "F", "Sa","Su"]);
 
   const currentDay = (calDate: any, event: any) => {
     let isTrue =
@@ -28,14 +28,17 @@ const NewCalendar: React.FC<Props> = ({
   return (
     <div className={TransactionStyl.container}>
       <div className={TransactionStyle.days_wrapper}>
-        {days.map((day) => (
-          <div className={TransactionStyle.day_container}>{day}</div>
+        {days.map((day, index) => (
+          <div key={index} className={TransactionStyle.day_container}>
+            {day}
+          </div>
         ))}
       </div>
 
       <div className={TransactionStyle.calendar_wrapper}>
         {calendarDate.map((calDate: any) => (
           <div
+            key={calDate.date}
             className={
               date.getMonth() === calDate.date.getMonth()
                 ? TransactionStyle.calendar_date_box_container
@@ -54,7 +57,10 @@ const NewCalendar: React.FC<Props> = ({
             </div>
             {transactions.map((transaction) =>
               currentDay(calDate, transaction) ? (
-                <div className={TransactionStyle.calendar_events_content}>
+                <div
+                  key={transaction._id}
+                  className={TransactionStyle.calendar_events_content}
+                >
                   <div className={TransactionStyl.income}>
                     {(transaction.income / 100).toFixed(2)}
                   </div>

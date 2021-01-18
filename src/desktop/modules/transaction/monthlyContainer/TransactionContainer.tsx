@@ -13,7 +13,7 @@ type Props = {
 export interface State {
   isAddTransactionOpen: boolean;
   isInfoTransactionOpen: boolean;
-
+  isEditTransactionOpen: boolean;
   transaction: {
     _id?: string;
     type: string;
@@ -21,6 +21,7 @@ export interface State {
     account?: string;
     from?: string;
     to?: string;
+    fees: string;
     category?: string;
     amount: string;
     note: string;
@@ -40,6 +41,7 @@ export interface State {
     to?: string;
     category?: string;
     amount: string;
+    fees?: string;
   };
   date: any;
   transactions: {
@@ -57,6 +59,7 @@ class TransactionContainer extends React.Component<Props> {
   state: State = {
     isInfoTransactionOpen: false,
     isAddTransactionOpen: false,
+    isEditTransactionOpen: false,
     date: new Date(),
     isTransfer: false,
     transaction: {
@@ -65,13 +68,14 @@ class TransactionContainer extends React.Component<Props> {
       account: "",
       from: "",
       category: "",
+      fees: "0",
       to: "",
       amount: "0",
       note: "",
       description: "",
     },
     selectedDay: {
-      events:[]
+      events: [],
     },
     errors: {
       account: "",
@@ -85,18 +89,23 @@ class TransactionContainer extends React.Component<Props> {
   };
 
   componentDidMount() {
+    console.log(this.props.filters.date)
     if (this.props.filters.date) {
       this.setState({
         date: new Date(this.props.filters.date),
       });
       this.getTransactions(new Date(this.props.filters.date));
+      this.setCalendar(new Date(this.props.filters.date));
     } else {
+
       this.setState({
         date: new Date(),
       });
       this.getTransactions(new Date());
     }
-    this.setCalendar(new Date());
+    if (this.props.filters.date===undefined) {
+      this.setCalendar(new Date());
+    }
   }
 
   getTransactions = (date: any) => {
@@ -123,6 +132,18 @@ class TransactionContainer extends React.Component<Props> {
         config
       )
       .then((data) => {
+        data.data.transactions.map((transaction: any) => {
+          if (
+            new Date(this.state.selectedDay.createdAt).getDate() ===
+              new Date(transaction.createdAt).getDate() &&
+            new Date(this.state.selectedDay.createdAt).getMonth() ===
+              new Date(transaction.createdAt).getMonth()
+          ) {
+            this.setState({
+              selectedDay: transaction,
+            });
+          }
+        });
         this.setState({ transactions: data.data.transactions });
       });
   };
@@ -133,22 +154,33 @@ class TransactionContainer extends React.Component<Props> {
       category: "",
       to: "",
       amount: "",
+      fees: "",
     };
 
     if (value.account === "" && !(value.type === "transfer")) {
       errors.account = "Please select a account";
     }
-    if (value.type === "transfer" && value.from === "") {
+    if (
+      value.type === "transfer" &&
+      (value.from === "" || value.from === undefined)
+    ) {
       errors.from = "Please select  from";
     }
     if (value.category === "" && !(value.type === "transfer")) {
       errors.category = "Please select a category";
     }
-    if (value.type === "transfer" && value.to === "") {
+    if (
+      value.type === "transfer" &&
+      (value.to === "" || value.to === undefined)
+    ) {
       errors.to = "Please select  to";
     }
     if (value.amount === "") {
       errors.amount = "Please select a amount";
+    }
+
+    if (parseFloat(value.fees) > parseFloat(value.amount)) {
+      errors.fees = "Fees can't be greater then amount";
     }
     return errors;
   };
@@ -156,19 +188,36 @@ class TransactionContainer extends React.Component<Props> {
     let config = {
       headers: {
         Authorization:
-            "Bearer " +
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
       },
     };
-let data={}
+    let data = {};
     axios
       .put(
         `http://localhost:5000/transaction/event/delete/${transactionId}/${eventId}`,
-        data,config
+        data,
+        config
       )
       .then(() => {
+       let newEvents= this.state.selectedDay.events.filter(event=>event._id!==eventId)
+        this.setState({selectedDay:{...this.state.selectedDay,events:newEvents}})
         this.getTransactions(this.state.date);
       });
+  };
+  handleOpenEdit = (event: any) => {
+    const { isEditTransactionOpen } = this.state;
+
+    isEditTransactionOpen
+      ? this.setState({ isEditTransactionOpen: false })
+      : this.setState({
+          isEditTransactionOpen: true,
+          transaction: {
+            ...event,
+            amount: (event.amount / 100).toFixed(2),
+            fees: (event.fees / 100).toFixed(2),
+          },
+        });
   };
   handleNextMonth = async () => {
     const { date } = this.state;
@@ -194,26 +243,99 @@ let data={}
     this.getTransactions(new Date(newMonth));
     this.setCalendar(new Date(newMonth));
   };
+  handleNextDay = async () => {
+    const { selectedDay, transactions } = this.state;
+
+    let date = new Date(selectedDay.createdAt);
+
+    let newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 1
+    );
+
+    await this.setState({
+      selectedDay: { createdAt: newDate, events: [] },
+      date: newDate,
+    });
+
+    await transactions.map((transaction) => {
+      if (
+        newDate.getDate() === new Date(transaction.createdAt).getDate() &&
+        newDate.getMonth() === new Date(transaction.createdAt).getMonth()
+      ) {
+        this.setState({
+          selectedDay: transaction,
+        });
+      }
+    });
+  };
+  handlePreviousDay = async () => {
+    const { selectedDay, transactions } = this.state;
+
+    let date = new Date(selectedDay.createdAt);
+
+    let newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() - 1
+    );
+    this.setState({
+      selectedDay: { createdAt: newDate, events: [] },
+      date: newDate,
+    });
+
+    await transactions.map((transaction) => {
+      if (
+        newDate.getDate() === new Date(transaction.createdAt).getDate() &&
+        newDate.getMonth() === new Date(transaction.createdAt).getMonth()
+      ) {
+        this.setState({
+          selectedDay: transaction,
+        });
+      }
+    });
+  };
   handleOpenTransaction = () => {
     if (this.state.isAddTransactionOpen) {
       this.setState({
         isAddTransactionOpen: false,
+        transaction: {
+          type: "income",
+          date: "",
+          account: "",
+          from: "",
+          category: "",
+          fees: "",
+          to: "",
+          amount: "0",
+          note: "",
+          description: "",
+        },
       });
     } else {
       this.setState({
         isAddTransactionOpen: true,
+        transaction: {
+          ...this.state.transaction,
+          date: this.state.selectedDay.createdAt,
+        },
       });
     }
   };
   handleOpenInfoModal = (date: any) => {
     const { isInfoTransactionOpen, transactions, transaction } = this.state;
-
     if (isInfoTransactionOpen) {
       this.setState({
         isInfoTransactionOpen: false,
-        selectedDay: {events:[]},
+        selectedDay: { events: [] },
       });
     } else {
+      this.setState({
+        isInfoTransactionOpen: true,
+        selectedDay: { createdAt: new Date(date), events: [] },
+      });
+
       transactions.map((transaction) => {
         if (
           new Date(date).getDate() ===
@@ -225,10 +347,6 @@ let data={}
             selectedDay: transaction,
           });
         }
-      });
-      this.setState({
-        isInfoTransactionOpen: true,
-        transaction: { ...transaction, date: new Date(date) },
       });
     }
   };
@@ -243,7 +361,7 @@ let data={}
   };
 
   handleSave = () => {
-    const { transaction } = this.state;
+    const { transaction, isEditTransactionOpen, selectedDay } = this.state;
     const errors = this.validateForm(transaction);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
 
@@ -251,8 +369,22 @@ let data={}
       this.setState({ errors: errors });
       return;
     } else {
-      this.setState({ ...this.state, errors: {} });
+      this.setState({
+        ...this.state,
+        errors: {},
+        isAddTransactionOpen: false,
+        isEditTransactionOpen: false,
+      });
     }
+
+    let config = {
+      headers: {
+        Authorization:
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+      },
+    };
+
     let incomeOrExpense = {
       events: [
         {
@@ -272,7 +404,6 @@ let data={}
         new Date(transaction.date).setHours(0o0, 0o0, 0o0)
       ).toISOString(),
     };
-
     let transfer = {
       events: [
         {
@@ -282,6 +413,7 @@ let data={}
             new Date(transaction.date).setHours(13, 21, 30)
           ).toISOString(),
           from: transaction.from,
+          fees: parseFloat(transaction.fees) * 100,
           to: transaction.to,
           amount: parseFloat(transaction.amount) * 100,
           note: transaction.note,
@@ -293,88 +425,106 @@ let data={}
       ).toISOString(),
     };
 
-    let config = {
-      headers: {
-        Authorization:
-          "Bearer " +
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
-      },
-    };
-
-    if (transaction.type === "transfer") {
-      axios
-        .post(`http://localhost:5000/transaction/create`, transfer, config)
-        .then(() => {
-          this.getTransactions(transaction.date);
-          this.setState({
-            isAddTransactionOpen: false,
-            transaction: {
-              type: "income",
-              date: "",
-              account: "",
-              from: "",
-              category: "",
-              to: "",
-              amount: "0",
-              note: "",
-              description: "",
-            },
+    if (isEditTransactionOpen) {
+      if (transaction.type === "transfer") {
+        axios
+          .put(
+            `http://localhost:5000/transaction/event/edit/${selectedDay._id}/${transaction._id}`,
+            transfer.events[0],
+            config
+          )
+          .then(() => {
+            this.getTransactions(this.state.date);
+            this.setState({
+              transaction: {
+                type: "income",
+                date: "",
+                account: "",
+                from: "",
+                fees: "0",
+                category: "",
+                to: "",
+                amount: "0",
+                note: "",
+                description: "",
+              },
+            });
           });
-        });
+      } else {
+        axios
+          .put(
+            `http://localhost:5000/transaction/event/edit/${selectedDay._id}/${transaction._id}`,
+            incomeOrExpense.events[0],
+            config
+          )
+          .then(() => {
+            this.getTransactions(this.state.date);
+            this.setState({
+              selectedDay: { createdAt: transaction.date, events: [] },
+              transaction: {
+                type: "income",
+                date: "",
+                account: "",
+                from: "",
+                category: "",
+                fees: "0",
+                to: "",
+                amount: "0",
+                note: "",
+                description: "",
+              },
+            });
+          });
+      }
     } else {
-      axios
-        .post(
-          `http://localhost:5000/transaction/create`,
-          incomeOrExpense,
-          config
-        )
-        .then(() => {
-          this.getTransactions(this.state.date);
-          this.setState({
-            isAddTransactionOpen: false,
-            transaction: {
-              type: "income",
-              date: "",
-              account: "",
-              from: "",
-              category: "",
-              to: "",
-              amount: "0",
-              note: "",
-              description: "",
-            },
+      if (transaction.type === "transfer") {
+        axios
+          .post(`http://localhost:5000/transaction/create`, transfer, config)
+          .then(() => {
+            this.getTransactions(this.state.date);
+            this.setState({
+              transaction: {
+                type: "income",
+                date: "",
+                account: "",
+                from: "",
+                fees: "0",
+                category: "",
+                to: "",
+                amount: "0",
+                note: "",
+                description: "",
+              },
+            });
           });
-        });
+      } else {
+        axios
+          .post(
+            `http://localhost:5000/transaction/create`,
+            incomeOrExpense,
+            config
+          )
+          .then(() => {
+            this.getTransactions(this.state.date);
+            this.setState({
+              selectedDay: { createdAt: transaction.date, events: [] },
+              transaction: {
+                type: "income",
+                date: "",
+                account: "",
+                from: "",
+                category: "",
+                fees: "0",
+                to: "",
+                amount: "0",
+                note: "",
+                description: "",
+              },
+            });
+          });
+      }
     }
   };
-
-  handleGetSpecificDay = async (event: any) => {
-    await this.setState({ specificDay: event });
-  };
-
-  // handleSetEvent = (date: any, view: any) => {
-  //   return (
-  //     <div>
-  //       {this.state.events.map((event) => (
-  //         <div onClick={() => this.handleGetSpecificDay(event)}>
-  //           {view === "month" &&
-  //           date.getDate() === new Date(event.createdAt).getDate() &&
-  //           date.getMonth() === new Date(event.createdAt).getMonth() &&
-  //           date.getFullYear() === new Date(event.createdAt).getFullYear() ? (
-  //             <div className={TransactionStyl.content_day}>
-  //               <div className={TransactionStyl.income}>
-  //                 ${(event.income / 100).toFixed(2)}
-  //               </div>
-  //               <div className={TransactionStyl.expense}>
-  //                 ${(event.expense / 100).toFixed(2)}
-  //               </div>
-  //             </div>
-  //           ) : null}
-  //         </div>
-  //       ))}
-  //     </div>
-  //   );
-  // };
 
   setCalendar = (date: any) => {
     const { calendarDates } = this.state;
@@ -390,8 +540,17 @@ let data={}
 
     let toDate = new Date(lastYear, lastMonth, lastDay);
 
-    if (fromDate.getDay() !== 0) {
+    if (fromDate.getDay() !== 1 && fromDate.getDay() !== 0) {
       this.setFirstWeek(date);
+    }
+
+    if (fromDate.getDay() === 0) {
+      let lastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+      for (let i = lastDay - 5; i <= lastDay; i++) {
+        this.state.calendarDates.push({
+          date: new Date(date.getFullYear(), date.getMonth() - 1, i),
+        });
+      }
     }
 
     for (let i = 1; i <= toDate.getDate(); i++) {
@@ -399,21 +558,20 @@ let data={}
         date: new Date(date.getFullYear(), date.getMonth(), i),
       });
     }
-    if (toDate.getDay() !== 6) this.setLastWeek(date);
+    if (toDate.getDay() !== 0) this.setLastWeek(date);
   };
   setFirstWeek = (date: any) => {
     let firstDay = moment(date).startOf("month").startOf("week").get("date");
     let firstMonth = moment(date).startOf("month").startOf("week").get("month");
     let firstYear = moment(date).startOf("month").startOf("week").get("year");
 
-    let fromDate = new Date(firstYear, firstMonth, firstDay);
+    let fromDate = new Date(firstYear, firstMonth, firstDay + 1);
 
     let lastDay = moment(fromDate).endOf("month").get("date");
     let lastMonth = moment(fromDate).endOf("month").get("month");
     let lastYear = moment(fromDate).endOf("month").get("year");
 
     let toDate = new Date(lastYear, lastMonth, lastDay);
-
     for (let i = fromDate.getDate(); i <= toDate.getDate(); i++) {
       this.state.calendarDates.push({
         date: new Date(fromDate.getFullYear(), fromDate.getMonth(), i),
@@ -425,7 +583,7 @@ let data={}
     let lastMonth = moment(date).endOf("month").endOf("week").get("month");
     let lastYear = moment(date).endOf("month").endOf("week").get("year");
 
-    let toDate = new Date(lastYear, lastMonth, lastDay);
+    let toDate = new Date(lastYear, lastMonth, lastDay + 1);
 
     for (let i = 1; i <= toDate.getDate(); i++) {
       this.state.calendarDates.push({
@@ -444,6 +602,7 @@ let data={}
       transactions,
       calendarDates,
       isAddTransactionOpen,
+      isEditTransactionOpen,
       isInfoTransactionOpen,
     } = this.state;
     return (
@@ -462,16 +621,20 @@ let data={}
         <InfoModal
           handleDelete={this.handleDelete}
           selectedDay={selectedDay}
-          transaction={transaction}
+          handleNextDay={this.handleNextDay}
           isInfoTransactionOpen={isInfoTransactionOpen}
+          handlePreviousDay={this.handlePreviousDay}
           handleOpenInfoModal={this.handleOpenInfoModal}
           handleOpenTransaction={this.handleOpenTransaction}
+          handleOpenEdit={this.handleOpenEdit}
         />
         <AddTransactionModal
+          isEditTransactionOpen={isEditTransactionOpen}
           errors={errors}
-          isTransfer={isTransfer}
           transaction={transaction}
+          isTransfer={isTransfer}
           handleSave={this.handleSave}
+          handleOpenEdit={this.handleOpenEdit}
           handleInputChange={this.handleInputChange}
           isAddTransactionOpen={isAddTransactionOpen}
           handleOpenTransaction={this.handleOpenTransaction}
@@ -483,30 +646,44 @@ let data={}
 
 export default TransactionContainer;
 
-{
-  /*<Calendar*/
-}
-{
-  /*  activeStartDate={this.state.date}*/
-}
-{
-  /*  // onChange={(date) => console.log(date)}*/
-}
-{
-  /*  calendarType={"US"}*/
-}
-{
-  /*  className={TransactionStyl.calendar}*/
-}
-{
-  /*  onClickDay={(date) => this.handleOpenInfoModal(date)}*/
-}
-{
-  /*  showNavigation={false}*/
-}
-{
-  /*  tileContent={({ date, view }) => this.handleSetEvent(date, view)}*/
-}
-{
-  /*/>*/
-}
+/*<Calendar*/
+
+/*  activeStartDate={this.state.date}*/
+
+/*  // onChange={(date) => console.log(date)}*/
+
+/*  calendarType={"US"}*/
+
+/*  className={TransactionStyl.calendar}*/
+
+/*  onClickDay={(date) => this.handleOpenInfoModal(date)}*/
+
+/*  showNavigation={false}*/
+
+/*  tileContent={({ date, view }) => this.handleSetEvent(date, view)}*/
+
+/*/>*/
+
+// handleSetEvent = (date: any, view: any) => {
+//   return (
+//     <div>
+//       {this.state.events.map((event) => (
+//         <div onClick={() => this.handleGetSpecificDay(event)}>
+//           {view === "month" &&
+//           date.getDate() === new Date(event.createdAt).getDate() &&
+//           date.getMonth() === new Date(event.createdAt).getMonth() &&
+//           date.getFullYear() === new Date(event.createdAt).getFullYear() ? (
+//             <div className={TransactionStyl.content_day}>
+//               <div className={TransactionStyl.income}>
+//                 ${(event.income / 100).toFixed(2)}
+//               </div>
+//               <div className={TransactionStyl.expense}>
+//                 ${(event.expense / 100).toFixed(2)}
+//               </div>
+//             </div>
+//           ) : null}
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };

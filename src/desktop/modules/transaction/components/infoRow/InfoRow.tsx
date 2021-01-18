@@ -8,20 +8,23 @@ type Props={
 
 const InfoRow:React.FC<Props> = ({sumIncome,sumExpense}) => {
     return (
-        <div className={WeeklyStyle.info_row}>
-            <div>
-                <label className={WeeklyStyle.info_title}>Income</label>
-                <div className={WeeklyStyle.income}>{(sumIncome / 100).toFixed(2)}</div>
-            </div>
-            <div>
+        <thead >
+        <tr>
+            <th>
+                    <div className={WeeklyStyle.info_title}>Income</div>
+                    <div className={WeeklyStyle.income}>{(sumIncome / 100).toFixed(2)}</div>
+            </th>
+            <th>
                 <label className={WeeklyStyle.info_title}>Expense</label>
                 <div className={WeeklyStyle.expense}>{(sumExpense / 100).toFixed(2)}</div>
-            </div>
-            <div>
+            </th>
+            <th>
                 <label className={WeeklyStyle.info_title}>Total</label>
                 <div className={WeeklyStyle.total}>{((sumIncome-sumExpense) / 100).toFixed(2)}</div>
-            </div>
-        </div>
+            </th>
+        </tr>
+
+        </thead>
     );
 };
 

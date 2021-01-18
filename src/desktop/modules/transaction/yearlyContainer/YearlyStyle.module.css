@@ -1,43 +1,62 @@
 .wrapper {
-    width: 90%;
-    margin: auto;
+  width: 90%;
+  margin: auto;
 }
-.table{
-    width: 70%;
-    margin: auto;
+.container {
+  margin: auto;
+  width: 50%;
+}
+.table {
+  width: 100%;
+  margin: auto;
+  border-collapse: collapse;
+}
+td {
+  border-top: lightslategray solid 2px;
+    height: 40px;
 }
 .content_row {
-    height: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-top: lightgray 2px solid;
+  cursor: pointer;
+  text-decoration: none;
+}
+.month_content {
+  width: 200px;
+    text-align: -webkit-center;
+}
+.month {
+  width: 150px;
+  font-size: 25px;
+  color: dimgrey;
+  border: dimgrey 2px solid;
+  border-radius: 10px;
+  text-align: center;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    border-top: lightgray 2px solid;
-    cursor: pointer;
-    text-decoration: none;
+    justify-content: center;
 }
-.month{
-    padding: 3px 20px 3px 20px;
-    font-size: 25px;
-    color: dimgrey;
-    border: dimgrey 2px solid;
-    border-radius: 10px;
-}
-.month_selected{
-    padding: 3px 20px 3px 20px;
-    font-size: 25px;
-    color: coral;
-    border: coral 2px solid;
-    border-radius: 10px;
+.month_selected {
+  width: 150px;
+  font-size: 25px;
+  color: coral;
+  border: coral 2px solid;
+  border-radius: 10px;
+  text-align: center;
 }
 .income {
-    font-size: 25px;
-    color: dodgerblue;
-    font-weight: bold;
-    padding: 10px;
+  font-size: 25px;
+  color: dodgerblue;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
 }
 .expense {
-    font-size: 25px;
-    color: coral;
-    font-weight: bold;
-    padding: 10px;
+  font-size: 25px;
+  color: coral;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
 }

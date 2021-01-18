@@ -6,11 +6,11 @@ import Form from "./form/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
-
 type Props = {
   isAddTransactionOpen: boolean;
   transaction: State["transaction"];
   errors: State["errors"];
+  isEditTransactionOpen: boolean;
   handleInputChange: (event: {
     target: {
       value: string;
@@ -19,7 +19,8 @@ type Props = {
   }) => void;
   handleSave: () => void;
   isTransfer: boolean;
-  handleOpenTransaction:(date:any)=>void;
+  handleOpenTransaction: (date: any) => void;
+  handleOpenEdit: (date: any) => void;
 };
 
 const AddTransactionModal: React.FC<Props> = ({
@@ -30,19 +31,32 @@ const AddTransactionModal: React.FC<Props> = ({
   handleSave,
   isTransfer,
   handleOpenTransaction,
+  isEditTransactionOpen,
+  handleOpenEdit,
 }) => {
+
+  const ChooseCategory=(event:string)=>{
+    switch(event) {
+      case "income":
+      return 0;
+      case "expense":
+        return 1;
+      case "transfer":
+        return 2;
+    }
+  }
   return (
     <div>
-      {isAddTransactionOpen ? (
+      {isAddTransactionOpen || isEditTransactionOpen ? (
         <div className={AddTransactionStyl.modal_wrapper}>
           <div className={AddTransactionStyl.container}>
             <FontAwesomeIcon
               className={AddTransactionStyl.close_button}
-              onClick={()=>handleOpenTransaction("")}
+              onClick={() => isEditTransactionOpen?handleOpenEdit(""):handleOpenTransaction("")}
               icon={faTimesCircle}
             />
-            <Tabs selectedTabClassName={AddTransactionStyl.selected_tab}>
-              <TabList className={AddTransactionStyl.tab_list}>
+            <Tabs selectedTabClassName={AddTransactionStyl.selected_tab} selectedIndex={ChooseCategory(transaction.type)} >
+              <TabList className={AddTransactionStyl.tab_list} >
                 <Tab
                   className={AddTransactionStyl.tab}
                   onClick={() =>
@@ -54,6 +68,7 @@ const AddTransactionModal: React.FC<Props> = ({
                   <span>Income</span>
                 </Tab>
                 <Tab
+                    key="expense"
                   className={AddTransactionStyl.tab}
                   onClick={() =>
                     handleInputChange({
@@ -102,11 +117,11 @@ const AddTransactionModal: React.FC<Props> = ({
             </Tabs>
 
             <input
-                type="text"
-                className={AddTransactionStyl.input}
-                name="description"
-                value={transaction.description}
-                onChange={handleInputChange}
+              type="text"
+              className={AddTransactionStyl.input}
+              name="description"
+              value={transaction.description}
+              onChange={handleInputChange}
             />
 
             <div className={AddTransactionStyl.buttons_content}>

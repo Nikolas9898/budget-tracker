@@ -10,23 +10,62 @@ import WeeklyStatsPage from "./pages/statsPage/WeeklyPage";
 import DailyStatsPage from "./pages/statsPage/DailyPage";
 import YearlyStatsPage from "./pages/statsPage/YearlyPage";
 import MonthlyStatsPage from "./pages/statsPage/MonthlyPage";
+import { AuthenticatedRoute } from "./helpers/AuthRoute";
 
 const Routes = () => {
   return (
     <Router>
       <Switch>
         <Route path="/authentication" exact component={LoginPage} />
-        <Route path="/" exact component={HomePage} />
-        <Route path="/transaction/monthly" exact component={MonthlyPage} />
-        <Route path="/transaction/daily" exact component={DailyPage} />
-        <Route path="/transaction/yearly" exact component={YearlyPage} />
-        <Route path="/transaction/weekly" exact component={WeeklyPage} />
-        <Route path="/transaction/period" exact component={MonthlyPage} />
-        <Route path="/stats/monthly" exact component={MonthlyStatsPage} />
-        <Route path="/stats/daily" exact component={DailyStatsPage} />
-        <Route path="/stats/yearly" exact component={YearlyStatsPage} />
-        <Route path="/stats/weekly" exact component={WeeklyStatsPage} />
-        <Route path="/stats/period" exact component={MonthlyStatsPage} />
+        <AuthenticatedRoute path="/" exact component={HomePage} />
+        <AuthenticatedRoute
+          path="/transaction/monthly"
+          exact
+          component={MonthlyPage}
+        />
+        <AuthenticatedRoute
+          path="/transaction/daily"
+          exact
+          component={DailyPage}
+        />
+        <AuthenticatedRoute
+          path="/transaction/yearly"
+          exact
+          component={YearlyPage}
+        />
+        <AuthenticatedRoute
+          path="/transaction/weekly"
+          exact
+          component={WeeklyPage}
+        />
+        <AuthenticatedRoute
+          path="/transaction/period"
+          exact
+          component={MonthlyPage}
+        />
+        <AuthenticatedRoute
+          path="/stats/monthly"
+          exact
+          component={MonthlyStatsPage}
+        />
+        <AuthenticatedRoute
+          path="/stats/daily"
+          exact
+          component={DailyStatsPage}
+        />
+        <AuthenticatedRoute
+          path="/stats/yearly"
+          exact
+          component={YearlyStatsPage}
+        />
+        <AuthenticatedRoute
+          path="/stats/weekly"
+          exact
+          component={WeeklyStatsPage}
+        />
+        {/* <Route path="/stats/period" exact component={MonthlyStatsPage} /> */}
+
+        <AuthenticatedRoute path="/stats/period" component={MonthlyStatsPage} />
       </Switch>
     </Router>
   );
