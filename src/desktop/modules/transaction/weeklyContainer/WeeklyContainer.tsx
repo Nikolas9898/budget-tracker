@@ -1,10 +1,10 @@
 import NavBarMenu from "../../../layout/navBarMenu/NavBarMenu";
-import Moment from "moment";
 import React from "react";
 import WeeklyStyle from "./WeeklyStyle.module.css";
 import InfoRow from "../components/infoRow/InfoRow";
 import moment from "moment";
 import axios from "axios";
+import WeeklyTableRow from "./WeeklyTableRow";
 
 export interface State {
   date: any;
@@ -92,24 +92,24 @@ class WeeklyContainer extends React.Component {
     let weeks = [];
 
     weeks.push({
-      from: new Date(firstWeekYear, firstWeekMonth, firstWeekDay),
-      to: new Date(firstWeekLastYear, firstWeekLastMonth, firstWeekLastDay),
+      from: new Date(firstWeekYear, firstWeekMonth, firstWeekDay + 1),
+      to: new Date(firstWeekLastYear, firstWeekLastMonth, firstWeekLastDay + 1),
       income: 0,
       expense: 0,
     });
 
     for (let i = firstWeekLastDay + 1; i <= lastWeekDay - 7; i = i + 7) {
       weeks.push({
-        from: new Date(date.getFullYear(), date.getMonth(), i),
-        to: new Date(date.getFullYear(), date.getMonth(), i + 6),
+        from: new Date(date.getFullYear(), date.getMonth(), i + 1),
+        to: new Date(date.getFullYear(), date.getMonth(), i + 7),
         income: 0,
         expense: 0,
       });
     }
 
     weeks.push({
-      from: new Date(lastWeekYear, lastWeekMonth, lastWeekDay),
-      to: new Date(lastWeekLastYear, lastWeekLastMonth, lastWeekLastDay),
+      from: new Date(lastWeekYear, lastWeekMonth, lastWeekDay + 1),
+      to: new Date(lastWeekLastYear, lastWeekLastMonth, lastWeekLastDay + 1),
       income: 0,
       expense: 0,
     });
@@ -145,21 +145,16 @@ class WeeklyContainer extends React.Component {
           handleNextMonth={this.handleNextMonth}
           date={this.state.date}
         />
-        <InfoRow sumExpense={sumExpense} sumIncome={sumIncome} />
-        {this.state.weeks.reverse().map((week, index) => (
-          <div key={index} className={WeeklyStyle.container_row}>
-            <div className={WeeklyStyle.date}>
-              {Moment(week.from).format("DD.MM")} ~{" "}
-              {Moment(week.to).format("DD.MM")}
-            </div>
-            <div className={WeeklyStyle.income}>
-              $ {(week.income / 100).toFixed(2)}
-            </div>
-            <div className={WeeklyStyle.expense}>
-              $ {(week.expense / 100).toFixed(2)}
-            </div>
-          </div>
-        ))}
+        <div className={WeeklyStyle.container}>
+          <table className={WeeklyStyle.table}>
+            <InfoRow sumExpense={sumExpense} sumIncome={sumIncome} />
+            <tbody>
+              {this.state.weeks.reverse().map((week, index) => (
+                <WeeklyTableRow week={week} key={index} />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }

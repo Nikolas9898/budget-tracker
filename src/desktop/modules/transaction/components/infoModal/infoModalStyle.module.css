@@ -5,6 +5,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 1050;
+  background-color: rgba(192,192,192,0.8);
 }
 .wrapper_container {
   margin: 200px auto auto auto;
@@ -47,6 +48,15 @@
   font-size: 40px;
   margin-left: 510px;
   padding: 20px;
+}
+.close_button{
+  color: #0160b2;
+
+  font-size: 60px;
+  display: flex;
+  margin: auto;
+  padding: 20px;
+  cursor: pointer;
 }
 .function_container {
   display: flex;

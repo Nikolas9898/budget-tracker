@@ -3,9 +3,10 @@ import Moment from "moment";
 import NavBarMenu from "../../../layout/navBarMenu/NavBarMenu";
 import YearlyStyle from "./YearlyStyle.module.css";
 import InfoRow from "../components/infoRow/InfoRow";
-import { Link } from "react-router-dom";
+import {useHistory} from 'react-router-dom'
 import axios from "axios";
 import moment from "moment";
+import YearlyTableRow from "./YearlyTableRow";
 
 export interface State {
   date: any;
@@ -103,6 +104,8 @@ class YearlyContainer extends React.Component {
 
     this.setYear();
   };
+
+
   render() {
     const { date, months, sumExpense, sumIncome } = this.state;
     return (
@@ -112,37 +115,17 @@ class YearlyContainer extends React.Component {
           handleNextMonth={this.handleNextYear}
           date={date}
         />
-        <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
-        <div className={YearlyStyle.table}>
-          {months.reverse().map((month, index) => (
-            <Link
-              key={index}
-              className={YearlyStyle.content_row}
-              to={`/transaction/monthly?date=${month.from}`}
-            >
-              <div
-                className={
-                  new Date(date).getMonth() ===
-                    new Date(month.from).getMonth() &&
-                  new Date().getFullYear() ===
-                    new Date(month.from).getFullYear()
-                    ? YearlyStyle.month_selected
-                    : YearlyStyle.month
-                }
-              >
-                {Moment(month.from).format("MMM")}
-              </div>
-              <div className={YearlyStyle.income}>
-                {" "}
-                $ {(month.income / 100).toFixed(2)}
-              </div>
-              <div className={YearlyStyle.expense}>
-                {" "}
-                $ {(month.expense / 100).toFixed(2)}
-              </div>
-            </Link>
-          ))}
+        <div className={YearlyStyle.container}>
+          <table className={YearlyStyle.table}>
+            <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
+            <tbody >
+            {months.reverse().map((month, index) => (
+                <YearlyTableRow month={month} date={date}/>
+            ))}
+            </tbody>
+          </table>
         </div>
+
       </div>
     );
   }

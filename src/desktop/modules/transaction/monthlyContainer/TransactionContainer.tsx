@@ -89,18 +89,23 @@ class TransactionContainer extends React.Component<Props> {
   };
 
   componentDidMount() {
+    console.log(this.props.filters.date)
     if (this.props.filters.date) {
       this.setState({
         date: new Date(this.props.filters.date),
       });
       this.getTransactions(new Date(this.props.filters.date));
+      this.setCalendar(new Date(this.props.filters.date));
     } else {
+
       this.setState({
         date: new Date(),
       });
       this.getTransactions(new Date());
     }
-    this.setCalendar(new Date());
+    if (this.props.filters.date===undefined) {
+      this.setCalendar(new Date());
+    }
   }
 
   getTransactions = (date: any) => {
@@ -195,6 +200,8 @@ class TransactionContainer extends React.Component<Props> {
         config
       )
       .then(() => {
+       let newEvents= this.state.selectedDay.events.filter(event=>event._id!==eventId)
+        this.setState({selectedDay:{...this.state.selectedDay,events:newEvents}})
         this.getTransactions(this.state.date);
       });
   };
@@ -533,8 +540,17 @@ class TransactionContainer extends React.Component<Props> {
 
     let toDate = new Date(lastYear, lastMonth, lastDay);
 
-    if (fromDate.getDay() !== 0) {
+    if (fromDate.getDay() !== 1 && fromDate.getDay() !== 0) {
       this.setFirstWeek(date);
+    }
+
+    if (fromDate.getDay() === 0) {
+      let lastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+      for (let i = lastDay - 5; i <= lastDay; i++) {
+        this.state.calendarDates.push({
+          date: new Date(date.getFullYear(), date.getMonth() - 1, i),
+        });
+      }
     }
 
     for (let i = 1; i <= toDate.getDate(); i++) {
@@ -542,21 +558,20 @@ class TransactionContainer extends React.Component<Props> {
         date: new Date(date.getFullYear(), date.getMonth(), i),
       });
     }
-    if (toDate.getDay() !== 6) this.setLastWeek(date);
+    if (toDate.getDay() !== 0) this.setLastWeek(date);
   };
   setFirstWeek = (date: any) => {
     let firstDay = moment(date).startOf("month").startOf("week").get("date");
     let firstMonth = moment(date).startOf("month").startOf("week").get("month");
     let firstYear = moment(date).startOf("month").startOf("week").get("year");
 
-    let fromDate = new Date(firstYear, firstMonth, firstDay);
+    let fromDate = new Date(firstYear, firstMonth, firstDay + 1);
 
     let lastDay = moment(fromDate).endOf("month").get("date");
     let lastMonth = moment(fromDate).endOf("month").get("month");
     let lastYear = moment(fromDate).endOf("month").get("year");
 
     let toDate = new Date(lastYear, lastMonth, lastDay);
-
     for (let i = fromDate.getDate(); i <= toDate.getDate(); i++) {
       this.state.calendarDates.push({
         date: new Date(fromDate.getFullYear(), fromDate.getMonth(), i),
@@ -568,7 +583,7 @@ class TransactionContainer extends React.Component<Props> {
     let lastMonth = moment(date).endOf("month").endOf("week").get("month");
     let lastYear = moment(date).endOf("month").endOf("week").get("year");
 
-    let toDate = new Date(lastYear, lastMonth, lastDay);
+    let toDate = new Date(lastYear, lastMonth, lastDay + 1);
 
     for (let i = 1; i <= toDate.getDate(); i++) {
       this.state.calendarDates.push({

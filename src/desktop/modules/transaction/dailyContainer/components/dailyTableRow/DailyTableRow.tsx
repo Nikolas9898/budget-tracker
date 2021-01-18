@@ -19,27 +19,32 @@ type Props = {
 const DailyTableRow: React.FC<Props> = ({ event }) => {
   return (
     <tr>
-      <th className={DailyTableRowStyle.account}>
-        {event.type == "transfer" ? "Transfer" : event.category}
-      </th>
-      <th className={DailyTableRowStyle.category}>
-        <div>{event.note}</div>
-        <div>
-          {event.type == "transfer" ? (
-            <div>
-              {event.from}
-              {"--->"}
-              {event.to}
-            </div>
-          ) : (
-            event.account
-          )}
-        </div>
-      </th>
-      <th className={DailyTableRowStyle.income}>
+      <td >
+          <div className={DailyTableRowStyle.account_container}>
+              <div className={DailyTableRowStyle.account}>
+                  {event.type == "transfer" ? "Transfer" : event.category}
+              </div>
+              <div className={DailyTableRowStyle.category}>
+                  <div>{event.note}</div>
+                  <div>
+                      {event.type == "transfer" ? (
+                          <div>
+                              {event.from}
+                              {" ---> "}
+                              {event.to}
+                          </div>
+                      ) : (
+                          event.account
+                      )}
+                  </div>
+              </div>
+          </div>
+
+      </td>
+      <td className={DailyTableRowStyle.income}>
         {event.type === "income" ? (event.amount / 100).toFixed(2) : null}
-      </th>
-      <th
+      </td>
+      <td
         className={
           event.type === "expense"
             ? DailyTableRowStyle.expense
@@ -51,7 +56,7 @@ const DailyTableRow: React.FC<Props> = ({ event }) => {
             ? (event.amount / 100).toFixed(2)
             : null}
         </div>
-      </th>
+      </td>
     </tr>
   );
 };

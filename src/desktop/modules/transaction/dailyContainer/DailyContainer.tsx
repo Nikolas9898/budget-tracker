@@ -89,51 +89,60 @@ const DailyContainer = () => {
         handleNextMonth={handleNextMonth}
         date={date}
       />
-      <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
-      <div className={DailyStyle.table}>
-        {transactions
-          .sort(function (a, b) {
-            return (
-              new Date(a.createdAt).getDate() - new Date(b.createdAt).getDate()
-            );
-          })
-          .reverse()
-          .map((transaction) => (
-            <div key={transaction._id} className={DailyStyle.container}>
-              <div className={DailyStyle.content_row}>
-                <div className={DailyStyle.date_content}>
-                  <div className={DailyStyle.date}>
-                    {Moment(transaction.createdAt).format("DD")}
-                  </div>
-                  <div>
-                    <div className={DailyStyle.date_year}>
-                      {Moment(transaction.createdAt).format("MM.YYYY")}
-                    </div>
-                    <div className={DailyStyle.date_day}>
-                      {Moment(transaction.createdAt).format("ddd")}
-                    </div>
-                  </div>
-                </div>
-                <div className={DailyStyle.income}>
-                  {(transaction.income / 100).toFixed(2)}
-                </div>
-                <div className={DailyStyle.expense}>
-                  {(transaction.expense / 100).toFixed(2)}
-                </div>
-              </div>
-              <table>
-                {transaction.events.map((event) => (
-                  <DailyTableRow event={event} key={event._id} />
-                ))}
-              </table>
-            </div>
-          ))}
+      <div className={DailyStyle.container}>
+        <table className={DailyStyle.table}>
 
-        <FontAwesomeIcon
-          className={DailyStyle.add_button}
-          icon={faPlusCircle}
-        />
+          <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
+
+          {transactions
+              .sort(function (a, b) {
+                return (
+                    new Date(a.createdAt).getDate() -
+                    new Date(b.createdAt).getDate()
+                );
+              })
+              .reverse()
+              .map((transaction) => (
+                  <tbody className={DailyStyle.table_container}>
+                  <tr>
+                    <th>
+                      <div className={DailyStyle.date_content}>
+                        <div className={DailyStyle.date}>
+                          {Moment(transaction.createdAt).format("DD")}
+                        </div>
+                        <div>
+                          <div className={DailyStyle.date_year}>
+                            {Moment(transaction.createdAt).format("MM.YYYY")}
+                          </div>
+                          <div className={DailyStyle.date_day}>
+                            {Moment(transaction.createdAt).format("ddd")}
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div className={DailyStyle.income}>
+                        {(transaction.income / 100).toFixed(2)}
+                      </div>
+                    </th>
+                    <th>
+                      <div className={DailyStyle.expense}>
+                        {(transaction.expense / 100).toFixed(2)}
+                      </div>
+                    </th>
+                  </tr>
+                  {transaction.events.map((event) => (
+                      <DailyTableRow event={event} key={event._id} />
+                  ))}
+
+                  </tbody>
+              ))}
+
+        </table>
+        <FontAwesomeIcon className={DailyStyle.add_button} icon={faPlusCircle} />
       </div>
+
+
     </div>
   );
 };

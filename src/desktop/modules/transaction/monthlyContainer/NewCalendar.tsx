@@ -16,7 +16,7 @@ const NewCalendar: React.FC<Props> = ({
   transactions,
   handleOpenInfoModal,
 }) => {
-  const [days] = useState(["Su", "M", "T", "W", "Th", "F", "Sa"]);
+  const [days] = useState([ "M", "T", "W", "Th", "F", "Sa","Su"]);
 
   const currentDay = (calDate: any, event: any) => {
     let isTrue =
