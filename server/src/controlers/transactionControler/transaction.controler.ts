@@ -1,4 +1,5 @@
 import { RequestHandler, Request, Response } from "express";
+import { env } from "process";
 import { tokenDecoder } from "../../middleware/tokenDecoder";
 import Transaction, {
   TransactionInterface,
@@ -34,7 +35,7 @@ export const createTransaction: RequestHandler = async (
       });
 
       let expenseEvent = {
-        transferId: transfer._id,
+        transferId: transfer.events[0]._id,
         type: "expense",
         currency: "BG",
         date: transfer.events[0].date,
@@ -101,7 +102,7 @@ export const createTransaction: RequestHandler = async (
       });
 
       let expenseEvent = {
-        transferId: transfer._id,
+        transferId: transfer.events[0]._id,
         type: "expense",
         currency: "BG",
         date: transfer.events[0].date,
@@ -242,86 +243,121 @@ export const editTransactionEvent: RequestHandler = async (
   res: Response
 ) => {
   const id = req.params.transactionId;
-  const event_id = req.params.event_id;
-  const event = req.body;
+  const oldEvent_id = req.params.event_id;
+  const eventFromBody = req.body;
   const userId = tokenDecoder(req.headers.authorization);
+  let expense = 0;
+  let income = 0;
 
   try {
     const transaction: any = await Transaction.findOne({
       _id: id,
       userId,
     });
+    if (eventFromBody.type.toString() === "transfer") {
+      //   let counter = 0;
+      //   transaction.events.map((foundEvent: any, index: number) => {
+      //     if (event_id === foundEvent.transferId) {
+      //       counter = index;
+      //     }
+      //   });
+      // let transferIndex = transaction.events.findIndex(
+      //   (foundEvent: any) =>
+      //     foundEvent._id.toString() === oldEvent_id.toString()
+      // );
+      // transaction.events.splice(transferIndex, 1, event);
 
-    if (transaction === null) {
-      return res.json({
-        errorMsg: "Not authorized or transaction does not exist",
+      transaction.events.map((event: any) => {
+        if (event._id.toString() === oldEvent_id.toString()) {
+          console.log("vlezna li bre");
+          event.type = eventFromBody.type;
+          event.currency = eventFromBody.currency;
+          event.date = eventFromBody.date;
+          event.from = eventFromBody.from;
+          event.fees = eventFromBody.fees;
+          event.to = eventFromBody.to;
+          event.amount = eventFromBody.amount;
+          event.description = eventFromBody.description;
+          event.note = eventFromBody.note;
+        }
       });
-    } else {
-      let newEvents = transaction.events;
 
-      let oldIndex = newEvents.findIndex(
-        (ev: any) => ev._id.toString() === event_id.toString()
+      await transaction.save().then(() => {
+        return res.json(transaction);
+      });
+      // await transaction.save();
+
+      //   console.log("stiga")
+      //   transaction.events[counter].amount = event.fees;
+      //   transaction.events[counter].transferId = event_id;
+      //   Promise.all(
+      //     transaction.events.map((event: any) => {
+      //       if (event.type.toLowerCase() === "income") {
+      //         income += event.amount;
+      //       }
+      //       if (event.type.toLowerCase() === "expense") {
+      //         expense += event.amount;
+      //       }
+      //     })
+      //   ).then(() => {
+      //     transaction.income = income;
+      //     transaction.expense = expense;
+      //     transaction.save().then(() => {
+      //       return res.json(transaction);
+      //     });
+      //   });
+      // } else if (event.type === "expense" && event.transferId) {
+      //   console.log("tova e else if");
+      //   let counter = 0;
+      //   transaction.events.findIndex((foundEvent: any, index: number) => {
+      //     if (foundEvent._id.toString() === event.transferId) {
+      //       counter = index;
+      //     }
+      //   });
+      //   let transfer = transaction.events.findIndex(
+      //     (foundEvent: any) => foundEvent._id.toString() === event_id.toString()
+      //   );
+      //   transaction.events.splice(transfer, 1, event);
+      //   transaction.events[counter].fees = event.amount;
+      //   Promise.all(
+      //     transaction.events.map((event: any) => {
+      //       if (event.type.toLowerCase() === "income") {
+      //         income += event.amount;
+      //       }
+      //       if (event.type.toLowerCase() === "expense") {
+      //         expense += event.amount;
+      //       }
+      //     })
+      //   ).then(() => {
+      //     transaction.income = income;
+      //     transaction.expense = expense;
+      //     transaction.save().then(() => {
+      //       return res.json(transaction);
+      //     });
+      //   });
+    }
+    if (eventFromBody.type === "expense" || eventFromBody.type === "income") {
+      let foundIndex = transaction.events.findIndex(
+        (foundEvent: any) =>
+          foundEvent._id.toString() === oldEvent_id.toString()
       );
-
-      await newEvents.splice(oldIndex, 1, event);
-
-      if (
-        event.type !== "transfer" &&
-        newEvents[oldIndex - 1].type === "transfer"
-      ) {
-        newEvents[oldIndex - 1].fees = event.amount;
-      }
-
-      if (
-        event.type === "transfer" &&
-        event.fees > 0 &&
-        event.type !== newEvents[oldIndex].type
-      ) {
-        newEvents.splice(oldIndex + 1, 0, {
-          type: "expense",
-          currency: "BG",
-          date: event.date,
-          category: "other",
-          account: event.from,
-          amount: event.fees,
-          note: event.note,
-          description: event.description,
+      transaction.events.splice(foundIndex, 1, eventFromBody);
+      Promise.all(
+        transaction.events.map((event: any) => {
+          if (event.type.toLowerCase() === "income") {
+            income += event.amount;
+          }
+          if (event.type.toLowerCase() === "expense") {
+            expense += event.amount;
+          }
+        })
+      ).then(async () => {
+        transaction.income = income;
+        transaction.expense = expense;
+        await transaction.save().then(() => {
+          return res.json(transaction);
         });
-      }
-
-      if (
-        event.type === "transfer" &&
-        event.type === newEvents[oldIndex].type
-      ) {
-        newEvents.splice(oldIndex + 1, 1, {
-          type: "expense",
-          currency: "BG",
-          date: event.date,
-          category: "other",
-          account: event.from,
-          amount: event.fees,
-          note: event.note,
-          description: event.description,
-        });
-      }
-
-      let expense = 0;
-      let income = 0;
-      await newEvents.map((event: any) => {
-        if (event.type.toLowerCase() === "income") {
-          income += event.amount;
-        }
-        if (event.type.toLowerCase() === "expense") {
-          expense += event.amount;
-        }
       });
-      transaction.expense = expense;
-      transaction.income = income;
-
-      transaction.events = newEvents;
-
-      transaction.save();
-      res.json(transaction);
     }
   } catch (error) {
     res.json({ errorMsg: error });
