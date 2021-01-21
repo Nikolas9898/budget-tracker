@@ -70,6 +70,7 @@ class TransactionContainer extends React.Component<Props> {
       from: "",
       category: "",
       fees: "0",
+      transferId: "",
       to: "",
       amount: "0",
       note: "",
@@ -90,7 +91,6 @@ class TransactionContainer extends React.Component<Props> {
   };
 
   componentDidMount() {
-    console.log(this.props.filters.date);
     if (this.props.filters.date) {
       this.setState({
         date: new Date(this.props.filters.date),

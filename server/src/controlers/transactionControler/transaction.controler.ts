@@ -243,7 +243,7 @@ export const editTransactionEvent: RequestHandler = async (
   res: Response
 ) => {
   const id = req.params.transactionId;
-  const oldEvent_id = req.params.event_id;
+  const event_id = req.params.event_id;
   const eventFromBody = req.body;
   const userId = tokenDecoder(req.headers.authorization);
   let expense = 0;
@@ -255,93 +255,58 @@ export const editTransactionEvent: RequestHandler = async (
       userId,
     });
     if (eventFromBody.type.toString() === "transfer") {
-      //   let counter = 0;
-      //   transaction.events.map((foundEvent: any, index: number) => {
-      //     if (event_id === foundEvent.transferId) {
-      //       counter = index;
-      //     }
-      //   });
-      // let transferIndex = transaction.events.findIndex(
-      //   (foundEvent: any) =>
-      //     foundEvent._id.toString() === oldEvent_id.toString()
-      // );
-      // transaction.events.splice(transferIndex, 1, event);
+      transaction.events.map((oldEvent: any) => {
+        if (oldEvent._id.toString() === event_id.toString()) {
+          if (
+            oldEvent.type !== "transfer" &&
+            eventFromBody.type === "transfer" &&
+            eventFromBody.fees > 0
+          ) {
+            transaction.events.push({
+              transferId: oldEvent._id,
+              type: "expense",
+              currency: "BG",
+              date: oldEvent.date,
+              category: "other",
+              account: eventFromBody.from,
+              amount: eventFromBody.fees,
+              note: "fees",
+              description: oldEvent.description,
+            });
+          }
 
-      transaction.events.map((event: any) => {
-        if (event._id.toString() === oldEvent_id.toString()) {
-          console.log("vlezna li bre");
-          event.type = eventFromBody.type;
-          event.currency = eventFromBody.currency;
-          event.date = eventFromBody.date;
-          event.from = eventFromBody.from;
-          event.fees = eventFromBody.fees;
-          event.to = eventFromBody.to;
-          event.amount = eventFromBody.amount;
-          event.description = eventFromBody.description;
-          event.note = eventFromBody.note;
+          if (oldEvent.fees === 0 && eventFromBody.fees > 0) {
+            transaction.events.push({
+              transferId: oldEvent._id,
+              type: "expense",
+              currency: "BG",
+              date: oldEvent.date,
+              category: "other",
+              account: oldEvent.from,
+              amount: eventFromBody.fees,
+              note: "fees",
+              description: oldEvent.description,
+            });
+          }
+
+          oldEvent.type = eventFromBody.type;
+          oldEvent.currency = eventFromBody.currency;
+          oldEvent.date = eventFromBody.date;
+          oldEvent.from = eventFromBody.from;
+          oldEvent.category = null;
+          oldEvent.account = null;
+          oldEvent.fees = eventFromBody.fees;
+          oldEvent.to = eventFromBody.to;
+          oldEvent.amount = eventFromBody.amount;
+          oldEvent.description = eventFromBody.description;
+          oldEvent.note = eventFromBody.note;
+        }
+
+        if (oldEvent.transferId === event_id) {
+          oldEvent.amount = eventFromBody.fees;
         }
       });
 
-      await transaction.save().then(() => {
-        return res.json(transaction);
-      });
-      // await transaction.save();
-
-      //   console.log("stiga")
-      //   transaction.events[counter].amount = event.fees;
-      //   transaction.events[counter].transferId = event_id;
-      //   Promise.all(
-      //     transaction.events.map((event: any) => {
-      //       if (event.type.toLowerCase() === "income") {
-      //         income += event.amount;
-      //       }
-      //       if (event.type.toLowerCase() === "expense") {
-      //         expense += event.amount;
-      //       }
-      //     })
-      //   ).then(() => {
-      //     transaction.income = income;
-      //     transaction.expense = expense;
-      //     transaction.save().then(() => {
-      //       return res.json(transaction);
-      //     });
-      //   });
-      // } else if (event.type === "expense" && event.transferId) {
-      //   console.log("tova e else if");
-      //   let counter = 0;
-      //   transaction.events.findIndex((foundEvent: any, index: number) => {
-      //     if (foundEvent._id.toString() === event.transferId) {
-      //       counter = index;
-      //     }
-      //   });
-      //   let transfer = transaction.events.findIndex(
-      //     (foundEvent: any) => foundEvent._id.toString() === event_id.toString()
-      //   );
-      //   transaction.events.splice(transfer, 1, event);
-      //   transaction.events[counter].fees = event.amount;
-      //   Promise.all(
-      //     transaction.events.map((event: any) => {
-      //       if (event.type.toLowerCase() === "income") {
-      //         income += event.amount;
-      //       }
-      //       if (event.type.toLowerCase() === "expense") {
-      //         expense += event.amount;
-      //       }
-      //     })
-      //   ).then(() => {
-      //     transaction.income = income;
-      //     transaction.expense = expense;
-      //     transaction.save().then(() => {
-      //       return res.json(transaction);
-      //     });
-      //   });
-    }
-    if (eventFromBody.type === "expense" || eventFromBody.type === "income") {
-      let foundIndex = transaction.events.findIndex(
-        (foundEvent: any) =>
-          foundEvent._id.toString() === oldEvent_id.toString()
-      );
-      transaction.events.splice(foundIndex, 1, eventFromBody);
       Promise.all(
         transaction.events.map((event: any) => {
           if (event.type.toLowerCase() === "income") {
@@ -351,16 +316,96 @@ export const editTransactionEvent: RequestHandler = async (
             expense += event.amount;
           }
         })
-      ).then(async () => {
+      ).then(() => {
         transaction.income = income;
         transaction.expense = expense;
-        await transaction.save().then(() => {
-          return res.json(transaction);
-        });
       });
+
+      await transaction.save().then(() => {
+        return res.json(transaction);
+      });
+    } else {
+      if (eventFromBody.transferId) {
+        Promise.all(
+          transaction.events.map((oldEvent: any) => {
+            if (oldEvent._id.toString() === event_id) {
+              oldEvent.amount = eventFromBody.amount;
+              oldEvent.type = eventFromBody.type;
+              oldEvent.currency = eventFromBody.currency;
+              oldEvent.date = eventFromBody.date;
+              oldEvent.category = eventFromBody.category;
+              oldEvent.account = eventFromBody.account;
+              oldEvent.note = eventFromBody.note;
+              oldEvent.description = eventFromBody.description;
+            }
+
+            if (
+              oldEvent._id.toString() === event_id &&
+              eventFromBody.type === "income"
+            ) {
+              oldEvent.amount = eventFromBody.amount;
+              oldEvent.type = eventFromBody.type;
+              oldEvent.transferId = "";
+              oldEvent.currency = eventFromBody.currency;
+              oldEvent.date = eventFromBody.date;
+              oldEvent.category = eventFromBody.category;
+              oldEvent.account = eventFromBody.account;
+              oldEvent.note = eventFromBody.note;
+              oldEvent.description = eventFromBody.description;
+            }
+
+            if (oldEvent._id.toString() === eventFromBody.transferId) {
+              if (eventFromBody.type === "income") {
+                oldEvent.fees = 0;
+              } else {
+                oldEvent.fees = eventFromBody.amount;
+              }
+            }
+          })
+        ).then(() => {
+          Promise.all(
+            transaction.events.map((event: any) => {
+              if (event.type.toLowerCase() === "income") {
+                income += event.amount;
+              }
+              if (event.type.toLowerCase() === "expense") {
+                expense += event.amount;
+              }
+            })
+          ).then(() => {
+            transaction.income = income;
+            transaction.expense = expense;
+
+            transaction.save().then(() => {
+              return res.json(transaction);
+            });
+          });
+        });
+      } else {
+        let foundIndex = transaction.events.findIndex(
+          (foundEvent: any) => foundEvent._id.toString() === event_id.toString()
+        );
+        transaction.events.splice(foundIndex, 1, eventFromBody);
+        Promise.all(
+          transaction.events.map((event: any) => {
+            if (event.type.toLowerCase() === "income") {
+              income += event.amount;
+            }
+            if (event.type.toLowerCase() === "expense") {
+              expense += event.amount;
+            }
+          })
+        ).then(async () => {
+          transaction.income = income;
+          transaction.expense = expense;
+          await transaction.save().then(() => {
+            return res.json(transaction);
+          });
+        });
+      }
     }
   } catch (error) {
-    res.json({ errorMsg: error });
+    return res.json({ errorMsg: error });
   }
 };
 
