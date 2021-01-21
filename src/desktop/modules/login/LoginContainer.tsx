@@ -15,17 +15,14 @@ const LoginContainer = () => {
     password: "",
     confirmPassword: "",
   });
-  const history = useHistory();
-
-  // const qE = useSelector((state: State) => state.user);
-
-  const dispatch = useDispatch();
-
+  const [isLogin, setIsLogin] = useState(true);
   const [errors, setErrors] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleInputChange = (e: any) =>
     setUser({
@@ -33,15 +30,6 @@ const LoginContainer = () => {
       [e.currentTarget.name]: e.currentTarget.value,
     });
 
-  // const handleChoose = () => {
-  //   if (isLogin) {
-  //     setIsLogin(false);
-  //     setErrors({ email: "", password: "", confirmPassword: "" });
-  //   } else {
-  //     setIsLogin(true);
-  //     setErrors({ email: "", password: "", confirmPassword: "" });
-  //   }
-  // };
   const validateForm = () => {
     const isValidEmail = RegExp(
       "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
@@ -51,18 +39,12 @@ const LoginContainer = () => {
       password: "",
       confirmPassword: "",
     };
-
     if (!isValidEmail.test(user.email)) {
       errors.email = "Please enter a valid email.";
     }
-    // if (
-    //   user.password !== user.confirmPassword ||
-    //   !user.password.match(/^[0-9a-zA-Z]+$/) ||
-    //   user.password.length > 20 ||
-    //   user.password.length < 6
-    // ) {
-    //   errors.confirmPassword = "The password does not match. ";
-    // }
+    if (user.password !== user.confirmPassword && !isLogin) {
+      errors.confirmPassword = "The password does not match. ";
+    }
     if (
       !user.password.match(/^[0-9a-zA-Z]+$/) ||
       user.password.length > 20 ||
@@ -70,14 +52,11 @@ const LoginContainer = () => {
     ) {
       errors.password = "Please enter 6-20 characters [A-Z, a-z, 0-9 only].";
     }
-
     return errors;
   };
   const handleLogin = async () => {
     const errors = validateForm();
-
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
-
     if (!isValid) {
       setErrors({
         email: errors.email,
@@ -86,22 +65,25 @@ const LoginContainer = () => {
       });
       return;
     } else {
-      // dispatch(singIn(user));
-
+      localStorage.removeItem("jwt");
       let loggedUser = await axios.post(`http://localhost:5000/signIn`, user);
 
       if (loggedUser.data.user) {
         dispatch(singIn(loggedUser.data));
         history.push("./transaction/monthly");
+        setErrors({ email: "", password: "", confirmPassword: "" });
+      } else {
+        setErrors({
+          email: "",
+          password: loggedUser.data.errorMSG,
+          confirmPassword: "",
+        });
       }
-
-      setErrors({ email: "", password: "", confirmPassword: "" });
     }
   };
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const errors = validateForm();
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
-
     if (!isValid) {
       setErrors({
         email: errors.email,
@@ -109,17 +91,47 @@ const LoginContainer = () => {
         confirmPassword: errors.confirmPassword,
       });
       return;
-    } else {
-      setErrors({ email: "", password: "", confirmPassword: "" });
     }
+    localStorage.removeItem("jwt");
+
+    let newUser = {
+      username: user.email,
+      email: user.email,
+      password: user.password,
+      type: "admin",
+      currency: "BG",
+      categories: [],
+    };
+
+    await axios.post(`http://localhost:5000/signUp`, newUser).then((data) => {
+      setErrors({ email: "", password: "", confirmPassword: "" });
+      dispatch(singIn(data.data));
+      history.push("./transaction/monthly");
+    });
   };
   return (
     <div className={LoginContainerStyle.container}>
       <div className={LoginContainerStyle.login_form}>
         <Tabs selectedTabClassName={LoginContainerStyle.selected_tab}>
           <TabList className={LoginContainerStyle.tab_list}>
-            <Tab className={LoginContainerStyle.tab}>Sign In</Tab>
-            <Tab className={LoginContainerStyle.tab}>Register</Tab>
+            <Tab
+              className={LoginContainerStyle.tab}
+              onClick={() => {
+                setErrors({ email: "", password: "", confirmPassword: "" });
+                setIsLogin(true);
+              }}
+            >
+              Sign In
+            </Tab>
+            <Tab
+              className={LoginContainerStyle.tab}
+              onClick={() => {
+                setErrors({ email: "", password: "", confirmPassword: "" });
+                setIsLogin(true);
+              }}
+            >
+              Register
+            </Tab>
           </TabList>
           <TabPanel>
             <LoginForm
@@ -141,5 +153,4 @@ const LoginContainer = () => {
     </div>
   );
 };
-
 export default LoginContainer;
