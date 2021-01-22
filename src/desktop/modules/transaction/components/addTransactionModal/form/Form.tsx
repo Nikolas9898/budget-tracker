@@ -7,13 +7,11 @@ type Props = {
   transaction: State["transaction"];
   errors: State["errors"];
   handleInputChange: (event: any) => void;
-  isTransfer: boolean;
 };
 const Form: React.FC<Props> = ({
   transaction,
   handleInputChange,
   errors,
-  isTransfer,
 }) => {
   const [feesIsOpen, setFeesIsOpen] = useState(false);
   return (

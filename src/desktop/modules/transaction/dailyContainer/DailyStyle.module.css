@@ -43,6 +43,13 @@
     padding: 3px;
     border-radius: 5px;
 }
+.date_day_select{
+    color: white;
+    background: coral;
+    text-align: center;
+    padding: 3px;
+    border-radius: 5px;
+}
 .income {
     font-size: 25px;
     color: dodgerblue;
