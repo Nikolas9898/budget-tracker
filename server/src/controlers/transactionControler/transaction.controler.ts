@@ -1,4 +1,5 @@
 import { RequestHandler, Request, Response } from "express";
+import { env } from "process";
 import { tokenDecoder } from "../../middleware/tokenDecoder";
 import Transaction, {
   TransactionInterface,
@@ -17,126 +18,141 @@ export const createTransaction: RequestHandler = async (
     userId,
   });
 
-  if (events[0].type === "transfer" && events[0].fees > 0) {
-
-    if (transaction === null) {
-      events[0] = {
-        ...events[0],
-        note: "",
-      };
-      events.push({
-        type: "expense",
-        currency: "BG",
-        date: events[0].date,
-        category: "other",
-        account: events[0].from,
-        amount: events[0].fees,
-        note: events[0].note,
-        description: events[0].description,
-      });
-    } else {
-      transaction.events.push({
-        ...events[0],
-        note: "",
-      });
-      transaction.events.push({
-        type: "expense",
-        currency: "BG",
-        date: events[0].date,
-        category: "other",
-        account: events[0].from,
-        amount: events[0].fees,
-        note: events[0].note,
-        description: events[0].description,
-      });
-    }
-  }
+  let income = 0;
+  let expense = 0;
 
   if (!transaction) {
-    let expense = 0;
-    let income = 0;
-    events.map((event: any) => {
-      if (event.type.toLowerCase() === "income") {
-        income += event.amount;
-      }
-      if (event.type.toLowerCase() === "expense") {
-        expense += event.amount;
-      }
-    });
+    //Here it enters when transaction is not found then check if it is tansfer
 
-    const newTransaction = new Transaction({
-      events,
-      createdAt,
-      userId,
-      expense,
-      income,
-    });
-
-    await newTransaction
-      .save()
-      .then(() => res.json(newTransaction))
-      .catch((err) => {
-        res.status(400).json({ errorMsg: err });
+    if (events[0].fees && events[0].fees > 0) {
+      // here it makes expense and transfer
+      let transfer: any = new Transaction({
+        events,
+        createdAt,
+        userId,
+        expense: 0,
+        income: 0,
       });
-  } else {
-    let expense = 0;
-    let income = 0;
-    if(events[0].fees ===0||events[0].type!=="transfer"){
-      transaction.events.push(events[0]);
+
+      let expenseEvent = {
+        transferId: transfer.events[0]._id,
+        type: "expense",
+        currency: "BG",
+        date: transfer.events[0].date,
+        category: "other",
+        account: transfer.events[0].from,
+        amount: transfer.events[0].fees,
+        note: "fees",
+        description: transfer.events[0].description,
+      };
+
+      transfer.events.push(expenseEvent);
+
+      Promise.all(
+        transfer.events.map((event: any) => {
+          if (event.type.toLowerCase() === "income") {
+            income += event.amount;
+          }
+          if (event.type.toLowerCase() === "expense") {
+            expense += event.amount;
+          }
+        })
+      ).then(() => {
+        transfer.income = income;
+        transfer.expense = expense;
+      });
+
+      return await transfer
+        .save()
+        .then(() => res.json(transfer))
+        .catch((err: any) => res.json(err));
+    } else {
+      //here enters when there are not fees and just ordinary event is sent
+      events.map((event: any) => {
+        if (event.type.toLowerCase() === "income") {
+          income += event.amount;
+        }
+        if (event.type.toLowerCase() === "expense") {
+          expense += event.amount;
+        }
+      });
+
+      let transaction = new Transaction({
+        events,
+        createdAt,
+        userId,
+        income,
+        expense,
+      });
+
+      return await transaction
+        .save()
+        .then(() => res.json(transaction))
+        .catch((error) => res.json(error));
     }
+  } else {
+    //It enters here when there is found transaction on the same date and it needs to push in this transaction events
+    if (events[0].fees && events[0].fees > 0) {
+      let transfer: any = new Transaction({
+        events,
+        createdAt,
+        userId,
+        expense: 0,
+        income: 0,
+      });
 
+      let expenseEvent = {
+        transferId: transfer.events[0]._id,
+        type: "expense",
+        currency: "BG",
+        date: transfer.events[0].date,
+        category: "other",
+        account: transfer.events[0].from,
+        amount: transfer.events[0].fees,
+        note: "fees",
+        description: transfer.events[0].description,
+      };
+      transfer.events.push(expenseEvent);
 
-    transaction.events.map((event: any) => {
-      if (event.type.toLowerCase() === "income") {
-        income += event.amount;
-      }
-      if (event.type.toLowerCase() === "expense") {
-        expense += event.amount;
-      }
-    });
+      transaction.events.push(transfer.events[0]);
+      transaction.events.push(transfer.events[1]);
 
-    transaction.income = income;
-    transaction.expense = expense;
+      Promise.all(
+        transaction.events.map((event: any) => {
+          if (event.type.toLowerCase() === "income") {
+            income += event.amount;
+          }
+          if (event.type.toLowerCase() === "expense") {
+            expense += event.amount;
+          }
+        })
+      ).then(async () => {
+        transaction.income = income;
+        transaction.expense = expense;
 
-    try {
-      transaction.save();
-      res.json(transaction);
-    } catch (error) {
-      res.json({ errorMSG: error });
+        return await transaction.save().then(() => res.json(transaction));
+      });
+    } else {
+      //here is when there is transaction but the event is ordinary without fees
+      transaction.events.push(events[0]);
+
+      Promise.all(
+        transaction.events.map((event: any) => {
+          if (event.type.toLowerCase() === "income") {
+            income += event.amount;
+          }
+          if (event.type.toLowerCase() === "expense") {
+            expense += event.amount;
+          }
+        })
+      ).then(async () => {
+        transaction.income = income;
+        transaction.expense = expense;
+
+        return await transaction.save().then(() => res.json(transaction));
+      });
     }
   }
-
-  // const to = req.body.to;
-  // const type = req.params.type.toLowerCase();
-  // const from = req.body.from;
-  // const note = req.body.note;
-  // const fees = req.body.fees;
-  // const userId = req.body.userId;
-  // const amount = req.body.amount;
-  // const currency = req.body.currency;
-  // const category = req.body.category;
-  // const description = req.body.description;
-
-  // const newTransaction = new Transaction({
-  //   to,
-  //   type,
-  //   from,
-  //   note,
-  //   fees,
-  //   userId,
-  //   amount,
-  //   currency,
-  //   category,
-  //   description,
-  //   createdAt,
-  // });
-
-  // await newTransaction
-  //   .save()
-  //   .then(() => res.json(newTransaction))
-  //   .catch((err) => {
-  //     res.status(400).json({ errorMsg: err });
-  //   });
 };
 
 export const getTransactionInSpecificDatePeriod: RequestHandler = async (
@@ -228,79 +244,168 @@ export const editTransactionEvent: RequestHandler = async (
 ) => {
   const id = req.params.transactionId;
   const event_id = req.params.event_id;
-  const event = req.body;
+  const eventFromBody = req.body;
   const userId = tokenDecoder(req.headers.authorization);
+  let expense = 0;
+  let income = 0;
 
   try {
     const transaction: any = await Transaction.findOne({
       _id: id,
       userId,
     });
+    if (eventFromBody.type.toString() === "transfer") {
+      transaction.events.map((oldEvent: any) => {
+        if (oldEvent._id.toString() === event_id.toString()) {
+          if (
+            oldEvent.type !== "transfer" &&
+            eventFromBody.type === "transfer" &&
+            eventFromBody.fees > 0
+          ) {
+            transaction.events.push({
+              transferId: oldEvent._id,
+              type: "expense",
+              currency: "BG",
+              date: oldEvent.date,
+              category: "other",
+              account: eventFromBody.from,
+              amount: eventFromBody.fees,
+              note: "fees",
+              description: oldEvent.description,
+            });
+          }
 
-    if (transaction === null) {
-      return res.json({
-        errorMsg: "Not authorized or transaction does not exist",
+          if (oldEvent.fees === 0 && eventFromBody.fees > 0) {
+            transaction.events.push({
+              transferId: oldEvent._id,
+              type: "expense",
+              currency: "BG",
+              date: oldEvent.date,
+              category: "other",
+              account: oldEvent.from,
+              amount: eventFromBody.fees,
+              note: "fees",
+              description: oldEvent.description,
+            });
+          }
+
+          oldEvent.type = eventFromBody.type;
+          oldEvent.currency = eventFromBody.currency;
+          oldEvent.date = eventFromBody.date;
+          oldEvent.from = eventFromBody.from;
+          oldEvent.category = null;
+          oldEvent.account = null;
+          oldEvent.fees = eventFromBody.fees;
+          oldEvent.to = eventFromBody.to;
+          oldEvent.amount = eventFromBody.amount;
+          oldEvent.description = eventFromBody.description;
+          oldEvent.note = eventFromBody.note;
+        }
+
+        if (oldEvent.transferId === event_id) {
+          oldEvent.amount = eventFromBody.fees;
+        }
+      });
+
+      Promise.all(
+        transaction.events.map((event: any) => {
+          if (event.type.toLowerCase() === "income") {
+            income += event.amount;
+          }
+          if (event.type.toLowerCase() === "expense") {
+            expense += event.amount;
+          }
+        })
+      ).then(() => {
+        transaction.income = income;
+        transaction.expense = expense;
+      });
+
+      await transaction.save().then(() => {
+        return res.json(transaction);
       });
     } else {
-      let newEvents = transaction.events;
+      if (eventFromBody.transferId) {
+        Promise.all(
+          transaction.events.map((oldEvent: any) => {
+            if (oldEvent._id.toString() === event_id) {
+              oldEvent.amount = eventFromBody.amount;
+              oldEvent.type = eventFromBody.type;
+              oldEvent.currency = eventFromBody.currency;
+              oldEvent.date = eventFromBody.date;
+              oldEvent.category = eventFromBody.category;
+              oldEvent.account = eventFromBody.account;
+              oldEvent.note = eventFromBody.note;
+              oldEvent.description = eventFromBody.description;
+            }
 
-      let oldIndex = newEvents.findIndex(
-        (ev: any) => ev._id.toString() === event_id.toString()
-      );
+            if (
+              oldEvent._id.toString() === event_id &&
+              eventFromBody.type === "income"
+            ) {
+              oldEvent.amount = eventFromBody.amount;
+              oldEvent.type = eventFromBody.type;
+              oldEvent.transferId = "";
+              oldEvent.currency = eventFromBody.currency;
+              oldEvent.date = eventFromBody.date;
+              oldEvent.category = eventFromBody.category;
+              oldEvent.account = eventFromBody.account;
+              oldEvent.note = eventFromBody.note;
+              oldEvent.description = eventFromBody.description;
+            }
 
+            if (oldEvent._id.toString() === eventFromBody.transferId) {
+              if (eventFromBody.type === "income") {
+                oldEvent.fees = 0;
+              } else {
+                oldEvent.fees = eventFromBody.amount;
+              }
+            }
+          })
+        ).then(() => {
+          Promise.all(
+            transaction.events.map((event: any) => {
+              if (event.type.toLowerCase() === "income") {
+                income += event.amount;
+              }
+              if (event.type.toLowerCase() === "expense") {
+                expense += event.amount;
+              }
+            })
+          ).then(() => {
+            transaction.income = income;
+            transaction.expense = expense;
 
-      await newEvents.splice(oldIndex, 1, event);
-
-      if(event.type!=="transfer"&&newEvents[oldIndex-1].type==="transfer"){
-        newEvents[oldIndex-1].fees=event.amount
-      }
-
-      if (event.type === "transfer"&&event.fees>0&& event.type !== newEvents[oldIndex].type) {
-        newEvents.splice(oldIndex+1, 0, {
-          type: "expense",
-          currency: "BG",
-          date: event.date,
-          category: "other",
-          account: event.from,
-          amount: event.fees,
-          note: event.note,
-          description: event.description,
+            transaction.save().then(() => {
+              return res.json(transaction);
+            });
+          });
+        });
+      } else {
+        let foundIndex = transaction.events.findIndex(
+          (foundEvent: any) => foundEvent._id.toString() === event_id.toString()
+        );
+        transaction.events.splice(foundIndex, 1, eventFromBody);
+        Promise.all(
+          transaction.events.map((event: any) => {
+            if (event.type.toLowerCase() === "income") {
+              income += event.amount;
+            }
+            if (event.type.toLowerCase() === "expense") {
+              expense += event.amount;
+            }
+          })
+        ).then(async () => {
+          transaction.income = income;
+          transaction.expense = expense;
+          await transaction.save().then(() => {
+            return res.json(transaction);
+          });
         });
       }
-
-      if (event.type === "transfer" && event.type === newEvents[oldIndex].type) {
-        newEvents.splice(oldIndex+1, 1, {
-          type: "expense",
-          currency: "BG",
-          date: event.date,
-          category: "other",
-          account: event.from,
-          amount: event.fees,
-          note: event.note,
-          description: event.description,
-        });
-      }
-
-      let expense = 0;
-      let income = 0;
-      await newEvents.map((event: any) => {
-        if (event.type.toLowerCase() === "income") {
-          income += event.amount;
-        }
-        if (event.type.toLowerCase() === "expense") {
-          expense += event.amount;
-        }
-      });
-      transaction.expense = expense;
-      transaction.income = income;
-
-      transaction.events = newEvents;
-
-      transaction.save();
-      res.json(transaction);
     }
   } catch (error) {
-    res.json({ errorMsg: error });
+    return res.json({ errorMsg: error });
   }
 };
 

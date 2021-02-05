@@ -26,6 +26,7 @@ export interface State {
     amount: string;
     note: string;
     description: string;
+    transferId?: string;
   };
   selectedDay: {
     _id?: string;
@@ -69,6 +70,7 @@ class TransactionContainer extends React.Component<Props> {
       from: "",
       category: "",
       fees: "0",
+      transferId: "",
       to: "",
       amount: "0",
       note: "",
@@ -89,7 +91,6 @@ class TransactionContainer extends React.Component<Props> {
   };
 
   componentDidMount() {
-    console.log(this.props.filters.date)
     if (this.props.filters.date) {
       this.setState({
         date: new Date(this.props.filters.date),
@@ -97,13 +98,12 @@ class TransactionContainer extends React.Component<Props> {
       this.getTransactions(new Date(this.props.filters.date));
       this.setCalendar(new Date(this.props.filters.date));
     } else {
-
       this.setState({
         date: new Date(),
       });
       this.getTransactions(new Date());
     }
-    if (this.props.filters.date===undefined) {
+    if (this.props.filters.date === undefined) {
       this.setCalendar(new Date());
     }
   }
@@ -221,8 +221,12 @@ class TransactionContainer extends React.Component<Props> {
         config
       )
       .then(() => {
-       let newEvents= this.state.selectedDay.events.filter(event=>event._id!==eventId)
-        this.setState({selectedDay:{...this.state.selectedDay,events:newEvents}})
+        let newEvents = this.state.selectedDay.events.filter(
+          (event) => event._id !== eventId
+        );
+        this.setState({
+          selectedDay: { ...this.state.selectedDay, events: newEvents },
+        });
         this.getTransactions(this.state.date);
       });
   };
@@ -411,6 +415,7 @@ class TransactionContainer extends React.Component<Props> {
         {
           type: transaction.type.toLowerCase(),
           currency: "BG",
+          transferId: transaction.transferId,
           date: new Date(
             new Date(transaction.date).setHours(16, 33, 22)
           ).toISOString(),
@@ -430,6 +435,7 @@ class TransactionContainer extends React.Component<Props> {
         {
           type: transaction.type.toLowerCase(),
           currency: "BG",
+          transferId: transaction.transferId,
           date: new Date(
             new Date(transaction.date).setHours(13, 21, 30)
           ).toISOString(),
