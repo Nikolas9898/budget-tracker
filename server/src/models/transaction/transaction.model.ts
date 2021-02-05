@@ -16,6 +16,7 @@ export interface TransactionInterface {
       currency: string;
       createdAt: string;
       updatedAt: string;
+      transferId: string;
       description?: String;
     }
   ];
@@ -50,6 +51,9 @@ const transactionSchema = new Schema(
         from: {
           type: String,
           trim: true,
+        },
+        transferId: {
+          type: String,
         },
         to: {
           type: String,
