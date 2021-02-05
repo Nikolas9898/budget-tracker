@@ -10,6 +10,8 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
   const currency = req.body.currency;
   const categories = req.body.categories;
 
+  let token: any;
+    let foundUser:any
   const newUser = new User({
     username,
     password,
@@ -19,20 +21,41 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
     categories,
   });
 
-  let registeredUser = {
-    username,
-    email,
-    type,
-    currency,
-    categories,
-  };
-
   await newUser
-    .save()
-    .then(() => res.json(registeredUser))
-    .catch((err) => {
-      res.status(400).json({ errorMSG: err });
-    });
+      .save()
+      .then(async () => {
+        await User.findOne(
+            { email: req.body.email },
+            (err: any, user: UserInterface) => {
+              const passMatch = user.password === req.body.password;
+
+              if (!passMatch) {
+                return res.json({ errorMSG: "Wrong email or password" });
+              }
+
+                 foundUser = {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    type: user.type,
+                    categories: user.categories,
+                    createdAt: user.createdAt,
+                    updatedAt: user.updatedAt,
+                };
+              token = jwt.sign(
+                  {
+                    id: user._id,
+                  },
+                  "somesecretkeyforjsonwebtoken"
+              );
+            }
+        );
+
+        res.json({ user:foundUser, token });
+      })
+      .catch((err) => {
+        res.status(400).json({ errorMSG: err });
+      });
 };
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
@@ -51,7 +74,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
           username: user.username,
           email: user.email,
           type: user.type,
-          categorie: user.categories,
+          categories: user.categories,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
