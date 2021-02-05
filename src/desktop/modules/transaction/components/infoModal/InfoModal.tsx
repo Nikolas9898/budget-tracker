@@ -14,6 +14,7 @@ import {
 import moment from "moment";
 import { State } from "../../monthlyContainer/TransactionContainer";
 
+
 type Props = {
   isInfoTransactionOpen: boolean;
   handleOpenTransaction: (date: any) => void;

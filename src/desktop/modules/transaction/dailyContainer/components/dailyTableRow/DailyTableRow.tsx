@@ -2,23 +2,24 @@ import React from "react";
 import DailyTableRowStyle from "./DailyTableRow.module.css";
 
 type Props = {
+    handleSelectEvent:(event:Props["event"])=>void;
   event: {
-    _id?: string;
-    type: string;
-    date: any;
-    account?: string;
-    from?: string;
-    to?: string;
-    fees: number;
-    category?: string;
-    amount: number;
-    note: string;
-    description: string;
+      _id: string;
+      type: string;
+      date: any;
+      account?: string;
+      from?: string;
+      to?: string;
+      category?: string;
+      amount: number;
+      fees: number;
+      note: string;
+      description: string;
   };
 };
-const DailyTableRow: React.FC<Props> = ({ event }) => {
+const DailyTableRow: React.FC<Props> = ({ event ,handleSelectEvent}) => {
   return (
-    <tr>
+    <tr onClick={()=>handleSelectEvent(event)}>
       <td >
           <div className={DailyTableRowStyle.account_container}>
               <div className={DailyTableRowStyle.account}>
@@ -26,7 +27,6 @@ const DailyTableRow: React.FC<Props> = ({ event }) => {
               </div>
               <div className={DailyTableRowStyle.category}>
                   <div>{event.note}</div>
-                  <div>
                       {event.type == "transfer" ? (
                           <div>
                               {event.from}
@@ -36,7 +36,6 @@ const DailyTableRow: React.FC<Props> = ({ event }) => {
                       ) : (
                           event.account
                       )}
-                  </div>
               </div>
           </div>
 

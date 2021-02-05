@@ -184,6 +184,27 @@ class TransactionContainer extends React.Component<Props> {
     }
     return errors;
   };
+  handleDeleteIn = () => {
+    let config = {
+      headers: {
+        Authorization:
+            "Bearer " +
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
+      },
+    };
+    let data = {};
+    axios
+        .put(
+            `http://localhost:5000/transaction/event/delete/${this.state.selectedDay._id}/${this.state.transaction._id}`,
+            data,
+            config
+        )
+        .then(() => {
+          let newEvents= this.state.selectedDay.events.filter(event=>event._id!==this.state.transaction._id)
+          this.setState({selectedDay:{...this.state.selectedDay,events:newEvents}})
+          this.getTransactions(this.state.date);
+        });
+  };
   handleDelete = (transactionId: any, eventId: any) => {
     let config = {
       headers: {
@@ -638,12 +659,12 @@ class TransactionContainer extends React.Component<Props> {
           isEditTransactionOpen={isEditTransactionOpen}
           errors={errors}
           transaction={transaction}
-          isTransfer={isTransfer}
           handleSave={this.handleSave}
           handleOpenEdit={this.handleOpenEdit}
           handleInputChange={this.handleInputChange}
           isAddTransactionOpen={isAddTransactionOpen}
           handleOpenTransaction={this.handleOpenTransaction}
+          handleDelete={this.handleDeleteIn}
         />
       </div>
     );

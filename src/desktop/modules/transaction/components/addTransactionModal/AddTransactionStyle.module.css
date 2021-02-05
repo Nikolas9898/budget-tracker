@@ -47,7 +47,7 @@
 }
 .input {
   font-size: 20px;
-  width: 100%;
+  width: 98%;
   margin-bottom: 5px;
 }
 .description {
@@ -56,17 +56,24 @@
 }
 .buttons_content {
   display: flex;
-  width: 60%;
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  justify-content: space-around;
 }
 .save_button {
   padding: 10px 100px 10px 100px;
   border-radius: 5px;
   background: coral;
+  font-size: 20px;
   color: white;
   font-weight: bold;
+  cursor: pointer;
+}
+.delete_button{
+  padding: 10px 10px 10px 10px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  background: red;
   cursor: pointer;
 }
 .continue_button {
