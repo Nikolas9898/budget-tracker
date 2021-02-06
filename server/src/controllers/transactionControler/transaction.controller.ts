@@ -1,6 +1,7 @@
 import { RequestHandler, Request, Response } from "express";
 import { env } from "process";
-import { tokenDecoder } from "../../middleware/tokenDecoder";
+import { tokenDecoder } from "../../helpers/tokenDecoder";
+import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpenseAndIncome";
 import Transaction, {
   TransactionInterface,
 } from "../../models/transaction/transaction.model";
@@ -48,19 +49,7 @@ export const createTransaction: RequestHandler = async (
 
       transfer.events.push(expenseEvent);
 
-      Promise.all(
-        transfer.events.map((event: any) => {
-          if (event.type.toLowerCase() === "income") {
-            income += event.amount;
-          }
-          if (event.type.toLowerCase() === "expense") {
-            expense += event.amount;
-          }
-        })
-      ).then(() => {
-        transfer.income = income;
-        transfer.expense = expense;
-      });
+      calculateTotalExpenseAndIncome(transfer, income, expense);
 
       return await transfer
         .save()
@@ -117,40 +106,16 @@ export const createTransaction: RequestHandler = async (
       transaction.events.push(transfer.events[0]);
       transaction.events.push(transfer.events[1]);
 
-      Promise.all(
-        transaction.events.map((event: any) => {
-          if (event.type.toLowerCase() === "income") {
-            income += event.amount;
-          }
-          if (event.type.toLowerCase() === "expense") {
-            expense += event.amount;
-          }
-        })
-      ).then(async () => {
-        transaction.income = income;
-        transaction.expense = expense;
+      calculateTotalExpenseAndIncome(transaction, income, expense);
 
-        return await transaction.save().then(() => res.json(transaction));
-      });
+      await transaction.save().then(() => res.json(transaction));
     } else {
       //here is when there is transaction but the event is ordinary without fees
       transaction.events.push(events[0]);
 
-      Promise.all(
-        transaction.events.map((event: any) => {
-          if (event.type.toLowerCase() === "income") {
-            income += event.amount;
-          }
-          if (event.type.toLowerCase() === "expense") {
-            expense += event.amount;
-          }
-        })
-      ).then(async () => {
-        transaction.income = income;
-        transaction.expense = expense;
+      calculateTotalExpenseAndIncome(transaction, income, expense);
 
-        return await transaction.save().then(() => res.json(transaction));
-      });
+      return await transaction.save().then(() => res.json(transaction));
     }
   }
 };
@@ -307,19 +272,7 @@ export const editTransactionEvent: RequestHandler = async (
         }
       });
 
-      Promise.all(
-        transaction.events.map((event: any) => {
-          if (event.type.toLowerCase() === "income") {
-            income += event.amount;
-          }
-          if (event.type.toLowerCase() === "expense") {
-            expense += event.amount;
-          }
-        })
-      ).then(() => {
-        transaction.income = income;
-        transaction.expense = expense;
-      });
+      calculateTotalExpenseAndIncome(transaction, income, expense);
 
       await transaction.save().then(() => {
         return res.json(transaction);
@@ -362,23 +315,11 @@ export const editTransactionEvent: RequestHandler = async (
               }
             }
           })
-        ).then(() => {
-          Promise.all(
-            transaction.events.map((event: any) => {
-              if (event.type.toLowerCase() === "income") {
-                income += event.amount;
-              }
-              if (event.type.toLowerCase() === "expense") {
-                expense += event.amount;
-              }
-            })
-          ).then(() => {
-            transaction.income = income;
-            transaction.expense = expense;
+        ).then(async () => {
+          calculateTotalExpenseAndIncome(transaction, income, expense);
 
-            transaction.save().then(() => {
-              return res.json(transaction);
-            });
+          await transaction.save().then(() => {
+            return res.json(transaction);
           });
         });
       } else {
@@ -386,21 +327,9 @@ export const editTransactionEvent: RequestHandler = async (
           (foundEvent: any) => foundEvent._id.toString() === event_id.toString()
         );
         transaction.events.splice(foundIndex, 1, eventFromBody);
-        Promise.all(
-          transaction.events.map((event: any) => {
-            if (event.type.toLowerCase() === "income") {
-              income += event.amount;
-            }
-            if (event.type.toLowerCase() === "expense") {
-              expense += event.amount;
-            }
-          })
-        ).then(async () => {
-          transaction.income = income;
-          transaction.expense = expense;
-          await transaction.save().then(() => {
-            return res.json(transaction);
-          });
+        calculateTotalExpenseAndIncome(transaction, income, expense);
+        await transaction.save().then(() => {
+          return res.json(transaction);
         });
       }
     }
@@ -458,10 +387,10 @@ export const deleteTransactionEvent: RequestHandler = async (
       transaction.events = newEvents;
 
       transaction.save();
-      res.json(transaction);
+      return res.json(transaction);
     }
   } catch (error) {
-    res.json({ errorMsg: error });
+    return res.json({ errorMsg: error });
   }
 };
 
@@ -475,25 +404,13 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
   Promise.all(
     months.map(async (month: any, index: number) => {
       Promise.all(
-        await Transaction.find(
-          {
-            createdAt: {
-              $gte: new Date(new Date(month.from).setHours(0o0, 0o0, 0o0)),
-              $lt: new Date(new Date(month.to).setHours(23, 59, 59)),
-            },
-            userId,
-          }
-          // async (err: any, transactions: any) => {
-          //   try {
-          //     transactions.map((transaction: any) => {
-          //       months[index].expense += transaction.expense;
-          //       months[index].income += transaction.income;
-          //     });
-          //   } catch (error) {
-          //     res.status(400).json({ errorMsg: error });
-          //   }
-          // }
-        )
+        await Transaction.find({
+          createdAt: {
+            $gte: new Date(new Date(month.from).setHours(0o0, 0o0, 0o0)),
+            $lt: new Date(new Date(month.to).setHours(23, 59, 59)),
+          },
+          userId,
+        })
       ).then((transactions) => {
         try {
           transactions.map((transaction: any) => {

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { tokenAuth } from "../../middleware/tokenAuthentication";
-import * as transactionControler from "../../controlers/transactionControler/transaction.controler";
+import * as transactionControler from "../../controllers/transactionControler/transaction.controller";
 
 const router = Router();
 
@@ -9,12 +9,6 @@ router.post(
   tokenAuth,
   transactionControler.createTransaction
 );
-
-// router.post(
-//   "/transaction/create/:type",
-//   tokenAuth,
-//   transactionControler.createTransaction
-// );
 
 router.get(
   "/transaction/specificDatePeriod/:from/:to",

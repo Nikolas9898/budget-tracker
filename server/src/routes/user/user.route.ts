@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { tokenAuth } from "../../middleware/tokenAuthentication";
-import * as userController from "../../controlers/userControler/user.controler";
+import * as userController from "../../controllers/userControler/user.controller";
 
 const router = Router();
 
