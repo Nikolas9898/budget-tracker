@@ -2,9 +2,9 @@ import { RequestHandler, Request, Response } from "express";
 import { env } from "process";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpenseAndIncome";
-import Transaction, {
-  TransactionInterface,
-} from "../../models/transaction/transaction.model";
+import Transaction from "../../models/transaction/transaction.model";
+import Month from "../../interfaces/monthInterface";
+import TransactionsInterface from "../../interfaces/transactions";
 
 export const createTransaction: RequestHandler = async (
   req: Request,
@@ -147,7 +147,8 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
     },
     (err: any, transactions: any) => {
       try {
-        transactions.map((month: any) => {
+        transactions.map((month: TransactionsInterface) => {
+          console.log(month);
           sumExpense += month.expense;
           sumIncome += month.income;
         });
@@ -161,21 +162,22 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
 };
 
 export const getTransactionById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id: string = req.params.id;
 
-  const userId = tokenDecoder(req.headers.authorization);
+  const userId: string = tokenDecoder(req.headers.authorization);
 
   Transaction.findOne(
     { _id: id, userId },
-    (err: any, transaction: TransactionInterface) => {
+    (err: any, transaction: TransactionsInterface) => {
       try {
         if (!transaction) {
-          let error = "No such transaction available";
-          return res.status(400).json({ errorMsg: error });
+          return res
+            .status(400)
+            .json({ errorMsg: "No such transaction available" });
         }
-        res.json(transaction);
+        return res.json(transaction);
       } catch (error) {
-        res.status(400).json({ errorMsg: error });
+        return res.status(400).json({ errorMsg: err });
       }
     }
   );
@@ -397,12 +399,12 @@ export const deleteTransactionEvent: RequestHandler = async (
 export const getYearlyAndWeekly = async (req: Request, res: Response) => {
   const userId = tokenDecoder(req.headers.authorization);
 
-  const months = req.body;
+  let months = req.body;
   let sumExpense = 0;
   let sumIncome = 0;
 
   Promise.all(
-    months.map(async (month: any, index: number) => {
+    months.map(async (month: Month, index: number) => {
       Promise.all(
         await Transaction.find({
           createdAt: {
@@ -413,7 +415,7 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
         })
       ).then((transactions) => {
         try {
-          transactions.map((transaction: any) => {
+          transactions.forEach((transaction: TransactionsInterface) => {
             months[index].expense += transaction.expense;
             months[index].income += transaction.income;
           });
@@ -423,7 +425,7 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
       });
     })
   ).then(() => {
-    months.map((month: any) => {
+    months.forEach((month: any) => {
       sumExpense += month.expense;
       sumIncome += month.income;
     });

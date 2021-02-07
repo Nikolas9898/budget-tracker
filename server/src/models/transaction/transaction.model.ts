@@ -1,27 +1,5 @@
 import { Schema, model } from "mongoose";
-
-export interface TransactionInterface {
-  events: [
-    {
-      to?: Date;
-      date: Date;
-      _id: string;
-      from?: Date;
-      type: string;
-      fees?: number;
-      note?: String;
-      userId: string;
-      amount: number;
-      category: string;
-      currency: string;
-      createdAt: string;
-      updatedAt: string;
-      transferId: string;
-      description?: String;
-    }
-  ];
-  userId: string;
-}
+import TransactionsInterface from "../../interfaces/transactions";
 
 const transactionSchema = new Schema(
   {
@@ -94,4 +72,4 @@ const transactionSchema = new Schema(
   }
 );
 
-export default model("Transaction", transactionSchema);
+export default model<TransactionsInterface>("Transaction", transactionSchema);

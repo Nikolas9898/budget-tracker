@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { tokenAuth } from "../../middleware/tokenAuthentication";
-import * as transactionControler from "../../controllers/transactionControler/transaction.controller";
+import * as transactionControler from "../../controllers/transactionController/transaction.controller";
 
 const router = Router();
 
