@@ -16,6 +16,4 @@ export const calculateTotalExpenseAndIncome = (
     transfer.income = income;
     transfer.expense = expense;
   });
-
-  return transfer;
 };

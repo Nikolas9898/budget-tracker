@@ -1,10 +1,9 @@
-import { RequestHandler, Request, Response } from "express";
-import { env } from "process";
+import { Months, Month } from "../../interfaces/monthInterface";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
-import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpenseAndIncome";
-import Transaction from "../../models/transaction/transaction.model";
-import Month from "../../interfaces/monthInterface";
+import { RequestHandler, Request, Response } from "express";
 import TransactionsInterface from "../../interfaces/transactions";
+import Transaction from "../../models/transaction/transaction.model";
+import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpenseAndIncome";
 
 export const createTransaction: RequestHandler = async (
   req: Request,
@@ -140,7 +139,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
   Transaction.find(
     {
       createdAt: {
-        $gte: new Date(new Date(from).setHours(0o0, 0o0, 0o0)),
+        $gte: new Date(new Date(from).setHours(0, 0, 0)),
         $lt: new Date(new Date(to).setHours(23, 59, 59)),
       },
       userId,
@@ -148,14 +147,13 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
     (err: any, transactions: any) => {
       try {
         transactions.map((month: TransactionsInterface) => {
-          console.log(month);
           sumExpense += month.expense;
           sumIncome += month.income;
         });
 
-        res.json({ transactions, sumExpense, sumIncome });
+        return res.json({ transactions, sumExpense, sumIncome });
       } catch (error) {
-        res.status(400).json({ errorMsg: error });
+        return res.status(400).json({ errorMsg: error });
       }
     }
   );
@@ -212,6 +210,22 @@ export const editTransactionEvent: RequestHandler = async (
   const id = req.params.transactionId;
   const event_id = req.params.event_id;
   const eventFromBody = req.body;
+
+  const {
+    type,
+    fees,
+    from,
+    currency,
+    date,
+    to,
+    amount,
+    description,
+    note,
+    category,
+    account,
+    transferId,
+  } = req.body;
+
   const userId = tokenDecoder(req.headers.authorization);
   let expense = 0;
   let income = 0;
@@ -224,25 +238,21 @@ export const editTransactionEvent: RequestHandler = async (
     if (eventFromBody.type.toString() === "transfer") {
       transaction.events.map((oldEvent: any) => {
         if (oldEvent._id.toString() === event_id.toString()) {
-          if (
-            oldEvent.type !== "transfer" &&
-            eventFromBody.type === "transfer" &&
-            eventFromBody.fees > 0
-          ) {
+          if (oldEvent.type !== "transfer" && type === "transfer" && fees > 0) {
             transaction.events.push({
               transferId: oldEvent._id,
               type: "expense",
               currency: "BG",
               date: oldEvent.date,
               category: "other",
-              account: eventFromBody.from,
-              amount: eventFromBody.fees,
+              account: from,
+              amount: fees,
               note: "fees",
               description: oldEvent.description,
             });
           }
 
-          if (oldEvent.fees === 0 && eventFromBody.fees > 0) {
+          if (oldEvent.fees === 0 || (oldEvent.fees === null && fees > 0)) {
             transaction.events.push({
               transferId: oldEvent._id,
               type: "expense",
@@ -250,27 +260,27 @@ export const editTransactionEvent: RequestHandler = async (
               date: oldEvent.date,
               category: "other",
               account: oldEvent.from,
-              amount: eventFromBody.fees,
+              amount: fees,
               note: "fees",
               description: oldEvent.description,
             });
           }
 
-          oldEvent.type = eventFromBody.type;
-          oldEvent.currency = eventFromBody.currency;
-          oldEvent.date = eventFromBody.date;
-          oldEvent.from = eventFromBody.from;
+          oldEvent.type = type;
+          oldEvent.currency = currency;
+          oldEvent.date = date;
+          oldEvent.from = from;
           oldEvent.category = null;
           oldEvent.account = null;
-          oldEvent.fees = eventFromBody.fees;
-          oldEvent.to = eventFromBody.to;
-          oldEvent.amount = eventFromBody.amount;
-          oldEvent.description = eventFromBody.description;
-          oldEvent.note = eventFromBody.note;
+          oldEvent.fees = fees;
+          oldEvent.to = to;
+          oldEvent.amount = amount;
+          oldEvent.description = description;
+          oldEvent.note = note;
         }
 
         if (oldEvent.transferId === event_id) {
-          oldEvent.amount = eventFromBody.fees;
+          oldEvent.amount = fees;
         }
       });
 
@@ -284,36 +294,33 @@ export const editTransactionEvent: RequestHandler = async (
         Promise.all(
           transaction.events.map((oldEvent: any) => {
             if (oldEvent._id.toString() === event_id) {
-              oldEvent.amount = eventFromBody.amount;
-              oldEvent.type = eventFromBody.type;
-              oldEvent.currency = eventFromBody.currency;
-              oldEvent.date = eventFromBody.date;
-              oldEvent.category = eventFromBody.category;
-              oldEvent.account = eventFromBody.account;
-              oldEvent.note = eventFromBody.note;
-              oldEvent.description = eventFromBody.description;
+              oldEvent.amount = amount;
+              oldEvent.type = type;
+              oldEvent.currency = currency;
+              oldEvent.date = date;
+              oldEvent.category = category;
+              oldEvent.account = account;
+              oldEvent.note = note;
+              oldEvent.description = description;
             }
 
-            if (
-              oldEvent._id.toString() === event_id &&
-              eventFromBody.type === "income"
-            ) {
-              oldEvent.amount = eventFromBody.amount;
-              oldEvent.type = eventFromBody.type;
+            if (oldEvent._id.toString() === event_id && type === "income") {
+              oldEvent.amount = amount;
+              oldEvent.type = type;
               oldEvent.transferId = "";
-              oldEvent.currency = eventFromBody.currency;
-              oldEvent.date = eventFromBody.date;
-              oldEvent.category = eventFromBody.category;
-              oldEvent.account = eventFromBody.account;
-              oldEvent.note = eventFromBody.note;
-              oldEvent.description = eventFromBody.description;
+              oldEvent.currency = currency;
+              oldEvent.date = date;
+              oldEvent.category = category;
+              oldEvent.account = account;
+              oldEvent.note = note;
+              oldEvent.description = description;
             }
 
-            if (oldEvent._id.toString() === eventFromBody.transferId) {
-              if (eventFromBody.type === "income") {
+            if (oldEvent._id.toString() === transferId) {
+              if (type === "income") {
                 oldEvent.fees = 0;
               } else {
-                oldEvent.fees = eventFromBody.amount;
+                oldEvent.fees = amount;
               }
             }
           })
@@ -399,9 +406,10 @@ export const deleteTransactionEvent: RequestHandler = async (
 export const getYearlyAndWeekly = async (req: Request, res: Response) => {
   const userId = tokenDecoder(req.headers.authorization);
 
-  let months = req.body;
-  let sumExpense = 0;
-  let sumIncome = 0;
+  let months: Months = req.body;
+
+  let sumExpense: number = 0;
+  let sumIncome: number = 0;
 
   Promise.all(
     months.map(async (month: Month, index: number) => {
@@ -415,9 +423,9 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
         })
       ).then((transactions) => {
         try {
-          transactions.forEach((transaction: TransactionsInterface) => {
-            months[index].expense += transaction.expense;
-            months[index].income += transaction.income;
+          transactions.forEach(({ expense, income }) => {
+            months[index].expense += expense;
+            months[index].income += income;
           });
         } catch (error) {
           res.status(400).json({ errorMsg: error });
@@ -425,11 +433,11 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
       });
     })
   ).then(() => {
-    months.forEach((month: any) => {
-      sumExpense += month.expense;
-      sumIncome += month.income;
+    months.forEach(({ expense, income }) => {
+      sumExpense += expense;
+      sumIncome += income;
     });
 
-    res.json({ months, sumExpense, sumIncome });
+    return res.json({ months, sumExpense, sumIncome });
   });
 };

@@ -5,5 +5,7 @@ export const tokenDecoder = (token: any) => {
 
   let decodedToken: any = jwt.decode(token);
 
+  console.log(decodedToken);
+
   return decodedToken.id;
 };
