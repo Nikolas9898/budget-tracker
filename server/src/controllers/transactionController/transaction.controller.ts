@@ -1,9 +1,15 @@
 import { Months, Month } from "../../interfaces/monthInterface";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { RequestHandler, Request, Response } from "express";
-import TransactionsInterface from "../../interfaces/transactions";
+import TransactionInterface, {
+  TransactionEvent,
+} from "../../interfaces/transactions";
 import Transaction from "../../models/transaction/transaction.model";
 import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpenseAndIncome";
+import {
+  createOrdinaryEvent,
+  createTransferWithFees,
+} from "../../helpers/transactionHelpers/transactionHelpers";
 
 export const createTransaction: RequestHandler = async (
   req: Request,
@@ -13,7 +19,7 @@ export const createTransaction: RequestHandler = async (
   const events = req.body.events;
   const createdAt = req.body.createdAt;
 
-  const transaction: any = await Transaction.findOne({
+  const transaction = await Transaction.findOne({
     createdAt: createdAt,
     userId,
   });
@@ -26,52 +32,29 @@ export const createTransaction: RequestHandler = async (
 
     if (events[0].fees && events[0].fees > 0) {
       // here it makes expense and transfer
-      let transfer: any = new Transaction({
-        events,
-        createdAt,
-        userId,
-        expense: 0,
-        income: 0,
-      });
 
-      let expenseEvent = {
-        transferId: transfer.events[0]._id,
-        type: "expense",
-        currency: "BG",
-        date: transfer.events[0].date,
-        category: "other",
-        account: transfer.events[0].from,
-        amount: transfer.events[0].fees,
-        note: "fees",
-        description: transfer.events[0].description,
-      };
-
-      transfer.events.push(expenseEvent);
-
-      calculateTotalExpenseAndIncome(transfer, income, expense);
-
-      return await transfer
-        .save()
-        .then(() => res.json(transfer))
-        .catch((err: any) => res.json(err));
-    } else {
-      //here enters when there are not fees and just ordinary event is sent
-      events.map((event: any) => {
-        if (event.type.toLowerCase() === "income") {
-          income += event.amount;
-        }
-        if (event.type.toLowerCase() === "expense") {
-          expense += event.amount;
-        }
-      });
-
-      let transaction = new Transaction({
+      const transfer = createTransferWithFees(
         events,
         createdAt,
         userId,
         income,
-        expense,
-      });
+        expense
+      );
+
+      return await transfer
+        .save()
+        .then(() => res.json(transfer))
+        .catch((err) => res.json(err));
+    } else {
+      //here enters when there are not fees and just ordinary event is sent
+
+      const transaction = createOrdinaryEvent(
+        events,
+        createdAt,
+        userId,
+        income,
+        expense
+      );
 
       return await transaction
         .save()
@@ -81,33 +64,20 @@ export const createTransaction: RequestHandler = async (
   } else {
     //It enters here when there is found transaction on the same date and it needs to push in this transaction events
     if (events[0].fees && events[0].fees > 0) {
-      let transfer: any = new Transaction({
+      const transfer = createTransferWithFees(
         events,
         createdAt,
         userId,
-        expense: 0,
-        income: 0,
-      });
-
-      let expenseEvent = {
-        transferId: transfer.events[0]._id,
-        type: "expense",
-        currency: "BG",
-        date: transfer.events[0].date,
-        category: "other",
-        account: transfer.events[0].from,
-        amount: transfer.events[0].fees,
-        note: "fees",
-        description: transfer.events[0].description,
-      };
-      transfer.events.push(expenseEvent);
+        income,
+        expense
+      );
 
       transaction.events.push(transfer.events[0]);
       transaction.events.push(transfer.events[1]);
 
       calculateTotalExpenseAndIncome(transaction, income, expense);
 
-      await transaction.save().then(() => res.json(transaction));
+      return await transaction.save().then(() => res.json(transaction));
     } else {
       //here is when there is transaction but the event is ordinary without fees
       transaction.events.push(events[0]);
@@ -144,11 +114,11 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
       },
       userId,
     },
-    (err: any, transactions: any) => {
+    (err, transactions) => {
       try {
-        transactions.map((month: TransactionsInterface) => {
-          sumExpense += month.expense;
-          sumIncome += month.income;
+        transactions.map((transaction: TransactionInterface) => {
+          sumExpense += transaction.expense;
+          sumIncome += transaction.income;
         });
 
         return res.json({ transactions, sumExpense, sumIncome });
@@ -166,7 +136,7 @@ export const getTransactionById = async (req: Request, res: Response) => {
 
   Transaction.findOne(
     { _id: id, userId },
-    (err: any, transaction: TransactionsInterface) => {
+    (err, transaction: TransactionInterface) => {
       try {
         if (!transaction) {
           return res
@@ -188,14 +158,16 @@ export const deleteTransactionById: RequestHandler = async (
   const id = req.params.id;
   const userId = tokenDecoder(req.headers.authorization);
 
-  const transaction: any = await Transaction.findOne({
+  const transaction = await Transaction.findOne({
     _id: id,
     userId,
   });
 
   try {
-    transaction.remove();
-    res.json({ msg: "Deleted successfullu" });
+    if (transaction) {
+      transaction.remove();
+      return res.json({ msg: "Deleted successfullu" });
+    }
   } catch (error) {
     res.json({ errroMsg: error });
   }
@@ -224,7 +196,7 @@ export const editTransactionEvent: RequestHandler = async (
     category,
     account,
     transferId,
-  } = req.body;
+  } = eventFromBody;
 
   const userId = tokenDecoder(req.headers.authorization);
   let expense = 0;
@@ -235,7 +207,7 @@ export const editTransactionEvent: RequestHandler = async (
       _id: id,
       userId,
     });
-    if (eventFromBody.type.toString() === "transfer") {
+    if (type.toString() === "transfer") {
       transaction.events.map((oldEvent: any) => {
         if (oldEvent._id.toString() === event_id.toString()) {
           if (oldEvent.type !== "transfer" && type === "transfer" && fees > 0) {
@@ -290,7 +262,7 @@ export const editTransactionEvent: RequestHandler = async (
         return res.json(transaction);
       });
     } else {
-      if (eventFromBody.transferId) {
+      if (transferId) {
         Promise.all(
           transaction.events.map((oldEvent: any) => {
             if (oldEvent._id.toString() === event_id) {
@@ -358,7 +330,7 @@ export const deleteTransactionEvent: RequestHandler = async (
   const userId = tokenDecoder(req.headers.authorization);
 
   try {
-    const transaction: any = await Transaction.findOne({
+    const transaction = await Transaction.findOne({
       _id: id,
       userId,
     });
@@ -380,20 +352,15 @@ export const deleteTransactionEvent: RequestHandler = async (
       let expense = 0;
       let income = 0;
       const newEvents = transaction.events.filter(
-        (event: any) => event._id != event_id
+        (event: TransactionEvent) => event._id != event_id
       );
 
-      newEvents.map((event: any) => {
-        if (event.type.toLowerCase() === "income") {
-          income += event.amount;
-        }
-        if (event.type.toLowerCase() === "expense") {
-          expense += event.amount;
-        }
-      });
+      transaction.events = newEvents;
+
+      calculateTotalExpenseAndIncome(transaction, income, expense);
+
       transaction.expense = expense;
       transaction.income = income;
-      transaction.events = newEvents;
 
       transaction.save();
       return res.json(transaction);
@@ -408,15 +375,15 @@ export const getYearlyAndWeekly = async (req: Request, res: Response) => {
 
   let months: Months = req.body;
 
-  let sumExpense: number = 0;
-  let sumIncome: number = 0;
+  let sumExpense = 0;
+  let sumIncome = 0;
 
   Promise.all(
-    months.map(async (month: Month, index: number) => {
+    months.map(async (month: Month, index) => {
       Promise.all(
         await Transaction.find({
           createdAt: {
-            $gte: new Date(new Date(month.from).setHours(0o0, 0o0, 0o0)),
+            $gte: new Date(new Date(month.from).setHours(0, 0, 0)),
             $lt: new Date(new Date(month.to).setHours(23, 59, 59)),
           },
           userId,

@@ -1,35 +1,28 @@
 import { Document } from "mongoose";
 
-export default interface TransactionsInterface extends Document {
+export default interface TransactionInterface extends Document {
   _id: string;
-  events: TransactionInterface;
   createdAt: Date;
+  events: Array<TransactionEvent>;
   userId: string;
   income: number;
   expense: number;
-  updatedAt: Date;
+  updatedAt: string;
   __v: number;
 }
 
-export interface TransactionInterface {
-  events: [
-    {
-      to?: Date;
-      date: Date;
-      _id: string;
-      from?: Date;
-      type: string;
-      fees?: number;
-      note?: String;
-      userId: string;
-      amount: number;
-      category: string;
-      currency: string;
-      createdAt: string;
-      updatedAt: string;
-      transferId: string;
-      description?: String;
-    }
-  ];
-  userId: string;
+export interface TransactionEvent {
+  _id?: string;
+  type: string;
+  currency: string;
+  transferId?: string;
+  date: string;
+  fees?: number;
+  from?: string;
+  to?: string;
+  account: string;
+  category: string;
+  amount: number;
+  note: string;
+  description: string;
 }

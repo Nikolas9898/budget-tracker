@@ -1,10 +1,16 @@
+import TransactionInterface, {
+  TransactionEvent,
+} from "../interfaces/transactions";
+
 export const calculateTotalExpenseAndIncome = (
-  transfer: any,
+  transfer: TransactionInterface,
   income: number,
   expense: number
 ) => {
+  const { events } = transfer;
+
   Promise.all(
-    transfer.events.map((event: any) => {
+    events.map((event) => {
       if (event.type.toLowerCase() === "income") {
         income += event.amount;
       }
