@@ -9,6 +9,8 @@ import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpe
 import {
   createOrdinaryEvent,
   createTransferWithFees,
+  deleteTransaction,
+  removeTransactionEvent,
 } from "../../helpers/transactionHelpers/transactionHelpers";
 
 export const createTransaction: RequestHandler = async (
@@ -203,13 +205,22 @@ export const editTransactionEvent: RequestHandler = async (
   let income = 0;
 
   try {
-    const transaction: any = await Transaction.findOne({
-      _id: id,
-      userId,
-    });
-    if (type.toString() === "transfer") {
+    let transaction: any;
+
+    try {
+      transaction = await Transaction.findOne({
+        _id: id,
+        userId,
+      });
+    } catch (error) {
+      return res.json({ error });
+    }
+
+    if (type === "transfer") {
+      // when eventFrom body is transfer
       transaction.events.map((oldEvent: any) => {
         if (oldEvent._id.toString() === event_id.toString()) {
+          // when editing income or expense into transfer with fees
           if (oldEvent.type !== "transfer" && type === "transfer" && fees > 0) {
             transaction.events.push({
               transferId: oldEvent._id,
@@ -223,7 +234,7 @@ export const editTransactionEvent: RequestHandler = async (
               description: oldEvent.description,
             });
           }
-
+          //when editing transfer withouth fees into transfer with fees
           if (oldEvent.fees === 0 || (oldEvent.fees === null && fees > 0)) {
             transaction.events.push({
               transferId: oldEvent._id,
@@ -231,7 +242,7 @@ export const editTransactionEvent: RequestHandler = async (
               currency: "BG",
               date: oldEvent.date,
               category: "other",
-              account: oldEvent.from,
+              account: from,
               amount: fees,
               note: "fees",
               description: oldEvent.description,
@@ -242,8 +253,8 @@ export const editTransactionEvent: RequestHandler = async (
           oldEvent.currency = currency;
           oldEvent.date = date;
           oldEvent.from = from;
-          oldEvent.category = null;
-          oldEvent.account = null;
+          oldEvent.category = undefined;
+          oldEvent.account = undefined;
           oldEvent.fees = fees;
           oldEvent.to = to;
           oldEvent.amount = amount;
@@ -328,46 +339,28 @@ export const deleteTransactionEvent: RequestHandler = async (
   const id = req.params.transactionId;
   const event_id = req.params.event_id;
   const userId = tokenDecoder(req.headers.authorization);
+  let transaction: TransactionInterface | null;
 
   try {
-    const transaction = await Transaction.findOne({
+    transaction = await Transaction.findOne({
       _id: id,
       userId,
     });
-
-    if (transaction === null) {
-      return res.json({
-        errorMsg: "Not authorized or transaction does not exist",
-      });
-    } else {
-      if (transaction.events.length === 1) {
-        try {
-          transaction.remove();
-          return res.json({ msg: "Deleted successfullu" });
-        } catch (error) {
-          return res.json({ errroMsg: error });
-        }
-      }
-
-      let expense = 0;
-      let income = 0;
-      const newEvents = transaction.events.filter(
-        (event: TransactionEvent) => event._id != event_id
-      );
-
-      transaction.events = newEvents;
-
-      calculateTotalExpenseAndIncome(transaction, income, expense);
-
-      transaction.expense = expense;
-      transaction.income = income;
-
-      transaction.save();
-      return res.json(transaction);
-    }
   } catch (error) {
     return res.json({ errorMsg: error });
   }
+
+  if (transaction === null) {
+    return res.json({
+      errorMsg: "Not authorized or transaction does not exist",
+    });
+  }
+
+  if (transaction.events.length === 1) {
+    return deleteTransaction(transaction, res);
+  }
+
+  return removeTransactionEvent(res, transaction, event_id);
 };
 
 export const getYearlyAndWeekly = async (req: Request, res: Response) => {

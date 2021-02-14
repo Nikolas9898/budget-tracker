@@ -12,7 +12,10 @@ const ATLAS_URI: any = process.env.ATLAS_URI;
     useUnifiedTopology: true,
   };
 
-  const db = await mongoose.connect(ATLAS_URI, mongooseOptions);
-
-  console.log("Mongo connection established", db.connection.name);
+  try {
+    const db = await mongoose.connect(ATLAS_URI, mongooseOptions);
+    console.log("Mongo connection established", db.connection.name);
+  } catch (error) {
+    console.log(error);
+  }
 })();

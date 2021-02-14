@@ -7,22 +7,15 @@ export const getLoggedUser: RequestHandler = (req: Request, res: Response) => {
 
   const userId: string = tokenDecoder(authorization);
 
-  User.findById({ _id: userId }, (err: any, user: UserInterface) => {
-    const {
-      _id,
-      username,
-      email,
-      type,
-      categories,
-      createdAt,
-      updatedAt,
-    } = user;
+  User.findById({ _id: userId }, (err, user: UserInterface) => {
+    let { _id, username, email, type, categories, createdAt, updatedAt } = user;
     try {
       if (!user) return res.json({ errorMSG: "No existing user" });
 
       let foundUser: UserInterface = {
         _id,
         username,
+        password: "",
         email,
         type,
         categories,

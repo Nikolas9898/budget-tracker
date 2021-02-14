@@ -26,3 +26,25 @@ export interface TransactionEvent {
   note: string;
   description: string;
 }
+
+export type DummyExpenseEvents = {
+  type: string;
+  currency: string;
+  transferId?: string;
+  date: string;
+  fees?: number;
+  from?: string;
+  to?: string;
+  account: string;
+  category: string;
+  amount: number;
+  note: string;
+  description: string;
+};
+
+export enum Expense {
+  type = "expense",
+  note = "fees",
+  category = "other",
+  currency = "BG",
+}

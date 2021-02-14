@@ -28,8 +28,8 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
     .then(async () => {
       await User.findOne(
         { email: req.body.email },
-        (err: any, user: UserInterface) => {
-          const {
+        (err, user: UserInterface) => {
+          let {
             password,
             _id,
             username,
@@ -49,6 +49,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
           foundUser = {
             _id,
             username,
+            password: "",
             email,
             type,
             categories,
@@ -75,8 +76,8 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
   const { email } = req.body;
 
-  await User.findOne({ email }, (err: any, user: UserInterface) => {
-    const {
+  await User.findOne({ email }, (err, user: UserInterface) => {
+    let {
       password,
       _id,
       username,
@@ -97,6 +98,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
       let foundUser: UserInterface = {
         _id,
         username,
+        password: "",
         email,
         type,
         categories,
@@ -111,9 +113,9 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
         "somesecretkeyforjsonwebtoken"
       );
 
-      return res.json({ user: foundUser, token });
+      res.json({ user: foundUser, token });
     } catch (error) {
-      return res.json({ errorMSG: "Wrong email or password" });
+      res.json({ errorMSG: "Wrong email or password" });
     }
   });
 };
