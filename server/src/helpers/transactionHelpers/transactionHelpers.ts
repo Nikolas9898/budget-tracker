@@ -83,7 +83,7 @@ export const deleteTransaction = (
   }
 };
 
-export const removeTransactionEvent = (
+export const removeTransactionEvent = async (
   res: Response,
   transaction: TransactionInterface,
   event_id: string
@@ -92,18 +92,9 @@ export const removeTransactionEvent = (
   let income = 0;
   let transferId: string | undefined;
 
-  const newEvents = transaction.events.filter((event: TransactionEvent) => {
-    if (event._id != event_id) {
-      return true;
-    } else {
-      transferId = event.transferId;
-      return false;
-    }
-  });
-
-  newEvents.find(
-    (event) => event._id?.toString() === transferId?.toString()
-  )!.fees = 0;
+  const newEvents = transaction.events.filter(
+    (event: any) => event._id != event_id
+  );
 
   transaction.events = newEvents;
 
@@ -112,6 +103,20 @@ export const removeTransactionEvent = (
   transaction.expense = expense;
   transaction.income = income;
 
-  transaction.save();
+  await transaction.save();
   return res.json(transaction);
+};
+
+export const saveAndSendResponse = async (
+  resItem: TransactionInterface,
+  res: Response
+) => {
+  await resItem
+    .save()
+    .then(() => {
+      return res.json(resItem);
+    })
+    .catch((error) => {
+      return res.json(error);
+    });
 };

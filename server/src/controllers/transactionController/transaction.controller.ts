@@ -1,13 +1,12 @@
 import { Months, Month } from "../../interfaces/monthInterface";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { RequestHandler, Request, Response } from "express";
-import TransactionInterface, {
-  TransactionEvent,
-} from "../../interfaces/transactions";
+import TransactionInterface, { Expense } from "../../interfaces/transactions";
 import Transaction from "../../models/transaction/transaction.model";
 import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpenseAndIncome";
 import {
   createOrdinaryEvent,
+  saveAndSendResponse,
   createTransferWithFees,
   deleteTransaction,
   removeTransactionEvent,
@@ -43,10 +42,7 @@ export const createTransaction: RequestHandler = async (
         expense
       );
 
-      return await transfer
-        .save()
-        .then(() => res.json(transfer))
-        .catch((err) => res.json(err));
+      saveAndSendResponse(transfer, res);
     } else {
       //here enters when there are not fees and just ordinary event is sent
 
@@ -58,10 +54,7 @@ export const createTransaction: RequestHandler = async (
         expense
       );
 
-      return await transaction
-        .save()
-        .then(() => res.json(transaction))
-        .catch((error) => res.json(error));
+      saveAndSendResponse(transaction, res);
     }
   } else {
     //It enters here when there is found transaction on the same date and it needs to push in this transaction events
@@ -79,14 +72,14 @@ export const createTransaction: RequestHandler = async (
 
       calculateTotalExpenseAndIncome(transaction, income, expense);
 
-      return await transaction.save().then(() => res.json(transaction));
+      saveAndSendResponse(transaction, res);
     } else {
       //here is when there is transaction but the event is ordinary without fees
       transaction.events.push(events[0]);
 
       calculateTotalExpenseAndIncome(transaction, income, expense);
 
-      return await transaction.save().then(() => res.json(transaction));
+      saveAndSendResponse(transaction, res);
     }
   }
 };
@@ -224,13 +217,13 @@ export const editTransactionEvent: RequestHandler = async (
           if (oldEvent.type !== "transfer" && type === "transfer" && fees > 0) {
             transaction.events.push({
               transferId: oldEvent._id,
-              type: "expense",
-              currency: "BG",
+              type: Expense.type,
+              currency: Expense.currency,
               date: oldEvent.date,
-              category: "other",
+              category: Expense.category,
               account: from,
               amount: fees,
-              note: "fees",
+              note: Expense.note,
               description: oldEvent.description,
             });
           }
@@ -238,13 +231,13 @@ export const editTransactionEvent: RequestHandler = async (
           if (oldEvent.fees === 0 || (oldEvent.fees === null && fees > 0)) {
             transaction.events.push({
               transferId: oldEvent._id,
-              type: "expense",
-              currency: "BG",
+              type: Expense.type,
+              currency: Expense.currency,
               date: oldEvent.date,
-              category: "other",
+              category: Expense.category,
               account: from,
               amount: fees,
-              note: "fees",
+              note: Expense.note,
               description: oldEvent.description,
             });
           }
@@ -269,9 +262,7 @@ export const editTransactionEvent: RequestHandler = async (
 
       calculateTotalExpenseAndIncome(transaction, income, expense);
 
-      await transaction.save().then(() => {
-        return res.json(transaction);
-      });
+      saveAndSendResponse(transaction, res);
     } else {
       if (transferId) {
         Promise.all(
@@ -310,19 +301,16 @@ export const editTransactionEvent: RequestHandler = async (
         ).then(async () => {
           calculateTotalExpenseAndIncome(transaction, income, expense);
 
-          await transaction.save().then(() => {
-            return res.json(transaction);
-          });
+          saveAndSendResponse(transaction, res);
         });
       } else {
-        let foundIndex = transaction.events.findIndex(
+        const foundIndex = transaction.events.findIndex(
           (foundEvent: any) => foundEvent._id.toString() === event_id.toString()
         );
         transaction.events.splice(foundIndex, 1, eventFromBody);
         calculateTotalExpenseAndIncome(transaction, income, expense);
-        await transaction.save().then(() => {
-          return res.json(transaction);
-        });
+
+        saveAndSendResponse(transaction, res);
       }
     }
   } catch (error) {
