@@ -1,72 +1,63 @@
 import React from "react";
-import Moment from "moment";
 import NavBarMenu from "../../../layout/navBarMenu/NavBarMenu";
 import YearlyStyle from "./YearlyStyle.module.css";
 import InfoRow from "../components/infoRow/InfoRow";
-import {useHistory} from 'react-router-dom'
 import axios from "axios";
-import moment from "moment";
+import Moment from "moment";
 import YearlyTableRow from "./YearlyTableRow";
+import { State as StateTransaction } from "../reducers/transactionReducer";
+import { connect } from "react-redux";
 
 export interface State {
-  date: any;
   months: { from: any; to: any; expense: number; income: number }[];
   sumIncome: number;
   sumExpense: number;
 }
+type Props = {
+  state: StateTransaction;
+};
+let config = {
+  headers: {
+    Authorization: "Bearer " + localStorage.getItem("jwt"),
+  },
+};
 
-class YearlyContainer extends React.Component {
+class YearlyContainer extends React.Component<Props> {
   state: State = {
-    date: new Date(),
     months: [],
     sumIncome: 0,
     sumExpense: 0,
   };
 
   componentDidMount() {
-    this.setYear();
+    this.setYear(this.props.state.date);
   }
-  setYear = async () => {
+
+  componentDidUpdate(
+    prevProps: Readonly<Props>,
+    prevState: Readonly<{}>,
+    snapshot?: any
+  ) {
+    if (prevProps.state.date !== this.props.state.date) {
+      this.setState({
+        date: this.props.state.date,
+      });
+      this.setYear(this.props.state.date);
+    }
+  }
+
+  setYear = async (date: any) => {
     let months = [];
 
-    const { date } = this.state;
-
-    if (date.getFullYear() === new Date().getFullYear()) {
-      for (let i = 0; i <= date.getMonth(); i++) {
-        await months.push({
-          from: moment(
-            new Date(date.getFullYear(), date.getMonth() + i, 2)
-          ).toISOString(),
-          to: moment(
-            new Date(date.getFullYear(), date.getMonth() + i + 1, 1)
-          ).toISOString(),
-          income: 0,
-          expense: 0,
-        });
-      }
+    for (let i = 0; i <= 11; i++) {
+      await months.push({
+        from: Moment(new Date(date.getFullYear(), i, 2)).toISOString(),
+        to: Moment(new Date(date.getFullYear(), i + 1, 1)).toISOString(),
+        income: 0,
+        expense: 0,
+      });
     }
-    if (date.getFullYear() < new Date().getFullYear()) {
-      for (let i = 0; i <= 11; i++) {
-        await months.push({
-          from: moment(
-            new Date(date.getFullYear(), date.getMonth() + i, 2)
-          ).toISOString(),
-          to: moment(
-            new Date(date.getFullYear(), date.getMonth() + i + 1, 1)
-          ).toISOString(),
-          income: 0,
-          expense: 0,
-        });
-      }
-    }
-    let config = {
-      headers: {
-        Authorization:
-          "Bearer " +
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjRjZjcyMDIwNTM5MmM3MGU5MmJlZiIsImlhdCI6MTYxMDIyNzAwOH0.bL8WKWjEe1NP2-07udR7ORGkraoavQZEyjtOUd9-5Po",
-      },
-    };
-
+    // }
     axios
       .post(
         `http://localhost:5000/transaction/getYearlyOrWeekly`,
@@ -74,61 +65,88 @@ class YearlyContainer extends React.Component {
         config
       )
       .then((data) => {
-        this.setState({
-          months: data.data.months,
-          sumIncome: data.data.sumIncome,
-          sumExpense: data.data.sumExpense,
-        });
+        if (date.getFullYear() < new Date().getFullYear()) {
+          this.setState({
+            months: data.data.months,
+            sumIncome: data.data.sumIncome,
+            sumExpense: data.data.sumExpense,
+          });
+        }
+        if (date.getFullYear() === new Date().getFullYear()) {
+          this.setState({
+            sumIncome: data.data.sumIncome,
+            sumExpense: data.data.sumExpense,
+          });
+          this.setMonths(data.data.months);
+        }
+        if (date.getFullYear() > new Date().getFullYear()) {
+
+          this.setState({
+            months: data.data.months.filter(
+              (month: any) => month.expense > 0 || month.income > 0
+            ),
+            sumIncome: data.data.sumIncome,
+            sumExpense: data.data.sumExpense,
+          });
+        }
       });
   };
-  handleNextYear = async () => {
-    let Year = this.state.date.getFullYear();
-    let newYear = new Date().setFullYear(Year + 1);
 
-    await this.setState({
-      date: new Date(newYear),
-      months: [],
-    });
+  setMonths = async (months: State["months"]) => {
+    const { date } = this.props.state;
+    let year = [];
+    let newMonths = months.filter(
+      (month) => month.expense > 0 || month.income > 0
+    );
 
-    this.setYear();
+    for (
+      let i = 0;
+      i <= new Date(newMonths[newMonths.length - 1].from).getMonth();
+      i++
+    ) {
+      if (
+        newMonths.filter((month) => new Date(month.from).getMonth() === i)
+          .length > 0
+      ) {
+        year.push(
+          newMonths.filter((month) => new Date(month.from).getMonth() === i)[0]
+        );
+      } else {
+        await year.push({
+          from: Moment(new Date(date.getFullYear(), i, 2)).toISOString(),
+          to: Moment(new Date(date.getFullYear(), i + 1, 1)).toISOString(),
+          income: 0,
+          expense: 0,
+        });
+      }
+    }
+    this.setState({ months: year });
   };
-  handlePreviousYear = async () => {
-    let Year = this.state.date.getFullYear();
-    let newYear = new Date().setFullYear(Year - 1);
-
-    await this.setState({
-      ...this.state,
-      date: new Date(newYear),
-      months: [],
-    });
-
-    this.setYear();
-  };
-
-
   render() {
-    const { date, months, sumExpense, sumIncome } = this.state;
+    const { months, sumExpense, sumIncome } = this.state;
+    const { date } = this.props.state;
     return (
       <div className={YearlyStyle.wrapper}>
-        <NavBarMenu
-          handlePreviousMonth={this.handlePreviousYear}
-          handleNextMonth={this.handleNextYear}
-          date={date}
-        />
+        <NavBarMenu />
         <div className={YearlyStyle.container}>
           <table className={YearlyStyle.table}>
             <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
-            <tbody >
-            {months.reverse().map((month, index) => (
-                <YearlyTableRow month={month} date={date}/>
-            ))}
+            <tbody>
+              {months.reverse().map((month, index) => (
+                <YearlyTableRow month={month} date={date} />
+              ))}
             </tbody>
           </table>
         </div>
-
       </div>
     );
   }
 }
 
-export default YearlyContainer;
+const mapStateToProps = (state: any) => {
+  return {
+    state: state.transaction,
+  };
+};
+
+export default connect(mapStateToProps)(YearlyContainer);

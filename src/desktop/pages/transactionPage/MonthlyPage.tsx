@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from "../../layout/navBar/NavBar";
-import TransactionContainer from "../../modules/transaction/monthlyContainer/TransactionContainer";
+import MonthlyContainer from "../../modules/transaction/monthlyContainer/MonthlyContainer";
 import queryString from 'query-string';
 
 const MonthlyPage = (props:any) => {
@@ -8,7 +8,7 @@ const MonthlyPage = (props:any) => {
     return (
         <div>
             <NavBar/>
-            <TransactionContainer filters={filters} />
+            <MonthlyContainer filters={filters} />
         </div>
     );
 };

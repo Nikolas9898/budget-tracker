@@ -78,9 +78,6 @@ const MonthlyContainer = () => {
   return (
     <div>
       <NavBarMenu
-        handlePreviousMonth={handlePreviousMonth}
-        handleNextMonth={handleNextMonth}
-        date={date}
       />
 
       <div style={{ width: "400px" }}>

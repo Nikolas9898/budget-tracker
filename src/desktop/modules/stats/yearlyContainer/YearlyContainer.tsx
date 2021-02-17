@@ -21,9 +21,6 @@ const YearlyContainer = () => {
     return (
         <div>
             <NavBarMenu
-                handlePreviousMonth={handlePreviousMonth}
-                handleNextMonth={handleNextMonth}
-                date={date}
             />
         </div>
     );

@@ -2,27 +2,30 @@ import React from "react";
 import NavBarStyle from "./NavBarMenuStyle.module.css";
 import { Link } from "react-router-dom";
 import Moment from "moment";
-
-type Props = {
-  handlePreviousMonth: () => void;
-  handleNextMonth: () => void;
-  date: any;
-};
-
-const NavBarMenu: React.FC<Props> = ({
-  handlePreviousMonth,
+import {
   handleNextMonth,
-  date,
-}) => {
+  handleNextYear,
+  handlePreviousMonth,
+  handlePreviousYear,
+} from "../../modules/transaction/actions/transactionActions";
+import { useDispatch, useSelector } from "react-redux";
+
+const NavBarMenu = () => {
+  const dispatch = useDispatch();
+  const state = useSelector((state: any) => state.transaction);
+
+  let containerIsYearly: boolean =
+    window.location.pathname === "/transaction/yearly" ||
+    window.location.pathname === "/stats/yearly";
+
+  let containerIsTransaction: boolean = window.location.pathname.includes(
+    "transaction"
+  );
   return (
     <div className={NavBarStyle.container}>
       <div className={NavBarStyle.container_navigation}>
         <Link
-          to={
-            window.location.pathname.includes("transaction")
-              ? "/transaction/daily"
-              : "/stats/daily"
-          }
+          to={containerIsTransaction ? "/transaction/daily" : "/stats/daily"}
           className={
             window.location.pathname === "/transaction/daily" ||
             window.location.pathname === "/stats/daily"
@@ -34,11 +37,7 @@ const NavBarMenu: React.FC<Props> = ({
         </Link>
 
         <Link
-          to={
-            window.location.pathname.includes("transaction")
-              ? "/transaction/weekly"
-              : "/stats/weekly"
-          }
+          to={containerIsTransaction ? "/transaction/weekly" : "/stats/weekly"}
           className={
             window.location.pathname === "/transaction/weekly" ||
             window.location.pathname === "/stats/weekly"
@@ -51,9 +50,7 @@ const NavBarMenu: React.FC<Props> = ({
 
         <Link
           to={
-            window.location.pathname.includes("transaction")
-              ? "/transaction/monthly"
-              : "/stats/monthly"
+            containerIsTransaction ? "/transaction/monthly" : "/stats/monthly"
           }
           className={
             window.location.pathname === "/transaction/monthly" ||
@@ -66,11 +63,7 @@ const NavBarMenu: React.FC<Props> = ({
         </Link>
 
         <Link
-          to={
-            window.location.pathname.includes("transaction")
-              ? "/transaction/yearly"
-              : "/stats/yearly"
-          }
+          to={containerIsTransaction ? "/transaction/yearly" : "/stats/yearly"}
           className={
             window.location.pathname === "/transaction/yearly" ||
             window.location.pathname === "/stats/yearly"
@@ -82,11 +75,7 @@ const NavBarMenu: React.FC<Props> = ({
         </Link>
 
         <Link
-          to={
-            window.location.pathname.includes("transaction")
-              ? "/transaction/period"
-              : "/stats/period"
-          }
+          to={containerIsTransaction ? "/transaction/period" : "/stats/period"}
           className={
             window.location.pathname === "/transaction/period" ||
             window.location.pathname === "/stats/period"
@@ -100,18 +89,24 @@ const NavBarMenu: React.FC<Props> = ({
       <div className={NavBarStyle.change_month_content}>
         <div
           className={NavBarStyle.change_month_button}
-          onClick={() => handlePreviousMonth()}
+          onClick={() =>
+            containerIsYearly
+              ? dispatch(handlePreviousYear())
+              : dispatch(handlePreviousMonth())
+          }
         >
           {"<"}
         </div>
-        {window.location.pathname === "/transaction/yearly" ||
-        window.location.pathname === "/stats/yearly"
-          ? Moment(date).format("YYYY")
-          : Moment(date).format("MMM YYYY")}
-
+        {containerIsYearly
+          ? Moment(state.date).format("YYYY")
+          : Moment(state.date).format("MMM YYYY")}
         <div
           className={NavBarStyle.change_month_button}
-          onClick={() => handleNextMonth()}
+          onClick={() =>
+            containerIsYearly
+              ? dispatch(handleNextYear())
+              : dispatch(handleNextMonth())
+          }
         >
           {">"}
         </div>

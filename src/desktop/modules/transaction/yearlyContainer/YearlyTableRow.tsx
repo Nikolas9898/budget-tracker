@@ -16,7 +16,7 @@ const YearlyTableRow: React.FC<Props> = ({ month, date }) => {
       <td className={YearlyStyle.month_content}>
         <div
           className={
-            new Date(date).getMonth() === new Date(month.from).getMonth() &&
+            new Date().getMonth() === new Date(month.from).getMonth() &&
             new Date().getFullYear() === new Date(month.from).getFullYear()
               ? YearlyStyle.month_selected
               : YearlyStyle.month

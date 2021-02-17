@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import AddTransactionStyl from "../AddTransactionStyle.module.css";
 import Moment from "moment";
-import { State } from "../../../monthlyContainer/TransactionContainer";
+import {
+  TransactionEvent,
+  Errors,
+  Transaction,
+} from "../../../../../helpers/Typeses";
 
 type Props = {
-  transaction: State["transaction"];
-  errors: State["errors"];
+  transaction: TransactionEvent;
+  errors: Errors;
   handleInputChange: (event: any) => void;
 };
-const Form: React.FC<Props> = ({
-  transaction,
-  handleInputChange,
-  errors,
-}) => {
+const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
   const [feesIsOpen, setFeesIsOpen] = useState(false);
   return (
     <div className={AddTransactionStyl.content}>
@@ -170,7 +170,10 @@ const Form: React.FC<Props> = ({
               )}
               <div
                 className={AddTransactionStyl.fees}
-                onClick={() =>{handleInputChange({target:{value:"0",name:"fees"}}); setFeesIsOpen(!feesIsOpen)}}
+                onClick={() => {
+                  handleInputChange({ target: { value: "0", name: "fees" } });
+                  setFeesIsOpen(!feesIsOpen);
+                }}
               >
                 X
               </div>

@@ -1,5 +1,3 @@
 export const SIGN_IN = "SIGN_IN";
 export const SIGN_UP = "SIGN_UP";
-export const HANDLE_NEXT_MONTH="HANDLE_NEXT_MONTH";
-export const HANDLE_PREVIOUS_MONTH="HANDLE_PREVIOUS_MONTH";
 
