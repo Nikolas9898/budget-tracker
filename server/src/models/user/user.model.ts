@@ -1,16 +1,5 @@
 import { Schema, model } from "mongoose";
 
-export interface UserInterface {
-  _id: string;
-  username: string;
-  password: string;
-  email: string;
-  type: string;
-  categories: { name: string }[];
-  createdAt: string;
-  updatedAt: string;
-}
-
 const userSchema = new Schema(
   {
     username: {

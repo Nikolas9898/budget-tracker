@@ -1,7 +1,10 @@
-import { Months, Month } from "../../interfaces/monthInterface";
+import { Months, Month } from "../../interfaces/month";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { RequestHandler, Request, Response } from "express";
-import TransactionInterface, { Expense } from "../../interfaces/transactions";
+import ITransaction, {
+  Expense,
+  ITransactionEvent,
+} from "../../interfaces/transactions";
 import Transaction from "../../models/transaction/transaction.model";
 import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpenseAndIncome";
 import {
@@ -9,7 +12,7 @@ import {
   saveAndSendResponse,
   createTransferWithFees,
   deleteTransaction,
-  removeTransactionEvent,
+  removeITransactionEvent,
 } from "../../helpers/transactionHelpers/transactionHelpers";
 
 export const createTransaction: RequestHandler = async (
@@ -111,7 +114,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
     },
     (err, transactions) => {
       try {
-        transactions.forEach((transaction: TransactionInterface) => {
+        transactions.forEach((transaction: ITransaction) => {
           sumExpense += transaction.expense;
           sumIncome += transaction.income;
         });
@@ -132,21 +135,18 @@ export const getTransactionById: RequestHandler = async (
 
   const userId: string = tokenDecoder(req.headers.authorization);
 
-  Transaction.findOne(
-    { _id: id, userId },
-    (err, transaction: TransactionInterface) => {
-      try {
-        if (!transaction) {
-          return res
-            .status(400)
-            .json({ errorMsg: "No such transaction available" });
-        }
-        return res.json(transaction);
-      } catch (error) {
-        return res.status(400).json({ errorMsg: err });
+  Transaction.findOne({ _id: id, userId }, (err, transaction: ITransaction) => {
+    try {
+      if (!transaction) {
+        return res
+          .status(400)
+          .json({ errorMsg: "No such transaction available" });
       }
+      return res.json(transaction);
+    } catch (error) {
+      return res.status(400).json({ errorMsg: err });
     }
-  );
+  });
 };
 
 export const deleteTransactionById: RequestHandler = async (
@@ -172,7 +172,7 @@ export const deleteTransactionById: RequestHandler = async (
 
 // Edits specifid transaction event
 
-export const editTransactionEvent: RequestHandler = async (
+export const editITransactionEvent: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
@@ -213,8 +213,8 @@ export const editTransactionEvent: RequestHandler = async (
 
     if (type === "transfer") {
       // when eventFrom body is transfer
-      transaction.events.map((oldEvent: any) => {
-        if (oldEvent._id.toString() === event_id.toString()) {
+      transaction.events.map((oldEvent: ITransactionEvent) => {
+        if (oldEvent._id?.toString() === event_id.toString()) {
           // when editing income or expense into transfer with fees
           if (oldEvent.type !== "transfer" && type === "transfer" && fees > 0) {
             transaction.events.push({
@@ -268,8 +268,8 @@ export const editTransactionEvent: RequestHandler = async (
     } else {
       if (transferId) {
         Promise.all(
-          transaction.events.map((oldEvent: any) => {
-            if (oldEvent._id.toString() === event_id) {
+          transaction.events.map((oldEvent: ITransactionEvent) => {
+            if (oldEvent._id?.toString() === event_id) {
               oldEvent.amount = amount;
               oldEvent.type = type;
               oldEvent.currency = currency;
@@ -280,7 +280,7 @@ export const editTransactionEvent: RequestHandler = async (
               oldEvent.description = description;
             }
 
-            if (oldEvent._id.toString() === event_id && type === "income") {
+            if (oldEvent._id?.toString() === event_id && type === "income") {
               oldEvent.amount = amount;
               oldEvent.type = type;
               oldEvent.transferId = "";
@@ -292,7 +292,7 @@ export const editTransactionEvent: RequestHandler = async (
               oldEvent.description = description;
             }
 
-            if (oldEvent._id.toString() === transferId) {
+            if (oldEvent._id?.toString() === transferId) {
               if (type === "income") {
                 oldEvent.fees = 0;
               } else {
@@ -307,7 +307,8 @@ export const editTransactionEvent: RequestHandler = async (
         });
       } else {
         const foundIndex = transaction.events.findIndex(
-          (foundEvent: any) => foundEvent._id.toString() === event_id.toString()
+          (foundEvent: ITransactionEvent) =>
+            foundEvent._id?.toString() === event_id.toString()
         );
         transaction.events.splice(foundIndex, 1, eventFromBody);
         calculateTotalExpenseAndIncome(transaction, income, expense);
@@ -322,14 +323,14 @@ export const editTransactionEvent: RequestHandler = async (
 
 // delete specific transaction event
 
-export const deleteTransactionEvent: RequestHandler = async (
+export const deleteITransactionEvent: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
   const id = req.params.transactionId;
   const event_id = req.params.event_id;
   const userId = tokenDecoder(req.headers.authorization);
-  let transaction: TransactionInterface | null;
+  let transaction: ITransaction | null;
 
   try {
     transaction = await Transaction.findOne({
@@ -350,7 +351,7 @@ export const deleteTransactionEvent: RequestHandler = async (
     return deleteTransaction(transaction, res);
   }
 
-  return removeTransactionEvent(res, transaction, event_id);
+  return removeITransactionEvent(res, transaction, event_id);
 };
 
 export const getYearlyAndWeekly: RequestHandler = async (

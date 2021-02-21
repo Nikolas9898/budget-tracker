@@ -1,14 +1,14 @@
 import { calculateTotalExpenseAndIncome } from "../calculateTotalExpenseAndIncome";
 import Transaction from "../../models/transaction/transaction.model";
-import TransactionInterface, {
-  TransactionEvent,
+import ITransaction, {
+  ITransactionEvent,
   Expense,
   DummyExpenseEvents,
 } from "../../interfaces/transactions";
 import { Response } from "express";
 
 export const createTransferWithFees = (
-  events: TransactionEvent,
+  events: ITransactionEvent,
   createdAt: string,
   userId: string,
   income: number,
@@ -45,13 +45,13 @@ export const createTransferWithFees = (
 };
 
 export const createOrdinaryEvent = (
-  events: [TransactionEvent],
+  events: [ITransactionEvent],
   createdAt: string,
   userId: string,
   income: number,
   expense: number
 ) => {
-  events.forEach((event: TransactionEvent) => {
+  events.forEach((event: ITransactionEvent) => {
     if (event.type.toLowerCase() === "income") {
       income += event.amount;
     }
@@ -71,10 +71,7 @@ export const createOrdinaryEvent = (
   return transaction;
 };
 
-export const deleteTransaction = (
-  transaction: TransactionInterface,
-  res: Response
-) => {
+export const deleteTransaction = (transaction: ITransaction, res: Response) => {
   try {
     transaction.remove();
     return res.json({ msg: "Deleted successfullu" });
@@ -83,9 +80,9 @@ export const deleteTransaction = (
   }
 };
 
-export const removeTransactionEvent = async (
+export const removeITransactionEvent = async (
   res: Response,
-  transaction: TransactionInterface,
+  transaction: ITransaction,
   event_id: string
 ) => {
   let expense = 0;
@@ -108,7 +105,7 @@ export const removeTransactionEvent = async (
 };
 
 export const saveAndSendResponse = async (
-  resItem: TransactionInterface,
+  resItem: ITransaction,
   res: Response
 ) => {
   try {

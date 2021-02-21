@@ -1,9 +1,7 @@
-import TransactionInterface, {
-  TransactionEvent,
-} from "../interfaces/transactions";
+import ITransaction, { ITransactionEvent } from "../interfaces/transactions";
 
 export const calculateTotalExpenseAndIncome = (
-  transfer: TransactionInterface,
+  transfer: ITransaction,
   income: number,
   expense: number
 ) => {

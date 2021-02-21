@@ -1,12 +1,13 @@
-import User, { UserInterface } from "../../models/user/user.model";
+import User from "../../models/user/user.model";
 import { Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
+import { IUser } from "../../interfaces/user";
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
   const { username, password, email, type, currency, categories } = req.body;
 
   let token: string;
-  let foundUser: UserInterface;
+  let foundUser: IUser;
   const newUser = new User({
     username,
     password,
@@ -18,46 +19,43 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
 
   try {
     await newUser.save();
-    await User.findOne(
-      { email: req.body.email },
-      (err, user: UserInterface) => {
-        let {
-          password,
-          _id,
-          username,
-          email,
-          type,
-          categories,
-          createdAt,
-          updatedAt,
-        } = user;
+    await User.findOne({ email: req.body.email }, (err, user: IUser) => {
+      let {
+        password,
+        _id,
+        username,
+        email,
+        type,
+        categories,
+        createdAt,
+        updatedAt,
+      } = user;
 
-        const passMatch: boolean = password === req.body.password;
+      const passMatch: boolean = password === req.body.password;
 
-        if (!passMatch) {
-          return res.json({ errorMSG: "Wrong email or password" });
-        }
-
-        foundUser = {
-          _id,
-          username,
-          password: "",
-          email,
-          type,
-          categories,
-          createdAt,
-          updatedAt,
-        };
-
-        token = jwt.sign(
-          {
-            id: _id,
-          },
-          "somesecretkeyforjsonwebtoken"
-        );
-        return res.json({ user: foundUser, token });
+      if (!passMatch) {
+        return res.json({ errorMSG: "Wrong email or password" });
       }
-    );
+
+      foundUser = {
+        _id,
+        username,
+        password: "",
+        email,
+        type,
+        categories,
+        createdAt,
+        updatedAt,
+      };
+
+      token = jwt.sign(
+        {
+          id: _id,
+        },
+        "somesecretkeyforjsonwebtoken"
+      );
+      return res.json({ user: foundUser, token });
+    });
   } catch (err) {
     return res.status(400).json({ errorMSG: err });
   }
@@ -67,7 +65,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
   const { email } = req.body;
 
   try {
-    await User.findOne({ email }, (err, user: UserInterface) => {
+    await User.findOne({ email }, (err, user: IUser) => {
       let {
         password,
         _id,
@@ -85,7 +83,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
         return res.json({ errorMSG: "Wrong email or password" });
       }
 
-      let foundUser: UserInterface = {
+      let foundUser: IUser = {
         _id,
         username,
         password: "",

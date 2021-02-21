@@ -1,9 +1,9 @@
 import { Document } from "mongoose";
 
-export default interface TransactionInterface extends Document {
+export default interface ITransaction extends Document {
   _id: string;
   createdAt: Date;
-  events: Array<TransactionEvent>;
+  events: Array<ITransactionEvent>;
   userId: string;
   income: number;
   expense: number;
@@ -11,7 +11,7 @@ export default interface TransactionInterface extends Document {
   __v: number;
 }
 
-export interface TransactionEvent {
+export interface ITransactionEvent {
   _id?: string;
   type: string;
   currency: string;
@@ -20,8 +20,8 @@ export interface TransactionEvent {
   fees?: number;
   from?: string;
   to?: string;
-  account: string;
-  category: string;
+  account: string | undefined;
+  category: string | undefined;
   amount: number;
   note: string;
   description: string;

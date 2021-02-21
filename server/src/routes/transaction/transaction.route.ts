@@ -25,12 +25,12 @@ router.get(
 router.put(
   "/transaction/event/edit/:transactionId/:event_id",
   tokenAuth,
-  transactionControler.editTransactionEvent
+  transactionControler.editITransactionEvent
 );
 router.put(
   "/transaction/event/delete/:transactionId/:event_id",
   tokenAuth,
-  transactionControler.deleteTransactionEvent
+  transactionControler.deleteITransactionEvent
 );
 
 router.delete(
