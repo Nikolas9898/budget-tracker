@@ -2,14 +2,25 @@ import { RequestHandler, Request, Response } from "express";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import User, { UserInterface } from "../../models/user/user.model";
 
-export const getLoggedUser: RequestHandler = (req: Request, res: Response) => {
+export const getLoggedUser: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   const { authorization } = req.headers;
 
   const userId: string = tokenDecoder(authorization);
+  try {
+    await User.findById({ _id: userId }, (err, user: UserInterface) => {
+      let {
+        _id,
+        username,
+        email,
+        type,
+        categories,
+        createdAt,
+        updatedAt,
+      } = user;
 
-  User.findById({ _id: userId }, (err, user: UserInterface) => {
-    let { _id, username, email, type, categories, createdAt, updatedAt } = user;
-    try {
       if (!user) return res.json({ errorMSG: "No existing user" });
 
       let foundUser: UserInterface = {
@@ -24,8 +35,8 @@ export const getLoggedUser: RequestHandler = (req: Request, res: Response) => {
       };
 
       return res.json({ user: foundUser });
-    } catch (error) {
-      return res.json(error);
-    }
-  });
+    });
+  } catch (error) {
+    return res.json(error);
+  }
 };

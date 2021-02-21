@@ -28,11 +28,7 @@ export const tokenAuth: RequestHandler = async (
     if (!decodedToken) return res.status(401).json({ msg: "Wrong token" });
 
     await User.findOne({ _id: decodedToken.id }, () => {
-      try {
-        return next();
-      } catch (error) {
-        return res.json({ msg: error });
-      }
+      return next();
     });
   } catch (error) {
     return res.json({ msg: error });

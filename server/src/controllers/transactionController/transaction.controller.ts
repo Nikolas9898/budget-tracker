@@ -111,7 +111,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
     },
     (err, transactions) => {
       try {
-        transactions.map((transaction: TransactionInterface) => {
+        transactions.forEach((transaction: TransactionInterface) => {
           sumExpense += transaction.expense;
           sumIncome += transaction.income;
         });
@@ -124,7 +124,10 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
   );
 };
 
-export const getTransactionById = async (req: Request, res: Response) => {
+export const getTransactionById: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   const id: string = req.params.id;
 
   const userId: string = tokenDecoder(req.headers.authorization);
@@ -152,13 +155,12 @@ export const deleteTransactionById: RequestHandler = async (
 ) => {
   const id = req.params.id;
   const userId = tokenDecoder(req.headers.authorization);
-
-  const transaction = await Transaction.findOne({
-    _id: id,
-    userId,
-  });
-
   try {
+    const transaction = await Transaction.findOne({
+      _id: id,
+      userId,
+    });
+
     if (transaction) {
       transaction.remove();
       return res.json({ msg: "Deleted successfullu" });
@@ -351,10 +353,13 @@ export const deleteTransactionEvent: RequestHandler = async (
   return removeTransactionEvent(res, transaction, event_id);
 };
 
-export const getYearlyAndWeekly = async (req: Request, res: Response) => {
+export const getYearlyAndWeekly: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   const userId = tokenDecoder(req.headers.authorization);
 
-  let months: Months = req.body;
+  const months: Months = req.body;
 
   let sumExpense = 0;
   let sumIncome = 0;

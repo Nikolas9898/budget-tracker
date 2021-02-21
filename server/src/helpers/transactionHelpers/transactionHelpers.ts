@@ -111,12 +111,10 @@ export const saveAndSendResponse = async (
   resItem: TransactionInterface,
   res: Response
 ) => {
-  await resItem
-    .save()
-    .then(() => {
-      return res.json(resItem);
-    })
-    .catch((error) => {
-      return res.json(error);
-    });
+  try {
+    await resItem.save();
+    return res.json(resItem);
+  } catch (error) {
+    return res.json(error);
+  }
 };
