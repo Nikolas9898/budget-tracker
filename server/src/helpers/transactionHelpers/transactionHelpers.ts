@@ -80,7 +80,7 @@ export const deleteTransaction = (transaction: ITransaction, res: Response) => {
   }
 };
 
-export const removeITransactionEvent = async (
+export const removeTransactionEvent = async (
   res: Response,
   transaction: ITransaction,
   event_id: string

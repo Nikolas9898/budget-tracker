@@ -12,7 +12,7 @@ import {
   saveAndSendResponse,
   createTransferWithFees,
   deleteTransaction,
-  removeITransactionEvent,
+  removeTransactionEvent,
 } from "../../helpers/transactionHelpers/transactionHelpers";
 
 export const createTransaction: RequestHandler = async (
@@ -172,7 +172,7 @@ export const deleteTransactionById: RequestHandler = async (
 
 // Edits specifid transaction event
 
-export const editITransactionEvent: RequestHandler = async (
+export const editTransactionEvent: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
@@ -323,7 +323,7 @@ export const editITransactionEvent: RequestHandler = async (
 
 // delete specific transaction event
 
-export const deleteITransactionEvent: RequestHandler = async (
+export const deleteTransactionEvent: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
@@ -351,7 +351,7 @@ export const deleteITransactionEvent: RequestHandler = async (
     return deleteTransaction(transaction, res);
   }
 
-  return removeITransactionEvent(res, transaction, event_id);
+  return removeTransactionEvent(res, transaction, event_id);
 };
 
 export const getYearlyAndWeekly: RequestHandler = async (
