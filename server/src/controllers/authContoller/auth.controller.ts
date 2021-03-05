@@ -1,13 +1,13 @@
 import User from "../../models/user/user.model";
 import { Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
-import { IUser } from "../../interfaces/user";
+import { IUser, ResponseUser } from "../../interfaces/user";
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
   const { username, password, email, type, currency, categories } = req.body;
 
   let token: string;
-  let foundUser: IUser;
+  let foundUser: ResponseUser;
   const newUser = new User({
     username,
     password,
@@ -83,7 +83,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
         return res.json({ errorMSG: "Wrong email or password" });
       }
 
-      let foundUser: IUser = {
+      let foundUser: ResponseUser = {
         _id,
         username,
         password: "",

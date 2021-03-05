@@ -1,6 +1,6 @@
 import { RequestHandler, Request, Response } from "express";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
-import { IUser } from "../../interfaces/user";
+import { IUser, ResponseUser } from "../../interfaces/user";
 import User from "../../models/user/user.model";
 
 export const getLoggedUser: RequestHandler = async (
@@ -24,7 +24,7 @@ export const getLoggedUser: RequestHandler = async (
 
       if (!user) return res.json({ errorMSG: "No existing user" });
 
-      let foundUser: IUser = {
+      let foundUser: ResponseUser = {
         _id,
         username,
         password: "",
@@ -39,5 +39,30 @@ export const getLoggedUser: RequestHandler = async (
     });
   } catch (error) {
     return res.json(error);
+  }
+};
+
+export const editUser: RequestHandler = async (req: Request, res: Response) => {
+  const { authorization } = req.headers;
+
+  const userId: string = tokenDecoder(authorization);
+
+  let user: IUser | null;
+  try {
+    user = await User.findById(userId);
+
+    if (user) {
+      user.username = req.body.username;
+      user.password = req.body.password;
+      user.email = req.body.email;
+      user.categories = req.body.categories;
+      user.type = req.body.type;
+
+      await user.save();
+
+      res.json(user);
+    }
+  } catch (error) {
+    res.json(error.message);
   }
 };
