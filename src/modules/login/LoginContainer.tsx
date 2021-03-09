@@ -8,7 +8,6 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { singIn } from "../../store/actions/usersActions";
 import axios from "axios";
-import { faWindows } from "@fortawesome/free-brands-svg-icons";
 
 const LoginContainer = () => {
   const [user, setUser] = useState({
@@ -104,13 +103,15 @@ const LoginContainer = () => {
       currency: "BG",
       categories: [],
     };
-
-    await axios.post(`http://localhost:5000/signUp`, newUser).then(data => {
+    try {
+      let signUp = await axios.post(`http://localhost:5000/signUp`, newUser);
       setErrors({ email: "", password: "", confirmPassword: "" });
-      dispatch(singIn(data.data));
-      // history.push("./");
+      dispatch(singIn(signUp.data.data));
       window.location.pathname = "/transaction/monthly";
-    });
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
   };
   return (
     <div className={LoginContainerStyle.container}>

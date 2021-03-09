@@ -1,65 +1,65 @@
 import Moment from "moment";
-import { State } from "../modules/transaction/reducers/transactionReducer";
+import { TransactionReducer } from "./ITransactions";
 
-export const dayStartOfTheWeekOfTheMonth = (date: any) =>
+export const dayStartOfTheWeekOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").startOf("week").get("date");
 
-export const monthStartOfTheWeekOfTheMonth = (date: any) =>
+export const monthStartOfTheWeekOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").startOf("week").get("month");
 
-export const yearStartOfTheWeekOfTheMonth = (date: any) =>
+export const yearStartOfTheWeekOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").startOf("week").get("year");
 
-export const dayEndOfTheWeekOfTheMonth = (date: any) =>
+export const dayEndOfTheWeekOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").endOf("week").get("date");
 
-export const monthEndOfTheWeekOfTheMonth = (date: any) =>
+export const monthEndOfTheWeekOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").endOf("week").get("month");
 
-export const yearEndOfTheWeekOfTheMonth = (date: any) =>
+export const yearEndOfTheWeekOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").endOf("week").get("year");
 
-export const dayStartOfTheWeekEndOfTheMonth = (date: any) =>
+export const dayStartOfTheWeekEndOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").startOf("week").get("date");
 
-export const monthStartOfTheWeekEndOfTheMonth = (date: any) =>
+export const monthStartOfTheWeekEndOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").startOf("week").get("month");
 
-export const yearStartOfTheWeekEndOfTheMonth = (date: any) =>
+export const yearStartOfTheWeekEndOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").startOf("week").get("year");
 
-export const dayEndOfTheWeekStartOfTheMonth = (date: any) =>
+export const dayEndOfTheWeekStartOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").endOf("week").get("date");
 
-export const monthEndOfTheWeekStartOfTheMonth = (date: any) =>
+export const monthEndOfTheWeekStartOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").endOf("week").get("month");
 
-export const yearEndOfTheWeekStartOfTheMonth = (date: any) =>
+export const yearEndOfTheWeekStartOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").endOf("week").get("year");
 
-export const dayStartOfTheMonth = (date: any) =>
+export const dayStartOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").get("date");
 
-export const monthStartOfTheMonth = (date: any) =>
+export const monthStartOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").get("month");
 
-export const yearStartOfTheMonth = (date: any) =>
+export const yearStartOfTheMonth = (date: Date) =>
   Moment(date).startOf("month").get("year");
 
-export const dayEndOfTheMonth = (date: any) =>
+export const dayEndOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").get("date");
 
-export const monthEndOfTheMonth = (date: any) =>
+export const monthEndOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").get("month");
 
-export const yearEndOfTheMonth = (date: any) =>
+export const yearEndOfTheMonth = (date: Date) =>
   Moment(date).endOf("month").get("year");
 
-export const currentDay = (calDate: any, event: any) => {
+export const currentDay = (calDate: Date, eventDate: Date) => {
   let isTrue: boolean =
-    calDate.date.getDate() === new Date(event.createdAt).getDate() &&
-    calDate.date.getMonth() === new Date(event.createdAt).getMonth() &&
-    calDate.date.getFullYear() === new Date(event.createdAt).getFullYear();
+    calDate.getDate() === new Date(eventDate).getDate() &&
+    calDate.getMonth() === new Date(eventDate).getMonth() &&
+    calDate.getFullYear() === new Date(eventDate).getFullYear();
   return isTrue;
 };
 export const typeIsTransfer = (type: string) => {
@@ -81,7 +81,31 @@ export const transactionTypeIsIncome = (type: string, amount: string) => {
   let income = type === "income" ? (parseFloat(amount) / 100).toFixed(2) : "";
   return income;
 };
-export const transactionEvent = (transaction: State["transaction"]) => {
+export const transactionTypeIsExpense = (type: string, amount: string) => {
+  let income =
+    type === "expense" || type === "transfer"
+      ? (parseFloat(amount) / 100).toFixed(2)
+      : "";
+  return income;
+};
+export const headerTitle = (path: string) => {
+  switch (true) {
+    case path.includes("/transaction"):
+      return "Transaction";
+    case path.includes("/stats"):
+      return "Stats";
+    case path.includes("/export"):
+      return "Export";
+    case path.includes("/accounts"):
+      return "Accounts";
+    default:
+      return "";
+  }
+};
+
+export const transactionEvent = (
+  transaction: TransactionReducer["transaction"]
+) => {
   let event = {
     events: [
       {

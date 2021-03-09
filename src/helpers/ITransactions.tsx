@@ -13,15 +13,15 @@ export interface Errors {
   amount: string;
 }
 export interface Month {
-  from: any;
-  to: any;
+  from: Date;
+  to: Date;
   expense: number;
   income: number;
 }
 export interface TransactionEvent {
   _id: string;
   type: string;
-  date: any;
+  date: Date;
   account?: string;
   from?: string;
   to?: string;
@@ -38,8 +38,23 @@ export interface MonthlyContainer {
   isInfoTransactionOpen: boolean;
   isEditTransactionOpen: boolean;
   isTransfer: boolean;
-  date: any;
+  date: Date;
   calendarDates: {
-    date: any;
+    date: Date;
   }[];
+}
+export interface HandleInput {
+  target: {
+    value: string | number | Date;
+    name: string;
+  };
+}
+export interface TransactionReducer {
+  date: Date;
+  transaction: TransactionEvent;
+}
+export interface userReducer {
+  user: any;
+  token: string;
+  loading: boolean;
 }

@@ -5,14 +5,14 @@ import { Transaction } from "../../../helpers/ITransactions";
 import { currentDay } from "../../../helpers/Variables";
 
 type Props = {
-  calendarDate: any;
-  date: any;
+  calendarDates: { date: Date }[];
+  date: Date;
   transactions: Transaction[];
-  handleOpenInfoModal: (date: any) => void;
+  handleOpenInfoModal: (date: Date) => void;
 };
 
 const Calendar: React.FC<Props> = ({
-  calendarDate,
+  calendarDates,
   date,
   transactions,
   handleOpenInfoModal,
@@ -29,9 +29,8 @@ const Calendar: React.FC<Props> = ({
         ))}
       </div>
       <div className={TransactionStyle.calendar_wrapper}>
-        {calendarDate.map((calDate: any) => (
+        {calendarDates.map((calDate: { date: Date }) => (
           <div
-            key={calDate.date}
             className={
               date.getMonth() === calDate.date.getMonth()
                 ? TransactionStyle.calendar_date_box_container
@@ -41,7 +40,7 @@ const Calendar: React.FC<Props> = ({
           >
             <div
               className={
-                currentDay(calDate, { createdAt: new Date() })
+                currentDay(calDate.date, new Date())
                   ? TransactionStyle.current_date
                   : TransactionStyle.calendar_date
               }
@@ -49,7 +48,7 @@ const Calendar: React.FC<Props> = ({
               {calDate.date.getDate()}
             </div>
             {transactions.map(transaction =>
-              currentDay(calDate, transaction) ? (
+              currentDay(calDate.date, transaction.createdAt) ? (
                 <div
                   key={transaction._id}
                   className={TransactionStyle.calendar_events_content}

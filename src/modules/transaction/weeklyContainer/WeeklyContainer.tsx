@@ -20,9 +20,10 @@ import {
   monthEndOfTheWeekStartOfTheMonth,
   yearEndOfTheWeekStartOfTheMonth,
 } from "../../../helpers/Variables";
+import { TransactionReducer } from "../../../helpers/ITransactions";
 
 export interface State {
-  weeks: { from: any; to: any; income: number; expense: number }[];
+  weeks: { from: Date; to: Date; income: number; expense: number }[];
   sumIncome: number;
   sumExpense: number;
 }
@@ -39,11 +40,7 @@ class WeeklyContainer extends React.Component<Props> {
     this.TakeWeeks(this.props.state.date);
   }
 
-  componentDidUpdate(
-    prevProps: Readonly<Props>,
-    prevState: Readonly<{}>,
-    snapshot?: any
-  ) {
+  componentDidUpdate(prevProps: Readonly<Props>) {
     if (prevProps.state.date !== this.props.state.date) {
       this.setState({
         date: this.props.state.date,
@@ -51,7 +48,7 @@ class WeeklyContainer extends React.Component<Props> {
       this.TakeWeeks(this.props.state.date);
     }
   }
-  TakeWeeks = async (date: any) => {
+  TakeWeeks = async (date: Date) => {
     let weeks = [];
 
     weeks.push({
@@ -97,12 +94,11 @@ class WeeklyContainer extends React.Component<Props> {
       expense: 0,
     });
 
-    getYearlyOrWeekly(weeks).then(data => {
-      this.setState({
-        weeks: data.months,
-        sumIncome: data.sumIncome,
-        sumExpense: data.sumExpense,
-      });
+    let data = await getYearlyOrWeekly(weeks);
+    this.setState({
+      weeks: data.months,
+      sumIncome: data.sumIncome,
+      sumExpense: data.sumExpense,
     });
   };
   render() {
@@ -125,9 +121,9 @@ class WeeklyContainer extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: { transactionReducer: TransactionReducer }) => {
   return {
-    state: state.transaction,
+    state: state.transactionReducer,
   };
 };
 

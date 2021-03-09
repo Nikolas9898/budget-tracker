@@ -1,7 +1,7 @@
 import { SIGN_IN } from "../types";
 
 export interface State {
-  user: {};
+  user: any;
   token: string;
   loading: boolean;
 }

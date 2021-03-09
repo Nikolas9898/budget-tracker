@@ -10,17 +10,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import Moment from "moment";
-import { Transaction } from "../../../../helpers/ITransactions";
-import { transactionTypeIsIncome } from "../../../../helpers/Variables";
+import {
+  Transaction,
+  TransactionEvent,
+} from "../../../../helpers/ITransactions";
+import {
+  transactionTypeIsIncome,
+  transactionTypeIsExpense,
+} from "../../../../helpers/Variables";
 type Props = {
   isInfoTransactionOpen: boolean;
-  handleOpenTransaction: (date: any) => void;
-  handleOpenInfoModal: (date: any) => void;
-  handleDelete: (eventId: any) => void;
+  handleOpenTransaction: (date: Date) => void;
+  handleOpenInfoModal: (date: Date) => void;
+  handleDelete: (eventId: string) => void;
   selectedDay: Transaction;
   handlePreviousDay: () => void;
   handleNextDay: () => void;
-  handleOpenEdit: (event: any) => void;
+  handleOpenEdit: (event: TransactionEvent) => void;
 };
 
 const InfoModal: React.FC<Props> = ({
@@ -45,7 +51,7 @@ const InfoModal: React.FC<Props> = ({
             />
             <div>
               <FontAwesomeIcon
-                onClick={() => handleOpenInfoModal("")}
+                onClick={() => handleOpenInfoModal(new Date())}
                 className={InfoModalStyle.close_button}
                 icon={faTimesCircle}
               />
@@ -72,7 +78,7 @@ const InfoModal: React.FC<Props> = ({
                           )}
                         </th>
                         <th className={InfoModalStyle.content_row}>
-                          {transactionTypeIsIncome(
+                          {transactionTypeIsExpense(
                             transaction.type,
                             transaction.amount
                           )}

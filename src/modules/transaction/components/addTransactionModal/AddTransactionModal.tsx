@@ -1,6 +1,10 @@
 import React from "react";
 import AddTransactionStyle from "./AddTransactionStyle.module.css";
-import { Errors, TransactionEvent } from "../../../../helpers/ITransactions";
+import {
+  Errors,
+  HandleInput,
+  TransactionEvent,
+} from "../../../../helpers/ITransactions";
 import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
 import Form from "./form/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,15 +15,10 @@ type Props = {
   transactionEvent: TransactionEvent;
   errors: Errors;
   isEditTransactionOpen: boolean;
-  handleInputChange: (event: {
-    target: {
-      value: string;
-      name: string;
-    };
-  }) => void;
+  handleInputChange: (event: HandleInput) => void;
   handleSave: () => void;
-  handleOpenTransaction: (date: any) => void;
-  handleOpenEdit: (date: any) => void;
+  handleOpenTransaction: (date: Date) => void;
+  handleOpenEdit: (evnt: TransactionEvent) => void;
   handleDelete: (eventId: string) => void;
 };
 
@@ -53,8 +52,8 @@ const AddTransactionModal: React.FC<Props> = ({
               className={AddTransactionStyle.close_button}
               onClick={() =>
                 isEditTransactionOpen
-                  ? handleOpenEdit("")
-                  : handleOpenTransaction("")
+                  ? handleOpenEdit(transactionEvent)
+                  : handleOpenTransaction(new Date())
               }
               icon={faTimesCircle}
             />

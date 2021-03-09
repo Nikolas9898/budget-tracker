@@ -4,11 +4,10 @@ import YearlyStyle from "./YearlyStyle.module.css";
 import { useHistory } from "react-router-dom";
 
 type Props = {
-  month: { from: any; to: any; expense: number; income: number };
-  date: any;
+  month: { from: Date; to: Date; expense: number; income: number };
 };
 
-const YearlyTableRow: React.FC<Props> = ({ month, date }) => {
+const YearlyTableRow: React.FC<Props> = ({ month }) => {
   const history = useHistory();
   return (
     <tr onClick={() => history.push(`/transaction/monthly?date=${month.from}`)}>

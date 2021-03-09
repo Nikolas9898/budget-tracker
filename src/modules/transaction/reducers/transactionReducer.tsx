@@ -9,10 +9,9 @@ import {
 import { TransactionEvent } from "../../../helpers/ITransactions";
 
 export interface State {
-  date: any;
+  date: Date;
   transaction: TransactionEvent;
 }
-
 const initialState = {
   date: new Date(),
   transaction: {

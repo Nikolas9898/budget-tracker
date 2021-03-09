@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import NavBarMenu from "../../../layout/navBar/NavBar";
 
 const DailyContainer = () => {

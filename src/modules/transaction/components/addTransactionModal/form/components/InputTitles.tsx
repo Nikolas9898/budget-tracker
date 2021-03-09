@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { TransactionEvent } from "../../../../../../helpers/ITransactions";
 import AddTransactionStyl from "../../AddTransactionStyle.module.css";
 type Props = {

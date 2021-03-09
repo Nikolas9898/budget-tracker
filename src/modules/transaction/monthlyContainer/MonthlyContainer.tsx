@@ -30,13 +30,19 @@ import {
   getSpecificDatePeriod,
 } from "../service/TransactionService";
 import { handleInput, setTransaction } from "../actions/transactionActions";
-import { Transaction, Errors } from "../../../helpers/ITransactions";
+import {
+  Transaction,
+  Errors,
+  HandleInput,
+  TransactionEvent,
+  TransactionReducer,
+} from "../../../helpers/ITransactions";
 
 type Props = {
   filters: any;
   stateTransaction: StateTransaction;
-  handleInput: (event: any) => void;
-  setTransaction: (event: any) => void;
+  handleInput: (event: HandleInput) => void;
+  setTransaction: (event: TransactionEvent) => void;
 };
 
 type State = {
@@ -47,9 +53,7 @@ type State = {
   isTransfer: boolean;
   errors: Errors;
   date: Date;
-  calendarDates: {
-    date: Date;
-  }[];
+  calendarDates: { date: Date }[];
   transactions: Transaction[];
 };
 
@@ -79,20 +83,21 @@ class MonthlyContainer extends React.Component<Props> {
   };
 
   componentDidMount() {
-    const { stateTransaction } = this.props;
-    if (this.props.filters.date) {
+    const { stateTransaction, filters } = this.props;
+    console.log(filters);
+    if (filters.date) {
       this.setState({
         date: new Date(this.props.filters.date),
       });
-      this.getTransactions(new Date(this.props.filters.date));
-      this.setCalendar(new Date(this.props.filters.date));
+      this.getTransactions(new Date(filters.date));
+      this.setCalendar(new Date(filters.date));
     } else {
       this.setState({
         date: stateTransaction.date,
       });
       this.getTransactions(stateTransaction.date);
     }
-    if (this.props.filters.date === undefined) {
+    if (filters.date === undefined) {
       this.setCalendar(stateTransaction.date);
     }
   }
@@ -106,53 +111,48 @@ class MonthlyContainer extends React.Component<Props> {
     }
   }
 
-  getTransactions = async (date: any) => {
-    let from = moment(
-      new Date(
-        yearStartOfTheWeekOfTheMonth(date),
-        monthStartOfTheWeekOfTheMonth(date),
-        dayStartOfTheWeekOfTheMonth(date)
-      )
-    );
-    let to = moment(
-      new Date(
-        yearEndOfTheWeekOfTheMonth(date),
-        monthEndOfTheWeekOfTheMonth(date),
-        dayEndOfTheWeekOfTheMonth(date)
-      )
+  getTransactions = async (date: Date) => {
+    let from = new Date(
+      yearStartOfTheWeekOfTheMonth(date),
+      monthStartOfTheWeekOfTheMonth(date),
+      dayStartOfTheWeekOfTheMonth(date)
     );
 
-    await getSpecificDatePeriod(from, to).then(data => {
-      data.transactions.map((transaction: any) => {
-        if (
-          new Date(this.state.selectedDay.createdAt).getDate() ===
-            new Date(transaction.createdAt).getDate() &&
-          new Date(this.state.selectedDay.createdAt).getMonth() ===
-            new Date(transaction.createdAt).getMonth()
-        ) {
-          this.setState({
-            selectedDay: transaction,
-          });
-        }
-      });
-      this.setState({ transactions: data.transactions });
+    let to = new Date(
+      yearEndOfTheWeekOfTheMonth(date),
+      monthEndOfTheWeekOfTheMonth(date),
+      dayEndOfTheWeekOfTheMonth(date)
+    );
+
+    let data = await getSpecificDatePeriod(from, to);
+    data.transactions.map((transaction: Transaction) => {
+      if (
+        new Date(this.state.selectedDay.createdAt).getDate() ===
+          new Date(transaction.createdAt).getDate() &&
+        new Date(this.state.selectedDay.createdAt).getMonth() ===
+          new Date(transaction.createdAt).getMonth()
+      ) {
+        this.setState({
+          selectedDay: transaction,
+        });
+      }
     });
+    this.setState({ transactions: data.transactions });
   };
 
-  handleDelete = (eventId: any) => {
-    deleteTransaction(this.state.selectedDay._id, eventId).then(() => {
-      let newEvents = this.state.selectedDay.events.filter(
-        event => event._id !== eventId
-      );
-      this.setState({
-        selectedDay: { ...this.state.selectedDay, events: newEvents },
-        isEditTransactionOpen: false,
-      });
-      this.clearState();
-      this.getTransactions(this.state.date);
+  handleDelete = async (eventId: string) => {
+    await deleteTransaction(this.state.selectedDay._id, eventId);
+    let newEvents = this.state.selectedDay.events.filter(
+      event => event._id !== eventId
+    );
+    this.setState({
+      selectedDay: { ...this.state.selectedDay, events: newEvents },
+      isEditTransactionOpen: false,
     });
+    this.clearState();
+    this.getTransactions(this.state.date);
   };
-  handleOpenEdit = (event: any) => {
+  handleOpenEdit = (event: TransactionEvent) => {
     const { isEditTransactionOpen } = this.state;
     if (isEditTransactionOpen) {
       this.setState({ isEditTransactionOpen: false });
@@ -164,8 +164,8 @@ class MonthlyContainer extends React.Component<Props> {
 
       this.props.setTransaction({
         ...event,
-        amount: (event.amount / 100).toFixed(2),
-        fees: (event.fees / 100).toFixed(2),
+        amount: (parseFloat(event.amount) / 100).toFixed(2),
+        fees: (parseFloat(event.fees) / 100).toFixed(2),
       });
     }
   };
@@ -240,7 +240,7 @@ class MonthlyContainer extends React.Component<Props> {
       });
     }
   };
-  handleOpenInfoModal = (date: any) => {
+  handleOpenInfoModal = (date: Date) => {
     const { isInfoTransactionOpen } = this.state;
     if (isInfoTransactionOpen) {
       this.setState({
@@ -255,7 +255,7 @@ class MonthlyContainer extends React.Component<Props> {
       this.selectedDay(date);
     }
   };
-  selectedDay = (date: any) => {
+  selectedDay = (date: Date) => {
     this.state.transactions.forEach(transaction => {
       if (
         new Date(date).getDate() ===
@@ -280,18 +280,15 @@ class MonthlyContainer extends React.Component<Props> {
       return;
     }
     let event = transactionEvent(transaction);
+    console.log(event);
     if (isEditTransactionOpen) {
-      editTransaction(selectedDay._id, transaction._id, event.events[0]).then(
-        () => {
-          this.getTransactions(transaction.date);
-          this.clearState();
-        }
-      );
+      await editTransaction(selectedDay._id, transaction._id, event.events[0]);
+      this.getTransactions(transaction.date);
+      this.clearState();
     } else {
-      createTransactionRequest(event).then(() => {
-        this.getTransactions(date);
-        this.clearState();
-      });
+      await createTransactionRequest(event);
+      this.getTransactions(date);
+      this.clearState();
     }
     this.setState({
       ...this.state,
@@ -303,8 +300,9 @@ class MonthlyContainer extends React.Component<Props> {
 
   clearState = () => {
     this.props.setTransaction({
+      _id: "",
       type: "income",
-      date: "",
+      date: new Date(),
       account: "",
       from: "",
       category: "",
@@ -316,7 +314,7 @@ class MonthlyContainer extends React.Component<Props> {
     });
   };
 
-  setCalendar = async (date: any) => {
+  setCalendar = async (date: Date) => {
     await this.setState({ calendarDates: [] });
     const { calendarDates } = this.state;
 
@@ -356,7 +354,7 @@ class MonthlyContainer extends React.Component<Props> {
     }
   };
 
-  setFirstWeek = (date: any) => {
+  setFirstWeek = (date: Date) => {
     let fromDate = new Date(
       yearStartOfTheWeekOfTheMonth(date),
       monthStartOfTheWeekOfTheMonth(date),
@@ -375,7 +373,7 @@ class MonthlyContainer extends React.Component<Props> {
       });
     }
   };
-  setLastWeek = (date: any) => {
+  setLastWeek = (date: Date) => {
     let toDate = new Date(
       yearEndOfTheWeekOfTheMonth(date),
       monthEndOfTheWeekOfTheMonth(date),
@@ -406,9 +404,10 @@ class MonthlyContainer extends React.Component<Props> {
         <Calendar
           handleOpenInfoModal={this.handleOpenInfoModal}
           transactions={transactions}
-          calendarDate={calendarDates}
+          calendarDates={calendarDates}
           date={date}
         />
+
         <InfoModal
           handleDelete={this.handleDelete}
           selectedDay={selectedDay}
@@ -435,16 +434,17 @@ class MonthlyContainer extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: { transactionReducer: TransactionReducer }) => {
   return {
-    stateTransaction: state.transaction,
+    stateTransaction: state.transactionReducer,
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    handleInput: (event: any) => dispatch(handleInput(event)),
-    setTransaction: (event: any) => dispatch(setTransaction(event)),
+    handleInput: (event: HandleInput) => dispatch(handleInput(event)),
+    setTransaction: (event: TransactionEvent) =>
+      dispatch(setTransaction(event)),
   };
 };
 

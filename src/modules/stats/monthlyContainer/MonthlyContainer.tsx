@@ -60,20 +60,31 @@ const MonthlyContainer = () => {
         setSumIncome(data.data.sumIncome);
       });
   };
-
+  const data = [
+    {
+      category: "food",
+      value: 16900,
+      color: "#E38627",
+      label: "category",
+    },
+    { category: "2", value: 1544, color: "#C13C37" },
+    { category: "3", value: 204, color: "#6A2135" },
+  ];
   return (
     <div>
       <NavBarMenu />
 
       <div style={{ width: "400px" }}>
         <PieChart
+          labelStyle={index => ({
+            fontSize: "5px",
+            fontFamily: "sans-serif",
+          })}
+          radius={42}
+          labelPosition={112}
           animate={true}
-          label={({ dataEntry }) => dataEntry.title}
-          data={[
-            { title: "1", value: 10000, color: "#E38627", label: "1" },
-            { title: "2", value: 1544, color: "#C13C37" },
-            { title: "3", value: 204, color: "#6A2135" },
-          ]}
+          label={({ dataEntry }) => dataEntry.category}
+          data={data}
         />
       </div>
     </div>

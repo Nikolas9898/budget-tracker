@@ -11,14 +11,13 @@ export const AuthenticatedRoute = (props: any) => {
     },
   };
   if (token) {
-    axios
-      .get("http://localhost:5000/user/logged", config)
-      .then(res => {
-        return <props.component {...props} />;
-      })
-      .catch(err => {
-        window.location.pathname = "/authentication";
-      });
+    try {
+      axios.get("http://localhost:5000/user/logged", config);
+
+      return <props.component {...props} />;
+    } catch (e) {
+      window.location.pathname = "/authentication";
+    }
   } else {
     history.push("/authentication");
   }

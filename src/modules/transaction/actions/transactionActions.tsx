@@ -1,3 +1,4 @@
+import { HandleInput, TransactionEvent } from "../../../helpers/ITransactions";
 import {
   HANDLE_NEXT_MONTH,
   HANDLE_PREVIOUS_MONTH,
@@ -19,11 +20,11 @@ export const handleNextYear = () => ({
 export const handlePreviousYear = () => ({
   type: HANDLE_PREVIOUS_YEAR,
 });
-export const handleInput = (event: any) => ({
+export const handleInput = (event: HandleInput) => ({
   type: HANDLE_INPUT,
   payload: { name: event.target.name, value: event.target.value },
 });
-export const setTransaction = (event: any) => ({
+export const setTransaction = (event: TransactionEvent) => ({
   type: SET_TRANSACTION,
   payload: event,
 });

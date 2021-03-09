@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import AddTransactionStyl from "../AddTransactionStyle.module.css";
 import Moment from "moment";
-import { TransactionEvent, Errors } from "../../../../../helpers/ITransactions";
+import {
+  TransactionEvent,
+  Errors,
+  HandleInput,
+} from "../../../../../helpers/ITransactions";
 import InputTitles from "./components/InputTitles";
 import SelectInput from "./components/SelectInputs";
 import FeesInput from "./components/FeesInput";
@@ -10,7 +14,7 @@ import AmountInput from "./components/AmountInput";
 type Props = {
   transaction: TransactionEvent;
   errors: Errors;
-  handleInputChange: (event: any) => void;
+  handleInputChange: (event: HandleInput) => void;
 };
 const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
   const [feesIsOpen, setFeesIsOpen] = useState(false);

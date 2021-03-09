@@ -1,4 +1,8 @@
 import axios from "axios";
+import {
+  Transaction,
+  TransactionReducer,
+} from "../../../helpers/ITransactions";
 
 let config = {
   headers: {
@@ -24,7 +28,7 @@ export const createTransactionRequest = async (data: any) => {
   }
 };
 
-export const getSpecificDatePeriod = async (from: any, to: any) => {
+export const getSpecificDatePeriod = async (from: Date, to: Date) => {
   const url = `http://localhost:5000/transaction/specificDatePeriod/${from}/${to}`;
 
   const request: any = {
@@ -59,8 +63,8 @@ export const getYearlyOrWeekly = async (data: any) => {
   }
 };
 export const editTransaction = async (
-  selectedDayId: any,
-  transactionId: any,
+  selectedDayId: string,
+  transactionId: string,
   data: any
 ) => {
   const url = `http://localhost:5000/transaction/event/edit/${selectedDayId}/${transactionId}`;

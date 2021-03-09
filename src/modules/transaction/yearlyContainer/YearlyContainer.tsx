@@ -7,7 +7,7 @@ import YearlyTableRow from "./YearlyTableRow";
 import { State as StateTransaction } from "../reducers/transactionReducer";
 import { connect } from "react-redux";
 import { getYearlyOrWeekly } from "../service/TransactionService";
-import { Month } from "../../../helpers/ITransactions";
+import { Month, TransactionReducer } from "../../../helpers/ITransactions";
 export interface State {
   months: Month[];
   sumIncome: number;
@@ -37,7 +37,7 @@ class YearlyContainer extends React.Component<Props> {
     }
   }
 
-  setYear = async (date: any) => {
+  setYear = async (date: Date) => {
     let months = [];
 
     for (let i = 0; i <= 11; i++) {
@@ -49,31 +49,30 @@ class YearlyContainer extends React.Component<Props> {
       });
     }
 
-    getYearlyOrWeekly(months).then(data => {
-      if (date.getFullYear() < new Date().getFullYear()) {
-        this.setState({
-          months: data.months,
-          sumIncome: data.sumIncome,
-          sumExpense: data.sumExpense,
-        });
-      }
-      if (date.getFullYear() === new Date().getFullYear()) {
-        this.setState({
-          sumIncome: data.sumIncome,
-          sumExpense: data.sumExpense,
-        });
-        this.setMonths(data.months);
-      }
-      if (date.getFullYear() > new Date().getFullYear()) {
-        this.setState({
-          months: data.months.filter(
-            (month: Month) => month.expense > 0 || month.income > 0
-          ),
-          sumIncome: data.sumIncome,
-          sumExpense: data.sumExpense,
-        });
-      }
-    });
+    let data = await getYearlyOrWeekly(months);
+    if (date.getFullYear() < new Date().getFullYear()) {
+      this.setState({
+        months: data.months,
+        sumIncome: data.sumIncome,
+        sumExpense: data.sumExpense,
+      });
+    }
+    if (date.getFullYear() === new Date().getFullYear()) {
+      this.setState({
+        sumIncome: data.sumIncome,
+        sumExpense: data.sumExpense,
+      });
+      this.setMonths(data.months);
+    }
+    if (date.getFullYear() > new Date().getFullYear()) {
+      this.setState({
+        months: data.months.filter(
+          (month: Month) => month.expense > 0 || month.income > 0
+        ),
+        sumIncome: data.sumIncome,
+        sumExpense: data.sumExpense,
+      });
+    }
   };
 
   setMonths = async (months: Month[]) => {
@@ -116,8 +115,8 @@ class YearlyContainer extends React.Component<Props> {
           <table className={YearlyStyle.table}>
             <InfoRow sumIncome={sumIncome} sumExpense={sumExpense} />
             <tbody>
-              {months.reverse().map((month, index) => (
-                <YearlyTableRow month={month} date={date} />
+              {months.reverse().map(month => (
+                <YearlyTableRow month={month} />
               ))}
             </tbody>
           </table>
@@ -127,9 +126,9 @@ class YearlyContainer extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: { transactionReducer: TransactionReducer }) => {
   return {
-    state: state.transaction,
+    state: state.transactionReducer,
   };
 };
 

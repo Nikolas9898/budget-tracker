@@ -13,10 +13,14 @@ import {
   containerIsTransaction,
   isSelectedTitle,
 } from "../../helpers/Variables";
+import { TransactionReducer } from "../../helpers/ITransactions";
 
 const NavBarMenu = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state: any) => state.transaction);
+  const state = useSelector(
+    (state: { transactionReducer: TransactionReducer }) =>
+      state.transactionReducer
+  );
 
   return (
     <div className={NavBarStyle.container}>

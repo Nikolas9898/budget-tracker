@@ -1,8 +1,11 @@
 import React from "react";
 import AddTransactionStyl from "../../AddTransactionStyle.module.css";
-import { TransactionEvent } from "../../../../../../helpers/ITransactions";
+import {
+  HandleInput,
+  TransactionEvent,
+} from "../../../../../../helpers/ITransactions";
 type Props = {
-  handleInputChange: (event: any) => void;
+  handleInputChange: (event: HandleInput) => void;
   setFeesIsOpen: (arg0: boolean) => void;
   transaction: TransactionEvent;
   feesIsOpen: boolean;

@@ -1,8 +1,9 @@
 import React from "react";
 import AddTransactionStyl from "../../AddTransactionStyle.module.css";
 import { errorMsg } from "../../../../../../helpers/Validation";
+import { HandleInput } from "../../../../../../helpers/ITransactions";
 type Props = {
-  handleInputChange: (event: any) => void;
+  handleInputChange: (event: HandleInput) => void;
   options: string[];
   transactionType: string;
   selectValue: string | undefined;

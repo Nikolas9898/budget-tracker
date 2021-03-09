@@ -8,7 +8,12 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import DailyTableRow from "./components/dailyTableRow/DailyTableRow";
 import { useDispatch, useSelector } from "react-redux";
 import AddTransactionModal from "../components/addTransactionModal/AddTransactionModal";
-import { TransactionEvent, Transaction } from "../../../helpers/ITransactions";
+import {
+  TransactionEvent,
+  Transaction,
+  TransactionReducer,
+  userReducer,
+} from "../../../helpers/ITransactions";
 import {
   createTransactionRequest,
   deleteTransaction,
@@ -27,7 +32,7 @@ type Props = {
   event: {
     _id: string;
     type: string;
-    date: any;
+    date: Date;
     account?: string;
     from?: string;
     to?: string;
@@ -55,25 +60,26 @@ const DailyContainer = () => {
   });
   const dispatch = useDispatch();
 
-  const stateTransaction = useSelector((state: any) => state.transaction);
+  const stateTransaction = useSelector(
+    (state: {
+      userReducer: userReducer;
+      transactionReducer: TransactionReducer;
+    }) => state.transactionReducer
+  );
+  console.log(stateTransaction);
 
   useEffect(() => {
     getTransactions(stateTransaction.date);
   }, [stateTransaction.date]);
 
-  const getTransactions = (date: any) => {
-    let firstDay = Moment(
-      new Date(date.getFullYear(), date.getMonth(), 1)
-    ).toISOString();
-    let lastDay = Moment(
-      new Date(date.getFullYear(), date.getMonth() + 1, 0)
-    ).toISOString();
+  const getTransactions = async (date: Date) => {
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-    getSpecificDatePeriod(firstDay, lastDay).then(data => {
-      setTransactions(data.transactions);
-      setSumExpense(data.sumExpense);
-      setSumIncome(data.sumIncome);
-    });
+    let data = await getSpecificDatePeriod(firstDay, lastDay);
+    setTransactions(data.transactions);
+    setSumExpense(data.sumExpense);
+    setSumIncome(data.sumIncome);
   };
   const handleSave = async () => {
     const { transaction, date } = stateTransaction;
@@ -86,28 +92,26 @@ const DailyContainer = () => {
     }
 
     let event = transactionEvent(transaction);
+
     if (editTransacionIsOpen) {
-      editTransaction(
+      await editTransaction(
         transactionId,
         stateTransaction.transaction._id,
         event.events[0]
-      ).then(() => {
-        getTransactions(date);
-        clearState();
-      });
+      );
+      getTransactions(date);
+      clearState();
     } else {
-      createTransactionRequest(event).then(() => {
-        getTransactions(date);
-        clearState();
-      });
+      await createTransactionRequest(event);
+      getTransactions(date);
+      clearState();
     }
   };
 
-  const handleDelete = (eventId: any) => {
-    deleteTransaction(transactionId, eventId).then(() => {
-      clearState();
-      getTransactions(stateTransaction.date);
-    });
+  const handleDelete = async (eventId: string) => {
+    await deleteTransaction(transactionId, eventId);
+    clearState();
+    getTransactions(stateTransaction.date);
   };
 
   const clearState = () => {
@@ -117,6 +121,7 @@ const DailyContainer = () => {
     setTransactionId("");
     dispatch(
       setTransaction({
+        _id: "",
         type: "income",
         date: new Date(),
         account: "",

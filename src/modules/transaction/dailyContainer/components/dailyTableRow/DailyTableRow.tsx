@@ -6,7 +6,7 @@ type Props = {
   event: {
     _id: string;
     type: string;
-    date: any;
+    date: Date;
     account?: string;
     from?: string;
     to?: string;

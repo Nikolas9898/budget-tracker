@@ -3,11 +3,11 @@ import Moment from "moment";
 import WeeklyStyle from "./WeeklyStyle.module.css";
 
 type Props = {
-  week: { from: any; to: any; income: number; expense: number };
+  week: { from: Date; to: Date; income: number; expense: number };
 };
 
 const WeeklyTableRow: React.FC<Props> = ({ week }) => {
-  const isDateInWeek = (week: any) => {
+  const isDateInWeek = (week: Props["week"]) => {
     if (
       new Date(week.from).getDate() <= new Date().getDate() &&
       new Date(week.from).getMonth() === new Date().getMonth() &&
