@@ -267,7 +267,7 @@ export const editTransactionEvent: RequestHandler = async (
       saveAndSendResponse(transaction, res);
     } else {
       if (transferId) {
-        Promise.all(
+        await Promise.all(
           transaction.events.map((oldEvent: ITransactionEvent) => {
             if (oldEvent._id?.toString() === event_id) {
               oldEvent.amount = amount;
@@ -300,11 +300,10 @@ export const editTransactionEvent: RequestHandler = async (
               }
             }
           })
-        ).then(async () => {
-          calculateTotalExpenseAndIncome(transaction, income, expense);
+        );
+        calculateTotalExpenseAndIncome(transaction, income, expense);
 
-          saveAndSendResponse(transaction, res);
-        });
+        saveAndSendResponse(transaction, res);
       } else {
         const foundIndex = transaction.events.findIndex(
           (foundEvent: ITransactionEvent) =>
@@ -365,9 +364,9 @@ export const getYearlyAndWeekly: RequestHandler = async (
   let sumExpense = 0;
   let sumIncome = 0;
 
-  Promise.all(
+  await Promise.all(
     months.map(async (month: Month, index) => {
-      Promise.all(
+      let transactions = await Promise.all(
         await Transaction.find({
           createdAt: {
             $gte: new Date(new Date(month.from).setHours(0, 0, 0)),
@@ -375,23 +374,21 @@ export const getYearlyAndWeekly: RequestHandler = async (
           },
           userId,
         })
-      ).then((transactions) => {
-        try {
-          transactions.forEach(({ expense, income }) => {
-            months[index].expense += expense;
-            months[index].income += income;
-          });
-        } catch (error) {
-          res.status(400).json({ errorMsg: error });
-        }
-      });
+      );
+      try {
+        transactions.forEach(({ expense, income }) => {
+          months[index].expense += expense;
+          months[index].income += income;
+        });
+      } catch (error) {
+        res.status(400).json({ errorMsg: error });
+      }
     })
-  ).then(() => {
-    months.forEach(({ expense, income }) => {
-      sumExpense += expense;
-      sumIncome += income;
-    });
-
-    return res.json({ months, sumExpense, sumIncome });
+  );
+  months.forEach(({ expense, income }) => {
+    sumExpense += expense;
+    sumIncome += income;
   });
+
+  return res.json({ months, sumExpense, sumIncome });
 };
