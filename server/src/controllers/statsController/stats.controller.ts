@@ -15,18 +15,27 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
         $lt: new Date(new Date(to).setHours(23, 59, 59)),
       },
     });
-    const incomeStats: any = {};
-    const expenseStats: any = {};
+    const income: any = {};
+    const expense: any = {};
+    let incomeStats: { category: string; value: number }[] = [];
+    let expenseStats: { category: string; value: number }[] = [];
     transactions.forEach((transaction) => {
       transaction.events.forEach(({ category, amount, type }) => {
         if (type === "income") {
-          incomeStats[category!] = incomeStats[category!] + amount || amount;
+          income[category!] = income[category!] + amount || amount;
         }
 
         if (type === "expense") {
-          expenseStats[category!] = expenseStats[category!] + amount || amount;
+          expense[category!] = expense[category!] + amount || amount;
         }
       });
+    });
+
+    Object.keys(income).forEach((key) => {
+      incomeStats.push({ category: key, value: income[key] });
+    });
+    Object.keys(expense).forEach((key) => {
+      expenseStats.push({ category: key, value: expense[key] });
     });
 
     return res.json({ incomeStats, expenseStats });
