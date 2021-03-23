@@ -13,7 +13,7 @@ export const createTransferWithFees = (
   userId: string,
   income: number,
   expense: number
-) => {
+): ITransaction => {
   let transfer = new Transaction({
     events,
     createdAt,
@@ -50,7 +50,7 @@ export const createOrdinaryEvent = (
   userId: string,
   income: number,
   expense: number
-) => {
+): ITransaction => {
   events.forEach((event: ITransactionEvent) => {
     if (event.type.toLowerCase() === "income") {
       income += event.amount;
@@ -85,12 +85,11 @@ export const removeTransactionEvent = async (
   transaction: ITransaction,
   event_id: string
 ) => {
-  let expense = 0;
-  let income = 0;
-  let transferId: string | undefined;
+  let expense: number = 0;
+  let income: number = 0;
 
   const newEvents = transaction.events.filter(
-    (event: any) => event._id != event_id
+    (event: ITransactionEvent) => event._id != event_id
   );
 
   transaction.events = newEvents;

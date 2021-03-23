@@ -1,11 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user/user.model";
 import { NextFunction, Request, RequestHandler, Response } from "express";
-
-export interface Token {
-  id?: string;
-  iat?: number;
-}
+import { Token } from "../interfaces/token";
 
 export const tokenAuth: RequestHandler = async (
   req: Request,

@@ -77,7 +77,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
         updatedAt,
       } = user;
 
-      const passMatch = password === req.body.password;
+      const passMatch: boolean = password === req.body.password;
 
       if (!passMatch) {
         return res.json({ errorMSG: "Wrong email or password" });

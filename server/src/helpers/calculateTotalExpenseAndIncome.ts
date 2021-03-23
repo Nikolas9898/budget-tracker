@@ -1,4 +1,4 @@
-import ITransaction, { ITransactionEvent } from "../interfaces/transactions";
+import ITransaction from "../interfaces/transactions";
 
 export const calculateTotalExpenseAndIncome = async (
   transfer: ITransaction,

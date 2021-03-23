@@ -14,12 +14,12 @@ import {
   deleteTransaction,
   removeTransactionEvent,
 } from "../../helpers/transactionHelpers/transactionHelpers";
-
+import moment from "moment";
 export const createTransaction: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const userId = tokenDecoder(req.headers.authorization);
+  const userId: string = tokenDecoder(req.headers.authorization);
   const events = req.body.events;
   const createdAt = req.body.createdAt;
 
@@ -28,8 +28,8 @@ export const createTransaction: RequestHandler = async (
     userId,
   });
 
-  let income = 0;
-  let expense = 0;
+  let income: number = 0;
+  let expense: number = 0;
 
   if (!transaction) {
     //Here it enters when transaction is not found then check if it is tansfer
@@ -91,12 +91,12 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const from = req.params.from;
-  const to = req.params.to;
-  const userId = tokenDecoder(req.headers.authorization);
+  const from: string = req.params.from;
+  const to: string = req.params.to;
+  const userId: string = tokenDecoder(req.headers.authorization);
 
-  let sumExpense = 0;
-  let sumIncome = 0;
+  let sumExpense: number = 0;
+  let sumIncome: number = 0;
 
   if (from === "" || to === "") {
     return res.status(400).json({
@@ -107,8 +107,8 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
   Transaction.find(
     {
       createdAt: {
-        $gte: new Date(new Date(from).setHours(0, 0, 0)),
-        $lt: new Date(new Date(to).setHours(23, 59, 59)),
+        $gte: moment(from).startOf("day").toDate(),
+        $lt: moment(to).endOf("day").toDate(),
       },
       userId,
     },
@@ -153,8 +153,8 @@ export const deleteTransactionById: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const id = req.params.id;
-  const userId = tokenDecoder(req.headers.authorization);
+  const id: string = req.params.id;
+  const userId: string = tokenDecoder(req.headers.authorization);
   try {
     const transaction = await Transaction.findOne({
       _id: id,
@@ -176,8 +176,8 @@ export const editTransactionEvent: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const id = req.params.transactionId;
-  const event_id = req.params.event_id;
+  const id: string = req.params.transactionId;
+  const event_id: string = req.params.event_id;
   const eventFromBody = req.body;
 
   const {
@@ -195,7 +195,7 @@ export const editTransactionEvent: RequestHandler = async (
     transferId,
   } = eventFromBody;
 
-  const userId = tokenDecoder(req.headers.authorization);
+  const userId: string = tokenDecoder(req.headers.authorization);
   let expense = 0;
   let income = 0;
 
@@ -326,9 +326,9 @@ export const deleteTransactionEvent: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const id = req.params.transactionId;
-  const event_id = req.params.event_id;
-  const userId = tokenDecoder(req.headers.authorization);
+  const id: string = req.params.transactionId;
+  const event_id: string = req.params.event_id;
+  const userId: string = tokenDecoder(req.headers.authorization);
   let transaction: ITransaction | null;
 
   try {
@@ -357,20 +357,20 @@ export const getYearlyAndWeekly: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const userId = tokenDecoder(req.headers.authorization);
+  const userId: string = tokenDecoder(req.headers.authorization);
 
   const months: Months = req.body;
 
-  let sumExpense = 0;
-  let sumIncome = 0;
+  let sumExpense: number = 0;
+  let sumIncome: number = 0;
 
   await Promise.all(
     months.map(async (month: Month, index) => {
       let transactions = await Promise.all(
         await Transaction.find({
           createdAt: {
-            $gte: new Date(new Date(month.from).setHours(0, 0, 0)),
-            $lt: new Date(new Date(month.to).setHours(23, 59, 59)),
+            $gte: moment(month.from).startOf("day").toDate(),
+            $lt: moment(month.to).endOf("day").toDate(),
           },
           userId,
         })

@@ -1,6 +1,8 @@
 import { RequestHandler, Request, Response } from "express";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import Transaction from "../../models/transaction/transaction.model";
+import moment from "moment";
+import { ISumStats } from "../../interfaces/stats";
 
 export const getStats: RequestHandler = async (req: Request, res: Response) => {
   const userId = tokenDecoder(req.headers.authorization);
@@ -11,14 +13,14 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
     const transactions = await Transaction.find({
       userId,
       createdAt: {
-        $gte: new Date(new Date(from).setHours(0, 0, 0)),
-        $lt: new Date(new Date(to).setHours(23, 59, 59)),
+        $gte: moment(from).startOf("day").toDate(),
+        $lt: moment(to).endOf("day").toDate(),
       },
     });
     const income: any = {};
     const expense: any = {};
-    let incomeStats: { category: string; value: number }[] = [];
-    let expenseStats: { category: string; value: number }[] = [];
+    let incomeStats: ISumStats[] = [];
+    let expenseStats: ISumStats[] = [];
     transactions.forEach((transaction) => {
       transaction.events.forEach(({ category, amount, type }) => {
         if (type === "income") {
