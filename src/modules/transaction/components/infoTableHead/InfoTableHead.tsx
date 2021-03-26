@@ -6,8 +6,8 @@ type Props = {
   sumExpense: number;
 };
 
-const InfoRow: React.FC<Props> = ({ sumIncome, sumExpense }) => {
-  return (
+const InfoRow: React.FC<Props> = ({ sumIncome, sumExpense }) => (
+ 
     <thead>
       <tr>
         <th>
@@ -30,7 +30,7 @@ const InfoRow: React.FC<Props> = ({ sumIncome, sumExpense }) => {
         </th>
       </tr>
     </thead>
-  );
-};
+  
+);
 
 export default InfoRow;

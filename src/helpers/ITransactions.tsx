@@ -58,3 +58,9 @@ export interface userReducer {
   token: string;
   loading: boolean;
 }
+export interface Stat {
+  category: string;
+  value: number;
+  color: string;
+  label: string;
+}

@@ -45,7 +45,7 @@ const InfoModal: React.FC<Props> = ({
         <div className={InfoModalStyle.modal_wrapper}>
           <div className={InfoModalStyle.wrapper_container}>
             <FontAwesomeIcon
-              onClick={() => handlePreviousDay()}
+              onClick={handlePreviousDay}
               className={InfoModalStyle.change_date}
               icon={faAngleLeft}
             />
@@ -110,7 +110,7 @@ const InfoModal: React.FC<Props> = ({
               </div>
             </div>
             <FontAwesomeIcon
-              onClick={() => handleNextDay()}
+              onClick={handleNextDay}
               className={InfoModalStyle.change_date}
               icon={faAngleRight}
             />

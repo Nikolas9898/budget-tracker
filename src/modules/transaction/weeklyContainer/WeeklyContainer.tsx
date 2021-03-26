@@ -1,7 +1,7 @@
 import NavBarMenu from "../../../layout/navBar/NavBar";
 import React from "react";
 import WeeklyStyle from "./WeeklyStyle.module.css";
-import InfoRow from "../components/infoRow/InfoRow";
+import InfoRow from "../components/infoTableHead/InfoTableHead";
 import WeeklyTableRow from "./WeeklyTableRow";
 import { State as StateTransaction } from "../reducers/transactionReducer";
 import { connect } from "react-redux";
