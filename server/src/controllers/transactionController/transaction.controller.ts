@@ -3,7 +3,7 @@ import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { RequestHandler, Request, Response } from "express";
 import ITransaction, {
   Expense,
-  ITransactionEvent,
+  TransactionEvent,
 } from "../../interfaces/transactions";
 import Transaction from "../../models/transaction/transaction.model";
 import { calculateTotalExpenseAndIncome } from "../../helpers/calculateTotalExpenseAndIncome";
@@ -213,7 +213,7 @@ export const editTransactionEvent: RequestHandler = async (
 
     if (type === "transfer") {
       // when eventFrom body is transfer
-      transaction.events.map((oldEvent: ITransactionEvent) => {
+      transaction.events.forEach((oldEvent: TransactionEvent) => {
         if (oldEvent._id?.toString() === event_id.toString()) {
           // when editing income or expense into transfer with fees
           if (oldEvent.type !== "transfer" && type === "transfer" && fees > 0) {
@@ -268,7 +268,7 @@ export const editTransactionEvent: RequestHandler = async (
     } else {
       if (transferId) {
         await Promise.all(
-          transaction.events.map((oldEvent: ITransactionEvent) => {
+          transaction.events.forEach((oldEvent: TransactionEvent) => {
             if (oldEvent._id?.toString() === event_id) {
               oldEvent.amount = amount;
               oldEvent.type = type;
@@ -306,7 +306,7 @@ export const editTransactionEvent: RequestHandler = async (
         saveAndSendResponse(transaction, res);
       } else {
         const foundIndex = transaction.events.findIndex(
-          (foundEvent: ITransactionEvent) =>
+          (foundEvent: TransactionEvent) =>
             foundEvent._id?.toString() === event_id.toString()
         );
         transaction.events.splice(foundIndex, 1, eventFromBody);

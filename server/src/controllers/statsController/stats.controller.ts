@@ -2,7 +2,7 @@ import { RequestHandler, Request, Response } from "express";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import Transaction from "../../models/transaction/transaction.model";
 import moment from "moment";
-import { ISumStats } from "../../interfaces/stats";
+import { SumStats } from "../../interfaces/stats";
 
 export const getStats: RequestHandler = async (req: Request, res: Response) => {
   const userId = tokenDecoder(req.headers.authorization);
@@ -19,8 +19,8 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
     });
     const income: any = {};
     const expense: any = {};
-    let incomeStats: ISumStats[] = [];
-    let expenseStats: ISumStats[] = [];
+    let incomeStats: SumStats[] = [];
+    let expenseStats: SumStats[] = [];
     transactions.forEach((transaction) => {
       transaction.events.forEach(({ category, amount, type }) => {
         if (type === "income") {

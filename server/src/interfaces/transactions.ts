@@ -3,7 +3,7 @@ import { Document } from "mongoose";
 export default interface ITransaction extends Document {
   _id: string;
   createdAt: Date;
-  events: Array<ITransactionEvent>;
+  events: Array<TransactionEvent>;
   userId: string;
   income: number;
   expense: number;
@@ -11,7 +11,7 @@ export default interface ITransaction extends Document {
   __v: number;
 }
 
-export interface ITransactionEvent {
+export interface TransactionEvent {
   _id?: string;
   type: string;
   currency: string;

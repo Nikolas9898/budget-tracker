@@ -1,14 +1,14 @@
 import { calculateTotalExpenseAndIncome } from "../calculateTotalExpenseAndIncome";
 import Transaction from "../../models/transaction/transaction.model";
 import ITransaction, {
-  ITransactionEvent,
+  TransactionEvent,
   Expense,
   DummyExpenseEvents,
 } from "../../interfaces/transactions";
 import { Response } from "express";
 
 export const createTransferWithFees = (
-  events: ITransactionEvent,
+  events: TransactionEvent,
   createdAt: string,
   userId: string,
   income: number,
@@ -45,13 +45,13 @@ export const createTransferWithFees = (
 };
 
 export const createOrdinaryEvent = (
-  events: [ITransactionEvent],
+  events: [TransactionEvent],
   createdAt: string,
   userId: string,
   income: number,
   expense: number
 ): ITransaction => {
-  events.forEach((event: ITransactionEvent) => {
+  events.forEach((event: TransactionEvent) => {
     if (event.type.toLowerCase() === "income") {
       income += event.amount;
     }
@@ -89,7 +89,7 @@ export const removeTransactionEvent = async (
   let income: number = 0;
 
   const newEvents = transaction.events.filter(
-    (event: ITransactionEvent) => event._id != event_id
+    (event: TransactionEvent) => event._id != event_id
   );
 
   transaction.events = newEvents;

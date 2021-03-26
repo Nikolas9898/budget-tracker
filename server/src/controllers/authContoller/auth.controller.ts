@@ -1,23 +1,13 @@
 import User from "../../models/user/user.model";
 import { Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
-import { IUser, ResponseUser } from "../../interfaces/user";
+import { IUser, ResponseUser, userErrors } from "../../interfaces/user";
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
-  const { username, password, email, type, currency, categories } = req.body;
-
-  let token: string;
-  let foundUser: ResponseUser;
-  const newUser = new User({
-    username,
-    password,
-    email,
-    type,
-    currency,
-    categories,
-  });
-
   try {
+    const newUser = await new User({
+      ...req.body,
+    });
     await newUser.save();
     await User.findOne({ email: req.body.email }, (err, user: IUser) => {
       let {
@@ -34,13 +24,13 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
       const passMatch: boolean = password === req.body.password;
 
       if (!passMatch) {
-        return res.json({ errorMSG: "Wrong email or password" });
+        return res.json({ errorMSG: userErrors.wrongEmailOrPassword });
       }
 
-      foundUser = {
+      const foundUser: ResponseUser = {
         _id,
         username,
-        password: "",
+        password: undefined,
         email,
         type,
         categories,
@@ -48,7 +38,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
         updatedAt,
       };
 
-      token = jwt.sign(
+      const token: string = jwt.sign(
         {
           id: _id,
         },
@@ -62,9 +52,9 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
 };
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
-  const { email } = req.body;
-
   try {
+    const { email } = req.body;
+
     await User.findOne({ email }, (err, user: IUser) => {
       let {
         password,
@@ -79,14 +69,16 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
 
       const passMatch: boolean = password === req.body.password;
 
+      console.log("alal");
+
       if (!passMatch) {
-        return res.json({ errorMSG: "Wrong email or password" });
+        return res.json({ errorMSG: userErrors.wrongEmailOrPassword });
       }
 
-      let foundUser: ResponseUser = {
+      const foundUser: ResponseUser = {
         _id,
         username,
-        password: "",
+        password: undefined,
         email,
         type,
         categories,
@@ -104,6 +96,6 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
       return res.json({ user: foundUser, token });
     });
   } catch (error) {
-    return res.json({ errorMSG: "Wrong email or password" });
+    return res.json({ errorMSG: userErrors.wrongEmailOrPassword });
   }
 };

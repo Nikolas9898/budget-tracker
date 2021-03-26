@@ -1,4 +1,4 @@
-export interface ISumStats {
+export interface SumStats {
   category: string;
   value: number;
 }
