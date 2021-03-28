@@ -2,7 +2,7 @@ import { Months, Month } from "../../interfaces/month";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { RequestHandler, Request, Response } from "express";
 import ITransaction, {
-  Expense,
+  responseМessages,
   TransactionEvent,
 } from "../../interfaces/transactions";
 import Transaction from "../../models/transaction/transaction.model";
@@ -13,6 +13,7 @@ import {
   createTransferWithFees,
   deleteTransaction,
   removeTransactionEvent,
+  editIntoTransfer,
 } from "../../helpers/transactionHelpers/transactionHelpers";
 import moment from "moment";
 export const createTransaction: RequestHandler = async (
@@ -200,7 +201,7 @@ export const editTransactionEvent: RequestHandler = async (
   let income = 0;
 
   try {
-    let transaction: any;
+    let transaction: ITransaction | null;
 
     try {
       transaction = await Transaction.findOne({
@@ -211,110 +212,55 @@ export const editTransactionEvent: RequestHandler = async (
       return res.json({ error });
     }
 
-    if (type === "transfer") {
-      // when eventFrom body is transfer
-      transaction.events.forEach((oldEvent: TransactionEvent) => {
-        if (oldEvent._id?.toString() === event_id.toString()) {
-          // when editing income or expense into transfer with fees
-          if (oldEvent.type !== "transfer" && type === "transfer" && fees > 0) {
-            transaction.events.push({
-              transferId: oldEvent._id,
-              type: Expense.type,
-              currency: Expense.currency,
-              date: oldEvent.date,
-              category: Expense.category,
-              account: from,
-              amount: fees,
-              note: Expense.note,
-              description: oldEvent.description,
-            });
-          }
-          //when editing transfer withouth fees into transfer with fees
-          if (oldEvent.fees === 0 || (oldEvent.fees === null && fees > 0)) {
-            transaction.events.push({
-              transferId: oldEvent._id,
-              type: Expense.type,
-              currency: Expense.currency,
-              date: oldEvent.date,
-              category: Expense.category,
-              account: from,
-              amount: fees,
-              note: Expense.note,
-              description: oldEvent.description,
-            });
-          }
+    if (transaction)
+      if (type === "transfer") {
+        // when eventFrom body is transfer
 
-          oldEvent.type = type;
-          oldEvent.currency = currency;
-          oldEvent.date = date;
-          oldEvent.from = from;
-          oldEvent.category = undefined;
-          oldEvent.account = undefined;
-          oldEvent.fees = fees;
-          oldEvent.to = to;
-          oldEvent.amount = amount;
-          oldEvent.description = description;
-          oldEvent.note = note;
-        }
+        editIntoTransfer(transaction, event_id, eventFromBody);
 
-        if (oldEvent.transferId === event_id) {
-          oldEvent.amount = fees;
-        }
-      });
-
-      calculateTotalExpenseAndIncome(transaction, income, expense);
-
-      saveAndSendResponse(transaction, res);
-    } else {
-      if (transferId) {
-        await Promise.all(
-          transaction.events.forEach((oldEvent: TransactionEvent) => {
-            if (oldEvent._id?.toString() === event_id) {
-              oldEvent.amount = amount;
-              oldEvent.type = type;
-              oldEvent.currency = currency;
-              oldEvent.date = date;
-              oldEvent.category = category;
-              oldEvent.account = account;
-              oldEvent.note = note;
-              oldEvent.description = description;
-            }
-
-            if (oldEvent._id?.toString() === event_id && type === "income") {
-              oldEvent.amount = amount;
-              oldEvent.type = type;
-              oldEvent.transferId = "";
-              oldEvent.currency = currency;
-              oldEvent.date = date;
-              oldEvent.category = category;
-              oldEvent.account = account;
-              oldEvent.note = note;
-              oldEvent.description = description;
-            }
-
-            if (oldEvent._id?.toString() === transferId) {
-              if (type === "income") {
-                oldEvent.fees = 0;
-              } else {
-                oldEvent.fees = amount;
-              }
-            }
-          })
-        );
         calculateTotalExpenseAndIncome(transaction, income, expense);
 
         saveAndSendResponse(transaction, res);
       } else {
-        const foundIndex = transaction.events.findIndex(
-          (foundEvent: TransactionEvent) =>
-            foundEvent._id?.toString() === event_id.toString()
-        );
-        transaction.events.splice(foundIndex, 1, eventFromBody);
-        calculateTotalExpenseAndIncome(transaction, income, expense);
+        if (transferId) {
+          await Promise.all(
+            //enters when editing expense with transferId in it
+            transaction.events.map((oldEvent: TransactionEvent) => {
+              if (oldEvent._id?.toString() === event_id) {
+                oldEvent.amount = amount;
+                oldEvent.type = type;
+                oldEvent.currency = currency;
+                oldEvent.date = date;
+                oldEvent.category = category;
+                oldEvent.account = account;
+                oldEvent.note = note;
+                oldEvent.description = description;
+                type === "income" && (oldEvent.transferId = undefined);
+              }
 
-        saveAndSendResponse(transaction, res);
+              if (oldEvent._id?.toString() === transferId) {
+                if (type === "income") {
+                  oldEvent.fees = 0;
+                } else {
+                  oldEvent.fees = amount;
+                }
+              }
+            })
+          );
+          calculateTotalExpenseAndIncome(transaction, income, expense);
+
+          saveAndSendResponse(transaction, res);
+        } else {
+          const foundIndex = transaction.events.findIndex(
+            (foundEvent: TransactionEvent) =>
+              foundEvent._id?.toString() === event_id
+          );
+          transaction.events.splice(foundIndex, 1, eventFromBody);
+          calculateTotalExpenseAndIncome(transaction, income, expense);
+
+          saveAndSendResponse(transaction, res);
+        }
       }
-    }
   } catch (error) {
     return res.json({ errorMsg: error });
   }
@@ -342,7 +288,7 @@ export const deleteTransactionEvent: RequestHandler = async (
 
   if (transaction === null) {
     return res.json({
-      errorMsg: "Not authorized or transaction does not exist",
+      errorMsg: responseМessages.noExistingTransaction,
     });
   }
 

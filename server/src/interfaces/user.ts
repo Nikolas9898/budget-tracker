@@ -30,3 +30,7 @@ export enum userErrors {
   wrongEmailOrPassword = "Wrong email or password",
   notExistingUser = "No existing user",
 }
+
+export enum succsessMessages {
+  updatedSuccessfully = "Updated successfully",
+}

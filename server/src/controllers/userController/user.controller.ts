@@ -1,6 +1,11 @@
 import { RequestHandler, Request, Response } from "express";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
-import { IUser, ResponseUser, userErrors } from "../../interfaces/user";
+import {
+  IUser,
+  ResponseUser,
+  succsessMessages,
+  userErrors,
+} from "../../interfaces/user";
 import User from "../../models/user/user.model";
 
 export const getLoggedUser: RequestHandler = async (
@@ -43,28 +48,30 @@ export const getLoggedUser: RequestHandler = async (
 
 export const editUser: RequestHandler = async (req: Request, res: Response) => {
   try {
-    console.log("udrqm");
     const { authorization } = req.headers;
+    const { username, email, password, categories, createdAt, type } = req.body;
     const userId: string = tokenDecoder(authorization);
-    const user: IUser | null = await User.findById(userId);
-    const {
-      username: reqUsername,
-      password: reqPassword,
-      email: reqEmail,
-      categories: reqCategories,
-      type: reqType,
-    } = req.body;
-    if (user) {
-      user.username = reqUsername;
-      user.password = reqPassword;
-      user.email = reqEmail;
-      user.categories = reqCategories;
-      user.type = reqType;
 
-      await user.save();
+    const user: IUser | null = await User.updateOne(
+      {
+        userId,
 
-      res.json(user);
-    }
+        $set: {
+          username,
+          email,
+          type,
+          categories,
+          createdAt,
+          password,
+        },
+      },
+      (err: any, user: IUser) => {
+        if (err) {
+          return res.json(err);
+        }
+        res.json(succsessMessages.updatedSuccessfully);
+      }
+    );
   } catch (error) {
     res.json(error.message);
   }

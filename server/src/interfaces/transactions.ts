@@ -27,6 +27,21 @@ export interface TransactionEvent {
   description: string;
 }
 
+export interface TransferWithFees {
+  type: string;
+  currency: string;
+  transferId?: string;
+  date: string;
+  fees: number;
+  from?: string;
+  to?: string;
+  account: string | undefined;
+  category: string | undefined;
+  amount: number;
+  note: string;
+  description: string;
+}
+
 export type DummyExpenseEvents = {
   type: string;
   currency: string;
@@ -47,4 +62,8 @@ export enum Expense {
   note = "fees",
   category = "other",
   currency = "BG",
+}
+
+export enum responseМessages {
+  noExistingTransaction = "Not authorized or transaction does not exist",
 }

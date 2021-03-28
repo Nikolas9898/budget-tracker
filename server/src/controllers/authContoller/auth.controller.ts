@@ -69,8 +69,6 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
 
       const passMatch: boolean = password === req.body.password;
 
-      console.log("alal");
-
       if (!passMatch) {
         return res.json({ errorMSG: userErrors.wrongEmailOrPassword });
       }
