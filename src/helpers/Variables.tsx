@@ -1,141 +1,97 @@
 import Moment from "moment";
-import { TransactionReducer } from "./ITransactions";
+import { TransactionEvent } from "../models/Transaction";
 
-export const dayStartOfTheWeekOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").startOf("week").get("date");
+export const firstDateOfTheMonth = (date: Date) =>
+  Moment(date).startOf("month");
 
-export const monthStartOfTheWeekOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").startOf("week").get("month");
+export const lastDateOfTheMonth = (date: Date) => Moment(date).endOf("month");
 
-export const yearStartOfTheWeekOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").startOf("week").get("year");
+export const firstDateOfFirstWeekOfTheMonth = (date: Date) =>
+  firstDateOfTheMonth(date).startOf("isoWeek");
 
-export const dayEndOfTheWeekOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").endOf("week").get("date");
+export const lastDateOfFirstWeekOfTheMonth = (date: Date) =>
+  firstDateOfTheMonth(date).endOf("isoWeek");
 
-export const monthEndOfTheWeekOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").endOf("week").get("month");
+export const firstDateOfLastWeekOfTheMonth = (date: Date) =>
+  lastDateOfTheMonth(date).startOf("isoWeek");
 
-export const yearEndOfTheWeekOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").endOf("week").get("year");
+export const lastDateOfLastWeekOfTheMonth = (date: Date) =>
+  lastDateOfTheMonth(date).endOf("isoWeek");
 
-export const dayStartOfTheWeekEndOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").startOf("week").get("date");
+export const isTheSameDate = (calendarDate: Date, transactionDate: Date) =>
+  Moment(calendarDate).diff(transactionDate, "day") === 0;
 
-export const monthStartOfTheWeekEndOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").startOf("week").get("month");
+export const isTypeTransfer = (type: string) => type.toLowerCase() === Transfer;
 
-export const yearStartOfTheWeekEndOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").startOf("week").get("year");
+export const isTransactionContainer = (pathname: string) =>
+  pathname.includes(Transaction);
 
-export const dayEndOfTheWeekStartOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").endOf("week").get("date");
+export const isSelectedTitle = (pathname: string, path: string) =>
+  pathname === `/transaction/${path}` || pathname === `/stats/${path}`;
 
-export const monthEndOfTheWeekStartOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").endOf("week").get("month");
+export const isTransactionTypeIncome = (type: string, amount: string) =>
+  type === Income ? (parseFloat(amount) / 100).toFixed(2) : "";
 
-export const yearEndOfTheWeekStartOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").endOf("week").get("year");
+export const isTransactionTypeExpense = (type: string, amount: string) =>
+  type === Expense || type === Transfer
+    ? (parseFloat(amount) / 100).toFixed(2)
+    : "";
 
-export const dayStartOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").get("date");
+export const Transaction: string = "transaction";
+export const Transfer: string = "transfer";
+export const Income: string = "income";
+export const Expense: string = "expense";
+export const Stats: string = "stats";
+export const Export: string = "export";
+export const Accounts: string = "accounts";
+export const Currency: string = "Bg";
 
-export const monthStartOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").get("month");
-
-export const yearStartOfTheMonth = (date: Date) =>
-  Moment(date).startOf("month").get("year");
-
-export const dayEndOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").get("date");
-
-export const monthEndOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").get("month");
-
-export const yearEndOfTheMonth = (date: Date) =>
-  Moment(date).endOf("month").get("year");
-
-export const currentDay = (calDate: Date, eventDate: Date) => {
-  let isTrue: boolean =
-    calDate.getDate() === new Date(eventDate).getDate() &&
-    calDate.getMonth() === new Date(eventDate).getMonth() &&
-    calDate.getFullYear() === new Date(eventDate).getFullYear();
-  return isTrue;
-};
-export const typeIsTransfer = (type: string) => {
-  let isTrue: boolean = type.toLowerCase() === "transfer";
-  return isTrue;
-};
-
-export const containerIsTransaction = (pathname: string) => {
-  let containerIsTransaction: boolean = pathname.includes("transaction");
-  return containerIsTransaction;
-};
-
-export const isSelectedTitle = (pathname: string, path: string) => {
-  let isSelectedTitle: boolean =
-    pathname === `/transaction/${path}` || pathname === `/stats/${path}`;
-  return isSelectedTitle;
-};
-export const transactionTypeIsIncome = (type: string, amount: string) => {
-  let income = type === "income" ? (parseFloat(amount) / 100).toFixed(2) : "";
-  return income;
-};
-export const transactionTypeIsExpense = (type: string, amount: string) => {
-  let income =
-    type === "expense" || type === "transfer"
-      ? (parseFloat(amount) / 100).toFixed(2)
-      : "";
-  return income;
-};
 export const headerTitle = (path: string) => {
   switch (true) {
     case path.includes("/transaction"):
-      return "Transaction";
+      return Transaction.toLocaleUpperCase();
     case path.includes("/stats"):
-      return "Stats";
+      return Stats.toLocaleUpperCase();
     case path.includes("/export"):
-      return "Export";
+      return Export.toLocaleUpperCase();
     case path.includes("/accounts"):
-      return "Accounts";
+      return Accounts.toLocaleUpperCase();
     default:
       return "";
   }
 };
 
-export const transactionEvent = (
-  transaction: TransactionReducer["transaction"]
-) => {
-  let event = {
+export const transactionEvent = (transaction: TransactionEvent) => {
+  const {
+    type,
+    transferId,
+    date,
+    account,
+    category,
+    from,
+    fees,
+    to,
+    amount,
+    note,
+    description,
+  } = transaction;
+  return {
     events: [
       {
-        type: transaction.type.toLowerCase(),
-        currency: "BG",
-        transferId: transaction.transferId,
-        date: new Date(
-          new Date(transaction.date).setHours(16, 33, 22)
-        ).toISOString(),
-        account: typeIsTransfer(transaction.type.toLowerCase())
-          ? ""
-          : transaction.account,
-        category: typeIsTransfer(transaction.type.toLowerCase())
-          ? ""
-          : transaction.category,
-        from: typeIsTransfer(transaction.type.toLowerCase())
-          ? transaction.from
-          : "",
-        fees: parseFloat(transaction.fees) * 100,
-        to: typeIsTransfer(transaction.type.toLowerCase())
-          ? transaction.to
-          : "",
-        amount: parseFloat(transaction.amount) * 100,
-        note: transaction.note,
-        description: transaction.description,
+        type: type.toLowerCase(),
+        currency: Currency,
+        transferId: transferId,
+        date: Moment(date).startOf("date"),
+        account: isTypeTransfer(type) ? "" : account,
+        category: isTypeTransfer(type) ? "" : category,
+        from: isTypeTransfer(type) ? from : "",
+        fees: parseFloat(fees!) * 100,
+        to: isTypeTransfer(type) ? to : "",
+        amount: parseFloat(amount) * 100,
+        note: note,
+        description: description,
       },
     ],
-    createdAt: new Date(
-      new Date(transaction.date).setHours(0o0, 0o0, 0o0)
-    ).toISOString(),
+    createdAt: Moment(transaction.date).startOf("date"),
   };
-  return event;
 };

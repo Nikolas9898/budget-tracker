@@ -1,33 +1,22 @@
 import React from "react";
-import DailyTableRowStyle from "./DailyTableRow.module.css";
-
+import { TransactionEventWithAmountNumber } from "../../../../../models/Transaction";
+import styles from "./DailyTableRow.module.css";
+import { Transfer, Income, Expense } from "../../../../../helpers/Variables";
 type Props = {
-  handleSelectEvent: (event: Props["event"]) => void;
-  event: {
-    _id: string;
-    type: string;
-    date: Date;
-    account?: string;
-    from?: string;
-    to?: string;
-    category?: string;
-    amount: number;
-    fees: number;
-    note: string;
-    description: string;
-  };
+  handleSelectEvent: (event: TransactionEventWithAmountNumber) => void;
+  event: TransactionEventWithAmountNumber;
 };
 const DailyTableRow: React.FC<Props> = ({ event, handleSelectEvent }) => {
   return (
     <tr onClick={() => handleSelectEvent(event)}>
       <td>
-        <div className={DailyTableRowStyle.account_container}>
-          <div className={DailyTableRowStyle.account}>
-            {event.type === "transfer" ? "Transfer" : event.category}
+        <div className={styles.account_container}>
+          <div className={styles.account}>
+            {event.type === Transfer ? "transfer" : event.category}
           </div>
-          <div className={DailyTableRowStyle.category}>
+          <div className={styles.category}>
             <div>{event.note}</div>
-            {event.type === "transfer" ? (
+            {event.type === Transfer ? (
               <div>
                 {event.from}
                 {" ---> "}
@@ -39,18 +28,12 @@ const DailyTableRow: React.FC<Props> = ({ event, handleSelectEvent }) => {
           </div>
         </div>
       </td>
-      <td className={DailyTableRowStyle.income}>
-        {event.type === "income" ? (event.amount / 100).toFixed(2) : null}
+      <td className={styles.income}>
+        {event.type === Income ? (event.amount / 100).toFixed(2) : null}
       </td>
-      <td
-        className={
-          event.type === "expense"
-            ? DailyTableRowStyle.expense
-            : DailyTableRowStyle.transfer
-        }
-      >
+      <td className={event.type === Expense ? styles.expense : styles.transfer}>
         <div>
-          {event.type === "expense" || event.type === "transfer"
+          {event.type === Expense || event.type === Transfer
             ? (event.amount / 100).toFixed(2)
             : null}
         </div>

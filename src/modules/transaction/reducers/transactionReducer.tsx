@@ -1,19 +1,13 @@
-import {
-  HANDLE_PREVIOUS_MONTH,
-  HANDLE_NEXT_MONTH,
-  HANDLE_NEXT_YEAR,
-  HANDLE_PREVIOUS_YEAR,
-  HANDLE_INPUT,
-  SET_TRANSACTION,
-} from "../actionTypes";
-import { TransactionEvent } from "../../../helpers/ITransactions";
+import { ActionTypes } from "../actionTypes";
+import { TransactionEvent } from "../../../models/Transaction";
+import Moment from "moment";
 
 export interface State {
   date: Date;
   transaction: TransactionEvent;
 }
 const initialState = {
-  date: new Date(),
+  date: Moment().toDate(),
   transaction: {
     _id: "",
     type: "income",
@@ -30,36 +24,34 @@ const initialState = {
   },
 };
 export default function (state = initialState, action: any) {
-  let month = new Date(state.date).getMonth();
-  let year = state.date.getFullYear();
   switch (action.type) {
-    case HANDLE_NEXT_MONTH:
-      let nextMonth = new Date(year, month + 1);
+    case ActionTypes.HANDLE_NEXT_MONTH:
+      const nextMonth = Moment(state.date).add(1, "month");
       return {
         ...state,
         date: nextMonth,
       };
-    case HANDLE_PREVIOUS_MONTH:
-      let previousMonth = new Date(year, month - 1);
+    case ActionTypes.HANDLE_PREVIOUS_MONTH:
+      const previousMonth = Moment(state.date).add(-1, "month");
       return {
         ...state,
         date: previousMonth,
       };
-    case HANDLE_NEXT_YEAR:
-      let nextYear = new Date(year + 1, new Date().getMonth(), 1);
+    case ActionTypes.HANDLE_NEXT_YEAR:
+      let nextYear = Moment(state.date).add(1, "year").toDate();
 
       return {
         ...state,
         date: nextYear,
       };
-    case HANDLE_PREVIOUS_YEAR:
-      let previousYear = new Date(year - 1, new Date().getMonth(), 1);
+    case ActionTypes.HANDLE_PREVIOUS_YEAR:
+      let previousYear = Moment(state.date).add(-1, "year");
       return {
         ...state,
         date: previousYear,
       };
 
-    case HANDLE_INPUT:
+    case ActionTypes.HANDLE_INPUT:
       if (action.payload.name === "type") {
         return {
           ...state,
@@ -79,10 +71,15 @@ export default function (state = initialState, action: any) {
           },
         };
       }
-    case SET_TRANSACTION:
+    case ActionTypes.SET_TRANSACTION:
       return {
         ...state,
         transaction: action.payload,
+      };
+    case ActionTypes.SET_DATE:
+      return {
+        ...state,
+        date: action.payload,
       };
     default:
       return state;

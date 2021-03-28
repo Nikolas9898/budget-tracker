@@ -1,24 +1,24 @@
 import React from "react";
-import AddTransactionStyle from "./AddTransactionStyle.module.css";
-import {
-  Errors,
-  HandleInput,
-  TransactionEvent,
-} from "../../../../helpers/ITransactions";
+import styles from "./AddTransactionStyle.module.css";
+import { TransactionEvent } from "../../../../models/Transaction";
+import { Error } from "../../../../models/Error";
+import { HandleInput } from "../../../../models/Function";
+import { Income, Transfer, Expense } from "../../../../helpers/Variables";
 import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
 import Form from "./form/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import Moment from "moment";
 
 type Props = {
   isAddTransactionOpen: boolean;
   transactionEvent: TransactionEvent;
-  errors: Errors;
+  errors: Error;
   isEditTransactionOpen: boolean;
   handleInputChange: (event: HandleInput) => void;
   handleSave: () => void;
   handleOpenTransaction: (date: Date) => void;
-  handleOpenEdit: (evnt: TransactionEvent) => void;
+  handleOpenEdit: (event: TransactionEvent) => void;
   handleDelete: (eventId: string) => void;
 };
 
@@ -35,59 +35,58 @@ const AddTransactionModal: React.FC<Props> = ({
 }) => {
   const ChooseCategory = (event: string) => {
     switch (event) {
-      case "income":
+      case Income:
         return 0;
-      case "expense":
+      case Expense:
         return 1;
-      case "transfer":
+      case Transfer:
         return 2;
     }
   };
   return (
     <div>
       {isAddTransactionOpen || isEditTransactionOpen ? (
-        <div className={AddTransactionStyle.modal_wrapper}>
-          <div className={AddTransactionStyle.container}>
+        <div className={styles.modal_wrapper}>
+          <div className={styles.container}>
             <FontAwesomeIcon
-              className={AddTransactionStyle.close_button}
+              className={styles.close_button}
               onClick={() =>
                 isEditTransactionOpen
                   ? handleOpenEdit(transactionEvent)
-                  : handleOpenTransaction(new Date())
+                  : handleOpenTransaction(Moment().toDate())
               }
               icon={faTimesCircle}
             />
             <Tabs
-              selectedTabClassName={AddTransactionStyle.selected_tab}
+              selectedTabClassName={styles.selected_tab}
               selectedIndex={ChooseCategory(transactionEvent.type)}
             >
-              <TabList className={AddTransactionStyle.tab_list}>
+              <TabList className={styles.tab_list}>
                 <Tab
-                  className={AddTransactionStyle.tab}
+                  className={styles.tab}
                   onClick={() => {
                     handleInputChange({
-                      target: { value: "income", name: "type" },
+                      target: { value: Income, name: "type" },
                     });
                   }}
                 >
                   <span>Income</span>
                 </Tab>
                 <Tab
-                  key="expense"
-                  className={AddTransactionStyle.tab}
+                  className={styles.tab}
                   onClick={() => {
                     handleInputChange({
-                      target: { value: "expense", name: "type" },
+                      target: { value: Expense, name: "type" },
                     });
                   }}
                 >
                   <span>Expense</span>
                 </Tab>
                 <Tab
-                  className={AddTransactionStyle.tab}
+                  className={styles.tab}
                   onClick={() =>
                     handleInputChange({
-                      target: { value: "transfer", name: "type" },
+                      target: { value: Transfer, name: "type" },
                     })
                   }
                 >
@@ -119,32 +118,32 @@ const AddTransactionModal: React.FC<Props> = ({
             </Tabs>
             <input
               type="text"
-              className={AddTransactionStyle.input}
+              className={styles.input}
               name="description"
               value={transactionEvent.description}
               onChange={handleInputChange}
             />
 
             {isEditTransactionOpen ? (
-              <div className={AddTransactionStyle.buttons_content}>
+              <div className={styles.buttons_content}>
                 <button
-                  className={AddTransactionStyle.save_button}
+                  className={styles.save_button}
                   onClick={() => handleSave()}
                 >
                   Save
                 </button>
-                {console.log(transactionEvent._id)}
+
                 <button
-                  className={AddTransactionStyle.delete_button}
+                  className={styles.delete_button}
                   onClick={() => handleDelete(transactionEvent._id)}
                 >
                   Delete
                 </button>
               </div>
             ) : (
-              <div className={AddTransactionStyle.buttons_content}>
+              <div className={styles.buttons_content}>
                 <button
-                  className={AddTransactionStyle.save_button}
+                  className={styles.save_button}
                   onClick={() => handleSave()}
                 >
                   Save

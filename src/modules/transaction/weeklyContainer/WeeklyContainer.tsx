@@ -1,26 +1,19 @@
 import NavBarMenu from "../../../layout/navBar/NavBar";
 import React from "react";
-import WeeklyStyle from "./WeeklyStyle.module.css";
-import InfoRow from "../components/infoRow/InfoRow";
-import WeeklyTableRow from "./WeeklyTableRow";
+import styles from "./WeeklyStyle.module.css";
+import InfoTableHead from "../components/InfoTableHead/InfoTableHead";
+import WeeklyTableRow from "./components/WeeklyTableRow";
 import { State as StateTransaction } from "../reducers/transactionReducer";
 import { connect } from "react-redux";
 import { getYearlyOrWeekly } from "../service/TransactionService";
 import {
-  dayStartOfTheWeekOfTheMonth,
-  monthStartOfTheWeekOfTheMonth,
-  yearStartOfTheWeekOfTheMonth,
-  dayEndOfTheWeekOfTheMonth,
-  monthEndOfTheWeekOfTheMonth,
-  yearEndOfTheWeekOfTheMonth,
-  dayStartOfTheWeekEndOfTheMonth,
-  monthStartOfTheWeekEndOfTheMonth,
-  yearStartOfTheWeekEndOfTheMonth,
-  dayEndOfTheWeekStartOfTheMonth,
-  monthEndOfTheWeekStartOfTheMonth,
-  yearEndOfTheWeekStartOfTheMonth,
+  firstDateOfFirstWeekOfTheMonth,
+  lastDateOfFirstWeekOfTheMonth,
+  firstDateOfLastWeekOfTheMonth,
+  lastDateOfLastWeekOfTheMonth,
 } from "../../../helpers/Variables";
-import { TransactionReducer } from "../../../helpers/ITransactions";
+import { TransactionReducer } from "../../../models/Transaction";
+import Moment from "moment";
 
 export interface State {
   weeks: { from: Date; to: Date; income: number; expense: number }[];
@@ -52,44 +45,28 @@ class WeeklyContainer extends React.Component<Props> {
     let weeks = [];
 
     weeks.push({
-      from: new Date(
-        yearStartOfTheWeekOfTheMonth(date),
-        monthStartOfTheWeekOfTheMonth(date),
-        dayStartOfTheWeekOfTheMonth(date) + 1
-      ),
-      to: new Date(
-        yearEndOfTheWeekStartOfTheMonth(date),
-        monthEndOfTheWeekStartOfTheMonth(date),
-        dayEndOfTheWeekStartOfTheMonth(date) + 1
-      ),
+      from: firstDateOfFirstWeekOfTheMonth(date),
+      to: lastDateOfFirstWeekOfTheMonth(date),
       income: 0,
       expense: 0,
     });
 
     for (
-      let i = dayEndOfTheWeekStartOfTheMonth(date) + 1;
-      i <= dayStartOfTheWeekEndOfTheMonth(date) - 7;
+      let i = lastDateOfFirstWeekOfTheMonth(date).get("date");
+      i <= firstDateOfLastWeekOfTheMonth(date).get("date") - 7;
       i = i + 7
     ) {
       weeks.push({
-        from: new Date(date.getFullYear(), date.getMonth(), i + 1),
-        to: new Date(date.getFullYear(), date.getMonth(), i + 7),
+        from: Moment(date).set("date", i + 1),
+        to: Moment(date).set("date", i + 7),
         income: 0,
         expense: 0,
       });
     }
 
     weeks.push({
-      from: new Date(
-        yearStartOfTheWeekEndOfTheMonth(date),
-        monthStartOfTheWeekEndOfTheMonth(date),
-        dayStartOfTheWeekEndOfTheMonth(date) + 1
-      ),
-      to: new Date(
-        yearEndOfTheWeekOfTheMonth(date),
-        monthEndOfTheWeekOfTheMonth(date),
-        dayEndOfTheWeekOfTheMonth(date) + 1
-      ),
+      from: firstDateOfLastWeekOfTheMonth(date),
+      to: lastDateOfLastWeekOfTheMonth(date),
       income: 0,
       expense: 0,
     });
@@ -104,11 +81,11 @@ class WeeklyContainer extends React.Component<Props> {
   render() {
     const { sumIncome, sumExpense, weeks } = this.state;
     return (
-      <div className={WeeklyStyle.wrapper}>
+      <div className={styles.wrapper}>
         <NavBarMenu />
-        <div className={WeeklyStyle.container}>
-          <table className={WeeklyStyle.table}>
-            <InfoRow sumExpense={sumExpense} sumIncome={sumIncome} />
+        <div className={styles.container}>
+          <table className={styles.table}>
+            <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
             <tbody>
               {weeks.reverse().map((week, index) => (
                 <WeeklyTableRow week={week} key={index} />

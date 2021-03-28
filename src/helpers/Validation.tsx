@@ -1,8 +1,9 @@
-import { State as StateTransaction } from "../modules/transaction/reducers/transactionReducer";
 import AddTransactionStyle from "../modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css";
-
-export const validateTransaction = (value: StateTransaction["transaction"]) => {
-  let errors = {
+import { TransactionEvent } from "../models/Transaction";
+import { Error } from "../models/Error";
+import { Transaction, Transfer } from "../helpers/Variables";
+export const validateTransaction = (value: TransactionEvent) => {
+  let errors: Error = {
     account: "",
     from: "",
     category: "",
@@ -11,29 +12,24 @@ export const validateTransaction = (value: StateTransaction["transaction"]) => {
     fees: "",
   };
 
-  if (value.account === "" && value.type !== "transfer") {
-    errors.account = "Please select a account";
+  if (!value.account && value.type !== Transaction) {
+    errors.account = "Please select an account";
   }
-  if (
-    value.type === "transfer" &&
-    (value.from === "" || value.from === undefined)
-  ) {
-    errors.from = "Please select  from";
+
+  if (value.type === Transfer && !value.from) {
+    errors.from = "Please select from";
   }
-  if (value.category === "" && value.type !== "transfer") {
+  if (!value.category && value.type !== Transfer) {
     errors.category = "Please select a category";
   }
-  if (
-    value.type === "transfer" &&
-    (value.to === "" || value.to === undefined)
-  ) {
+  if (value.type === Transfer && !value.to) {
     errors.to = "Please select to";
   }
-  if (value.amount === "") {
+  if (!value.amount) {
     errors.amount = "Please add an amount";
   }
 
-  if (parseFloat(value.fees) > parseFloat(value.amount)) {
+  if (parseFloat(value.fees!) > parseFloat(value.amount)) {
     errors.fees = "Fees can't be greater then amount";
   }
   return errors;
@@ -41,12 +37,6 @@ export const validateTransaction = (value: StateTransaction["transaction"]) => {
 
 export const errorMsg = (error: string) => {
   return (
-    <div>
-      {error && (
-        <div className={AddTransactionStyle.error_msg}>
-          <span>{error}</span>
-        </div>
-      )}
-    </div>
+    <>{error && <div className={AddTransactionStyle.error_msg}>{error}</div>}</>
   );
 };

@@ -3,9 +3,9 @@ import axios from "axios";
 export const AuthenticatedRoute = (props: any) => {
   const history = useHistory();
 
-  let token = localStorage.getItem("jwt");
+  const token = localStorage.getItem("jwt");
 
-  let config = {
+  const config = {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -15,7 +15,7 @@ export const AuthenticatedRoute = (props: any) => {
       axios.get("http://localhost:5000/user/logged", config);
 
       return <props.component {...props} />;
-    } catch (e) {
+    } catch {
       window.location.pathname = "/authentication";
     }
   } else {

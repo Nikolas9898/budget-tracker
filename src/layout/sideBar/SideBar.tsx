@@ -5,19 +5,19 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 type Props = {
-  sideBarIsOpen: boolean;
-  setSideBarIsOpen: (value: boolean) => void;
+  isSideBarOpen: boolean;
+  setIsSideBarOpen: (value: boolean) => void;
 };
 
-const SideBar: React.FC<Props> = ({ sideBarIsOpen, setSideBarIsOpen }) => {
+const SideBar: React.FC<Props> = ({ isSideBarOpen, setIsSideBarOpen }) => {
   return (
     <div>
-      {sideBarIsOpen ? (
+      {isSideBarOpen ? (
         <div className={SideBarStyle.wrapper}>
           <FontAwesomeIcon
             className={SideBarStyle.close_button}
             icon={faTimes}
-            onClick={() => setSideBarIsOpen(false)}
+            onClick={() => setIsSideBarOpen(false)}
           />
           <div className={SideBarStyle.content}>
             <Link to="/transaction/monthly" className={SideBarStyle.title}>

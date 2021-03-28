@@ -1,8 +1,5 @@
 import axios from "axios";
-import {
-  Transaction,
-  TransactionReducer,
-} from "../../../helpers/ITransactions";
+import { Transaction, TransactionReducer } from "../../../models/Transaction";
 
 let config = {
   headers: {

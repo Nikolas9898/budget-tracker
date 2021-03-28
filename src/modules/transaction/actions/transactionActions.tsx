@@ -1,30 +1,28 @@
-import { HandleInput, TransactionEvent } from "../../../helpers/ITransactions";
-import {
-  HANDLE_NEXT_MONTH,
-  HANDLE_PREVIOUS_MONTH,
-  HANDLE_NEXT_YEAR,
-  HANDLE_PREVIOUS_YEAR,
-  HANDLE_INPUT,
-  SET_TRANSACTION,
-} from "../actionTypes";
+import { TransactionEvent } from "../../../models/Transaction";
+import { HandleInput } from "../../../models/Function";
+import { ActionTypes } from "../actionTypes";
 
 export const handleNextMonth = () => ({
-  type: HANDLE_NEXT_MONTH,
+  type: ActionTypes.HANDLE_NEXT_MONTH,
 });
 export const handlePreviousMonth = () => ({
-  type: HANDLE_PREVIOUS_MONTH,
+  type: ActionTypes.HANDLE_PREVIOUS_MONTH,
 });
 export const handleNextYear = () => ({
-  type: HANDLE_NEXT_YEAR,
+  type: ActionTypes.HANDLE_NEXT_YEAR,
 });
 export const handlePreviousYear = () => ({
-  type: HANDLE_PREVIOUS_YEAR,
+  type: ActionTypes.HANDLE_PREVIOUS_YEAR,
 });
 export const handleInput = (event: HandleInput) => ({
-  type: HANDLE_INPUT,
+  type: ActionTypes.HANDLE_INPUT,
   payload: { name: event.target.name, value: event.target.value },
 });
 export const setTransaction = (event: TransactionEvent) => ({
-  type: SET_TRANSACTION,
+  type: ActionTypes.SET_TRANSACTION,
   payload: event,
+});
+export const setDate = (date: Date) => ({
+  type: ActionTypes.SET_DATE,
+  payload: date,
 });

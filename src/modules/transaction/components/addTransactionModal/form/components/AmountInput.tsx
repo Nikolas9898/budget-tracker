@@ -1,39 +1,38 @@
 import React from "react";
-import AddTransactionStyl from "../../AddTransactionStyle.module.css";
-import {
-  HandleInput,
-  TransactionEvent,
-} from "../../../../../../helpers/ITransactions";
+import styles from "../../AddTransactionStyle.module.css";
+import { TransactionEvent } from "../../../../../../models/Transaction";
+import { HandleInput } from "../../../../../../models/Function";
 import { errorMsg } from "../../../../../../helpers/Validation";
+import { Transfer } from "../../../../../../helpers/Variables";
 type Props = {
   handleInputChange: (event: HandleInput) => void;
-  setFeesIsOpen: (arg0: boolean) => void;
+  setIsFeesOpen: (isOpen: boolean) => void;
   transaction: TransactionEvent;
-  feesIsOpen: boolean;
+  isFeesOpen: boolean;
   error: string;
 };
 
 const AmountInput: React.FC<Props> = ({
   handleInputChange,
-  setFeesIsOpen,
+  setIsFeesOpen,
   transaction,
-  feesIsOpen,
+  isFeesOpen,
   error,
 }) => {
   return (
-    <div className={AddTransactionStyl.input_container}>
-      <div className={AddTransactionStyl.amount_container}>
+    <div className={styles.input_container}>
+      <div className={styles.amount_container}>
         <input
           type="number"
           name="amount"
-          className={AddTransactionStyl.input}
+          className={styles.input}
           value={transaction.amount}
           onChange={handleInputChange}
         />
-        {transaction.type === "transfer" && !feesIsOpen ? (
+        {transaction.type === Transfer && !isFeesOpen ? (
           <div
-            className={AddTransactionStyl.fees}
-            onClick={() => setFeesIsOpen(!feesIsOpen)}
+            className={styles.fees}
+            onClick={() => setIsFeesOpen(!isFeesOpen)}
           >
             Fees
           </div>

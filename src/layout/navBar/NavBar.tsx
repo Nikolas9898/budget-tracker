@@ -1,6 +1,6 @@
 import React from "react";
-import NavBarStyle from "./NavBarStyle.module.css";
-import { Link } from "react-router-dom";
+import styles from "./NavBarStyle.module.css";
+import { Link, useLocation } from "react-router-dom";
 import Moment from "moment";
 import {
   handleNextMonth,
@@ -10,31 +10,32 @@ import {
 } from "../../modules/transaction/actions/transactionActions";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  containerIsTransaction,
+  isTransactionContainer,
   isSelectedTitle,
 } from "../../helpers/Variables";
-import { TransactionReducer } from "../../helpers/ITransactions";
+import { TransactionReducer } from "../../models/Transaction";
 
 const NavBarMenu = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const state = useSelector(
     (state: { transactionReducer: TransactionReducer }) =>
       state.transactionReducer
   );
 
   return (
-    <div className={NavBarStyle.container}>
-      <div className={NavBarStyle.container_navigation}>
+    <div className={styles.container}>
+      <div className={styles.container_navigation}>
         <Link
           to={
-            containerIsTransaction(window.location.pathname)
+            isTransactionContainer(location.pathname)
               ? "/transaction/daily"
               : "/stats/daily"
           }
           className={
-            isSelectedTitle(window.location.pathname, "daily")
-              ? NavBarStyle.title_selected
-              : NavBarStyle.title
+            isSelectedTitle(location.pathname, "daily")
+              ? styles.title_selected
+              : styles.title
           }
         >
           Daily
@@ -42,14 +43,14 @@ const NavBarMenu = () => {
 
         <Link
           to={
-            containerIsTransaction(window.location.pathname)
+            isTransactionContainer(location.pathname)
               ? "/transaction/weekly"
               : "/stats/weekly"
           }
           className={
-            isSelectedTitle(window.location.pathname, "weekly")
-              ? NavBarStyle.title_selected
-              : NavBarStyle.title
+            isSelectedTitle(location.pathname, "weekly")
+              ? styles.title_selected
+              : styles.title
           }
         >
           Weekly
@@ -57,14 +58,14 @@ const NavBarMenu = () => {
 
         <Link
           to={
-            containerIsTransaction(window.location.pathname)
+            isTransactionContainer(location.pathname)
               ? "/transaction/monthly"
               : "/stats/monthly"
           }
           className={
-            isSelectedTitle(window.location.pathname, "monthly")
-              ? NavBarStyle.title_selected
-              : NavBarStyle.title
+            isSelectedTitle(location.pathname, "monthly")
+              ? styles.title_selected
+              : styles.title
           }
         >
           Monthly
@@ -72,14 +73,14 @@ const NavBarMenu = () => {
 
         <Link
           to={
-            containerIsTransaction(window.location.pathname)
+            isTransactionContainer(location.pathname)
               ? "/transaction/yearly"
               : "/stats/yearly"
           }
           className={
-            isSelectedTitle(window.location.pathname, "yearly")
-              ? NavBarStyle.title_selected
-              : NavBarStyle.title
+            isSelectedTitle(location.pathname, "yearly")
+              ? styles.title_selected
+              : styles.title
           }
         >
           Yearly
@@ -87,37 +88,37 @@ const NavBarMenu = () => {
 
         <Link
           to={
-            containerIsTransaction(window.location.pathname)
+            isTransactionContainer(location.pathname)
               ? "/transaction/period"
               : "/stats/period"
           }
           className={
-            isSelectedTitle(window.location.pathname, "period")
-              ? NavBarStyle.title_selected
-              : NavBarStyle.title
+            isSelectedTitle(location.pathname, "period")
+              ? styles.title_selected
+              : styles.title
           }
         >
           Period
         </Link>
       </div>
-      <div className={NavBarStyle.change_month_content}>
+      <div className={styles.change_month_content}>
         <div
-          className={NavBarStyle.change_month_button}
+          className={styles.change_month_button}
           onClick={() =>
-            isSelectedTitle(window.location.pathname, "yearly")
+            isSelectedTitle(location.pathname, "yearly")
               ? dispatch(handlePreviousYear())
               : dispatch(handlePreviousMonth())
           }
         >
           {"<"}
         </div>
-        {isSelectedTitle(window.location.pathname, "yearly")
+        {isSelectedTitle(location.pathname, "yearly")
           ? Moment(state.date).format("YYYY")
           : Moment(state.date).format("MMM YYYY")}
         <div
-          className={NavBarStyle.change_month_button}
+          className={styles.change_month_button}
           onClick={() =>
-            isSelectedTitle(window.location.pathname, "yearly")
+            isSelectedTitle(location.pathname, "yearly")
               ? dispatch(handleNextYear())
               : dispatch(handleNextMonth())
           }

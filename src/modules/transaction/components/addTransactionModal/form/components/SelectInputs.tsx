@@ -1,7 +1,7 @@
 import React from "react";
-import AddTransactionStyl from "../../AddTransactionStyle.module.css";
+import styles from "../../AddTransactionStyle.module.css";
 import { errorMsg } from "../../../../../../helpers/Validation";
-import { HandleInput } from "../../../../../../helpers/ITransactions";
+import { HandleInput } from "../../../../../../models/Function";
 type Props = {
   handleInputChange: (event: HandleInput) => void;
   options: string[];
@@ -18,9 +18,9 @@ const SelectInput: React.FC<Props> = ({
   error,
 }) => {
   return (
-    <div className={AddTransactionStyl.input_container}>
+    <div className={styles.input_container}>
       <select
-        className={AddTransactionStyl.input}
+        className={styles.input}
         value={selectValue}
         onChange={handleInputChange}
         name={transactionType}

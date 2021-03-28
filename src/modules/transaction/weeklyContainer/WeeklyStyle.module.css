@@ -2,11 +2,11 @@
   width: 90%;
   margin: auto;
 }
-.container{
+.container {
   margin: auto;
   width: 50%;
 }
-.table{
+.table {
   width: 100%;
   margin: auto;
   border-collapse: collapse;
@@ -14,7 +14,7 @@
 td {
   border-top: lightslategray solid 2px;
 }
-.date_container{
+.date_container {
   width: 100px;
 }
 .date {
@@ -48,6 +48,7 @@ td {
   text-align: center;
 }
 .expense {
+  height: 60px;
   font-size: 25px;
   color: coral;
   font-weight: bold;
@@ -69,6 +70,7 @@ td {
   font-weight: bold;
 }
 .total {
+  height: 60px;
   font-size: 25px;
   color: dimgrey;
   font-weight: bold;
