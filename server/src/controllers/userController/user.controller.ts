@@ -52,7 +52,7 @@ export const editUser: RequestHandler = async (req: Request, res: Response) => {
     const { username, email, password, categories, createdAt, type } = req.body;
     const userId: string = tokenDecoder(authorization);
 
-    const user: IUser | null = await User.updateOne(
+    await User.updateOne(
       {
         userId,
 

@@ -5,9 +5,10 @@ import ITransaction, {
   Expense,
   DummyExpenseEvents,
   TransferWithFees,
+  eventTypes,
+  successMessages,
 } from "../../interfaces/transactions";
 import { Response } from "express";
-import transactionModel from "../../models/transaction/transaction.model";
 
 export const createTransferWithFees = (
   events: TransactionEvent,
@@ -54,10 +55,10 @@ export const createOrdinaryEvent = (
   expense: number
 ): ITransaction => {
   events.forEach((event: TransactionEvent) => {
-    if (event.type.toLowerCase() === "income") {
+    if (event.type.toLowerCase() === eventTypes.income) {
       income += event.amount;
     }
-    if (event.type.toLowerCase() === "expense") {
+    if (event.type.toLowerCase() === eventTypes.expense) {
       expense += event.amount;
     }
   });
@@ -76,7 +77,7 @@ export const createOrdinaryEvent = (
 export const deleteTransaction = (transaction: ITransaction, res: Response) => {
   try {
     transaction.remove();
-    return res.json({ msg: "Deleted successfullu" });
+    return res.json({ msg: successMessages.deletedSuccessfully });
   } catch (error) {
     return res.json({ errroMsg: error });
   }
@@ -90,7 +91,7 @@ export const removeTransactionEvent = async (
   let expense: number = 0;
   let income: number = 0;
 
-  const newEvents = transaction.events.filter(
+  const newEvents: TransactionEvent[] = transaction.events.filter(
     (event: TransactionEvent) => event._id != event_id
   );
 
@@ -110,22 +111,12 @@ export const editIntoTransfer = async (
   event_id: string,
   eventFromBody: TransferWithFees
 ) => {
-  const {
-    type,
-    fees,
-    from,
-    currency,
-    date,
-    to,
-    amount,
-    description,
-    note,
-  } = eventFromBody;
+  const { type, fees, from } = eventFromBody;
 
   transaction.events.forEach((oldEvent: TransactionEvent) => {
     if (oldEvent._id?.toString() === event_id) {
-      // when editing income or expense into transfer with fees
-      if (oldEvent.type !== "transfer" && type === "transfer" && fees > 0) {
+      //when editing event into transfer with fees
+      if (fees > 0 && oldEvent.fees == 0) {
         transaction.events.push({
           transferId: oldEvent._id,
           type: Expense.type,
@@ -138,32 +129,14 @@ export const editIntoTransfer = async (
           description: oldEvent.description,
         });
       }
-      //when editing transfer withouth fees into transfer with fees
-      if (oldEvent.fees === 0 || (oldEvent.fees === null && fees > 0)) {
-        transaction.events.push({
-          transferId: oldEvent._id,
-          type: Expense.type,
-          currency: Expense.currency,
-          date: oldEvent.date,
-          category: Expense.category,
-          account: from,
-          amount: fees,
-          note: Expense.note,
-          description: oldEvent.description,
-        });
-      }
+
       // ordinary transfer
-      oldEvent.type = type;
-      oldEvent.currency = currency;
-      oldEvent.date = date;
-      oldEvent.from = from;
+
+      for (let key of Object.keys(eventFromBody)) {
+        oldEvent[key] = eventFromBody[key];
+      }
       oldEvent.category = undefined;
       oldEvent.account = undefined;
-      oldEvent.fees = fees;
-      oldEvent.to = to;
-      oldEvent.amount = amount;
-      oldEvent.description = description;
-      oldEvent.note = note;
     }
 
     if (oldEvent.transferId === event_id) {

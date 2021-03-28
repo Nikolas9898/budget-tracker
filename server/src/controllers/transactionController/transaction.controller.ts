@@ -2,7 +2,10 @@ import { Months, Month } from "../../interfaces/month";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { RequestHandler, Request, Response } from "express";
 import ITransaction, {
-  responseМessages,
+  errorMessages,
+  eventTypes,
+  momentConstants,
+  successMessages,
   TransactionEvent,
 } from "../../interfaces/transactions";
 import Transaction from "../../models/transaction/transaction.model";
@@ -101,15 +104,15 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
 
   if (from === "" || to === "") {
     return res.status(400).json({
-      errorMSG: "Please ensure you pick two dates",
+      errorMSG: errorMessages.twoDatesPicket,
     });
   }
 
   Transaction.find(
     {
       createdAt: {
-        $gte: moment(from).startOf("day").toDate(),
-        $lt: moment(to).endOf("day").toDate(),
+        $gte: moment(from).startOf(momentConstants.day).toDate(),
+        $lt: moment(to).endOf(momentConstants.day).toDate(),
       },
       userId,
     },
@@ -139,9 +142,7 @@ export const getTransactionById: RequestHandler = async (
   Transaction.findOne({ _id: id, userId }, (err, transaction: ITransaction) => {
     try {
       if (!transaction) {
-        return res
-          .status(400)
-          .json({ errorMsg: "No such transaction available" });
+        return res.status(400).json({ errorMsg: errorMessages.noTransaction });
       }
       return res.json(transaction);
     } catch (error) {
@@ -164,7 +165,7 @@ export const deleteTransactionById: RequestHandler = async (
 
     if (transaction) {
       transaction.remove();
-      return res.json({ msg: "Deleted successfullu" });
+      return res.json({ msg: successMessages.deletedSuccessfully });
     }
   } catch (error) {
     res.json({ errroMsg: error });
@@ -181,20 +182,7 @@ export const editTransactionEvent: RequestHandler = async (
   const event_id: string = req.params.event_id;
   const eventFromBody = req.body;
 
-  const {
-    type,
-    fees,
-    from,
-    currency,
-    date,
-    to,
-    amount,
-    description,
-    note,
-    category,
-    account,
-    transferId,
-  } = eventFromBody;
+  const { type, amount, transferId } = eventFromBody;
 
   const userId: string = tokenDecoder(req.headers.authorization);
   let expense = 0;
@@ -213,7 +201,7 @@ export const editTransactionEvent: RequestHandler = async (
     }
 
     if (transaction)
-      if (type === "transfer") {
+      if (type === eventTypes.transfer) {
         // when eventFrom body is transfer
 
         editIntoTransfer(transaction, event_id, eventFromBody);
@@ -227,19 +215,14 @@ export const editTransactionEvent: RequestHandler = async (
             //enters when editing expense with transferId in it
             transaction.events.map((oldEvent: TransactionEvent) => {
               if (oldEvent._id?.toString() === event_id) {
-                oldEvent.amount = amount;
-                oldEvent.type = type;
-                oldEvent.currency = currency;
-                oldEvent.date = date;
-                oldEvent.category = category;
-                oldEvent.account = account;
-                oldEvent.note = note;
-                oldEvent.description = description;
-                type === "income" && (oldEvent.transferId = undefined);
+                for (let key of Object.keys(eventFromBody)) {
+                  oldEvent[key] = eventFromBody[key];
+                }
+                type === eventTypes.income && (oldEvent.transferId = undefined);
               }
 
               if (oldEvent._id?.toString() === transferId) {
-                if (type === "income") {
+                if (type === eventTypes.income) {
                   oldEvent.fees = 0;
                 } else {
                   oldEvent.fees = amount;
@@ -288,7 +271,7 @@ export const deleteTransactionEvent: RequestHandler = async (
 
   if (transaction === null) {
     return res.json({
-      errorMsg: responseМessages.noExistingTransaction,
+      errorMsg: errorMessages.noExistingTransaction,
     });
   }
 
@@ -315,8 +298,8 @@ export const getYearlyAndWeekly: RequestHandler = async (
       let transactions = await Promise.all(
         await Transaction.find({
           createdAt: {
-            $gte: moment(month.from).startOf("day").toDate(),
-            $lt: moment(month.to).endOf("day").toDate(),
+            $gte: moment(month.from).startOf(momentConstants.day).toDate(),
+            $lt: moment(month.to).endOf(momentConstants.day).toDate(),
           },
           userId,
         })

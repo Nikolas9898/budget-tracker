@@ -11,7 +11,11 @@ export default interface ITransaction extends Document {
   __v: number;
 }
 
-export interface TransactionEvent {
+interface IObjectKeys {
+  [key: string]: string | number | undefined;
+}
+
+export interface TransactionEvent extends IObjectKeys {
   _id?: string;
   type: string;
   currency: string;
@@ -27,7 +31,7 @@ export interface TransactionEvent {
   description: string;
 }
 
-export interface TransferWithFees {
+export interface TransferWithFees extends IObjectKeys {
   type: string;
   currency: string;
   transferId?: string;
@@ -64,6 +68,22 @@ export enum Expense {
   currency = "BG",
 }
 
-export enum responseМessages {
+export enum eventTypes {
+  income = "income",
+  expense = "expense",
+  transfer = "transfer",
+}
+
+export enum successMessages {
+  deletedSuccessfully = "Deleted successfully",
+}
+
+export enum errorMessages {
   noExistingTransaction = "Not authorized or transaction does not exist",
+  noTransaction = "No such transaction available",
+  twoDatesPicket = "Please ensure you pick two dates",
+}
+
+export enum momentConstants {
+  day = "day",
 }

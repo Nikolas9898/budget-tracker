@@ -1,4 +1,4 @@
-import ITransaction from "../interfaces/transactions";
+import ITransaction, { eventTypes } from "../interfaces/transactions";
 
 export const calculateTotalExpenseAndIncome = async (
   transfer: ITransaction,
@@ -9,10 +9,10 @@ export const calculateTotalExpenseAndIncome = async (
 
   await Promise.all(
     events.map((event) => {
-      if (event.type.toLowerCase() === "income") {
+      if (event.type.toLowerCase() === eventTypes.income) {
         income += event.amount;
       }
-      if (event.type.toLowerCase() === "expense") {
+      if (event.type.toLowerCase() === eventTypes.expense) {
         expense += event.amount;
       }
     })
