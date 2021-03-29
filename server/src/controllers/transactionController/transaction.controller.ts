@@ -27,7 +27,7 @@ export const createTransaction: RequestHandler = async (
   const events = req.body.events;
   const createdAt = req.body.createdAt;
 
-  const transaction = await Transaction.findOne({
+  const transaction: ITransaction | null = await Transaction.findOne({
     createdAt: createdAt,
     userId,
   });
@@ -213,22 +213,26 @@ export const editTransactionEvent: RequestHandler = async (
         if (transferId) {
           await Promise.all(
             //enters when editing expense with transferId in it
-            transaction.events.map((oldEvent: TransactionEvent) => {
-              if (oldEvent._id?.toString() === event_id) {
-                for (let key of Object.keys(eventFromBody)) {
-                  oldEvent[key] = eventFromBody[key];
-                }
-                type === eventTypes.income && (oldEvent.transferId = undefined);
-              }
+            (transaction.events = transaction.events.map(
+              (oldEvent: TransactionEvent) => {
+                if (oldEvent._id?.toString() === event_id) {
+                  oldEvent = { ...eventFromBody, _id: oldEvent._id };
 
-              if (oldEvent._id?.toString() === transferId) {
-                if (type === eventTypes.income) {
-                  oldEvent.fees = 0;
-                } else {
-                  oldEvent.fees = amount;
+                  type === eventTypes.income &&
+                    (oldEvent.transferId = undefined);
                 }
+
+                if (oldEvent._id?.toString() === transferId) {
+                  if (type === eventTypes.income) {
+                    oldEvent.fees = 0;
+                  } else {
+                    oldEvent.fees = amount;
+                  }
+                }
+
+                return oldEvent;
               }
-            })
+            ))
           );
           calculateTotalExpenseAndIncome(transaction, income, expense);
 

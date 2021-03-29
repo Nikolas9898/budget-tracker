@@ -113,7 +113,7 @@ export const editIntoTransfer = async (
 ) => {
   const { type, fees, from } = eventFromBody;
 
-  transaction.events.forEach((oldEvent: TransactionEvent) => {
+  transaction.events = transaction.events.map((oldEvent: TransactionEvent) => {
     if (oldEvent._id?.toString() === event_id) {
       //when editing event into transfer with fees
       if (fees > 0 && oldEvent.fees == 0) {
@@ -132,16 +132,19 @@ export const editIntoTransfer = async (
 
       // ordinary transfer
 
-      for (let key of Object.keys(eventFromBody)) {
-        oldEvent[key] = eventFromBody[key];
-      }
-      oldEvent.category = undefined;
-      oldEvent.account = undefined;
+      oldEvent = {
+        ...eventFromBody,
+        _id: oldEvent._id,
+        category: undefined,
+        account: undefined,
+      };
     }
 
     if (oldEvent.transferId === event_id) {
       oldEvent.amount = fees;
     }
+
+    return oldEvent;
   });
 
   return transaction;
