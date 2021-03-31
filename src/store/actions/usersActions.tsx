@@ -9,7 +9,7 @@ export const singIn = (user: {
   updatedAt: string;
   type: string;
   id: string;
-  token: string;
+  // token: string;
 }) => async (dispatch: any) => {
   try {
     await dispatch({

@@ -1,32 +1,31 @@
 import React from "react";
-import DailyStyle from "../../DailyStyle.module.css";
-import { Transaction } from "../../../../../helpers/ITransactions";
+import styles from "../../DailyStyle.module.css";
+import { isTheSameDate } from "../../../../../helpers/Variables";
 import Moment from "moment";
+import { TransactionWithAmountNumber } from "../../../../../models/Transaction";
 type Props = {
-  transaction: Transaction;
+  transaction: TransactionWithAmountNumber;
 };
 const DailyTableHeader: React.FC<Props> = ({ transaction }) => {
   return (
     <tr>
       <th>
-        <div className={DailyStyle.date_content}>
-          <div className={DailyStyle.date}>
+        <div className={styles.date_content}>
+          <div className={styles.date}>
             {Moment(transaction.createdAt).format("DD")}
           </div>
           <div>
-            <div className={DailyStyle.date_year}>
+            <div className={styles.date_year}>
               {Moment(transaction.createdAt).format("MM.YYYY")}
             </div>
             <div
               className={
-                new Date(transaction.createdAt).toISOString() ===
-                new Date(
-                  new Date().getFullYear(),
-                  new Date().getMonth(),
-                  new Date().getDate()
-                ).toISOString()
-                  ? DailyStyle.date_day_select
-                  : DailyStyle.date_day
+                isTheSameDate(
+                  transaction.createdAt,
+                  Moment().startOf("date").toDate()
+                )
+                  ? styles.date_day_select
+                  : styles.date_day
               }
             >
               {Moment(transaction.createdAt).format("ddd")}
@@ -35,12 +34,12 @@ const DailyTableHeader: React.FC<Props> = ({ transaction }) => {
         </div>
       </th>
       <th>
-        <div className={DailyStyle.income}>
+        <div className={styles.income}>
           {(transaction.income / 100).toFixed(2)}
         </div>
       </th>
       <th>
-        <div className={DailyStyle.expense}>
+        <div className={styles.expense}>
           {(transaction.expense / 100).toFixed(2)}
         </div>
       </th>

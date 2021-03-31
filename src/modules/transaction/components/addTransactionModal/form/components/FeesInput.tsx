@@ -1,45 +1,38 @@
 import React from "react";
-import AddTransactionStyl from "../../AddTransactionStyle.module.css";
-import {
-  HandleInput,
-  TransactionEvent,
-} from "../../../../../../helpers/ITransactions";
+import styles from "../../AddTransactionStyle.module.css";
+import { TransactionEvent } from "../../../../../../models/Transaction";
+import { HandleInput } from "../../../../../../models/Function";
 type Props = {
   handleInputChange: (event: HandleInput) => void;
-  setFeesIsOpen: (arg0: boolean) => void;
+  setIsFeesOpen: (arg0: boolean) => void;
   transaction: TransactionEvent;
-  feesIsOpen: boolean;
+  isFeesOpen: boolean;
 };
 
 const FeesInput: React.FC<Props> = ({
   handleInputChange,
-  setFeesIsOpen,
+  setIsFeesOpen,
   transaction,
-  feesIsOpen,
+  isFeesOpen,
 }) => {
   return (
-    <div>
-      {feesIsOpen ? (
-        <div className={AddTransactionStyl.input_container}>
-          <div className={AddTransactionStyl.amount_container}>
+    <>
+      {isFeesOpen ? (
+        <div className={styles.input_container}>
+          <div className={styles.amount_container}>
             <input
               type="text"
-              className={AddTransactionStyl.input}
+              className={styles.input}
               name="fees"
               value={transaction.fees}
               onChange={handleInputChange}
             />
 
-            {/* {errors.fees && (
-              <div className={AddTransactionStyl.error_msg}>
-                <span>{errors.fees}</span>
-              </div>
-            )} */}
             <div
-              className={AddTransactionStyl.fees}
+              className={styles.fees}
               onClick={() => {
                 handleInputChange({ target: { value: "0", name: "fees" } });
-                setFeesIsOpen(!feesIsOpen);
+                setIsFeesOpen(!isFeesOpen);
               }}
             >
               X
@@ -47,7 +40,7 @@ const FeesInput: React.FC<Props> = ({
           </div>
         </div>
       ) : null}
-    </div>
+    </>
   );
 };
 export default FeesInput;

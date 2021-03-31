@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import AddTransactionStyl from "../AddTransactionStyle.module.css";
+import styles from "../AddTransactionStyle.module.css";
 import Moment from "moment";
-import {
-  TransactionEvent,
-  Errors,
-  HandleInput,
-} from "../../../../../helpers/ITransactions";
+import { TransactionEvent } from "../../../../../models/Transaction";
+import { HandleInput } from "../../../../../models/Function";
+import { Error } from "../../../../../models/Error";
+import { Transfer, Income, Expense } from "../../../../../helpers/Variables";
 import InputTitles from "./components/InputTitles";
 import SelectInput from "./components/SelectInputs";
 import FeesInput from "./components/FeesInput";
@@ -13,11 +12,11 @@ import AmountInput from "./components/AmountInput";
 
 type Props = {
   transaction: TransactionEvent;
-  errors: Errors;
+  errors: Error;
   handleInputChange: (event: HandleInput) => void;
 };
 const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
-  const [feesIsOpen, setFeesIsOpen] = useState(false);
+  const [isFeesOpen, setIsFeesOpen] = useState(false);
   const accounts = ["", "cash", "card", "accounts"];
   const categoriesIncome = [" ", "salary", "bonus", "petty cash", "other"];
   const categoriesExpense = [
@@ -30,10 +29,10 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
     "other",
   ];
   const selectOptions = (transactionType: string) => {
-    if (transactionType === "transfer") {
+    if (transactionType === Transfer) {
       return accounts;
     } else {
-      if (transactionType === "income") {
+      if (transactionType === Income) {
         return categoriesIncome;
       } else {
         return categoriesExpense;
@@ -41,53 +40,53 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
     }
   };
   return (
-    <div className={AddTransactionStyl.content}>
-      <InputTitles transaction={transaction} feesIsOpen={feesIsOpen} />
-      <div className={AddTransactionStyl.content_inputs}>
-        <div className={AddTransactionStyl.input_container}>
+    <div className={styles.content}>
+      <InputTitles transaction={transaction} isFeesOpen={isFeesOpen} />
+      <div className={styles.content_inputs}>
+        <div className={styles.input_container}>
           {Moment(transaction.date).format("DD/M/Y(dd)")}
           {Moment(transaction.date).format("HH:HH")}
         </div>
         <SelectInput
           selectValue={
-            transaction.type === "transfer"
+            transaction.type === Transfer
               ? transaction.from
               : transaction.account
           }
-          transactionType={transaction.type === "transfer" ? "from" : "account"}
+          transactionType={transaction.type === Transfer ? "from" : "account"}
           options={accounts}
           handleInputChange={handleInputChange}
-          error={transaction.type === "transfer" ? errors.from : errors.account}
+          error={transaction.type === Transfer ? errors.from : errors.account}
         />
         <SelectInput
           selectValue={
-            transaction.type === "transfer"
+            transaction.type === Transfer
               ? transaction.to
               : transaction.category
           }
-          transactionType={transaction.type === "transfer" ? "to" : "category"}
+          transactionType={transaction.type === Transfer ? "to" : "category"}
           options={selectOptions(transaction.type)}
           handleInputChange={handleInputChange}
-          error={transaction.type === "transfer" ? errors.to : errors.category}
+          error={transaction.type === Transfer ? errors.to : errors.category}
         />
         <AmountInput
           transaction={transaction}
           handleInputChange={handleInputChange}
-          setFeesIsOpen={setFeesIsOpen}
-          feesIsOpen={feesIsOpen}
+          setIsFeesOpen={setIsFeesOpen}
+          isFeesOpen={isFeesOpen}
           error={errors.amount}
         />
 
         <FeesInput
           transaction={transaction}
           handleInputChange={handleInputChange}
-          setFeesIsOpen={setFeesIsOpen}
-          feesIsOpen={feesIsOpen}
+          setIsFeesOpen={setIsFeesOpen}
+          isFeesOpen={isFeesOpen}
         />
 
         <input
           type="text"
-          className={AddTransactionStyl.input}
+          className={styles.input}
           name="note"
           value={transaction.note}
           onChange={handleInputChange}

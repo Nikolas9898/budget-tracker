@@ -1,8 +1,5 @@
 import axios from "axios";
-import {
-  Transaction,
-  TransactionReducer,
-} from "../../../helpers/ITransactions";
+import { Transaction, TransactionReducer } from "../../../models/Transaction";
 
 let config = {
   headers: {
@@ -101,5 +98,22 @@ export const deleteTransaction = async (
     return response;
   } catch (e) {
     return { error: e };
+  }
+};
+export const getUserByJWToken = async () => {
+  const url = `http://localhost:5000/user/logged`;
+
+  const request: any = {
+    method: "GET",
+    headers: config.headers,
+    url,
+  };
+  try {
+    const response = await axios(request);
+
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    return [];
   }
 };

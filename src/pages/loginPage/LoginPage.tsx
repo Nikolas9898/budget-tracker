@@ -1,7 +1,7 @@
 import React from "react";
 import LoginContainer from "../../modules/login/LoginContainer";
 
-const LoginPage = () => {
+const LoginPage = (props: any) => {
   return (
     <div>
       <LoginContainer />

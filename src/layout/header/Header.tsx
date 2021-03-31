@@ -1,42 +1,42 @@
 import React, { useState } from "react";
-import NavBarStyle from "./HeaderStyle.module.css";
+import styles from "./HeaderStyle.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../sideBar/SideBar";
 import { useSelector } from "react-redux";
 import { headerTitle } from "../../helpers/Variables";
-import { userReducer } from "../../helpers/ITransactions";
+import { UserReducer } from "../../models/User";
+import AccountMenu from "../accountMenu/AccountMenu";
 const NavBar = () => {
-  const [sideBarIsOpen, setSideBarIsOpen] = useState(false);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   let user = useSelector(
-    (state: userReducer["user"]) => state.userReducer.user
+    (state: UserReducer["user"]) => state.userReducer.user
   );
 
   return (
     <div>
-      <nav className={NavBarStyle.container}>
+      <nav className={styles.container}>
         <FontAwesomeIcon
-          className={NavBarStyle.menu_bar}
+          className={styles.menu_bar}
           icon={faBars}
-          onClick={() => setSideBarIsOpen(true)}
+          onClick={() => setIsSideBarOpen(true)}
         />
 
-        <div className={NavBarStyle.page_title}>
+        <div className={styles.page_title}>
           {headerTitle(window.location.pathname)}
         </div>
-
-        <div className={NavBarStyle.user_content}>
-          <FontAwesomeIcon className={NavBarStyle.user_email} icon={faUser} />
-          <span className={NavBarStyle.user_email}>{user.email}</span>
-          <FontAwesomeIcon
-            className={NavBarStyle.menu_down}
-            icon={faCaretDown}
-          />
+        <div className={styles.dropdown}>
+          <div className={styles.user_content}>
+            <FontAwesomeIcon className={styles.user_email} icon={faUser} />
+            <span className={styles.user_email}>{user.email}</span>
+            <FontAwesomeIcon className={styles.caret_down} icon={faCaretDown} />
+          </div>
+          <AccountMenu />
         </div>
       </nav>
       <SideBar
-        sideBarIsOpen={sideBarIsOpen}
-        setSideBarIsOpen={setSideBarIsOpen}
+        isSideBarOpen={isSideBarOpen}
+        setIsSideBarOpen={setIsSideBarOpen}
       />
     </div>
   );

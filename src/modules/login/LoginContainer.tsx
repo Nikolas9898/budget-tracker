@@ -4,7 +4,7 @@ import LoginForm from "./components/LoginForm";
 import RegistrationForm from "./components/RegistrationForm";
 import SocialNetworks from "./components/SocialNetworks";
 import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { singIn } from "../../store/actions/usersActions";
 import axios from "axios";
@@ -21,7 +21,7 @@ const LoginContainer = () => {
     password: "",
     confirmPassword: "",
   });
-  const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const handleInputChange = (e: any) =>
@@ -64,22 +64,20 @@ const LoginContainer = () => {
         confirmPassword: errors.confirmPassword,
       });
       return;
-    } else {
-      localStorage.removeItem("jwt");
-      let loggedUser = await axios.post(`http://localhost:5000/signIn`, user);
+    }
+    localStorage.removeItem("jwt");
+    let loggedUser = await axios.post(`http://localhost:5000/signIn`, user);
 
-      if (loggedUser.data.user) {
-        dispatch(singIn(loggedUser.data));
-        // history.push("./");
-        window.location.pathname = "/transaction/monthly";
-        setErrors({ email: "", password: "", confirmPassword: "" });
-      } else {
-        setErrors({
-          email: "",
-          password: loggedUser.data.errorMSG,
-          confirmPassword: "",
-        });
-      }
+    if (loggedUser.data.user) {
+      dispatch(singIn(loggedUser.data));
+      await setErrors({ email: "", password: "", confirmPassword: "" });
+      window.location.pathname = "/transaction/monthly";
+    } else {
+      setErrors({
+        email: "",
+        password: loggedUser.data.errorMSG,
+        confirmPassword: "",
+      });
     }
   };
   const handleRegister = async () => {
