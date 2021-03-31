@@ -35,7 +35,9 @@ const Calendar: React.FC<Props> = ({
                 ? styles.calendar_date_box_container
                 : styles.calendar_date_box_container_other_month
             }
-            onClick={() => handleOpenInfoModal(calDate.date)}
+            onClick={() =>
+              handleOpenInfoModal(Moment(calDate.date).startOf("date").toDate())
+            }
           >
             <div
               className={

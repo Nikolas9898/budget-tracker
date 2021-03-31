@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./NavBarStyle.module.css";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Moment from "moment";
 import {
   handleNextMonth,
@@ -8,12 +8,12 @@ import {
   handlePreviousMonth,
   handlePreviousYear,
 } from "../../modules/transaction/actions/transactionActions";
-import { useDispatch, useSelector } from "react-redux";
 import {
   isTransactionContainer,
   isSelectedTitle,
 } from "../../helpers/Variables";
 import { TransactionReducer } from "../../models/Transaction";
+import styles from "./NavBarStyle.module.css";
 
 const NavBarMenu = () => {
   const dispatch = useDispatch();

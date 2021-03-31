@@ -16,7 +16,7 @@ export const firstDateOfLastWeekOfTheMonth = (date: Date) =>
   lastDateOfTheMonth(date).startOf("isoWeek");
 
 export const lastDateOfLastWeekOfTheMonth = (date: Date) =>
-  lastDateOfTheMonth(date).endOf("isoWeek");
+  lastDateOfTheMonth(date).startOf("day").endOf("isoWeek");
 
 export const isTheSameDate = (calendarDate: Date, transactionDate: Date) =>
   Moment(calendarDate).diff(transactionDate, "day") === 0;
@@ -61,7 +61,7 @@ export const headerTitle = (path: string) => {
   }
 };
 
-export const transactionEvent = (transaction: TransactionEvent) => {
+export const transaction = (transaction: TransactionEvent) => {
   const {
     type,
     transferId,

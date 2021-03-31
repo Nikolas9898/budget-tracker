@@ -1,51 +1,35 @@
-import React from "react";
-import NavBarMenu from "../../../layout/navBar/NavBar";
-import styles from "./YearlyStyle.module.css";
-import InfoTableHead from "../components/InfoTableHead/InfoTableHead";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Moment from "moment";
-import YearlyTableRow from "./components/YearlyTableRow";
-import { State as StateTransaction } from "../reducers/transactionReducer";
-import { connect } from "react-redux";
 import { getYearlyOrWeekly } from "../service/TransactionService";
 import { Month, TransactionReducer } from "../../../models/Transaction";
-import {
-  firstDateOfTheMonth,
-  lastDateOfTheMonth,
-} from "../../../helpers/Variables";
-export interface State {
-  months: Month[];
-  sumIncome: number;
-  sumExpense: number;
-}
-type Props = {
-  state: StateTransaction;
-};
+import { UserReducer } from "../../../models/User";
+import NavBarMenu from "../../../layout/navBar/NavBar";
+import InfoTableHead from "../components/InfoTableHead/InfoTableHead";
+import YearlyTableRow from "./components/YearlyTableRow";
+import styles from "./YearlyStyle.module.css";
 
-class YearlyContainer extends React.Component<Props> {
-  state: State = {
-    months: [],
-    sumIncome: 0,
-    sumExpense: 0,
-  };
+const YearlyContainer = () => {
+  const [monthsInYear, setMonthsInYear] = useState<Month[]>([]);
+  const [sumIncome, setSumIncome] = useState(0);
+  const [sumExpense, setSumExpense] = useState(0);
 
-  componentDidMount() {
-    this.setYear(this.props.state.date);
-  }
+  const stateTransaction = useSelector(
+    (state: {
+      userReducer: UserReducer;
+      transactionReducer: TransactionReducer;
+    }) => state.transactionReducer
+  );
 
-  componentDidUpdate(prevProps: Readonly<Props>) {
-    if (prevProps.state.date !== this.props.state.date) {
-      this.setState({
-        date: this.props.state.date,
-      });
-      this.setYear(this.props.state.date);
-    }
-  }
+  useEffect(() => {
+    getYear(stateTransaction.date);
+  }, [stateTransaction.date]);
 
-  setYear = async (date: Date) => {
+  const getYear = async (date: Date) => {
     let months: Month[] = [];
 
     for (let i = 0; i <= 11; i++) {
-      await months.push({
+      months.push({
         from: Moment(date).set("month", i).startOf("month").toDate(),
         to: Moment(date).set("month", i).endOf("month").toDate(),
         income: 0,
@@ -54,37 +38,37 @@ class YearlyContainer extends React.Component<Props> {
     }
 
     let data = await getYearlyOrWeekly(months);
+
     if (Moment(date).get("year") < Moment().get("year")) {
-      this.setState({
-        months: data.months,
-        sumIncome: data.sumIncome,
-        sumExpense: data.sumExpense,
-      });
+      setMonthsInYear(data.months.reverse());
+      setSumExpense(data.sumExpense);
+      setSumIncome(data.sumIncome);
     }
     if (Moment(date).get("year") === Moment().get("year")) {
-      this.setState({
-        sumIncome: data.sumIncome,
-        sumExpense: data.sumExpense,
-      });
-      this.setMonths(data.months);
+      setSumExpense(data.sumExpense);
+      setSumIncome(data.sumIncome);
+      setMonths(data.months);
     }
     if (Moment(date).get("year") > Moment().get("year")) {
-      this.setState({
-        months: data.months.filter(
-          (month: Month) => month.expense > 0 || month.income > 0
-        ),
-        sumIncome: data.sumIncome,
-        sumExpense: data.sumExpense,
-      });
+      setMonthsInYear(
+        data.months
+          .filter((month: Month) => month.expense > 0 || month.income > 0)
+          .reverse()
+      );
+      setSumExpense(data.sumExpense);
+      setSumIncome(data.sumIncome);
     }
   };
 
-  setMonths = async (months: Month[]) => {
+  const setMonths = (months: Month[]) => {
     let year: Month[] = [];
-    const newMonths = months.filter(
+
+    const newMonths: Month[] = months.filter(
       month => month.expense > 0 || month.income > 0
     );
-    let lastMonth = Moment().get("month");
+
+    let lastMonth: number = Moment().get("month");
+
     if (
       newMonths.length > 0 &&
       lastMonth < Moment(newMonths[newMonths.length - 1].from).get("month")
@@ -101,7 +85,7 @@ class YearlyContainer extends React.Component<Props> {
           newMonths.filter(month => Moment(month.from).get("month") === i)[0]
         );
       } else {
-        await year.push({
+        year.push({
           from: Moment().startOf("month").set("month", i).toDate(),
           to: Moment().endOf("month").set("month", i).toDate(),
           income: 0,
@@ -110,33 +94,24 @@ class YearlyContainer extends React.Component<Props> {
       }
     }
 
-    this.setState({ months: year });
+    setMonthsInYear(year.reverse());
   };
-  render() {
-    const { months, sumExpense, sumIncome } = this.state;
-    const { date } = this.props.state;
-    return (
-      <div className={styles.wrapper}>
-        <NavBarMenu />
-        <div className={styles.container}>
-          <table className={styles.table}>
-            <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
-            <tbody>
-              {months.reverse().map(month => (
-                <YearlyTableRow month={month} />
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
-}
 
-const mapStateToProps = (state: { transactionReducer: TransactionReducer }) => {
-  return {
-    state: state.transactionReducer,
-  };
+  return (
+    <div className={styles.wrapper}>
+      <NavBarMenu />
+      <div className={styles.container}>
+        <table className={styles.table}>
+          <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
+          <tbody>
+            {monthsInYear.map(month => (
+              <YearlyTableRow month={month} />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(YearlyContainer);
+export default YearlyContainer;

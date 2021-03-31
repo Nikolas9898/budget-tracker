@@ -1,57 +1,36 @@
-import React, { useEffect, useState } from "react";
-import NavBarMenu from "../../../layout/navBar/NavBar";
-import styles from "./DailyStyle.module.css";
-import InfoTableHead from "../components/InfoTableHead/InfoTableHead";
-import Moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import DailyTableRow from "./components/dailyTableRow/DailyTableRow";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AddTransactionModal from "../components/addTransactionModal/AddTransactionModal";
+import Moment from "moment";
+import NavBarMenu from "../../../layout/navBar/NavBar";
+import InfoTableHead from "../components/InfoTableHead/InfoTableHead";
+import DailyTableRow from "./components/dailyTableRow/DailyTableRow";
+import DailyTableHeader from "./components/dailyTableHeader/DailyTableHeader";
 import {
   TransactionReducer,
   TransactionWithAmountNumber,
   TransactionEventWithAmountNumber,
   TransactionEvent,
 } from "../../../models/Transaction";
-import { userReducer } from "../../../models/User";
-import {
-  createTransactionRequest,
-  deleteTransaction,
-  editTransaction,
-  getSpecificDatePeriod,
-} from "../service/TransactionService";
-import { validateTransaction } from "../../../helpers/Validation";
+import { getSpecificDatePeriod } from "../service/TransactionService";
 import {
   firstDateOfTheMonth,
   lastDateOfTheMonth,
-  transactionEvent,
 } from "../../../helpers/Variables";
-import { setTransaction, handleInput } from "../actions/transactionActions";
-import DailyTableHeader from "./components/dailyTableHeader/DailyTableHeader";
-
+import { setTransaction } from "../actions/transactionActions";
+import { UserReducer } from "../../../models/User";
+import styles from "./DailyStyle.module.css";
 const DailyContainer = () => {
   const [transactions, setTransactions] = useState<
     TransactionWithAmountNumber[]
   >([]);
-  const [isTransactionOpen, setIsTransactionOpen] = useState(false);
   const [sumIncome, setSumIncome] = useState(0);
   const [sumExpense, setSumExpense] = useState(0);
-  const [transactionId, setTransactionId] = useState("");
-  const [isEditTransacionOpen, setIsEditTransacionOpen] = useState(false);
-  const [errors, setErrors] = useState({
-    account: "",
-    from: "",
-    category: "",
-    to: "",
-    amount: "",
-  });
 
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector(
     (state: {
-      userReducer: userReducer;
+      userReducer: UserReducer;
       transactionReducer: TransactionReducer;
     }) => state.transactionReducer
   );
@@ -69,96 +48,21 @@ const DailyContainer = () => {
     setSumExpense(data.sumExpense);
     setSumIncome(data.sumIncome);
   };
-  const handleSave = async () => {
-    const { transaction, date } = stateTransaction;
-    const errors = validateTransaction(transaction);
-    const isValid = Object.values(errors).filter(Boolean).length <= 0;
-
-    if (!isValid) {
-      setErrors(errors);
-      return;
-    }
-
-    let event = transactionEvent(transaction);
-
-    if (isEditTransacionOpen) {
-      await editTransaction(
-        transactionId,
-        stateTransaction.transaction._id,
-        event.events[0]
-      );
-      getTransactions(date);
-      clearState();
-    } else {
-      await createTransactionRequest(event);
-      getTransactions(date);
-      clearState();
-    }
-  };
-
-  const handleDelete = async (eventId: string) => {
-    await deleteTransaction(transactionId, eventId);
-    clearState();
-    getTransactions(stateTransaction.date);
-  };
-
-  const clearState = () => {
-    setErrors({ account: "", from: "", category: "", to: "", amount: "" });
-    setIsTransactionOpen(false);
-    setIsEditTransacionOpen(false);
-    setTransactionId("");
-    dispatch(
-      setTransaction({
-        _id: "",
-        type: "income",
-        date: Moment().toDate(),
-        account: "",
-        from: "",
-        category: "",
-        fees: "0",
-        to: "",
-        amount: "0",
-        note: "",
-        description: "",
-      })
-    );
-  };
 
   const handleSelectEvent = (
     transactioEvent: TransactionEventWithAmountNumber,
     transactionId: string
   ) => {
-    if (isTransactionOpen) {
-      clearState();
-    } else {
-      setIsTransactionOpen(true);
-      setTransactionId(transactionId);
-      setIsEditTransacionOpen(true);
-      const Event: TransactionEvent = {
-        ...transactioEvent,
-        amount: (transactioEvent.amount / 100).toFixed(2),
-        fees: (transactioEvent.fees! / 100).toFixed(2),
-      };
+    const Event: TransactionEvent = {
+      ...transactioEvent,
+      amount: (transactioEvent.amount / 100).toFixed(2),
+      fees: (transactioEvent.fees! / 100).toFixed(2),
+      transactionId: transactionId,
+    };
 
-      dispatch(setTransaction(Event));
-    }
+    dispatch(setTransaction(Event));
   };
-  const handleOpenTransaction = () => {
-    if (isTransactionOpen) {
-      clearState();
-    } else {
-      setIsTransactionOpen(true);
 
-      dispatch(
-        handleInput({
-          target: {
-            name: "date",
-            value: Moment().startOf("date").toDate(),
-          },
-        })
-      );
-    }
-  };
   return (
     <div className={styles.wrapper}>
       <NavBarMenu />
@@ -192,23 +96,7 @@ const DailyContainer = () => {
               </tbody>
             ))}
         </table>
-        <FontAwesomeIcon
-          className={styles.add_button}
-          icon={faPlusCircle}
-          onClick={() => handleOpenTransaction()}
-        />
       </div>
-      <AddTransactionModal
-        isAddTransactionOpen={isTransactionOpen}
-        transactionEvent={stateTransaction.transaction}
-        errors={errors}
-        isEditTransactionOpen={isEditTransacionOpen}
-        handleInputChange={event => dispatch(handleInput(event))}
-        handleSave={handleSave}
-        handleOpenTransaction={handleOpenTransaction}
-        handleOpenEdit={handleOpenTransaction}
-        handleDelete={handleDelete}
-      />
     </div>
   );
 };

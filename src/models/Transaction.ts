@@ -17,7 +17,8 @@ export interface TransactionEvent {
     amount: string;
     note: string;
     description: string;
-    transferId?: string;
+  transferId?: string;
+  transactionId:string
 }
 export interface TransactionWithAmountNumber {
     _id: string;
@@ -41,7 +42,7 @@ export interface TransactionEventWithAmountNumber {
   }
   export type TransactionReducer = {
     date: Date;
-    transaction: TransactionEvent;
+    transactionEvent: TransactionEvent;
   };
   export interface Month {
     from: Date;

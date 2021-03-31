@@ -4,11 +4,12 @@ import Moment from "moment";
 
 export interface State {
   date: Date;
-  transaction: TransactionEvent;
+  transactionEvent: TransactionEvent;
 }
 const initialState = {
   date: Moment().toDate(),
-  transaction: {
+
+  transactionEvent: {
     _id: "",
     type: "income",
     date: "",
@@ -21,6 +22,7 @@ const initialState = {
     amount: "0",
     note: "",
     description: "",
+    transactionId: "",
   },
 };
 export default function (state = initialState, action: any) {
@@ -55,8 +57,8 @@ export default function (state = initialState, action: any) {
       if (action.payload.name === "type") {
         return {
           ...state,
-          transaction: {
-            ...state.transaction,
+          transactionEvent: {
+            ...state.transactionEvent,
             [action.payload.name]: action.payload.value,
             category: "",
             to: "",
@@ -65,8 +67,8 @@ export default function (state = initialState, action: any) {
       } else {
         return {
           ...state,
-          transaction: {
-            ...state.transaction,
+          transactionEvent: {
+            ...state.transactionEvent,
             [action.payload.name]: action.payload.value,
           },
         };
@@ -74,7 +76,7 @@ export default function (state = initialState, action: any) {
     case ActionTypes.SET_TRANSACTION:
       return {
         ...state,
-        transaction: action.payload,
+        transactionEvent: action.payload,
       };
     case ActionTypes.SET_DATE:
       return {
