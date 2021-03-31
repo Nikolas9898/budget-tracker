@@ -1,9 +1,9 @@
 import { calculateTotalExpenseAndIncome } from "../calculateTotalExpenseAndIncome";
 import Transaction from "../../models/transaction/transaction.model";
-import ITransaction, {
+import TransactionType, {
   TransactionEvent,
   Expense,
-  DummyExpenseEvents,
+  DummyExpenseEvent,
   TransferWithFees,
   eventTypes,
   successMessages,
@@ -16,7 +16,7 @@ export const createTransferWithFees = (
   userId: string,
   income: number,
   expense: number
-): ITransaction => {
+): TransactionType => {
   let transfer = new Transaction({
     events,
     createdAt,
@@ -28,7 +28,7 @@ export const createTransferWithFees = (
   const { type, note, category, currency } = Expense;
 
   if (transfer.events[0].from && transfer.events[0].fees) {
-    let expenseEvent: DummyExpenseEvents = {
+    let expenseEvent: DummyExpenseEvent = {
       transferId: transfer.events[0]._id,
       type,
       currency,
@@ -53,7 +53,7 @@ export const createOrdinaryEvent = (
   userId: string,
   income: number,
   expense: number
-): ITransaction => {
+): TransactionType => {
   events.forEach((event: TransactionEvent) => {
     if (event.type.toLowerCase() === eventTypes.income) {
       income += event.amount;
@@ -63,7 +63,7 @@ export const createOrdinaryEvent = (
     }
   });
 
-  let transaction: ITransaction = new Transaction({
+  let transaction: TransactionType = new Transaction({
     events,
     createdAt,
     userId,
@@ -74,7 +74,10 @@ export const createOrdinaryEvent = (
   return transaction;
 };
 
-export const deleteTransaction = (transaction: ITransaction, res: Response) => {
+export const deleteTransaction = (
+  transaction: TransactionType,
+  res: Response
+) => {
   try {
     transaction.remove();
     return res.json({ msg: successMessages.deletedSuccessfully });
@@ -85,7 +88,7 @@ export const deleteTransaction = (transaction: ITransaction, res: Response) => {
 
 export const removeTransactionEvent = async (
   res: Response,
-  transaction: ITransaction,
+  transaction: TransactionType,
   event_id: string
 ) => {
   let expense: number = 0;
@@ -107,17 +110,17 @@ export const removeTransactionEvent = async (
 };
 
 export const editIntoTransfer = async (
-  transaction: ITransaction,
+  transaction: TransactionType,
   event_id: string,
   eventFromBody: TransferWithFees
 ) => {
   const { type, fees, from } = eventFromBody;
-
+  let dummyExpenseEvent: TransactionEvent | undefined = undefined;
   transaction.events = transaction.events.map((oldEvent: TransactionEvent) => {
     if (oldEvent._id?.toString() === event_id) {
       //when editing event into transfer with fees
       if (fees > 0 && oldEvent.fees == 0) {
-        transaction.events.push({
+        dummyExpenseEvent = {
           transferId: oldEvent._id,
           type: Expense.type,
           currency: Expense.currency,
@@ -127,7 +130,7 @@ export const editIntoTransfer = async (
           amount: fees,
           note: Expense.note,
           description: oldEvent.description,
-        });
+        };
       }
 
       // ordinary transfer
@@ -146,12 +149,13 @@ export const editIntoTransfer = async (
 
     return oldEvent;
   });
+  if (dummyExpenseEvent) transaction.events.push(dummyExpenseEvent);
 
   return transaction;
 };
 
 export const saveAndSendResponse = async (
-  resItem: ITransaction,
+  resItem: TransactionType,
   res: Response
 ) => {
   try {

@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export default interface ITransaction extends Document {
+export default interface TransactionType extends Document {
   _id: string;
   createdAt: Date;
   events: Array<TransactionEvent>;
@@ -46,7 +46,7 @@ export interface TransferWithFees extends IObjectKeys {
   description: string;
 }
 
-export type DummyExpenseEvents = {
+export type DummyExpenseEvent = {
   type: string;
   currency: string;
   transferId?: string;

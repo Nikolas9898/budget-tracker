@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import ITransaction from "../../interfaces/transactions";
+import TransactionType from "../../interfaces/transactions";
 
 const transactionSchema = new Schema(
   {
@@ -72,4 +72,4 @@ const transactionSchema = new Schema(
   }
 );
 
-export default model<ITransaction>("Transaction", transactionSchema);
+export default model<TransactionType>("Transaction", transactionSchema);

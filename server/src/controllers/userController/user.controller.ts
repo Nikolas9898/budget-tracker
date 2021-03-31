@@ -1,7 +1,7 @@
 import { RequestHandler, Request, Response } from "express";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import {
-  IUser,
+  UserType,
   ResponseUser,
   succsessMessages,
   userErrors,
@@ -15,7 +15,7 @@ export const getLoggedUser: RequestHandler = async (
   try {
     const { authorization } = req.headers;
     const userId: string = tokenDecoder(authorization);
-    await User.findById({ _id: userId }, (err, user: IUser) => {
+    await User.findById({ _id: userId }, (err, user: UserType) => {
       let {
         _id,
         username,
@@ -65,7 +65,7 @@ export const editUser: RequestHandler = async (req: Request, res: Response) => {
           password,
         },
       },
-      (err: any, user: IUser) => {
+      (err: any, user: UserType) => {
         if (err) {
           return res.json(err);
         }

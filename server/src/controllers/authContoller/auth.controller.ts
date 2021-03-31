@@ -1,7 +1,7 @@
 import User from "../../models/user/user.model";
 import { Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
-import { IUser, ResponseUser, userErrors } from "../../interfaces/user";
+import { UserType, ResponseUser, userErrors } from "../../interfaces/user";
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
   try {
@@ -9,7 +9,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
       ...req.body,
     });
     await newUser.save();
-    await User.findOne({ email: req.body.email }, (err, user: IUser) => {
+    await User.findOne({ email: req.body.email }, (err, user: UserType) => {
       let {
         password,
         _id,
@@ -55,7 +55,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
 
-    await User.findOne({ email }, (err, user: IUser) => {
+    await User.findOne({ email }, (err, user: UserType) => {
       let {
         password,
         _id,

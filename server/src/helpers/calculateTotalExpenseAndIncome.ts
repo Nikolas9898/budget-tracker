@@ -1,7 +1,7 @@
-import ITransaction, { eventTypes } from "../interfaces/transactions";
+import TransactionType, { eventTypes } from "../interfaces/transactions";
 
 export const calculateTotalExpenseAndIncome = async (
-  transfer: ITransaction,
+  transfer: TransactionType,
   income: number,
   expense: number
 ) => {

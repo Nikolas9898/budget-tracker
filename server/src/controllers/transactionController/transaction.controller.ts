@@ -1,7 +1,7 @@
 import { Months, Month } from "../../interfaces/month";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { RequestHandler, Request, Response } from "express";
-import ITransaction, {
+import TransactionType, {
   errorMessages,
   eventTypes,
   momentConstants,
@@ -27,7 +27,7 @@ export const createTransaction: RequestHandler = async (
   const events = req.body.events;
   const createdAt = req.body.createdAt;
 
-  const transaction: ITransaction | null = await Transaction.findOne({
+  const transaction: TransactionType | null = await Transaction.findOne({
     createdAt: createdAt,
     userId,
   });
@@ -37,6 +37,7 @@ export const createTransaction: RequestHandler = async (
 
   if (!transaction) {
     //Here it enters when transaction is not found then check if it is tansfer
+    console.log(events[0]);
 
     if (events[0].fees && events[0].fees > 0) {
       // here it makes expense and transfer
@@ -118,7 +119,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
     },
     (err, transactions) => {
       try {
-        transactions.forEach((transaction: ITransaction) => {
+        transactions.forEach((transaction: TransactionType) => {
           sumExpense += transaction.expense;
           sumIncome += transaction.income;
         });
@@ -139,16 +140,21 @@ export const getTransactionById: RequestHandler = async (
 
   const userId: string = tokenDecoder(req.headers.authorization);
 
-  Transaction.findOne({ _id: id, userId }, (err, transaction: ITransaction) => {
-    try {
-      if (!transaction) {
-        return res.status(400).json({ errorMsg: errorMessages.noTransaction });
+  Transaction.findOne(
+    { _id: id, userId },
+    (err, transaction: TransactionType) => {
+      try {
+        if (!transaction) {
+          return res
+            .status(400)
+            .json({ errorMsg: errorMessages.noTransaction });
+        }
+        return res.json(transaction);
+      } catch (error) {
+        return res.status(400).json({ errorMsg: err });
       }
-      return res.json(transaction);
-    } catch (error) {
-      return res.status(400).json({ errorMsg: err });
     }
-  });
+  );
 };
 
 export const deleteTransactionById: RequestHandler = async (
@@ -189,7 +195,7 @@ export const editTransactionEvent: RequestHandler = async (
   let income = 0;
 
   try {
-    let transaction: ITransaction | null;
+    let transaction: TransactionType | null;
 
     try {
       transaction = await Transaction.findOne({
@@ -262,7 +268,7 @@ export const deleteTransactionEvent: RequestHandler = async (
   const id: string = req.params.transactionId;
   const event_id: string = req.params.event_id;
   const userId: string = tokenDecoder(req.headers.authorization);
-  let transaction: ITransaction | null;
+  let transaction: TransactionType | null;
 
   try {
     transaction = await Transaction.findOne({
