@@ -16,15 +16,7 @@ export const getLoggedUser: RequestHandler = async (
     const { authorization } = req.headers;
     const userId: string = tokenDecoder(authorization);
     await User.findById({ _id: userId }, (err, user: UserType) => {
-      let {
-        _id,
-        username,
-        email,
-        type,
-        categories,
-        createdAt,
-        updatedAt,
-      } = user;
+      let { _id, username, email, type, createdAt, updatedAt } = user;
 
       if (!user) return res.json({ errorMSG: userErrors.notExistingUser });
 
@@ -34,7 +26,6 @@ export const getLoggedUser: RequestHandler = async (
         password: undefined,
         email,
         type,
-        categories,
         createdAt,
         updatedAt,
       };
@@ -49,7 +40,7 @@ export const getLoggedUser: RequestHandler = async (
 export const editUser: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { authorization } = req.headers;
-    const { username, email, password, categories, createdAt, type } = req.body;
+    const { username, email, password, createdAt, type } = req.body;
     const userId: string = tokenDecoder(authorization);
 
     await User.updateOne(
@@ -60,7 +51,6 @@ export const editUser: RequestHandler = async (req: Request, res: Response) => {
           username,
           email,
           type,
-          categories,
           createdAt,
           password,
         },

@@ -6,14 +6,9 @@ export interface UserType extends Document {
   password: string;
   email: string;
   type: string;
-  categories: Category[];
   createdAt: string;
   updatedAt: string;
 }
-
-type Category = {
-  name: string;
-};
 
 export type ResponseUser = {
   _id: string;
@@ -21,7 +16,6 @@ export type ResponseUser = {
   password: string | undefined;
   email: string;
   type: string;
-  categories: Category[];
   createdAt: string;
   updatedAt: string;
 };

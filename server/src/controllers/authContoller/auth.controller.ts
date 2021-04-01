@@ -2,6 +2,7 @@ import User from "../../models/user/user.model";
 import { Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
 import { UserType, ResponseUser, userErrors } from "../../interfaces/user";
+import { addCategories } from "../../helpers/userHelpers/userHelpers";
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
   try {
@@ -10,16 +11,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
     });
     await newUser.save();
     await User.findOne({ email: req.body.email }, (err, user: UserType) => {
-      let {
-        password,
-        _id,
-        username,
-        email,
-        type,
-        categories,
-        createdAt,
-        updatedAt,
-      } = user;
+      let { password, _id, username, email, type, createdAt, updatedAt } = user;
 
       const passMatch: boolean = password === req.body.password;
 
@@ -33,10 +25,10 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
         password: undefined,
         email,
         type,
-        categories,
         createdAt,
         updatedAt,
       };
+      addCategories(_id);
 
       const token: string = jwt.sign(
         {
@@ -44,6 +36,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
         },
         "somesecretkeyforjsonwebtoken"
       );
+
       return res.json({ user: foundUser, token });
     });
   } catch (err) {
@@ -56,16 +49,11 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
     const { email } = req.body;
 
     await User.findOne({ email }, (err, user: UserType) => {
-      let {
-        password,
-        _id,
-        username,
-        email,
-        type,
-        categories,
-        createdAt,
-        updatedAt,
-      } = user;
+      if (!user) {
+        return res.json({ errorMSG: userErrors.notExistingUser });
+      }
+
+      let { password, _id, username, email, type, createdAt, updatedAt } = user;
 
       const passMatch: boolean = password === req.body.password;
 
@@ -79,7 +67,6 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
         password: undefined,
         email,
         type,
-        categories,
         createdAt,
         updatedAt,
       };
