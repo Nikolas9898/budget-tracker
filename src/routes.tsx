@@ -99,13 +99,62 @@ const Routes = () => {
             );
           }}
         />
-        <Route path="/stats/monthly" exact component={MonthlyStatsPage} />
-        <Route path="/stats/daily" exact component={DailyStatsPage} />
-        <Route path="/stats/yearly" exact component={YearlyStatsPage} />
-        <Route path="/stats/weekly" exact component={WeeklyStatsPage} />
-        {/* <Route path="/stats/period" exact component={MonthlyStatsPage} /> */}
+        <Route
+          path="/stats/monthly"
+          exact
+          render={props => {
+            return (
+              <AuthorizedPage>
+                <MonthlyStatsPage />
+              </AuthorizedPage>
+            );
+          }}
+        />
+        <Route
+          path="/stats/daily"
+          exact
+          render={props => {
+            return (
+              <AuthorizedPage>
+                <DailyStatsPage />
+              </AuthorizedPage>
+            );
+          }}
+        />
+        <Route
+          path="/stats/yearly"
+          exact
+          render={props => {
+            return (
+              <AuthorizedPage>
+                <YearlyStatsPage />
+              </AuthorizedPage>
+            );
+          }}
+        />
+        <Route
+          path="/stats/weekly"
+          exact
+          render={props => {
+            return (
+              <AuthorizedPage>
+                <WeeklyStatsPage />
+              </AuthorizedPage>
+            );
+          }}
+        />
 
-        <Route path="/stats/period" component={MonthlyStatsPage} />
+        <Route
+          path="/stats/period"
+          exact
+          render={props => {
+            return (
+              <AuthorizedPage>
+                <MonthlyStatsPage />
+              </AuthorizedPage>
+            );
+          }}
+        />
       </Switch>
     </Router>
   );

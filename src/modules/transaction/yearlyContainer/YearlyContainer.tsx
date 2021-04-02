@@ -98,7 +98,7 @@ const YearlyContainer = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className="wrapper">
       <NavBarMenu />
       <div className={styles.container}>
         <table className={styles.table}>

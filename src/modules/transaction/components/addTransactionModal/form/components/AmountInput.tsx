@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "../../AddTransactionStyle.module.css";
 import { TransactionEvent } from "../../../../../../models/Transaction";
 import { HandleInput } from "../../../../../../models/Function";
@@ -19,6 +19,10 @@ const AmountInput: React.FC<Props> = ({
   isFeesOpen,
   error,
 }) => {
+  const setFeesOpen = useCallback(() => {
+    setIsFeesOpen(!isFeesOpen);
+  }, []);
+
   return (
     <div className={styles.input_container}>
       <div className={styles.amount_container}>
@@ -30,10 +34,7 @@ const AmountInput: React.FC<Props> = ({
           onChange={handleInputChange}
         />
         {transaction.type === Transfer && !isFeesOpen ? (
-          <div
-            className={styles.fees}
-            onClick={() => setIsFeesOpen(!isFeesOpen)}
-          >
+          <div className={styles.fees} onClick={setFeesOpen}>
             Fees
           </div>
         ) : null}

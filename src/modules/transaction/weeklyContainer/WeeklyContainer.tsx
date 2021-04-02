@@ -14,6 +14,7 @@ import {
 import { Month, TransactionReducer } from "../../../models/Transaction";
 import { UserReducer } from "../../../models/User";
 import styles from "./WeeklyStyle.module.css";
+import "../../../scss/variables.scss";
 
 const WeeklyContainer = () => {
   const [weeks, setWeeks] = useState<Month[]>([]);
@@ -75,7 +76,7 @@ const WeeklyContainer = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className="wrapper">
       <NavBarMenu />
       <div className={styles.container}>
         <table className={styles.table}>

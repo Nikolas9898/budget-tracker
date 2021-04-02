@@ -46,6 +46,14 @@ export const Export: string = "export";
 export const Accounts: string = "accounts";
 export const Currency: string = "Bg";
 
+export const Monday: string = "M";
+export const Thuesday: string = "T";
+export const Wednesday: string = "W";
+export const Thursday: string = "Th";
+export const Friday: string = "F";
+export const Saturday: string = "Sa";
+export const Sunday: string = "Su";
+
 export const headerTitle = (path: string) => {
   switch (true) {
     case path.includes("/transaction"):

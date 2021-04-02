@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Moment from "moment";
@@ -23,6 +23,16 @@ const NavBarMenu = () => {
       state.transactionReducer
   );
 
+  const handlePreviousYearOrMonth = useCallback(() => {
+    isSelectedTitle(location.pathname, "yearly")
+      ? dispatch(handlePreviousYear())
+      : dispatch(handlePreviousMonth());
+  }, []);
+  const handleNextYearOrMonth = useCallback(() => {
+    isSelectedTitle(location.pathname, "yearly")
+      ? dispatch(handleNextYear())
+      : dispatch(handleNextMonth());
+  }, []);
   return (
     <div className={styles.container}>
       <div className={styles.container_navigation}>
@@ -104,11 +114,7 @@ const NavBarMenu = () => {
       <div className={styles.change_month_content}>
         <div
           className={styles.change_month_button}
-          onClick={() =>
-            isSelectedTitle(location.pathname, "yearly")
-              ? dispatch(handlePreviousYear())
-              : dispatch(handlePreviousMonth())
-          }
+          onClick={handlePreviousYearOrMonth}
         >
           {"<"}
         </div>
@@ -117,11 +123,7 @@ const NavBarMenu = () => {
           : Moment(state.date).format("MMM YYYY")}
         <div
           className={styles.change_month_button}
-          onClick={() =>
-            isSelectedTitle(location.pathname, "yearly")
-              ? dispatch(handleNextYear())
-              : dispatch(handleNextMonth())
-          }
+          onClick={handleNextYearOrMonth}
         >
           {">"}
         </div>

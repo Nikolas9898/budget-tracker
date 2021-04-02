@@ -37,6 +37,7 @@ const AddTransactionButton = () => {
       transactionReducer: TransactionReducer;
     }) => state.transactionReducer
   );
+
   const { transactionId, _id } = stateTransaction.transactionEvent;
 
   const handleSave = async () => {
@@ -58,6 +59,7 @@ const AddTransactionButton = () => {
     clearState();
   };
   const handleDelete = async (eventId: string) => {
+    console.log(eventId);
     await deleteTransaction(transactionId, eventId);
     clearState();
   };
@@ -103,7 +105,7 @@ const AddTransactionButton = () => {
       <FontAwesomeIcon
         className={styles.add_button}
         icon={faPlusCircle}
-        onClick={() => handleOpenTransaction()}
+        onClick={handleOpenTransaction}
       />
 
       <AddTransactionModal

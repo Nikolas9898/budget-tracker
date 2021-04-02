@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "./AddTransactionStyle.module.css";
 import { TransactionEvent } from "../../../../models/Transaction";
 import { Error } from "../../../../models/Error";
@@ -43,6 +43,30 @@ const AddTransactionModal: React.FC<Props> = ({
         return 2;
     }
   };
+
+  const handleOpen = useCallback(() => {
+    isEditTransactionOpen
+      ? handleOpenEdit(transactionEvent)
+      : handleOpenTransaction(Moment().toDate());
+  }, [isEditTransactionOpen, transactionEvent]);
+  const handleSetIncomeType = useCallback(() => {
+    handleInputChange({
+      target: { value: Income, name: "type" },
+    });
+  }, []);
+  const handleSetExpenseType = useCallback(() => {
+    handleInputChange({
+      target: { value: Expense, name: "type" },
+    });
+  }, []);
+  const handleSetTransferType = useCallback(() => {
+    handleInputChange({
+      target: { value: Transfer, name: "type" },
+    });
+  }, []);
+  const handleDeleteTransaction = useCallback(() => {
+    handleDelete(transactionEvent._id);
+  }, [transactionEvent._id]);
   return (
     <div>
       {isAddTransactionOpen || isEditTransactionOpen ? (
@@ -50,11 +74,7 @@ const AddTransactionModal: React.FC<Props> = ({
           <div className={styles.container}>
             <FontAwesomeIcon
               className={styles.close_button}
-              onClick={() =>
-                isEditTransactionOpen
-                  ? handleOpenEdit(transactionEvent)
-                  : handleOpenTransaction(Moment().toDate())
-              }
+              onClick={handleOpen}
               icon={faTimesCircle}
             />
             <Tabs
@@ -62,34 +82,13 @@ const AddTransactionModal: React.FC<Props> = ({
               selectedIndex={ChooseCategory(transactionEvent.type)}
             >
               <TabList className={styles.tab_list}>
-                <Tab
-                  className={styles.tab}
-                  onClick={() => {
-                    handleInputChange({
-                      target: { value: Income, name: "type" },
-                    });
-                  }}
-                >
+                <Tab className={styles.tab} onClick={handleSetIncomeType}>
                   <span>Income</span>
                 </Tab>
-                <Tab
-                  className={styles.tab}
-                  onClick={() => {
-                    handleInputChange({
-                      target: { value: Expense, name: "type" },
-                    });
-                  }}
-                >
+                <Tab className={styles.tab} onClick={handleSetExpenseType}>
                   <span>Expense</span>
                 </Tab>
-                <Tab
-                  className={styles.tab}
-                  onClick={() =>
-                    handleInputChange({
-                      target: { value: Transfer, name: "type" },
-                    })
-                  }
-                >
+                <Tab className={styles.tab} onClick={handleSetTransferType}>
                   <span>Transfer</span>
                 </Tab>
               </TabList>
@@ -126,26 +125,20 @@ const AddTransactionModal: React.FC<Props> = ({
 
             {isEditTransactionOpen ? (
               <div className={styles.buttons_content}>
-                <button
-                  className={styles.save_button}
-                  onClick={() => handleSave()}
-                >
+                <button className={styles.save_button} onClick={handleSave}>
                   Save
                 </button>
 
                 <button
                   className={styles.delete_button}
-                  onClick={() => handleDelete(transactionEvent._id)}
+                  onClick={handleDeleteTransaction}
                 >
                   Delete
                 </button>
               </div>
             ) : (
               <div className={styles.buttons_content}>
-                <button
-                  className={styles.save_button}
-                  onClick={() => handleSave()}
-                >
+                <button className={styles.save_button} onClick={handleSave}>
                   Save
                 </button>
               </div>

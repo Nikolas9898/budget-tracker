@@ -4,7 +4,7 @@ import Moment from "moment";
 import AddTransactionModal from "../components/addTransactionModal/AddTransactionModal";
 import NavBarMenu from "../../../layout/navBar/NavBar";
 import InfoModal from "../components/infoModal/InfoModal";
-import Calendar from "./Calendar";
+import Calendar from "./Calendar/Calendar";
 import { State as StateTransaction } from "../reducers/transactionReducer";
 import {
   firstDateOfFirstWeekOfTheMonth,
@@ -33,7 +33,7 @@ import {
 } from "../../../models/Transaction";
 import { HandleInput } from "../../../models/Function";
 import { Error } from "../../../models/Error";
-import styles from "./MonthlyStyle.module.css";
+import "../../../scss/variables.scss";
 
 type Props = {
   filters: any;
@@ -343,7 +343,7 @@ class MonthlyContainer extends React.Component<Props> {
     } = this.state;
     const { date, transactionEvent } = this.props.stateTransaction;
     return (
-      <div className={styles.wrapper}>
+      <div className="wrapper">
         <NavBarMenu />
         <Calendar
           handleOpenInfoModal={this.handleOpenInfoModal}

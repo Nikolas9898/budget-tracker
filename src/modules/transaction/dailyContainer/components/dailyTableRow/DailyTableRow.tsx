@@ -1,40 +1,64 @@
-import React from "react";
-import { TransactionEventWithAmountNumber } from "../../../../../models/Transaction";
-import styles from "./DailyTableRow.module.css";
+import React, { useCallback } from "react";
+import {
+  TransactionEventWithAmountNumber,
+  TransactionWithAmountNumber,
+} from "../../../../../models/Transaction";
 import { Transfer, Income, Expense } from "../../../../../helpers/Variables";
+import styles from "./DailyTableRow.module.css";
 type Props = {
-  handleSelectEvent: (event: TransactionEventWithAmountNumber) => void;
-  event: TransactionEventWithAmountNumber;
+  handleSelectEvent: (
+    transactionEvent: TransactionEventWithAmountNumber,
+    transactionId: string
+  ) => void;
+  transactionEvent: TransactionEventWithAmountNumber;
+  transaction: TransactionWithAmountNumber;
 };
-const DailyTableRow: React.FC<Props> = ({ event, handleSelectEvent }) => {
+
+const DailyTableRow: React.FC<Props> = ({
+  transactionEvent,
+  handleSelectEvent,
+  transaction,
+}) => {
+  const selectEvent = useCallback(() => {
+    handleSelectEvent(transactionEvent, transaction._id);
+  }, [transactionEvent]);
   return (
-    <tr onClick={() => handleSelectEvent(event)}>
+    <tr onClick={selectEvent}>
       <td>
         <div className={styles.account_container}>
           <div className={styles.account}>
-            {event.type === Transfer ? "transfer" : event.category}
+            {transactionEvent.type === Transfer
+              ? "transfer"
+              : transactionEvent.category}
           </div>
           <div className={styles.category}>
-            <div>{event.note}</div>
-            {event.type === Transfer ? (
+            <div>{transactionEvent.note}</div>
+            {transactionEvent.type === Transfer ? (
               <div>
-                {event.from}
+                {transactionEvent.from}
                 {" ---> "}
-                {event.to}
+                {transactionEvent.to}
               </div>
             ) : (
-              event.account
+              transactionEvent.account
             )}
           </div>
         </div>
       </td>
       <td className={styles.income}>
-        {event.type === Income ? (event.amount / 100).toFixed(2) : null}
+        {transactionEvent.type === Income
+          ? (transactionEvent.amount / 100).toFixed(2)
+          : null}
       </td>
-      <td className={event.type === Expense ? styles.expense : styles.transfer}>
+      <td
+        className={
+          transactionEvent.type === Expense ? styles.expense : styles.transfer
+        }
+      >
         <div>
-          {event.type === Expense || event.type === Transfer
-            ? (event.amount / 100).toFixed(2)
+          {transactionEvent.type === Expense ||
+          transactionEvent.type === Transfer
+            ? (transactionEvent.amount / 100).toFixed(2)
             : null}
         </div>
       </td>

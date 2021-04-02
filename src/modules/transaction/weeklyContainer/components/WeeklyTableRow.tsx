@@ -5,8 +5,7 @@ import styles from "../WeeklyStyle.module.css";
 type Props = {
   week: { from: Date; to: Date; income: number; expense: number };
 };
-const getDate = (date: Date) => Moment(date).get("date");
-const getMonth = (date: Date) => Moment(date).get("month");
+
 const WeeklyTableRow: React.FC<Props> = ({ week }) => {
   const isDateInWeek = (week: Props["week"]) => {
     if (

@@ -19,6 +19,7 @@ import {
 import { setTransaction } from "../actions/transactionActions";
 import { UserReducer } from "../../../models/User";
 import styles from "./DailyStyle.module.css";
+import "../../../scss/variables.scss";
 const DailyContainer = () => {
   const [transactions, setTransactions] = useState<
     TransactionWithAmountNumber[]
@@ -64,7 +65,7 @@ const DailyContainer = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className="wrapper">
       <NavBarMenu />
       <div className={styles.container}>
         <table className={styles.table}>
@@ -85,11 +86,10 @@ const DailyContainer = () => {
                 {transaction.events.map(
                   (event: TransactionEventWithAmountNumber) => (
                     <DailyTableRow
-                      event={event}
+                      transaction={transaction}
+                      transactionEvent={event}
                       key={event._id}
-                      handleSelectEvent={event =>
-                        handleSelectEvent(event, transaction._id)
-                      }
+                      handleSelectEvent={handleSelectEvent}
                     />
                   )
                 )}
