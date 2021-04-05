@@ -2,10 +2,10 @@ import { Months, Month } from "../../interfaces/month";
 import { tokenDecoder } from "../../helpers/tokenDecoder";
 import { RequestHandler, Request, Response } from "express";
 import TransactionType, {
-  errorMessages,
-  eventTypes,
-  momentConstants,
-  successMessages,
+  ErrorMessages,
+  EventTypes,
+  MomentConstants,
+  SuccessMessages,
   TransactionEvent,
 } from "../../interfaces/transactions";
 import Transaction from "../../models/transaction/transaction.model";
@@ -105,15 +105,15 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (
 
   if (from === "" || to === "") {
     return res.status(400).json({
-      errorMSG: errorMessages.twoDatesPicket,
+      errorMSG: ErrorMessages.TWO_DATES_PICKET,
     });
   }
 
   Transaction.find(
     {
       createdAt: {
-        $gte: moment(from).startOf(momentConstants.day).toDate(),
-        $lt: moment(to).endOf(momentConstants.day).toDate(),
+        $gte: moment(from).startOf(MomentConstants.DAY).toDate(),
+        $lt: moment(to).endOf(MomentConstants.DAY).toDate(),
       },
       userId,
     },
@@ -147,7 +147,7 @@ export const getTransactionById: RequestHandler = async (
         if (!transaction) {
           return res
             .status(400)
-            .json({ errorMsg: errorMessages.noTransaction });
+            .json({ errorMsg: ErrorMessages.NO_TRANSACTION });
         }
         return res.json(transaction);
       } catch (error) {
@@ -171,7 +171,7 @@ export const deleteTransactionById: RequestHandler = async (
 
     if (transaction) {
       transaction.remove();
-      return res.json({ msg: successMessages.deletedSuccessfully });
+      return res.json({ msg: SuccessMessages.DELETED_SUCCESSFULLY });
     }
   } catch (error) {
     res.json({ errroMsg: error });
@@ -207,7 +207,7 @@ export const editTransactionEvent: RequestHandler = async (
     }
 
     if (transaction)
-      if (type === eventTypes.transfer) {
+      if (type === EventTypes.TRANSFER) {
         // when eventFrom body is transfer
 
         editIntoTransfer(transaction, event_id, eventFromBody);
@@ -224,12 +224,12 @@ export const editTransactionEvent: RequestHandler = async (
                 if (oldEvent._id?.toString() === event_id) {
                   oldEvent = { ...eventFromBody, _id: oldEvent._id };
 
-                  type === eventTypes.income &&
+                  type === EventTypes.INCOME &&
                     (oldEvent.transferId = undefined);
                 }
 
                 if (oldEvent._id?.toString() === transferId) {
-                  if (type === eventTypes.income) {
+                  if (type === EventTypes.INCOME) {
                     oldEvent.fees = 0;
                   } else {
                     oldEvent.fees = amount;
@@ -281,7 +281,7 @@ export const deleteTransactionEvent: RequestHandler = async (
 
   if (transaction === null) {
     return res.json({
-      errorMsg: errorMessages.noExistingTransaction,
+      errorMsg: ErrorMessages.NO_EXISTING_TRANSACTION,
     });
   }
 
@@ -308,8 +308,8 @@ export const getYearlyAndWeekly: RequestHandler = async (
       let transactions = await Promise.all(
         await Transaction.find({
           createdAt: {
-            $gte: moment(month.from).startOf(momentConstants.day).toDate(),
-            $lt: moment(month.to).endOf(momentConstants.day).toDate(),
+            $gte: moment(month.from).startOf(MomentConstants.DAY).toDate(),
+            $lt: moment(month.to).endOf(MomentConstants.DAY).toDate(),
           },
           userId,
         })

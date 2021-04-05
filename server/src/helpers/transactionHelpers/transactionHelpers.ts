@@ -5,8 +5,8 @@ import TransactionType, {
   Expense,
   DummyExpenseEvent,
   TransferWithFees,
-  eventTypes,
-  successMessages,
+  EventTypes,
+  SuccessMessages,
 } from "../../interfaces/transactions";
 import { Response } from "express";
 
@@ -25,18 +25,18 @@ export const createTransferWithFees = (
     income: 0,
   });
 
-  const { type, note, category, currency } = Expense;
+  const { TYPE, NOTE, CATEGORY, CURRENCY } = Expense;
 
   if (transfer.events[0].from && transfer.events[0].fees) {
     let expenseEvent: DummyExpenseEvent = {
       transferId: transfer.events[0]._id,
-      type,
-      currency,
+      type: TYPE,
+      currency: CURRENCY,
       date: transfer.events[0].date,
-      category,
+      category: CATEGORY,
       account: transfer.events[0].from,
       amount: transfer.events[0].fees,
-      note,
+      note: NOTE,
       description: transfer.events[0].description,
     };
     transfer.events.push(expenseEvent);
@@ -55,10 +55,10 @@ export const createOrdinaryEvent = (
   expense: number
 ): TransactionType => {
   events.forEach((event: TransactionEvent) => {
-    if (event.type.toLowerCase() === eventTypes.income) {
+    if (event.type.toLowerCase() === EventTypes.INCOME) {
       income += event.amount;
     }
-    if (event.type.toLowerCase() === eventTypes.expense) {
+    if (event.type.toLowerCase() === EventTypes.INCOME) {
       expense += event.amount;
     }
   });
@@ -80,7 +80,7 @@ export const deleteTransaction = (
 ) => {
   try {
     transaction.remove();
-    return res.json({ msg: successMessages.deletedSuccessfully });
+    return res.json({ msg: SuccessMessages.DELETED_SUCCESSFULLY });
   } catch (error) {
     return res.json({ errroMsg: error });
   }
@@ -122,13 +122,13 @@ export const editIntoTransfer = async (
       if (fees > 0 && oldEvent.fees == 0) {
         dummyExpenseEvent = {
           transferId: oldEvent._id,
-          type: Expense.type,
-          currency: Expense.currency,
+          type: Expense.TYPE,
+          currency: Expense.CURRENCY,
           date: oldEvent.date,
-          category: Expense.category,
+          category: Expense.CATEGORY,
           account: from,
           amount: fees,
-          note: Expense.note,
+          note: Expense.NOTE,
           description: oldEvent.description,
         };
       }

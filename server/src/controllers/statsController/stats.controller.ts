@@ -3,7 +3,7 @@ import { tokenDecoder } from "../../helpers/tokenDecoder";
 import Transaction from "../../models/transaction/transaction.model";
 import moment from "moment";
 import { SumStats } from "../../interfaces/stats";
-import { eventTypes, momentConstants } from "../../interfaces/transactions";
+import { EventTypes, MomentConstants } from "../../interfaces/transactions";
 
 export const getStats: RequestHandler = async (req: Request, res: Response) => {
   const userId = tokenDecoder(req.headers.authorization);
@@ -14,8 +14,8 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
     const transactions = await Transaction.find({
       userId,
       createdAt: {
-        $gte: moment(from).startOf(momentConstants.day).toDate(),
-        $lt: moment(to).endOf(momentConstants.day).toDate(),
+        $gte: moment(from).startOf(MomentConstants.DAY).toDate(),
+        $lt: moment(to).endOf(MomentConstants.DAY).toDate(),
       },
     });
     const income: any = {};
@@ -24,11 +24,11 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
     let expenseStats: SumStats[] = [];
     transactions.forEach((transaction) => {
       transaction.events.forEach(({ category, amount, type }) => {
-        if (type === eventTypes.income) {
+        if (type === EventTypes.INCOME) {
           income[category!] = income[category!] + amount || amount;
         }
 
-        if (type === eventTypes.expense) {
+        if (type === EventTypes.EXPENSE) {
           expense[category!] = expense[category!] + amount || amount;
         }
       });

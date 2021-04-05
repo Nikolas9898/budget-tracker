@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user/user.model";
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import { Token, tokenMessages } from "../interfaces/token";
+import { Token, TokenMessages } from "../interfaces/token";
 
 export const tokenAuth: RequestHandler = async (
   req: Request,
@@ -12,7 +12,7 @@ export const tokenAuth: RequestHandler = async (
 
   let token: string | any = authorization;
 
-  if (!token) return res.status(401).json({ msg: tokenMessages.noToken });
+  if (!token) return res.status(401).json({ msg: TokenMessages.NO_TOKEN });
 
   token = token.split(" ").pop();
 
@@ -22,7 +22,7 @@ export const tokenAuth: RequestHandler = async (
     decodedToken = jwt.decode(token);
 
     if (!decodedToken)
-      return res.status(401).json({ msg: tokenMessages.wrongToken });
+      return res.status(401).json({ msg: TokenMessages.WRONG_TOKEN });
 
     await User.findOne({ _id: decodedToken.id }, () => {
       return next();

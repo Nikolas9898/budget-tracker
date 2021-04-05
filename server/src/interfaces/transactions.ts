@@ -62,28 +62,28 @@ export type DummyExpenseEvent = {
 };
 
 export enum Expense {
-  type = "expense",
-  note = "fees",
-  category = "other",
-  currency = "BG",
+  TYPE = "expense",
+  NOTE = "fees",
+  CATEGORY = "other",
+  CURRENCY = "BG",
 }
 
-export enum eventTypes {
-  income = "income",
-  expense = "expense",
-  transfer = "transfer",
+export enum EventTypes {
+  INCOME = "income",
+  EXPENSE = "expense",
+  TRANSFER = "transfer",
 }
 
-export enum successMessages {
-  deletedSuccessfully = "Deleted successfully",
+export enum SuccessMessages {
+  DELETED_SUCCESSFULLY = "Deleted successfully",
 }
 
-export enum errorMessages {
-  noExistingTransaction = "Not authorized or transaction does not exist",
-  noTransaction = "No such transaction available",
-  twoDatesPicket = "Please ensure you pick two dates",
+export enum ErrorMessages {
+  NO_EXISTING_TRANSACTION = "Not authorized or transaction does not exist",
+  NO_TRANSACTION = "No such transaction available",
+  TWO_DATES_PICKET = "Please ensure you pick two dates",
 }
 
-export enum momentConstants {
-  day = "day",
+export enum MomentConstants {
+  DAY = "day",
 }

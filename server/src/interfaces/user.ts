@@ -20,11 +20,11 @@ export type ResponseUser = {
   updatedAt: string;
 };
 
-export enum userErrors {
-  wrongEmailOrPassword = "Wrong email or password",
-  notExistingUser = "No existing user",
+export enum UserErrors {
+  WRONG_EMAIL_OR_PASSWORD = "Wrong email or password",
+  NOT_EXISTING_USER = "No existing user",
 }
 
 export enum succsessMessages {
-  updatedSuccessfully = "Updated successfully",
+  UPDATED_SUCCESSFULLY = "Updated successfully",
 }

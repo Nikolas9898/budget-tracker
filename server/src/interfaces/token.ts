@@ -3,7 +3,7 @@ export interface Token {
   iat?: number;
 }
 
-export enum tokenMessages {
-  noToken = "No token, access denied",
-  wrongToken = "Wrong token",
+export enum TokenMessages {
+  NO_TOKEN = "No token, access denied",
+  WRONG_TOKEN = "Wrong token",
 }

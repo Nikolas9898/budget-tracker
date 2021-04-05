@@ -9,7 +9,7 @@ type CategoryArray = {
   name: string;
 };
 
-export const dummyExpenseCategories = [
+export const DUMMY_EXPENSE_CATEGORIES = [
   {
     name: "Food",
   },
@@ -51,7 +51,7 @@ export const dummyExpenseCategories = [
   },
 ];
 
-export const dummyIncomeCategories = [
+export const DUMMY_INCOME_CATEGORIES = [
   {
     name: "Allowance",
   },

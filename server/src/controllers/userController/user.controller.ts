@@ -4,7 +4,7 @@ import {
   UserType,
   ResponseUser,
   succsessMessages,
-  userErrors,
+  UserErrors,
 } from "../../interfaces/user";
 import User from "../../models/user/user.model";
 
@@ -18,7 +18,7 @@ export const getLoggedUser: RequestHandler = async (
     await User.findById({ _id: userId }, (err, user: UserType) => {
       let { _id, username, email, type, createdAt, updatedAt } = user;
 
-      if (!user) return res.json({ errorMSG: userErrors.notExistingUser });
+      if (!user) return res.json({ errorMSG: UserErrors.NOT_EXISTING_USER });
 
       let foundUser: ResponseUser = {
         _id,
@@ -59,7 +59,7 @@ export const editUser: RequestHandler = async (req: Request, res: Response) => {
         if (err) {
           return res.json(err);
         }
-        res.json(succsessMessages.updatedSuccessfully);
+        res.json(succsessMessages.UPDATED_SUCCESSFULLY);
       }
     );
   } catch (error) {
