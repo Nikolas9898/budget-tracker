@@ -54,15 +54,6 @@ export const createOrdinaryEvent = (
   income: number,
   expense: number
 ): TransactionType => {
-  events.forEach((event: TransactionEvent) => {
-    if (event.type.toLowerCase() === EventTypes.INCOME) {
-      income += event.amount;
-    }
-    if (event.type.toLowerCase() === EventTypes.INCOME) {
-      expense += event.amount;
-    }
-  });
-
   let transaction: TransactionType = new Transaction({
     events,
     createdAt,
@@ -70,6 +61,8 @@ export const createOrdinaryEvent = (
     income,
     expense,
   });
+
+  calculateTotalExpenseAndIncome(transaction, income, expense);
 
   return transaction;
 };

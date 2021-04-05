@@ -24,22 +24,19 @@ export const createTransaction: RequestHandler = async (
   res: Response
 ) => {
   const userId: string = tokenDecoder(req.headers.authorization);
-  const events = req.body.events;
-  const createdAt = req.body.createdAt;
-
+  const { events, createdAt } = req.body;
   const transaction: TransactionType | null = await Transaction.findOne({
     createdAt: createdAt,
     userId,
   });
-
   let income: number = 0;
   let expense: number = 0;
+  const eventFees = events[0].fees;
 
   if (!transaction) {
     //Here it enters when transaction is not found then check if it is tansfer
-    console.log(events[0]);
 
-    if (events[0].fees && events[0].fees > 0) {
+    if (eventFees && eventFees > 0) {
       // here it makes expense and transfer
 
       const transfer = createTransferWithFees(
@@ -66,7 +63,7 @@ export const createTransaction: RequestHandler = async (
     }
   } else {
     //It enters here when there is found transaction on the same date and it needs to push in this transaction events
-    if (events[0].fees && events[0].fees > 0) {
+    if (eventFees && eventFees > 0) {
       const transfer = createTransferWithFees(
         events,
         createdAt,
@@ -137,7 +134,6 @@ export const getTransactionById: RequestHandler = async (
   res: Response
 ) => {
   const id: string = req.params.id;
-
   const userId: string = tokenDecoder(req.headers.authorization);
 
   Transaction.findOne(
@@ -187,9 +183,7 @@ export const editTransactionEvent: RequestHandler = async (
   const id: string = req.params.transactionId;
   const event_id: string = req.params.event_id;
   const eventFromBody = req.body;
-
   const { type, amount, transferId } = eventFromBody;
-
   const userId: string = tokenDecoder(req.headers.authorization);
   let expense = 0;
   let income = 0;
@@ -297,9 +291,7 @@ export const getYearlyAndWeekly: RequestHandler = async (
   res: Response
 ) => {
   const userId: string = tokenDecoder(req.headers.authorization);
-
   const months: Months = req.body;
-
   let sumExpense: number = 0;
   let sumIncome: number = 0;
 
