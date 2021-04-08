@@ -19,6 +19,7 @@ import {
   removeTransactionEvent,
   editIntoTransfer
 } from '../../helpers/transactionHelpers/transactionHelpers';
+
 export const createTransaction: RequestHandler = async (req: Request, res: Response) => {
   const userId: string = tokenDecoder(req.headers.authorization);
   const {events, createdAt} = req.body;
