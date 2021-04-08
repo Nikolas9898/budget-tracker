@@ -1,22 +1,22 @@
-import User from "../../models/user/user.model";
-import { Request, RequestHandler, Response } from "express";
-import jwt from "jsonwebtoken";
-import { UserType, ResponseUser, UserErrors } from "../../interfaces/user";
-import { addCategories } from "../../helpers/userHelpers/userHelpers";
+import User from '../../models/user/user.model';
+import {Request, RequestHandler, Response} from 'express';
+import jwt from 'jsonwebtoken';
+import {UserType, ResponseUser, UserErrors} from '../../interfaces/user';
+import {addCategories} from '../../helpers/userHelpers/userHelpers';
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
   try {
     const newUser = await new User({
-      ...req.body,
+      ...req.body
     });
-    await newUser.save();
-    await User.findOne({ email: req.body.email }, (err, user: UserType) => {
-      let { password, _id, username, email, type, createdAt, updatedAt } = user;
 
+    await newUser.save();
+    await User.findOne({email: req.body.email}, (err, user: UserType) => {
+      const {password, _id, username, email, type, createdAt, updatedAt} = user;
       const passMatch: boolean = password === req.body.password;
 
       if (!passMatch) {
-        return res.json({ errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD });
+        return res.json({errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD});
       }
 
       const foundUser: ResponseUser = {
@@ -26,39 +26,39 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
         email,
         type,
         createdAt,
-        updatedAt,
+        updatedAt
       };
+
       addCategories(_id);
 
       const token: string = jwt.sign(
         {
-          id: _id,
+          id: _id
         },
-        "somesecretkeyforjsonwebtoken"
+        'somesecretkeyforjsonwebtoken'
       );
 
-      return res.json({ user: foundUser, token });
+      return res.json({user: foundUser, token});
     });
   } catch (err) {
-    return res.status(400).json({ errorMSG: err });
+    return res.status(400).json({errorMSG: err});
   }
 };
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    const {email} = req.body;
 
-    await User.findOne({ email }, (err, user: UserType) => {
+    await User.findOne({email}, (err, user: UserType) => {
       if (!user) {
-        return res.json({ errorMSG: UserErrors.NOT_EXISTING_USER });
+        return res.json({errorMSG: UserErrors.NOT_EXISTING_USER});
       }
 
-      let { password, _id, username, email, type, createdAt, updatedAt } = user;
-
+      const {password, _id, username, email, type, createdAt, updatedAt} = user;
       const passMatch: boolean = password === req.body.password;
 
       if (!passMatch) {
-        return res.json({ errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD });
+        return res.json({errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD});
       }
 
       const foundUser: ResponseUser = {
@@ -68,19 +68,18 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
         email,
         type,
         createdAt,
-        updatedAt,
+        updatedAt
       };
-
       const token: string = jwt.sign(
         {
-          id: user._id,
+          id: user._id
         },
-        "somesecretkeyforjsonwebtoken"
+        'somesecretkeyforjsonwebtoken'
       );
 
-      return res.json({ user: foundUser, token });
+      return res.json({user: foundUser, token});
     });
   } catch (error) {
-    return res.json({ errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD });
+    return res.json({errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD});
   }
 };

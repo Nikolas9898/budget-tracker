@@ -1,11 +1,7 @@
-import TransactionType, { EventTypes } from "../interfaces/transactions";
+import TransactionType, {EventTypes} from '../interfaces/transactions';
 
-export const calculateTotalExpenseAndIncome = async (
-  transaction: TransactionType,
-  income: number,
-  expense: number
-) => {
-  const { events } = transaction;
+export const calculateTotalExpenseAndIncome = async (transaction: TransactionType, income: number, expense: number) => {
+  const {events} = transaction;
 
   await Promise.all(
     events.map((event) => {

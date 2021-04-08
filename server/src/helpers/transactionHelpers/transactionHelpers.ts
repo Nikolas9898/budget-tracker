@@ -1,14 +1,13 @@
-import { calculateTotalExpenseAndIncome } from "../calculateTotalExpenseAndIncome";
-import Transaction from "../../models/transaction/transaction.model";
+import {Response} from 'express';
+import {calculateTotalExpenseAndIncome} from '../calculateTotalExpenseAndIncome';
+import Transaction from '../../models/transaction/transaction.model';
 import TransactionType, {
   TransactionEvent,
   Expense,
   DummyExpenseEvent,
   TransferWithFees,
-  EventTypes,
-  SuccessMessages,
-} from "../../interfaces/transactions";
-import { Response } from "express";
+  SuccessMessages
+} from '../../interfaces/transactions';
 
 export const createTransferWithFees = (
   events: TransactionEvent,
@@ -17,18 +16,17 @@ export const createTransferWithFees = (
   income: number,
   expense: number
 ): TransactionType => {
-  let transfer = new Transaction({
+  const transfer = new Transaction({
     events,
     createdAt,
     userId,
     expense: 0,
-    income: 0,
+    income: 0
   });
-
-  const { TYPE, NOTE, CATEGORY, CURRENCY } = Expense;
+  const {TYPE, NOTE, CATEGORY, CURRENCY} = Expense;
 
   if (transfer.events[0].from && transfer.events[0].fees) {
-    let expenseEvent: DummyExpenseEvent = {
+    const expenseEvent: DummyExpenseEvent = {
       transferId: transfer.events[0]._id,
       type: TYPE,
       currency: CURRENCY,
@@ -37,8 +35,9 @@ export const createTransferWithFees = (
       account: transfer.events[0].from,
       amount: transfer.events[0].fees,
       note: NOTE,
-      description: transfer.events[0].description,
+      description: transfer.events[0].description
     };
+
     transfer.events.push(expenseEvent);
   }
 
@@ -54,12 +53,12 @@ export const createOrdinaryEvent = (
   income: number,
   expense: number
 ): TransactionType => {
-  let transaction: TransactionType = new Transaction({
+  const transaction: TransactionType = new Transaction({
     events,
     createdAt,
     userId,
     income,
-    expense,
+    expense
   });
 
   calculateTotalExpenseAndIncome(transaction, income, expense);
@@ -67,29 +66,19 @@ export const createOrdinaryEvent = (
   return transaction;
 };
 
-export const deleteTransaction = (
-  transaction: TransactionType,
-  res: Response
-) => {
+export const deleteTransaction = (transaction: TransactionType, res: Response) => {
   try {
     transaction.remove();
-    return res.json({ msg: SuccessMessages.DELETED_SUCCESSFULLY });
+    return res.json({msg: SuccessMessages.DELETED_SUCCESSFULLY});
   } catch (error) {
-    return res.json({ errroMsg: error });
+    return res.json({errroMsg: error});
   }
 };
 
-export const removeTransactionEvent = async (
-  res: Response,
-  transaction: TransactionType,
-  event_id: string
-) => {
-  let expense: number = 0;
-  let income: number = 0;
-
-  const newEvents: TransactionEvent[] = transaction.events.filter(
-    (event: TransactionEvent) => event._id != event_id
-  );
+export const removeTransactionEvent = async (res: Response, transaction: TransactionType, event_id: string) => {
+  const expense = 0;
+  const income = 0;
+  const newEvents: TransactionEvent[] = transaction.events.filter((event: TransactionEvent) => event._id != event_id);
 
   transaction.events = newEvents;
 
@@ -107,8 +96,9 @@ export const editIntoTransfer = async (
   event_id: string,
   eventFromBody: TransferWithFees
 ) => {
-  const { type, fees, from } = eventFromBody;
+  const {type, fees, from} = eventFromBody;
   let dummyExpenseEvent: TransactionEvent | undefined = undefined;
+
   transaction.events = transaction.events.map((oldEvent: TransactionEvent) => {
     if (oldEvent._id?.toString() === event_id) {
       //when editing event into transfer with fees
@@ -122,7 +112,7 @@ export const editIntoTransfer = async (
           account: from,
           amount: fees,
           note: Expense.NOTE,
-          description: oldEvent.description,
+          description: oldEvent.description
         };
       }
 
@@ -132,7 +122,7 @@ export const editIntoTransfer = async (
         ...eventFromBody,
         _id: oldEvent._id,
         category: undefined,
-        account: undefined,
+        account: undefined
       };
     }
 
@@ -147,10 +137,7 @@ export const editIntoTransfer = async (
   return transaction;
 };
 
-export const saveAndSendResponse = async (
-  resItem: TransactionType,
-  res: Response
-) => {
+export const saveAndSendResponse = async (resItem: TransactionType, res: Response) => {
   try {
     await resItem.save();
     return res.json(resItem);

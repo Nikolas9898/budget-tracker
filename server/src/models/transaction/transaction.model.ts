@@ -1,5 +1,5 @@
-import { Schema, model } from "mongoose";
-import TransactionType from "../../interfaces/transactions";
+import {Schema, model} from 'mongoose';
+import TransactionType from '../../interfaces/transactions';
 
 const transactionSchema = new Schema(
   {
@@ -8,68 +8,68 @@ const transactionSchema = new Schema(
         type: {
           trim: true,
           type: String,
-          minlength: 3,
+          minlength: 3
         },
         amount: {
           trim: true,
           type: Number,
-          required: true,
+          required: true
         },
         account: {
-          type: String,
+          type: String
         },
         date: {
           type: Date,
-          required: true,
+          required: true
         },
         category: {
           trim: true,
-          type: String,
+          type: String
         },
         from: {
           type: String,
-          trim: true,
+          trim: true
         },
         transferId: {
-          type: String,
+          type: String
         },
         to: {
           type: String,
-          trim: true,
+          trim: true
         },
         fees: {
-          type: Number,
+          type: Number
         },
         currency: {
           trim: true,
           type: String,
           minlength: 2,
-          required: true,
+          required: true
         },
         note: {
-          type: String,
+          type: String
         },
         description: {
-          type: String,
-        },
-      },
+          type: String
+        }
+      }
     ],
     userId: {
       trim: true,
       type: String,
       minlength: 3,
-      require: true,
+      require: true
     },
     expense: {
-      type: Number,
+      type: Number
     },
     income: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
-export default model<TransactionType>("Transaction", transactionSchema);
+export default model<TransactionType>('Transaction', transactionSchema);

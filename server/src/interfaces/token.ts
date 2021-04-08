@@ -4,6 +4,6 @@ export interface Token {
 }
 
 export enum TokenMessages {
-  NO_TOKEN = "No token, access denied",
-  WRONG_TOKEN = "Wrong token",
+  NO_TOKEN = 'No token, access denied',
+  WRONG_TOKEN = 'Wrong token'
 }

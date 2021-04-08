@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import {Document} from 'mongoose';
 
 export interface UserType extends Document {
   _id: string;
@@ -21,10 +21,10 @@ export type ResponseUser = {
 };
 
 export enum UserErrors {
-  WRONG_EMAIL_OR_PASSWORD = "Wrong email or password",
-  NOT_EXISTING_USER = "No existing user",
+  WRONG_EMAIL_OR_PASSWORD = 'Wrong email or password',
+  NOT_EXISTING_USER = 'No existing user'
 }
 
 export enum succsessMessages {
-  UPDATED_SUCCESSFULLY = "Updated successfully",
+  UPDATED_SUCCESSFULLY = 'Updated successfully'
 }

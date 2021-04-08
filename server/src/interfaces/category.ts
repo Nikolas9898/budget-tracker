@@ -1,7 +1,7 @@
-import { Document } from "mongoose";
+import {Document} from 'mongoose';
 
 export default interface Category extends Document {
-  userId: String;
+  userId: string;
   expenseCategories: CategoryArray[];
 }
 
@@ -11,60 +11,60 @@ type CategoryArray = {
 
 export const DUMMY_EXPENSE_CATEGORIES = [
   {
-    name: "Food",
+    name: 'Food'
   },
   {
-    name: "Culture",
+    name: 'Culture'
   },
   {
-    name: "Accounts",
+    name: 'Accounts'
   },
   {
-    name: "Self-Development",
+    name: 'Self-Development'
   },
   {
-    name: "Transportation",
+    name: 'Transportation'
   },
   {
-    name: "Household",
+    name: 'Household'
   },
   {
-    name: "Apparel",
+    name: 'Apparel'
   },
   {
-    name: "Beauty",
+    name: 'Beauty'
   },
   {
-    name: "Health",
+    name: 'Health'
   },
   {
-    name: "Education",
+    name: 'Education'
   },
   {
-    name: "Gift",
+    name: 'Gift'
   },
   {
-    name: "Other",
+    name: 'Other'
   },
   {
-    name: "Food",
-  },
+    name: 'Food'
+  }
 ];
 
 export const DUMMY_INCOME_CATEGORIES = [
   {
-    name: "Allowance",
+    name: 'Allowance'
   },
   {
-    name: "Salary",
+    name: 'Salary'
   },
   {
-    name: "Petty cash",
+    name: 'Petty cash'
   },
   {
-    name: "Bonus",
+    name: 'Bonus'
   },
   {
-    name: "Other",
-  },
+    name: 'Other'
+  }
 ];

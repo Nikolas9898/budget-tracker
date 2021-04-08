@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import {Document} from 'mongoose';
 
 export default interface TransactionType extends Document {
   _id: string;
@@ -62,28 +62,28 @@ export type DummyExpenseEvent = {
 };
 
 export enum Expense {
-  TYPE = "expense",
-  NOTE = "fees",
-  CATEGORY = "other",
-  CURRENCY = "BG",
+  TYPE = 'expense',
+  NOTE = 'fees',
+  CATEGORY = 'other',
+  CURRENCY = 'BG'
 }
 
 export enum EventTypes {
-  INCOME = "income",
-  EXPENSE = "expense",
-  TRANSFER = "transfer",
+  INCOME = 'income',
+  EXPENSE = 'expense',
+  TRANSFER = 'transfer'
 }
 
 export enum SuccessMessages {
-  DELETED_SUCCESSFULLY = "Deleted successfully",
+  DELETED_SUCCESSFULLY = 'Deleted successfully'
 }
 
 export enum ErrorMessages {
-  NO_EXISTING_TRANSACTION = "Not authorized or transaction does not exist",
-  NO_TRANSACTION = "No such transaction available",
-  TWO_DATES_PICKET = "Please ensure you pick two dates",
+  NO_EXISTING_TRANSACTION = 'Not authorized or transaction does not exist',
+  NO_TRANSACTION = 'No such transaction available',
+  TWO_DATES_PICKET = 'Please ensure you pick two dates'
 }
 
 export enum MomentConstants {
-  DAY = "day",
+  DAY = 'day'
 }
