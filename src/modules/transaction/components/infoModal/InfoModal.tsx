@@ -1,17 +1,15 @@
 import React from "react";
-import styles from "./infoModalStyle.module.css";
+import Moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPlusCircle,
-  faPen,
-  faTrash,
   faAngleRight,
   faAngleLeft,
+  faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import Moment from "moment";
-import { Transaction, TransactionEvent } from "../../../../models/Transaction";
 import TableRow from "./components/TableRow";
+import { Transaction, TransactionEvent } from "../../../../models/Transaction";
+import styles from "./infoModalStyle.module.css";
 
 type Props = {
   isInfoTransactionOpen: boolean;

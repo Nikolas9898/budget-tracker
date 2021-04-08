@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import LoginContainerStyle from "./LoginContainerStyle.module.css";
+import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 import LoginForm from "./components/LoginForm";
 import RegistrationForm from "./components/RegistrationForm";
 import SocialNetworks from "./components/SocialNetworks";
-import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
-import { useHistory, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { validateLogin } from "../../helpers/Validation";
 import { singIn } from "../../store/actions/usersActions";
-import axios from "axios";
+import style from "./LoginContainerStyle.module.css";
 
 const LoginContainer = () => {
   const [user, setUser] = useState({
@@ -21,7 +21,7 @@ const LoginContainer = () => {
     password: "",
     confirmPassword: "",
   });
-  const location = useLocation();
+
   const dispatch = useDispatch();
 
   const handleInputChange = (e: any) =>
@@ -30,32 +30,13 @@ const LoginContainer = () => {
       [e.currentTarget.name]: e.currentTarget.value,
     });
 
-  const validateForm = () => {
-    const isValidEmail = RegExp(
-      "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
-    );
-    let errors = {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    };
-    if (!isValidEmail.test(user.email)) {
-      errors.email = "Please enter a valid email.";
-    }
-    if (user.password !== user.confirmPassword && !isLogin) {
-      errors.confirmPassword = "The password does not match. ";
-    }
-    if (
-      !user.password.match(/^[0-9a-zA-Z]+$/) ||
-      user.password.length > 20 ||
-      user.password.length < 6
-    ) {
-      errors.password = "Please enter 6-20 characters [A-Z, a-z, 0-9 only].";
-    }
-    return errors;
+  const handleEnterPress = (event: any) => {
+    const key = event.key;
   };
   const handleLogin = async () => {
-    const errors = validateForm();
+    console.log("sdfsdf");
+    const errors = validateLogin(user, isLogin);
+    console.log(errors);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
     if (!isValid) {
       setErrors({
@@ -70,8 +51,8 @@ const LoginContainer = () => {
 
     if (loggedUser.data.user) {
       dispatch(singIn(loggedUser.data));
+      window.location.pathname = "/";
       await setErrors({ email: "", password: "", confirmPassword: "" });
-      window.location.pathname = "/transaction/monthly";
     } else {
       setErrors({
         email: "",
@@ -81,7 +62,7 @@ const LoginContainer = () => {
     }
   };
   const handleRegister = async () => {
-    const errors = validateForm();
+    const errors = validateLogin(user, isLogin);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
     if (!isValid) {
       setErrors({
@@ -99,26 +80,29 @@ const LoginContainer = () => {
       password: user.password,
       type: "admin",
       currency: "BG",
-      categories: [],
     };
     try {
       let signUp = await axios.post(`http://localhost:5000/signUp`, newUser);
-      setErrors({ email: "", password: "", confirmPassword: "" });
-      dispatch(singIn(signUp.data.data));
-      window.location.pathname = "/transaction/monthly";
+
+      if (signUp.data.user) {
+        dispatch(singIn(signUp.data));
+        window.location.pathname = "/";
+        setErrors({ email: "", password: "", confirmPassword: "" });
+      }
     } catch (e) {
       console.error(e);
       return [];
     }
   };
   return (
-    <div className={LoginContainerStyle.container}>
-      <div className={LoginContainerStyle.login_form}>
-        <Tabs selectedTabClassName={LoginContainerStyle.selected_tab}>
-          <TabList className={LoginContainerStyle.tab_list}>
+    <div className={style.container}>
+      <div className={style.login_form}>
+        <Tabs selectedTabClassName={style.selected_tab}>
+          <TabList className={style.tab_list}>
             <Tab
-              className={LoginContainerStyle.tab}
+              className={style.tab}
               onClick={() => {
+                setUser({ email: "", password: "", confirmPassword: "" });
                 setErrors({ email: "", password: "", confirmPassword: "" });
                 setIsLogin(true);
               }}
@@ -126,10 +110,11 @@ const LoginContainer = () => {
               Sign In
             </Tab>
             <Tab
-              className={LoginContainerStyle.tab}
+              className={style.tab}
               onClick={() => {
+                setUser({ email: "", password: "", confirmPassword: "" });
                 setErrors({ email: "", password: "", confirmPassword: "" });
-                setIsLogin(true);
+                setIsLogin(false);
               }}
             >
               Register
@@ -140,6 +125,7 @@ const LoginContainer = () => {
               Submit={handleLogin}
               errors={errors}
               handleInput={handleInputChange}
+              handleEnterPress={handleEnterPress}
             />
           </TabPanel>
           <TabPanel>

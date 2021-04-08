@@ -5,12 +5,14 @@ import { faCaretDown, faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../sideBar/SideBar";
 import { useSelector } from "react-redux";
 import { headerTitle } from "../../helpers/Variables";
-import { UserReducer } from "../../models/User";
+import { User, UserReducer } from "../../models/User";
 import AccountMenu from "../accountMenu/AccountMenu";
+import { TransactionReducer } from "../../models/Transaction";
 const NavBar = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  let user = useSelector(
-    (state: UserReducer["user"]) => state.userReducer.user
+
+  const user = useSelector(
+    (state: { userReducer: UserReducer }) => state.userReducer.user
   );
 
   return (

@@ -32,10 +32,8 @@ const AddTransactionButton = () => {
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector(
-    (state: {
-      userReducer: UserReducer;
-      transactionReducer: TransactionReducer;
-    }) => state.transactionReducer
+    (state: { transactionReducer: TransactionReducer }) =>
+      state.transactionReducer
   );
 
   const { transactionId, _id } = stateTransaction.transactionEvent;

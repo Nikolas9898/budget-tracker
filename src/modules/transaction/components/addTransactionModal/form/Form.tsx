@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState, useCallback } from "react";
 import styles from "../AddTransactionStyle.module.css";
 import Moment from "moment";
 import { TransactionEvent } from "../../../../../models/Transaction";
 import { HandleInput } from "../../../../../models/Function";
 import { Error } from "../../../../../models/Error";
-import { Transfer, Income, Expense } from "../../../../../helpers/Variables";
+import { Transfer, Income } from "../../../../../helpers/Variables";
 import InputTitles from "./components/InputTitles";
 import SelectInput from "./components/SelectInputs";
 import FeesInput from "./components/FeesInput";
 import AmountInput from "./components/AmountInput";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 type Props = {
   transaction: TransactionEvent;
@@ -28,6 +30,7 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
     "transportation",
     "other",
   ];
+
   const selectOptions = (transactionType: string) => {
     if (transactionType === Transfer) {
       return accounts;
@@ -39,14 +42,32 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
       }
     }
   };
+  const handleSetDate = useCallback(date => {
+    handleInputChange({
+      target: { value: Moment(date).toDate(), name: "date" },
+    });
+  }, []);
+  const ExampleCustomInput: React.FC<any> = forwardRef(({ value, onClick }) => (
+    <div className={styles.input_container}>
+      <input className={styles.input} onClick={onClick} value={value} />
+    </div>
+  ));
   return (
     <div className={styles.content}>
       <InputTitles transaction={transaction} isFeesOpen={isFeesOpen} />
       <div className={styles.content_inputs}>
-        <div className={styles.input_container}>
-          {Moment(transaction.date).format("DD/M/Y(dd)")}
-          {Moment(transaction.date).format("HH:HH")}
-        </div>
+        <DatePicker
+          selected={Moment(transaction.date).toDate()}
+          dateFormat=" dd / MMMM / yyyy  h:mm aa"
+          onChange={handleSetDate}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          timeCaption="time"
+          locale="pt-BR"
+          customInput={<ExampleCustomInput />}
+        />
+
         <SelectInput
           selectValue={
             transaction.type === Transfer

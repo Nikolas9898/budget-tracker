@@ -16,9 +16,9 @@ const CalendarDate: React.FC<Props> = ({
   date,
   handleOpenInfoModal,
 }) => {
-  const openInfoModal = useCallback(calendarDate => {
+  const openInfoModal = useCallback(() => {
     handleOpenInfoModal(Moment(calendarDate.date).startOf("date").toDate());
-  }, []);
+  }, [calendarDate]);
 
   return (
     <div

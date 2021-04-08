@@ -30,10 +30,8 @@ const DailyContainer = () => {
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector(
-    (state: {
-      userReducer: UserReducer;
-      transactionReducer: TransactionReducer;
-    }) => state.transactionReducer
+    (state: { transactionReducer: TransactionReducer }) =>
+      state.transactionReducer
   );
 
   useEffect(() => {

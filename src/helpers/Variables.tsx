@@ -89,7 +89,7 @@ export const transaction = (transaction: TransactionEvent) => {
         type: type.toLowerCase(),
         currency: Currency,
         transferId: transferId,
-        date: Moment(date).startOf("date"),
+        date: Moment(date),
         account: isTypeTransfer(type) ? "" : account,
         category: isTypeTransfer(type) ? "" : category,
         from: isTypeTransfer(type) ? from : "",
