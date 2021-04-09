@@ -1,5 +1,5 @@
 import Moment from "moment";
-import { TransactionEvent } from "../models/Transaction";
+import { TransactionEvent } from "../interfaces/Transaction";
 
 export const firstDateOfTheMonth = (date: Date) =>
   Moment(date).startOf("month");
@@ -21,49 +21,56 @@ export const lastDateOfLastWeekOfTheMonth = (date: Date) =>
 export const isTheSameDate = (calendarDate: Date, transactionDate: Date) =>
   Moment(calendarDate).diff(transactionDate, "day") === 0;
 
-export const isTypeTransfer = (type: string) => type.toLowerCase() === Transfer;
+export const isTypeTransfer = (type: string) =>
+  type.toLowerCase() === TransactionTypes.Transfer;
 
 export const isTransactionContainer = (pathname: string) =>
-  pathname.includes(Transaction);
+  pathname.includes(TransactionPage.Transaction);
 
 export const isSelectedTitle = (pathname: string, path: string) =>
   pathname === `/transaction/${path}` || pathname === `/stats/${path}`;
 
 export const isTransactionTypeIncome = (type: string, amount: string) =>
-  type === Income ? (parseFloat(amount) / 100).toFixed(2) : "";
+  type === TransactionTypes.Income ? (parseFloat(amount) / 100).toFixed(2) : "";
 
 export const isTransactionTypeExpense = (type: string, amount: string) =>
-  type === Expense || type === Transfer
+  type === TransactionTypes.Expense || type === TransactionTypes.Transfer
     ? (parseFloat(amount) / 100).toFixed(2)
     : "";
 
-export const Transaction: string = "transaction";
-export const Transfer: string = "transfer";
-export const Income: string = "income";
-export const Expense: string = "expense";
-export const Stats: string = "stats";
-export const Export: string = "export";
-export const Accounts: string = "accounts";
-export const Currency: string = "Bg";
+export enum DaysOfWeek {
+  Monday = "M",
+  Thuesday = "T",
+  Wednesday = "W",
+  Thursday = "Th",
+  Friday = "F",
+  Saturday = "Sa",
+  Sunday = "Su",
+}
 
-export const Monday: string = "M";
-export const Thuesday: string = "T";
-export const Wednesday: string = "W";
-export const Thursday: string = "Th";
-export const Friday: string = "F";
-export const Saturday: string = "Sa";
-export const Sunday: string = "Su";
+export enum TransactionTypes {
+  Transfer = "Ttransfer",
+  Income = "income",
+  Expense = "expense",
+  Currency = "Bg",
+}
+export enum TransactionPage {
+  Transaction = "transaction",
+  Stats = "stats",
+  Export = "export",
+  Accounts = "accounts",
+}
 
 export const headerTitle = (path: string) => {
   switch (true) {
     case path.includes("/transaction"):
-      return Transaction.toLocaleUpperCase();
+      return TransactionPage.Transaction.toLocaleUpperCase();
     case path.includes("/stats"):
-      return Stats.toLocaleUpperCase();
+      return TransactionPage.Stats.toLocaleUpperCase();
     case path.includes("/export"):
-      return Export.toLocaleUpperCase();
+      return TransactionPage.Export.toLocaleUpperCase();
     case path.includes("/accounts"):
-      return Accounts.toLocaleUpperCase();
+      return TransactionPage.Accounts.toLocaleUpperCase();
     default:
       return "";
   }
@@ -87,7 +94,7 @@ export const transaction = (transaction: TransactionEvent) => {
     events: [
       {
         type: type.toLowerCase(),
-        currency: Currency,
+        currency: TransactionTypes.Currency,
         transferId: transferId,
         date: Moment(date),
         account: isTypeTransfer(type) ? "" : account,

@@ -6,7 +6,7 @@ import LoginForm from "./components/LoginForm";
 import RegistrationForm from "./components/RegistrationForm";
 import SocialNetworks from "./components/SocialNetworks";
 import { validateLogin } from "../../helpers/Validation";
-import { singIn } from "../../store/actions/usersActions";
+import { singIn } from "./actions/usersActions";
 import style from "./LoginContainerStyle.module.css";
 
 const LoginContainer = () => {
@@ -24,11 +24,13 @@ const LoginContainer = () => {
 
   const dispatch = useDispatch();
 
-  const handleInputChange = (e: any) =>
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
     setUser({
       ...user,
-      [e.currentTarget.name]: e.currentTarget.value,
+      [e.target.name]: e.target.value,
     });
+  };
 
   const handleEnterPress = (event: any) => {
     const key = event.key;

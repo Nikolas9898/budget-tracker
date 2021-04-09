@@ -1,7 +1,7 @@
 import React from "react";
 import Moment from "moment";
 import { isTheSameDate } from "../../../../../helpers/Variables";
-import { TransactionWithAmountNumber } from "../../../../../models/Transaction";
+import { TransactionWithAmountNumber } from "../../../../../interfaces/Transaction";
 import styles from "../../DailyStyle.module.css";
 type Props = {
   transaction: TransactionWithAmountNumber;

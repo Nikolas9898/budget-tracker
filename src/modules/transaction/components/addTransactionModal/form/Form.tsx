@@ -1,10 +1,10 @@
 import React, { forwardRef, useState, useCallback } from "react";
 import styles from "../AddTransactionStyle.module.css";
 import Moment from "moment";
-import { TransactionEvent } from "../../../../../models/Transaction";
-import { HandleInput } from "../../../../../models/Function";
-import { Error } from "../../../../../models/Error";
-import { Transfer, Income } from "../../../../../helpers/Variables";
+import { TransactionEvent } from "../../../../../interfaces/Transaction";
+import { HandleInput } from "../../../../../interfaces/Function";
+import { Error } from "../../../../../interfaces/Error";
+import { TransactionTypes } from "../../../../../helpers/Variables";
 import InputTitles from "./components/InputTitles";
 import SelectInput from "./components/SelectInputs";
 import FeesInput from "./components/FeesInput";
@@ -32,10 +32,10 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
   ];
 
   const selectOptions = (transactionType: string) => {
-    if (transactionType === Transfer) {
+    if (transactionType === TransactionTypes.Transfer) {
       return accounts;
     } else {
-      if (transactionType === Income) {
+      if (transactionType === TransactionTypes.Income) {
         return categoriesIncome;
       } else {
         return categoriesExpense;
@@ -70,25 +70,37 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
 
         <SelectInput
           selectValue={
-            transaction.type === Transfer
+            transaction.type === TransactionTypes.Transfer
               ? transaction.from
               : transaction.account
           }
-          transactionType={transaction.type === Transfer ? "from" : "account"}
+          transactionType={
+            transaction.type === TransactionTypes.Transfer ? "from" : "account"
+          }
           options={accounts}
           handleInputChange={handleInputChange}
-          error={transaction.type === Transfer ? errors.from : errors.account}
+          error={
+            transaction.type === TransactionTypes.Transfer
+              ? errors.from
+              : errors.account
+          }
         />
         <SelectInput
           selectValue={
-            transaction.type === Transfer
+            transaction.type === TransactionTypes.Transfer
               ? transaction.to
               : transaction.category
           }
-          transactionType={transaction.type === Transfer ? "to" : "category"}
+          transactionType={
+            transaction.type === TransactionTypes.Transfer ? "to" : "category"
+          }
           options={selectOptions(transaction.type)}
           handleInputChange={handleInputChange}
-          error={transaction.type === Transfer ? errors.to : errors.category}
+          error={
+            transaction.type === TransactionTypes.Transfer
+              ? errors.to
+              : errors.category
+          }
         />
         <AmountInput
           transaction={transaction}

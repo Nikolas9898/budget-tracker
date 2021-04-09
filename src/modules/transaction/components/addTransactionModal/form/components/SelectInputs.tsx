@@ -1,6 +1,6 @@
 import React from "react";
 import { errorMsg } from "../../../../../../helpers/Validation";
-import { HandleInput } from "../../../../../../models/Function";
+import { HandleInput } from "../../../../../../interfaces/Function";
 import styles from "../../AddTransactionStyle.module.css";
 type Props = {
   handleInputChange: (event: HandleInput) => void;

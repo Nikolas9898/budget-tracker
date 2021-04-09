@@ -1,4 +1,4 @@
-import { SIGN_IN } from "../types";
+import { SIGN_IN } from "../actionTypes";
 
 export const singIn = (user: {
   email: string;
@@ -9,7 +9,6 @@ export const singIn = (user: {
   updatedAt: string;
   type: string;
   id: string;
-  // token: string;
 }) => async (dispatch: any) => {
   try {
     await dispatch({

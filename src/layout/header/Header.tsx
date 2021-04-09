@@ -5,9 +5,9 @@ import { faCaretDown, faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 import SideBar from "../sideBar/SideBar";
 import { useSelector } from "react-redux";
 import { headerTitle } from "../../helpers/Variables";
-import { User, UserReducer } from "../../models/User";
+import { User, UserReducer } from "../../interfaces/User";
 import AccountMenu from "../accountMenu/AccountMenu";
-import { TransactionReducer } from "../../models/Transaction";
+import { TransactionReducer } from "../../interfaces/Transaction";
 const NavBar = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 

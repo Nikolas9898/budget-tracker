@@ -1,5 +1,5 @@
 import { ActionTypes } from "../actionTypes";
-import { TransactionEvent } from "../../../models/Transaction";
+import { TransactionEvent } from "../../../interfaces/Transaction";
 import Moment from "moment";
 
 export interface State {

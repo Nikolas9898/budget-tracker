@@ -11,8 +11,8 @@ import {
   firstDateOfLastWeekOfTheMonth,
   lastDateOfLastWeekOfTheMonth,
 } from "../../../helpers/Variables";
-import { Month, TransactionReducer } from "../../../models/Transaction";
-import { UserReducer } from "../../../models/User";
+import { Month, TransactionReducer } from "../../../interfaces/Transaction";
+import { UserReducer } from "../../../interfaces/User";
 import styles from "./WeeklyStyle.module.css";
 import "../../../scss/variables.scss";
 

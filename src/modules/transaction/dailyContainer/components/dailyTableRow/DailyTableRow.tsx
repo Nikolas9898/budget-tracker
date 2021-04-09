@@ -2,8 +2,8 @@ import React, { useCallback } from "react";
 import {
   TransactionEventWithAmountNumber,
   TransactionWithAmountNumber,
-} from "../../../../../models/Transaction";
-import { Transfer, Income, Expense } from "../../../../../helpers/Variables";
+} from "../../../../../interfaces/Transaction";
+import { TransactionTypes } from "../../../../../helpers/Variables";
 import styles from "./DailyTableRow.module.css";
 type Props = {
   handleSelectEvent: (
@@ -27,13 +27,13 @@ const DailyTableRow: React.FC<Props> = ({
       <td>
         <div className={styles.account_container}>
           <div className={styles.account}>
-            {transactionEvent.type === Transfer
+            {transactionEvent.type === TransactionTypes.Transfer
               ? "transfer"
               : transactionEvent.category}
           </div>
           <div className={styles.category}>
             <div>{transactionEvent.note}</div>
-            {transactionEvent.type === Transfer ? (
+            {transactionEvent.type === TransactionTypes.Transfer ? (
               <div>
                 {transactionEvent.from}
                 {" ---> "}
@@ -46,18 +46,20 @@ const DailyTableRow: React.FC<Props> = ({
         </div>
       </td>
       <td className={styles.income}>
-        {transactionEvent.type === Income
+        {transactionEvent.type === TransactionTypes.Income
           ? (transactionEvent.amount / 100).toFixed(2)
           : null}
       </td>
       <td
         className={
-          transactionEvent.type === Expense ? styles.expense : styles.transfer
+          transactionEvent.type === TransactionTypes.Expense
+            ? styles.expense
+            : styles.transfer
         }
       >
         <div>
-          {transactionEvent.type === Expense ||
-          transactionEvent.type === Transfer
+          {transactionEvent.type === TransactionTypes.Expense ||
+          transactionEvent.type === TransactionTypes.Transfer
             ? (transactionEvent.amount / 100).toFixed(2)
             : null}
         </div>

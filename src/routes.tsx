@@ -9,6 +9,7 @@ import WeeklyStatsPage from "./pages/statsPage/WeeklyPage";
 import DailyStatsPage from "./pages/statsPage/DailyPage";
 import YearlyStatsPage from "./pages/statsPage/YearlyPage";
 import MonthlyStatsPage from "./pages/statsPage/MonthlyPage";
+import ExportPage from "./pages/exportPage/ExportPage";
 
 const Routes = () => {
   return (
@@ -26,6 +27,7 @@ const Routes = () => {
         <Route path="/stats/yearly" exact component={YearlyStatsPage} />
         <Route path="/stats/weekly" exact component={WeeklyStatsPage} />
         <Route path="/stats/period" exact component={MonthlyStatsPage} />
+        <Route path="/export" exact component={ExportPage} />
       </Switch>
     </Router>
   );

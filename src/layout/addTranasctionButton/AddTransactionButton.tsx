@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { TransactionReducer } from "../../models/Transaction";
+import { TransactionReducer } from "../../interfaces/Transaction";
 import { setDate } from "../../modules/transaction/actions/transactionActions";
-import { UserReducer } from "../../models/User";
+import { UserReducer } from "../../interfaces/User";
 import {
   handleInput,
   setTransaction,
@@ -91,7 +91,7 @@ const AddTransactionButton = () => {
         handleInput({
           target: {
             name: "date",
-            value: Moment().startOf("date").toDate(),
+            value: "sdfsdf",
           },
         })
       );

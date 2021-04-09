@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import Moment from "moment";
-import { Transaction, CalendarDates } from "../../../../models/Transaction";
+import { Transaction, CalendarDates } from "../../../../interfaces/Transaction";
 import { isTheSameDate } from "../../../../helpers/Variables";
 import styles from "../MonthlyStyle.module.css";
 type Props = {

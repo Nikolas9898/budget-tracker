@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import styles from "./AddTransactionStyle.module.css";
-import { TransactionEvent } from "../../../../models/Transaction";
-import { Error } from "../../../../models/Error";
-import { HandleInput } from "../../../../models/Function";
-import { Income, Transfer, Expense } from "../../../../helpers/Variables";
+import { TransactionEvent } from "../../../../interfaces/Transaction";
+import { Error } from "../../../../interfaces/Error";
+import { HandleInput } from "../../../../interfaces/Function";
+import { TransactionTypes } from "../../../../helpers/Variables";
 import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
 import Form from "./form/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,11 +35,11 @@ const AddTransactionModal: React.FC<Props> = ({
 }) => {
   const ChooseCategory = (event: string) => {
     switch (event) {
-      case Income:
+      case TransactionTypes.Income:
         return 0;
-      case Expense:
+      case TransactionTypes.Expense:
         return 1;
-      case Transfer:
+      case TransactionTypes.Transfer:
         return 2;
     }
   };
@@ -51,17 +51,17 @@ const AddTransactionModal: React.FC<Props> = ({
   }, [isEditTransactionOpen, transactionEvent]);
   const handleSetIncomeType = useCallback(() => {
     handleInputChange({
-      target: { value: Income, name: "type" },
+      target: { value: TransactionTypes.Income, name: "type" },
     });
   }, []);
   const handleSetExpenseType = useCallback(() => {
     handleInputChange({
-      target: { value: Expense, name: "type" },
+      target: { value: TransactionTypes.Expense, name: "type" },
     });
   }, []);
   const handleSetTransferType = useCallback(() => {
     handleInputChange({
-      target: { value: Transfer, name: "type" },
+      target: { value: TransactionTypes.Transfer, name: "type" },
     });
   }, []);
   const handleDeleteTransaction = useCallback(() => {

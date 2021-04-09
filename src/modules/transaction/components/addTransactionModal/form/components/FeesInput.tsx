@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import styles from "../../AddTransactionStyle.module.css";
-import { TransactionEvent } from "../../../../../../models/Transaction";
-import { HandleInput } from "../../../../../../models/Function";
+import { TransactionEvent } from "../../../../../../interfaces/Transaction";
+import { HandleInput } from "../../../../../../interfaces/Function";
 type Props = {
   handleInputChange: (event: HandleInput) => void;
   setIsFeesOpen: (arg0: boolean) => void;

@@ -12,7 +12,7 @@ import {
   isTransactionContainer,
   isSelectedTitle,
 } from "../../helpers/Variables";
-import { TransactionReducer } from "../../models/Transaction";
+import { TransactionReducer } from "../../interfaces/Transaction";
 import styles from "./NavBarStyle.module.css";
 
 const NavBarMenu = () => {

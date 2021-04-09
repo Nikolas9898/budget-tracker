@@ -1,4 +1,4 @@
-import { SIGN_IN } from "../types";
+import { SIGN_IN } from "../actionTypes";
 
 export interface State {
   user: any;

@@ -1,5 +1,5 @@
-import { TransactionEvent } from "../../../models/Transaction";
-import { HandleInput } from "../../../models/Function";
+import { TransactionEvent } from "../../../interfaces/Transaction";
+import { HandleInput } from "../../../interfaces/Function";
 import { ActionTypes } from "../actionTypes";
 
 export const handleNextMonth = () => ({

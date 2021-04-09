@@ -10,14 +10,13 @@ import {
   TransactionWithAmountNumber,
   TransactionEventWithAmountNumber,
   TransactionEvent,
-} from "../../../models/Transaction";
+} from "../../../interfaces/Transaction";
 import { getSpecificDatePeriod } from "../service/TransactionService";
 import {
   firstDateOfTheMonth,
   lastDateOfTheMonth,
 } from "../../../helpers/Variables";
 import { setTransaction } from "../actions/transactionActions";
-import { UserReducer } from "../../../models/User";
 import styles from "./DailyStyle.module.css";
 import "../../../scss/variables.scss";
 const DailyContainer = () => {

@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import CalendarDate from "./CalendarDate";
-import { Transaction, CalendarDates } from "../../../../models/Transaction";
-import {
-  Monday,
-  Thuesday,
-  Wednesday,
-  Thursday,
-  Friday,
-  Saturday,
-  Sunday,
-} from "../../../../helpers/Variables";
+import { Transaction, CalendarDates } from "../../../../interfaces/Transaction";
+import { DaysOfWeek } from "../../../../helpers/Variables";
 import styles from "../MonthlyStyle.module.css";
 type Props = {
   calendarDates: CalendarDates[];
@@ -25,13 +17,13 @@ const Calendar: React.FC<Props> = ({
   handleOpenInfoModal,
 }) => {
   const [days] = useState([
-    Monday,
-    Thuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday,
+    DaysOfWeek.Monday,
+    DaysOfWeek.Thuesday,
+    DaysOfWeek.Wednesday,
+    DaysOfWeek.Thursday,
+    DaysOfWeek.Friday,
+    DaysOfWeek.Saturday,
+    DaysOfWeek.Sunday,
   ]);
 
   return (

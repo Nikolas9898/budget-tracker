@@ -1,8 +1,8 @@
 import AddTransactionStyle from "../modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css";
-import { TransactionEvent } from "../models/Transaction";
-import { Error } from "../models/Error";
-import { Transaction, Transfer } from "../helpers/Variables";
-import { User, UserRegister } from "../models/User";
+import { TransactionEvent } from "../interfaces/Transaction";
+import { Error } from "../interfaces/Error";
+import { TransactionTypes, TransactionPage } from "../helpers/Variables";
+import { UserRegister } from "../interfaces/User";
 export const validateTransaction = (value: TransactionEvent) => {
   let errors: Error = {
     account: "",
@@ -13,17 +13,17 @@ export const validateTransaction = (value: TransactionEvent) => {
     fees: "",
   };
 
-  if (!value.account && value.type !== Transaction) {
+  if (!value.account && value.type !== TransactionPage.Transaction) {
     errors.account = "Please select an account";
   }
 
-  if (value.type === Transfer && !value.from) {
+  if (value.type === TransactionTypes.Transfer && !value.from) {
     errors.from = "Please select from";
   }
-  if (!value.category && value.type !== Transfer) {
+  if (!value.category && value.type !== TransactionTypes.Transfer) {
     errors.category = "Please select a category";
   }
-  if (value.type === Transfer && !value.to) {
+  if (value.type === TransactionTypes.Transfer && !value.to) {
     errors.to = "Please select to";
   }
   if (!value.amount) {

@@ -4,7 +4,7 @@ import {
   isTransactionTypeIncome,
   isTransactionTypeExpense,
 } from "../../../../../helpers/Variables";
-import { TransactionEvent } from "../../../../../models/Transaction";
+import { TransactionEvent } from "../../../../../interfaces/Transaction";
 import styles from "../infoModalStyle.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

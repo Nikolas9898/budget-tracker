@@ -8,7 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import TableRow from "./components/TableRow";
-import { Transaction, TransactionEvent } from "../../../../models/Transaction";
+import {
+  Transaction,
+  TransactionEvent,
+} from "../../../../interfaces/Transaction";
 import styles from "./infoModalStyle.module.css";
 
 type Props = {

@@ -30,9 +30,9 @@ import {
   Transaction,
   TransactionEvent,
   TransactionReducer,
-} from "../../../models/Transaction";
-import { HandleInput } from "../../../models/Function";
-import { Error } from "../../../models/Error";
+} from "../../../interfaces/Transaction";
+import { HandleInput } from "../../../interfaces/Function";
+import { Error } from "../../../interfaces/Error";
 import "../../../scss/variables.scss";
 
 type Props = {

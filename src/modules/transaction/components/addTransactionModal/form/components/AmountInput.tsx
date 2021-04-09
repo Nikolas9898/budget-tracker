@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import styles from "../../AddTransactionStyle.module.css";
-import { TransactionEvent } from "../../../../../../models/Transaction";
-import { HandleInput } from "../../../../../../models/Function";
+import { TransactionEvent } from "../../../../../../interfaces/Transaction";
+import { HandleInput } from "../../../../../../interfaces/Function";
 import { errorMsg } from "../../../../../../helpers/Validation";
-import { Transfer } from "../../../../../../helpers/Variables";
+import { TransactionTypes } from "../../../../../../helpers/Variables";
 type Props = {
   handleInputChange: (event: HandleInput) => void;
   setIsFeesOpen: (isOpen: boolean) => void;
@@ -33,7 +33,7 @@ const AmountInput: React.FC<Props> = ({
           value={transaction.amount}
           onChange={handleInputChange}
         />
-        {transaction.type === Transfer && !isFeesOpen ? (
+        {transaction.type === TransactionTypes.Transfer && !isFeesOpen ? (
           <div className={styles.fees} onClick={setFeesOpen}>
             Fees
           </div>
