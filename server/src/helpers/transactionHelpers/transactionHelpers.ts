@@ -66,7 +66,7 @@ export const createOrdinaryEvent = (
   return transaction;
 };
 
-export const deleteTransaction = (transaction: TransactionType, res: Response) => {
+export const deleteTransaction = (transaction: TransactionType, res: Response): Response<any> => {
   try {
     transaction.remove();
     return res.json({msg: SuccessMessages.DELETED_SUCCESSFULLY});
@@ -75,7 +75,11 @@ export const deleteTransaction = (transaction: TransactionType, res: Response) =
   }
 };
 
-export const removeTransactionEvent = async (res: Response, transaction: TransactionType, event_id: string) => {
+export const removeTransactionEvent = async (
+  res: Response,
+  transaction: TransactionType,
+  event_id: string
+): Promise<Response<TransactionType>> => {
   const expense = 0;
   const income = 0;
   const newEvents: TransactionEvent[] = transaction.events.filter((event: TransactionEvent) => event._id != event_id);
@@ -95,8 +99,8 @@ export const editIntoTransfer = async (
   transaction: TransactionType,
   event_id: string,
   eventFromBody: TransferWithFees
-) => {
-  const {type, fees, from} = eventFromBody;
+): Promise<TransactionType> => {
+  const {fees, from} = eventFromBody;
   let dummyExpenseEvent: TransactionEvent | undefined = undefined;
 
   transaction.events = transaction.events.map((oldEvent: TransactionEvent) => {
@@ -137,7 +141,7 @@ export const editIntoTransfer = async (
   return transaction;
 };
 
-export const saveAndSendResponse = async (resItem: TransactionType, res: Response) => {
+export const saveAndSendResponse = async (resItem: TransactionType, res: Response): Promise<Response<any>> => {
   try {
     await resItem.save();
     return res.json(resItem);

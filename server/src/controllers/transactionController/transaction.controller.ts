@@ -32,7 +32,7 @@ export const createTransaction: RequestHandler = async (req: Request, res: Respo
   const eventFees = events[0].fees;
 
   if (!transaction) {
-    //Here it enters when transaction is not found then check if it is tansfer
+    //Here it enters when transaction is not found then checks if it is transfer
 
     if (eventFees && eventFees > 0) {
       // here it makes expense and transfer

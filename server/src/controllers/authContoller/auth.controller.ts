@@ -1,6 +1,6 @@
-import User from '../../models/user/user.model';
-import {Request, RequestHandler, Response} from 'express';
 import jwt from 'jsonwebtoken';
+import {Request, RequestHandler, Response} from 'express';
+import User from '../../models/user/user.model';
 import {UserType, ResponseUser, UserErrors} from '../../interfaces/user';
 import {addCategories} from '../../helpers/userHelpers/userHelpers';
 

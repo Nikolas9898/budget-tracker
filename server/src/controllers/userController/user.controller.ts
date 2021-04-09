@@ -48,7 +48,7 @@ export const editUser: RequestHandler = async (req: Request, res: Response) => {
           password
         }
       },
-      (err: any, user: UserType) => {
+      (err: any) => {
         if (err) {
           return res.json(err);
         }
