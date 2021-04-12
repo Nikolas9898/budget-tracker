@@ -1,9 +1,9 @@
-import React, { useCallback } from "react";
-import styles from "../../AddTransactionStyle.module.css";
-import { TransactionEvent } from "../../../../../../interfaces/Transaction";
-import { HandleInput } from "../../../../../../interfaces/Function";
-import { errorMsg } from "../../../../../../helpers/Validation";
-import { TransactionTypes } from "../../../../../../helpers/Variables";
+import React, {useCallback} from 'react';
+import styles from '../../AddTransactionStyle.module.css';
+import {TransactionEvent} from '../../../../../../models/Transaction';
+import {HandleInput} from '../../../../../../models/Function';
+import {errorMsg} from '../../../../../../helpers/Validation';
+import {TransactionTypes} from '../../../../../../helpers/Variables';
 type Props = {
   handleInputChange: (event: HandleInput) => void;
   setIsFeesOpen: (isOpen: boolean) => void;
@@ -12,13 +12,7 @@ type Props = {
   error: string;
 };
 
-const AmountInput: React.FC<Props> = ({
-  handleInputChange,
-  setIsFeesOpen,
-  transaction,
-  isFeesOpen,
-  error,
-}) => {
+const AmountInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transaction, isFeesOpen, error}) => {
   const setFeesOpen = useCallback(() => {
     setIsFeesOpen(!isFeesOpen);
   }, []);

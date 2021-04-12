@@ -1,35 +1,27 @@
-import React, { forwardRef, useState, useCallback } from "react";
-import styles from "../AddTransactionStyle.module.css";
-import Moment from "moment";
-import { TransactionEvent } from "../../../../../interfaces/Transaction";
-import { HandleInput } from "../../../../../interfaces/Function";
-import { Error } from "../../../../../interfaces/Error";
-import { TransactionTypes } from "../../../../../helpers/Variables";
-import InputTitles from "./components/InputTitles";
-import SelectInput from "./components/SelectInputs";
-import FeesInput from "./components/FeesInput";
-import AmountInput from "./components/AmountInput";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, {forwardRef, useState, useCallback} from 'react';
+import styles from '../AddTransactionStyle.module.css';
+import Moment from 'moment';
+import {TransactionEvent} from '../../../../../models/Transaction';
+import {HandleInput} from '../../../../../models/Function';
+import {Error} from '../../../../../models/Error';
+import {TransactionTypes} from '../../../../../helpers/Variables';
+import InputTitles from './components/InputTitles';
+import SelectInput from './components/SelectInputs';
+import FeesInput from './components/FeesInput';
+import AmountInput from './components/AmountInput';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 type Props = {
   transaction: TransactionEvent;
   errors: Error;
   handleInputChange: (event: HandleInput) => void;
 };
-const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
+const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   const [isFeesOpen, setIsFeesOpen] = useState(false);
-  const accounts = ["", "cash", "card", "accounts"];
-  const categoriesIncome = [" ", "salary", "bonus", "petty cash", "other"];
-  const categoriesExpense = [
-    "",
-    "food",
-    "culture",
-    "socialLife",
-    "selfDevelopment",
-    "transportation",
-    "other",
-  ];
+  const accounts = ['', 'cash', 'card', 'accounts'];
+  const categoriesIncome = [' ', 'salary', 'bonus', 'petty cash', 'other'];
+  const categoriesExpense = ['', 'food', 'culture', 'socialLife', 'selfDevelopment', 'transportation', 'other'];
 
   const selectOptions = (transactionType: string) => {
     if (transactionType === TransactionTypes.Transfer) {
@@ -42,12 +34,12 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
       }
     }
   };
-  const handleSetDate = useCallback(date => {
+  const handleSetDate = useCallback((date) => {
     handleInputChange({
-      target: { value: Moment(date).toDate(), name: "date" },
+      target: {value: Moment(date).toDate(), name: 'date'}
     });
   }, []);
-  const ExampleCustomInput: React.FC<any> = forwardRef(({ value, onClick }) => (
+  const ExampleCustomInput: React.FC<any> = forwardRef(({value, onClick}) => (
     <div className={styles.input_container}>
       <input className={styles.input} onClick={onClick} value={value} />
     </div>
@@ -69,38 +61,18 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
         />
 
         <SelectInput
-          selectValue={
-            transaction.type === TransactionTypes.Transfer
-              ? transaction.from
-              : transaction.account
-          }
-          transactionType={
-            transaction.type === TransactionTypes.Transfer ? "from" : "account"
-          }
+          selectValue={transaction.type === TransactionTypes.Transfer ? transaction.from : transaction.account}
+          transactionType={transaction.type === TransactionTypes.Transfer ? 'from' : 'account'}
           options={accounts}
           handleInputChange={handleInputChange}
-          error={
-            transaction.type === TransactionTypes.Transfer
-              ? errors.from
-              : errors.account
-          }
+          error={transaction.type === TransactionTypes.Transfer ? errors.from : errors.account}
         />
         <SelectInput
-          selectValue={
-            transaction.type === TransactionTypes.Transfer
-              ? transaction.to
-              : transaction.category
-          }
-          transactionType={
-            transaction.type === TransactionTypes.Transfer ? "to" : "category"
-          }
+          selectValue={transaction.type === TransactionTypes.Transfer ? transaction.to : transaction.category}
+          transactionType={transaction.type === TransactionTypes.Transfer ? 'to' : 'category'}
           options={selectOptions(transaction.type)}
           handleInputChange={handleInputChange}
-          error={
-            transaction.type === TransactionTypes.Transfer
-              ? errors.to
-              : errors.category
-          }
+          error={transaction.type === TransactionTypes.Transfer ? errors.to : errors.category}
         />
         <AmountInput
           transaction={transaction}
@@ -117,13 +89,7 @@ const Form: React.FC<Props> = ({ transaction, handleInputChange, errors }) => {
           isFeesOpen={isFeesOpen}
         />
 
-        <input
-          type="text"
-          className={styles.input}
-          name="note"
-          value={transaction.note}
-          onChange={handleInputChange}
-        />
+        <input type="text" className={styles.input} name="note" value={transaction.note} onChange={handleInputChange} />
       </div>
     </div>
   );

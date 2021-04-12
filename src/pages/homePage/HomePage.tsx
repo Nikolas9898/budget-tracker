@@ -1,11 +1,11 @@
-import React from "react";
-import NavBar from "../../layout/header/Header";
+import React from 'react';
+import NavBar from '../../layout/header/Header';
 
-const HomePage = (props: any) => {
+const HomePage = () => {
   return (
-    <div>
+    <>
       <NavBar />
-    </div>
+    </>
   );
 };
 

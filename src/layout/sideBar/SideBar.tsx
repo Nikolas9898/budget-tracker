@@ -1,15 +1,15 @@
-import React from "react";
-import SideBarStyle from "./SideBarStyle.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import React from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import {Link} from 'react-router-dom';
+import SideBarStyle from './SideBarStyle.module.css';
 
-type Props = {
+interface Props {
   isSideBarOpen: boolean;
   setIsSideBarOpen: (value: boolean) => void;
-};
+}
 
-const SideBar: React.FC<Props> = ({ isSideBarOpen, setIsSideBarOpen }) => {
+const SideBar: React.FC<Props> = ({isSideBarOpen, setIsSideBarOpen}) => {
   return (
     <div>
       {isSideBarOpen ? (

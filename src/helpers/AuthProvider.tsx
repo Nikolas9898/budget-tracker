@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getUserByJWToken } from "../modules/transaction/service/TransactionService";
-import { singIn } from "../modules/login/actions/usersActions";
+import React, {useEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {getUserByJWToken} from '../modules/transaction/service/TransactionService';
+import {singIn} from '../modules/login/actions/usersActions';
 
 const AuthProvider = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    getUser();
-  }, []);
 
   const getUser = async () => {
     const user = await getUserByJWToken();
 
     if (!user.user) {
-      localStorage.removeItem("jwt");
+      localStorage.removeItem('jwt');
       setIsLoading(false);
     } else {
       dispatch(singIn(user));
@@ -23,14 +20,15 @@ const AuthProvider = (props: any) => {
     }
   };
 
+  useEffect(() => {
+    getUser();
+  });
+
   if (isLoading) {
     return <div />;
   }
-  if (
-    !localStorage.getItem("jwt") &&
-    !(window.location.pathname === "/authentication")
-  ) {
-    window.location.pathname = "/authentication";
+  if (!localStorage.getItem('jwt') && !(window.location.pathname === '/authentication')) {
+    window.location.pathname = '/authentication';
     return <div />;
   }
 

@@ -1,6 +1,6 @@
-import { ActionTypes } from "../actionTypes";
-import { TransactionEvent } from "../../../interfaces/Transaction";
-import Moment from "moment";
+import {ActionTypes} from '../actionTypes';
+import {TransactionEvent} from '../../../models/Transaction';
+import Moment from 'moment';
 
 export interface State {
   date: Date;
@@ -10,78 +10,78 @@ const initialState = {
   date: Moment().toDate(),
 
   transactionEvent: {
-    _id: "",
-    type: "income",
-    date: "",
-    account: "",
-    from: "",
-    category: "",
-    fees: "0",
-    transferId: "",
-    to: "",
-    amount: "0",
-    note: "",
-    description: "",
-    transactionId: "",
-  },
+    _id: '',
+    type: 'income',
+    date: '',
+    account: '',
+    from: '',
+    category: '',
+    fees: '0',
+    transferId: '',
+    to: '',
+    amount: '0',
+    note: '',
+    description: '',
+    transactionId: ''
+  }
 };
 export default function (state = initialState, action: any) {
   switch (action.type) {
     case ActionTypes.HANDLE_NEXT_MONTH:
-      const nextMonth = Moment(state.date).add(1, "month");
+      const nextMonth = Moment(state.date).add(1, 'month');
       return {
         ...state,
-        date: nextMonth,
+        date: nextMonth
       };
     case ActionTypes.HANDLE_PREVIOUS_MONTH:
-      const previousMonth = Moment(state.date).add(-1, "month");
+      const previousMonth = Moment(state.date).add(-1, 'month');
       return {
         ...state,
-        date: previousMonth,
+        date: previousMonth
       };
     case ActionTypes.HANDLE_NEXT_YEAR:
-      let nextYear = Moment(state.date).add(1, "year").toDate();
+      let nextYear = Moment(state.date).add(1, 'year').toDate();
 
       return {
         ...state,
-        date: nextYear,
+        date: nextYear
       };
     case ActionTypes.HANDLE_PREVIOUS_YEAR:
-      let previousYear = Moment(state.date).add(-1, "year");
+      let previousYear = Moment(state.date).add(-1, 'year');
       return {
         ...state,
-        date: previousYear,
+        date: previousYear
       };
 
     case ActionTypes.HANDLE_INPUT:
-      if (action.payload.name === "type") {
+      if (action.payload.name === 'type') {
         return {
           ...state,
           transactionEvent: {
             ...state.transactionEvent,
             [action.payload.name]: action.payload.value,
-            category: "",
-            to: "",
-          },
+            category: '',
+            to: ''
+          }
         };
       } else {
         return {
           ...state,
           transactionEvent: {
             ...state.transactionEvent,
-            [action.payload.name]: action.payload.value,
-          },
+            [action.payload.name]: action.payload.value
+          }
         };
       }
     case ActionTypes.SET_TRANSACTION:
       return {
         ...state,
-        transactionEvent: action.payload,
+        transactionEvent: action.payload
       };
     case ActionTypes.SET_DATE:
       return {
         ...state,
-        date: action.payload,
+        date: action.payload
       };
     default:
       return state;

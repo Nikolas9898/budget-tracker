@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
-import styles from "../../AddTransactionStyle.module.css";
-import { TransactionEvent } from "../../../../../../interfaces/Transaction";
-import { HandleInput } from "../../../../../../interfaces/Function";
+import React, {useCallback} from 'react';
+import styles from '../../AddTransactionStyle.module.css';
+import {TransactionEvent} from '../../../../../../models/Transaction';
+import {HandleInput} from '../../../../../../models/Function';
 type Props = {
   handleInputChange: (event: HandleInput) => void;
   setIsFeesOpen: (arg0: boolean) => void;
@@ -9,14 +9,9 @@ type Props = {
   isFeesOpen: boolean;
 };
 
-const FeesInput: React.FC<Props> = ({
-  handleInputChange,
-  setIsFeesOpen,
-  transaction,
-  isFeesOpen,
-}) => {
+const FeesInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transaction, isFeesOpen}) => {
   const closeFees = useCallback(() => {
-    handleInputChange({ target: { value: "0", name: "fees" } });
+    handleInputChange({target: {value: '0', name: 'fees'}});
     setIsFeesOpen(!isFeesOpen);
   }, [isFeesOpen]);
   return (

@@ -1,14 +1,14 @@
-import React, { useCallback } from "react";
-import styles from "./AddTransactionStyle.module.css";
-import { TransactionEvent } from "../../../../interfaces/Transaction";
-import { Error } from "../../../../interfaces/Error";
-import { HandleInput } from "../../../../interfaces/Function";
-import { TransactionTypes } from "../../../../helpers/Variables";
-import { Tabs, TabList, TabPanel, Tab } from "react-tabs";
-import Form from "./form/Form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import Moment from "moment";
+import React, {useCallback} from 'react';
+import styles from './AddTransactionStyle.module.css';
+import {TransactionEvent} from '../../../../models/Transaction';
+import {Error} from '../../../../models/Error';
+import {HandleInput} from '../../../../models/Function';
+import {TransactionTypes} from '../../../../helpers/Variables';
+import {Tabs, TabList, TabPanel, Tab} from 'react-tabs';
+import Form from './form/Form';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
+import Moment from 'moment';
 
 type Props = {
   isAddTransactionOpen: boolean;
@@ -31,7 +31,7 @@ const AddTransactionModal: React.FC<Props> = ({
   handleOpenTransaction,
   isEditTransactionOpen,
   handleOpenEdit,
-  handleDelete,
+  handleDelete
 }) => {
   const ChooseCategory = (event: string) => {
     switch (event) {
@@ -45,23 +45,21 @@ const AddTransactionModal: React.FC<Props> = ({
   };
 
   const handleOpen = useCallback(() => {
-    isEditTransactionOpen
-      ? handleOpenEdit(transactionEvent)
-      : handleOpenTransaction(Moment().toDate());
+    isEditTransactionOpen ? handleOpenEdit(transactionEvent) : handleOpenTransaction(Moment().toDate());
   }, [isEditTransactionOpen, transactionEvent]);
   const handleSetIncomeType = useCallback(() => {
     handleInputChange({
-      target: { value: TransactionTypes.Income, name: "type" },
+      target: {value: TransactionTypes.Income, name: 'type'}
     });
   }, []);
   const handleSetExpenseType = useCallback(() => {
     handleInputChange({
-      target: { value: TransactionTypes.Expense, name: "type" },
+      target: {value: TransactionTypes.Expense, name: 'type'}
     });
   }, []);
   const handleSetTransferType = useCallback(() => {
     handleInputChange({
-      target: { value: TransactionTypes.Transfer, name: "type" },
+      target: {value: TransactionTypes.Transfer, name: 'type'}
     });
   }, []);
   const handleDeleteTransaction = useCallback(() => {
@@ -72,15 +70,8 @@ const AddTransactionModal: React.FC<Props> = ({
       {isAddTransactionOpen || isEditTransactionOpen ? (
         <div className={styles.modal_wrapper}>
           <div className={styles.container}>
-            <FontAwesomeIcon
-              className={styles.close_button}
-              onClick={handleOpen}
-              icon={faTimesCircle}
-            />
-            <Tabs
-              selectedTabClassName={styles.selected_tab}
-              selectedIndex={ChooseCategory(transactionEvent.type)}
-            >
+            <FontAwesomeIcon className={styles.close_button} onClick={handleOpen} icon={faTimesCircle} />
+            <Tabs selectedTabClassName={styles.selected_tab} selectedIndex={ChooseCategory(transactionEvent.type)}>
               <TabList className={styles.tab_list}>
                 <Tab className={styles.tab} onClick={handleSetIncomeType}>
                   <span>Income</span>
@@ -94,25 +85,13 @@ const AddTransactionModal: React.FC<Props> = ({
               </TabList>
 
               <TabPanel>
-                <Form
-                  transaction={transactionEvent}
-                  handleInputChange={handleInputChange}
-                  errors={errors}
-                />
+                <Form transaction={transactionEvent} handleInputChange={handleInputChange} errors={errors} />
               </TabPanel>
               <TabPanel>
-                <Form
-                  transaction={transactionEvent}
-                  handleInputChange={handleInputChange}
-                  errors={errors}
-                />
+                <Form transaction={transactionEvent} handleInputChange={handleInputChange} errors={errors} />
               </TabPanel>
               <TabPanel>
-                <Form
-                  transaction={transactionEvent}
-                  handleInputChange={handleInputChange}
-                  errors={errors}
-                />
+                <Form transaction={transactionEvent} handleInputChange={handleInputChange} errors={errors} />
               </TabPanel>
             </Tabs>
             <input
@@ -129,10 +108,7 @@ const AddTransactionModal: React.FC<Props> = ({
                   Save
                 </button>
 
-                <button
-                  className={styles.delete_button}
-                  onClick={handleDeleteTransaction}
-                >
+                <button className={styles.delete_button} onClick={handleDeleteTransaction}>
                   Delete
                 </button>
               </div>

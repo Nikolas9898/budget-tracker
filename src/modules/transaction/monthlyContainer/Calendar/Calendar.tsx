@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import CalendarDate from "./CalendarDate";
-import { Transaction, CalendarDates } from "../../../../interfaces/Transaction";
-import { DaysOfWeek } from "../../../../helpers/Variables";
-import styles from "../MonthlyStyle.module.css";
+import React, {useState} from 'react';
+import CalendarDate from './CalendarDate';
+import {Transaction, CalendarDates} from '../../../../models/Transaction';
+import {DaysOfWeek} from '../../../../helpers/Variables';
+import styles from '../MonthlyStyle.module.css';
 type Props = {
   calendarDates: CalendarDates[];
   date: Date;
@@ -10,12 +10,7 @@ type Props = {
   handleOpenInfoModal: (date: Date) => void;
 };
 
-const Calendar: React.FC<Props> = ({
-  calendarDates,
-  date,
-  transactions,
-  handleOpenInfoModal,
-}) => {
+const Calendar: React.FC<Props> = ({calendarDates, date, transactions, handleOpenInfoModal}) => {
   const [days] = useState([
     DaysOfWeek.Monday,
     DaysOfWeek.Thuesday,
@@ -23,7 +18,7 @@ const Calendar: React.FC<Props> = ({
     DaysOfWeek.Thursday,
     DaysOfWeek.Friday,
     DaysOfWeek.Saturday,
-    DaysOfWeek.Sunday,
+    DaysOfWeek.Sunday
   ]);
 
   return (
@@ -36,7 +31,7 @@ const Calendar: React.FC<Props> = ({
         ))}
       </div>
       <div className={styles.calendar_wrapper}>
-        {calendarDates.map((calendarDate: { date: Date }) => (
+        {calendarDates.map((calendarDate: {date: Date}) => (
           <CalendarDate
             calendarDate={calendarDate}
             transactions={transactions}

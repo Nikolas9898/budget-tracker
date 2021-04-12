@@ -1,8 +1,8 @@
-import React from "react";
-import NavBar from "../../layout/header/Header";
-import ExportContainer from "../../modules/export/ExportContainer";
+import React from 'react';
+import NavBar from '../../layout/header/Header';
+import ExportContainer from '../../modules/export/ExportContainer';
 
-const ExportPage = (props: any) => {
+const ExportPage = () => {
   return (
     <>
       <NavBar />

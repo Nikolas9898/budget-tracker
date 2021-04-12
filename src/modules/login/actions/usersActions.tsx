@@ -1,4 +1,4 @@
-import { SIGN_IN } from "../actionTypes";
+import {SIGN_IN} from '../actionTypes';
 
 export const singIn = (user: {
   email: string;
@@ -13,7 +13,7 @@ export const singIn = (user: {
   try {
     await dispatch({
       type: SIGN_IN,
-      payload: user,
+      payload: user
     });
   } catch (e) {
     console.log(e);

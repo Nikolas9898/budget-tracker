@@ -1,15 +1,15 @@
-import React from "react";
-import AddTransactionButton from "../../layout/addTranasctionButton/AddTransactionButton";
-import NavBar from "../../layout/header/Header";
-import WeeklyContainer from "../../modules/transaction/weeklyContainer/WeeklyContainer";
+import React from 'react';
+import AddTransactionButton from '../../layout/addTranasctionButton/AddTransactionButton';
+import NavBar from '../../layout/header/Header';
+import WeeklyContainer from '../../modules/transaction/weeklyContainer/WeeklyContainer';
 
-const WeeklyPage = (props: any) => {
+const WeeklyPage = () => {
   return (
-    <div>
+    <>
       <NavBar />
       <WeeklyContainer />
       <AddTransactionButton />
-    </div>
+    </>
   );
 };
 

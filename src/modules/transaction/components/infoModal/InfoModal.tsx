@@ -1,18 +1,11 @@
-import React from "react";
-import Moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleRight,
-  faAngleLeft,
-  faPlusCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import TableRow from "./components/TableRow";
-import {
-  Transaction,
-  TransactionEvent,
-} from "../../../../interfaces/Transaction";
-import styles from "./infoModalStyle.module.css";
+import React from 'react';
+import Moment from 'moment';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faAngleRight, faAngleLeft, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
+import {faTimesCircle} from '@fortawesome/free-regular-svg-icons';
+import TableRow from './components/TableRow';
+import {Transaction, TransactionEvent} from '../../../../models/Transaction';
+import styles from './infoModalStyle.module.css';
 
 type Props = {
   isInfoTransactionOpen: boolean;
@@ -33,17 +26,13 @@ const InfoModal: React.FC<Props> = ({
   selectedDay,
   handleNextDay,
   handlePreviousDay,
-  handleOpenEdit,
+  handleOpenEdit
 }) => (
   <>
     {isInfoTransactionOpen ? (
       <div className={styles.modal_wrapper}>
         <div className={styles.wrapper_container}>
-          <FontAwesomeIcon
-            onClick={() => handlePreviousDay()}
-            className={styles.change_date}
-            icon={faAngleLeft}
-          />
+          <FontAwesomeIcon onClick={() => handlePreviousDay()} className={styles.change_date} icon={faAngleLeft} />
           <div>
             <FontAwesomeIcon
               onClick={() => handleOpenInfoModal(Moment().toDate())}
@@ -51,17 +40,11 @@ const InfoModal: React.FC<Props> = ({
               icon={faTimesCircle}
             />
             <div className={styles.container}>
-              <div className={styles.date}>
-                {Moment(selectedDay.createdAt).format("DD.MM.YYYY(dddd)")}
-              </div>
+              <div className={styles.date}>{Moment(selectedDay.createdAt).format('DD.MM.YYYY(dddd)')}</div>
               <div className={styles.content}>
                 <table>
-                  {selectedDay.events.map(event => (
-                    <TableRow
-                      event={event}
-                      handleDelete={handleDelete}
-                      handleOpenEdit={handleOpenEdit}
-                    />
+                  {selectedDay.events.map((event) => (
+                    <TableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
                   ))}
                 </table>
               </div>
@@ -73,11 +56,7 @@ const InfoModal: React.FC<Props> = ({
               />
             </div>
           </div>
-          <FontAwesomeIcon
-            onClick={() => handleNextDay()}
-            className={styles.change_date}
-            icon={faAngleRight}
-          />
+          <FontAwesomeIcon onClick={() => handleNextDay()} className={styles.change_date} icon={faAngleRight} />
         </div>
       </div>
     ) : null}

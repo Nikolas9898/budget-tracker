@@ -1,11 +1,11 @@
-import React from "react";
-import LoginContainer from "../../modules/login/LoginContainer";
+import React from 'react';
+import LoginContainer from '../../modules/login/LoginContainer';
 
-const LoginPage = (props: any) => {
+const LoginPage = () => {
   return (
-    <div>
+    <>
       <LoginContainer />
-    </div>
+    </>
   );
 };
 

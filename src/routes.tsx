@@ -1,15 +1,15 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import HomePage from "./pages/homePage/HomePage";
-import LoginPage from "./pages/loginPage/LoginPage";
-import WeeklyPage from "./pages/transactionPage/WeeklyPage";
-import DailyPage from "./pages/transactionPage/DailyPage";
-import YearlyPage from "./pages/transactionPage/YearlyPage";
-import MonthlyPage from "./pages/transactionPage/MonthlyPage";
-import WeeklyStatsPage from "./pages/statsPage/WeeklyPage";
-import DailyStatsPage from "./pages/statsPage/DailyPage";
-import YearlyStatsPage from "./pages/statsPage/YearlyPage";
-import MonthlyStatsPage from "./pages/statsPage/MonthlyPage";
-import ExportPage from "./pages/exportPage/ExportPage";
+import React, {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import HomePage from './pages/homePage/HomePage';
+import LoginPage from './pages/loginPage/LoginPage';
+import WeeklyPage from './pages/transactionPage/WeeklyPage';
+import DailyPage from './pages/transactionPage/DailyPage';
+import YearlyPage from './pages/transactionPage/YearlyPage';
+import MonthlyPage from './pages/transactionPage/MonthlyPage';
+import WeeklyStatsPage from './pages/statsPage/WeeklyPage';
+import DailyStatsPage from './pages/statsPage/DailyPage';
+import YearlyStatsPage from './pages/statsPage/YearlyPage';
+import MonthlyStatsPage from './pages/statsPage/MonthlyPage';
+import ExportPage from './pages/exportPage/ExportPage';
 
 const Routes = () => {
   return (
