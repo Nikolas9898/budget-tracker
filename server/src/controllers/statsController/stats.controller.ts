@@ -24,12 +24,12 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
 
     transactions.forEach((transaction) => {
       transaction.events.forEach(({category, amount, type}) => {
-        if (type === EventTypes.INCOME) {
-          income[category!] = income[category!] + amount || amount;
+        if (type === EventTypes.INCOME && category) {
+          income[category] = income[category] + amount || amount;
         }
 
-        if (type === EventTypes.EXPENSE) {
-          expense[category!] = expense[category!] + amount || amount;
+        if (type === EventTypes.EXPENSE && category) {
+          expense[category] = expense[category] + amount || amount;
         }
       });
     });
