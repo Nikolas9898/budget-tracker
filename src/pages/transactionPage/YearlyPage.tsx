@@ -3,7 +3,7 @@ import YearlyContainer from '../../modules/transaction/yearlyContainer/YearlyCon
 import NavBar from '../../layout/header/Header';
 import AddTransactionButton from '../../layout/addTranasctionButton/AddTransactionButton';
 
-const YearlyPage = () => {
+const YearlyPage = (): JSX.Element => {
   return (
     <>
       <NavBar />

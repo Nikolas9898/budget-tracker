@@ -48,6 +48,7 @@ type State = {
 };
 
 class MonthlyContainer extends React.Component<Props> {
+  // eslint-disable-next-line react/state-in-constructor
   state: State = {
     isInfoTransactionOpen: false,
     isAddTransactionOpen: false,
@@ -73,13 +74,12 @@ class MonthlyContainer extends React.Component<Props> {
   };
 
   componentDidMount() {
-    const {stateTransaction, filters, setDate} = this.props;
+    const {stateTransaction, filters, setDate: setDateWithFilter} = this.props;
     if (filters.date) {
-      console.log('filter');
       this.setState({
         date: filters.date
       });
-      setDate(filters.date);
+      setDateWithFilter(filters.date);
       this.getTransactions(filters.date);
       this.setCalendar(filters.date);
     } else {
@@ -104,12 +104,11 @@ class MonthlyContainer extends React.Component<Props> {
 
   getTransactions = async (date: Date) => {
     const {selectedDay} = this.state;
-    let from: Date = firstDateOfFirstWeekOfTheMonth(date).toDate();
-    let to: Date = lastDateOfLastWeekOfTheMonth(date).toDate();
-
-    let data = await getSpecificDatePeriod(from, to);
-    data.transactions.map((transaction: Transaction) => {
-      if (isTheSameDate(selectedDay.createdAt, transaction.createdAt)) {
+    const from: Date = firstDateOfFirstWeekOfTheMonth(date).toDate();
+    const to: Date = lastDateOfLastWeekOfTheMonth(date).toDate();
+    const data = await getSpecificDatePeriod(from, to);
+    data.transactions.forEach((singleTransaction: Transaction) => {
+      if (isTheSameDate(selectedDay.createdAt, singleTransaction.createdAt)) {
         this.setState({
           selectedDay: transaction
         });
@@ -119,17 +118,24 @@ class MonthlyContainer extends React.Component<Props> {
   };
 
   handleDelete = async (eventId: string) => {
-    await deleteTransaction(this.state.selectedDay._id, eventId);
-    let newEvents: TransactionEvent[] = this.state.selectedDay.events.filter((event) => event._id !== eventId);
+    const {selectedDay, date} = this.state;
+    const {_id: selectedDayId} = selectedDay;
+
+    await deleteTransaction(selectedDayId, eventId);
+    // eslint-disable-next-line no-underscore-dangle
+    const newEvents: TransactionEvent[] = selectedDay.events.filter((event) => event._id !== eventId);
     this.setState({
-      selectedDay: {...this.state.selectedDay, events: newEvents},
+      selectedDay: {...selectedDay, events: newEvents},
       isEditTransactionOpen: false
     });
     this.clearState();
-    this.getTransactions(this.state.date);
+    this.getTransactions(date);
   };
+
   handleOpenEdit = (event: TransactionEvent) => {
     const {isEditTransactionOpen} = this.state;
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const {setTransaction} = this.props;
     if (isEditTransactionOpen) {
       this.setState({isEditTransactionOpen: false});
       this.clearState();
@@ -138,17 +144,17 @@ class MonthlyContainer extends React.Component<Props> {
         isEditTransactionOpen: true
       });
 
-      this.props.setTransaction({
+      setTransaction({
         ...event,
         amount: (parseFloat(event.amount) / 100).toFixed(2),
-        fees: (parseFloat(event.fees!) / 100).toFixed(2)
+        fees: event.fees ? (parseFloat(event.fees) / 100).toFixed(2) : ''
       });
     }
   };
+
   handleNextDay = async () => {
     const {selectedDay, transactions} = this.state;
-
-    let newDate: Date = Moment(selectedDay.createdAt).add(1, 'days').toDate();
+    const newDate: Date = Moment(selectedDay.createdAt).add(1, 'days').toDate();
 
     this.setState({
       selectedDay: {createdAt: newDate, events: []},
@@ -163,10 +169,10 @@ class MonthlyContainer extends React.Component<Props> {
       }
     });
   };
+
   handlePreviousDay = async () => {
     const {selectedDay, transactions} = this.state;
-
-    let newDate: Date = Moment(selectedDay.createdAt).add(-1, 'days').toDate();
+    const newDate: Date = Moment(selectedDay.createdAt).add(-1, 'days').toDate();
     this.setState({
       selectedDay: {createdAt: newDate, events: []},
       date: newDate
@@ -180,17 +186,21 @@ class MonthlyContainer extends React.Component<Props> {
       }
     });
   };
+
   handleOpenTransaction = () => {
-    if (this.state.isAddTransactionOpen) {
+    const {isAddTransactionOpen, selectedDay} = this.state;
+    const {createdAt} = selectedDay;
+    const {handleInput} = this.props;
+    if (isAddTransactionOpen) {
       this.setState({
         isAddTransactionOpen: false
       });
       this.clearState();
     } else {
-      this.props.handleInput({
+      handleInput({
         target: {
           name: 'date',
-          value: this.state.selectedDay.createdAt
+          value: createdAt
         }
       });
       this.setState({
@@ -198,9 +208,9 @@ class MonthlyContainer extends React.Component<Props> {
       });
     }
   };
+
   handleOpenInfoModal = (date: Date) => {
     const {isInfoTransactionOpen} = this.state;
-    console.log(date);
     if (isInfoTransactionOpen) {
       this.setState({
         isInfoTransactionOpen: false,
@@ -214,8 +224,10 @@ class MonthlyContainer extends React.Component<Props> {
       this.selectedDay(date);
     }
   };
+
   selectedDay = (date: Date) => {
-    this.state.transactions.forEach((transaction) => {
+    const {transactions} = this.state;
+    transactions.forEach((transaction) => {
       if (isTheSameDate(date, transaction.createdAt)) {
         this.setState({
           selectedDay: transaction
@@ -225,19 +237,25 @@ class MonthlyContainer extends React.Component<Props> {
   };
 
   handleSave = async () => {
-    const {isEditTransactionOpen, selectedDay} = this.state;
-    const {transactionEvent, date} = this.props.stateTransaction;
+    const {
+      isEditTransactionOpen,
+      selectedDay: {_id: selectedDayId}
+    } = this.state;
+    const {
+      stateTransaction: {transactionEvent, date}
+    } = this.props;
+    const {_id: transactionEventId} = transactionEvent;
     const errors: Error = validateTransaction(transactionEvent);
     const isValid: boolean = Object.values(errors).filter(Boolean).length <= 0;
 
     if (!isValid) {
-      this.setState({errors: errors});
+      this.setState({errors});
       return;
     }
-    let event = transaction(transactionEvent);
+    const event = transaction(transactionEvent);
 
     if (isEditTransactionOpen) {
-      await editTransaction(selectedDay._id, transactionEvent._id, event.events[0]);
+      await editTransaction(selectedDayId, transactionEventId, event.events[0]);
       this.getTransactions(transactionEvent.date);
       this.clearState();
     } else {
@@ -246,6 +264,7 @@ class MonthlyContainer extends React.Component<Props> {
       this.clearState();
     }
     this.setState({
+      // eslint-disable-next-line react/no-access-state-in-setstate
       ...this.state,
       errors: {},
       isAddTransactionOpen: false,
@@ -254,7 +273,9 @@ class MonthlyContainer extends React.Component<Props> {
   };
 
   clearState = () => {
-    this.props.setTransaction({
+    const {setTransaction} = this.props;
+
+    setTransaction({
       _id: '',
       type: 'income',
       date: Moment().toDate(),
@@ -278,7 +299,7 @@ class MonthlyContainer extends React.Component<Props> {
       this.setFirstWeek(date);
     }
 
-    for (let i = 1; i <= lastDateOfTheMonth(date).get('date'); i++) {
+    for (let i = 1; i <= lastDateOfTheMonth(date).get('date'); i += 1) {
       calendarDates.push({
         date: Moment(firstDateOfTheMonth(date)).set('date', i).toDate()
       });
@@ -290,17 +311,21 @@ class MonthlyContainer extends React.Component<Props> {
   };
 
   setFirstWeek = (date: Date) => {
+    const {calendarDates} = this.state;
     const lastDateOfPreviusMonth: number = Moment(date).set('date', 0).get('date');
 
-    for (let i = firstDateOfFirstWeekOfTheMonth(date).get('date'); i <= lastDateOfPreviusMonth; i++) {
-      this.state.calendarDates.push({
+    for (let i = firstDateOfFirstWeekOfTheMonth(date).get('date'); i <= lastDateOfPreviusMonth; i += 1) {
+      calendarDates.push({
         date: Moment(firstDateOfFirstWeekOfTheMonth(date)).set('date', i).toDate()
       });
     }
   };
+
   setLastWeek = (date: Date) => {
-    for (let i = 1; i <= lastDateOfLastWeekOfTheMonth(date).get('date'); i++) {
-      this.state.calendarDates.push({
+    const {calendarDates} = this.state;
+
+    for (let i = 1; i <= lastDateOfLastWeekOfTheMonth(date).get('date'); i += 1) {
+      calendarDates.push({
         date: Moment(lastDateOfLastWeekOfTheMonth(date)).startOf('date').set('date', i).toDate()
       });
     }
@@ -316,7 +341,10 @@ class MonthlyContainer extends React.Component<Props> {
       isEditTransactionOpen,
       isInfoTransactionOpen
     } = this.state;
-    const {date, transactionEvent} = this.props.stateTransaction;
+    const {
+      handleInput,
+      stateTransaction: {date, transactionEvent}
+    } = this.props;
     return (
       <div className="wrapper">
         <NavBarMenu />
@@ -342,7 +370,7 @@ class MonthlyContainer extends React.Component<Props> {
           transactionEvent={transactionEvent}
           handleSave={this.handleSave}
           handleOpenEdit={this.handleOpenEdit}
-          handleInputChange={this.props.handleInput}
+          handleInputChange={handleInput}
           isAddTransactionOpen={isAddTransactionOpen}
           handleOpenTransaction={this.handleOpenTransaction}
           handleDelete={this.handleDelete}

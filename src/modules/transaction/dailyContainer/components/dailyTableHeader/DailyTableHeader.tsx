@@ -3,6 +3,7 @@ import Moment from 'moment';
 import {isTheSameDate} from '../../../../../helpers/Variables';
 import {TransactionWithAmountNumber} from '../../../../../models/Transaction';
 import styles from '../../DailyStyle.module.css';
+
 type Props = {
   transaction: TransactionWithAmountNumber;
 };

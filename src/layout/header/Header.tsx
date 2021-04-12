@@ -8,7 +8,7 @@ import {headerTitle} from '../../helpers/Variables';
 import {UserReducer} from '../../models/User';
 import AccountMenu from '../accountMenu/AccountMenu';
 
-const NavBar = () => {
+const NavBar = (): JSX.Element => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);

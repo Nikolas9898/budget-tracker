@@ -11,7 +11,7 @@ import YearlyStatsPage from './pages/statsPage/YearlyPage';
 import MonthlyStatsPage from './pages/statsPage/MonthlyPage';
 import ExportPage from './pages/exportPage/ExportPage';
 
-const Routes = () => {
+const Routes = (): JSX.Element => {
   return (
     <Router>
       <Switch>

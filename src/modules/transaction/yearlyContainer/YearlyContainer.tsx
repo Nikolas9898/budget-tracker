@@ -9,7 +9,7 @@ import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import YearlyTableRow from './components/YearlyTableRow';
 import styles from './YearlyStyle.module.css';
 
-const YearlyContainer = () => {
+const YearlyContainer = (): JSX.Element => {
   const [monthsInYear, setMonthsInYear] = useState<Month[]>([]);
   const [sumIncome, setSumIncome] = useState(0);
   const [sumExpense, setSumExpense] = useState(0);
@@ -17,11 +17,6 @@ const YearlyContainer = () => {
   const stateTransaction = useSelector(
     (state: {userReducer: UserReducer; transactionReducer: TransactionReducer}) => state.transactionReducer
   );
-
-  useEffect(() => {
-    getYear(stateTransaction.date);
-  }, [stateTransaction.date]);
-
   const setMonths = (months: Month[]) => {
     const year: Month[] = [];
 
@@ -33,7 +28,7 @@ const YearlyContainer = () => {
       lastMonth = Moment(newMonths[newMonths.length - 1].from).get('month');
     }
 
-    for (let i = 0; i <= lastMonth; i++) {
+    for (let i = 0; i <= lastMonth; i += 1) {
       if (newMonths.filter((month) => Moment(month.from).get('month') === i).length > 0) {
         year.push(newMonths.filter((month) => Moment(month.from).get('month') === i)[0]);
       } else {
@@ -52,7 +47,7 @@ const YearlyContainer = () => {
   const getYear = async (date: Date) => {
     const months: Month[] = [];
 
-    for (let i = 0; i <= 11; i++) {
+    for (let i = 0; i <= 11; i += 1) {
       months.push({
         from: Moment(date).set('month', i).startOf('month').toDate(),
         to: Moment(date).set('month', i).endOf('month').toDate(),
@@ -79,6 +74,10 @@ const YearlyContainer = () => {
       setSumIncome(data.sumIncome);
     }
   };
+
+  useEffect(() => {
+    getYear(stateTransaction.date);
+  });
 
   return (
     <div className="wrapper">

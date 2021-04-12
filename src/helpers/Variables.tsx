@@ -2,6 +2,29 @@ import Moment from 'moment';
 import {TransactionEvent} from '../models/Transaction';
 import {Error} from '../models/Error';
 
+export enum DaysOfWeek {
+  Monday = 'M',
+  Thuesday = 'T',
+  Wednesday = 'W',
+  Thursday = 'Th',
+  Friday = 'F',
+  Saturday = 'Sa',
+  Sunday = 'Su'
+}
+
+export enum TransactionTypes {
+  Transfer = 'transfer',
+  Income = 'income',
+  Expense = 'expense',
+  Currency = 'Bg'
+}
+export enum TransactionPage {
+  Transaction = 'transaction',
+  Stats = 'stats',
+  Export = 'export',
+  Accounts = 'accounts'
+}
+
 export const firstDateOfTheMonth = (date: Date) => Moment(date).startOf('month');
 
 export const lastDateOfTheMonth = (date: Date) => Moment(date).endOf('month');
@@ -29,29 +52,6 @@ export const isTransactionTypeIncome = (type: string, amount: string) =>
 
 export const isTransactionTypeExpense = (type: string, amount: string) =>
   type === TransactionTypes.Expense || type === TransactionTypes.Transfer ? (parseFloat(amount) / 100).toFixed(2) : '';
-
-export enum DaysOfWeek {
-  Monday = 'M',
-  Thuesday = 'T',
-  Wednesday = 'W',
-  Thursday = 'Th',
-  Friday = 'F',
-  Saturday = 'Sa',
-  Sunday = 'Su'
-}
-
-export enum TransactionTypes {
-  Transfer = 'transfer',
-  Income = 'income',
-  Expense = 'expense',
-  Currency = 'Bg'
-}
-export enum TransactionPage {
-  Transaction = 'transaction',
-  Stats = 'stats',
-  Export = 'export',
-  Accounts = 'accounts'
-}
 
 export const headerTitle = (path: string) => {
   switch (true) {

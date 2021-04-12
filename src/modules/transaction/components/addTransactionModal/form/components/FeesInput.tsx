@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import styles from '../../AddTransactionStyle.module.css';
 import {TransactionEvent} from '../../../../../../models/Transaction';
 import {HandleInput} from '../../../../../../models/Function';
+
 type Props = {
   handleInputChange: (event: HandleInput) => void;
   setIsFeesOpen: (arg0: boolean) => void;
@@ -13,7 +14,7 @@ const FeesInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transacti
   const closeFees = useCallback(() => {
     handleInputChange({target: {value: '0', name: 'fees'}});
     setIsFeesOpen(!isFeesOpen);
-  }, [isFeesOpen]);
+  }, [handleInputChange, isFeesOpen, setIsFeesOpen]);
   return (
     <>
       {isFeesOpen ? (
@@ -27,9 +28,9 @@ const FeesInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transacti
               onChange={handleInputChange}
             />
 
-            <div className={styles.fees} onClick={closeFees}>
+            <button type="button" className={styles.fees} onClick={closeFees}>
               X
-            </div>
+            </button>
           </div>
         </div>
       ) : null}

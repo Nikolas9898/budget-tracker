@@ -9,7 +9,7 @@ import {validateLogin} from '../../helpers/Validation';
 import {singIn} from './actions/usersActions';
 import style from './LoginContainerStyle.module.css';
 
-const LoginContainer = () => {
+const LoginContainer = (): JSX.Element => {
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -34,13 +34,13 @@ const LoginContainer = () => {
   // const handleEnterPress = (event: any) => {
   // };
   const handleLogin = async () => {
-    const errors = validateLogin(user, isLogin);
+    const validationErrors = validateLogin(user, isLogin);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
     if (!isValid) {
       setErrors({
-        email: errors.email,
-        password: errors.password,
-        confirmPassword: errors.confirmPassword
+        email: validationErrors.email,
+        password: validationErrors.password,
+        confirmPassword: validationErrors.confirmPassword
       });
       return;
     }
@@ -60,13 +60,13 @@ const LoginContainer = () => {
     }
   };
   const handleRegister = async () => {
-    const errors = validateLogin(user, isLogin);
+    const validationErrors = validateLogin(user, isLogin);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
     if (!isValid) {
       setErrors({
-        email: errors.email,
-        password: errors.password,
-        confirmPassword: errors.confirmPassword
+        email: validationErrors.email,
+        password: validationErrors.password,
+        confirmPassword: validationErrors.confirmPassword
       });
       return;
     }
@@ -88,8 +88,7 @@ const LoginContainer = () => {
         setErrors({email: '', password: '', confirmPassword: ''});
       }
     } catch (e) {
-      console.error(e);
-      return [];
+      alert(e);
     }
   };
   return (

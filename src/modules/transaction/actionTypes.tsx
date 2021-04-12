@@ -7,3 +7,5 @@ export enum ActionTypes {
   SET_TRANSACTION = 'SET_TRANSACTION',
   SET_DATE = 'SET_DATE'
 }
+
+export default ActionTypes;

@@ -1,12 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import StatsForm from '../components/StatsForm';
 import '../../../scss/variables.scss';
-const MonthlyContainer = () => {
-  const [date, setDate] = useState(new Date());
-  const [sumIncome, setSumIncome] = useState(0);
-  const [sumExpense, setSumExpense] = useState(0);
 
+const MonthlyContainer = (): JSX.Element => {
   const data = [
     {
       category: 'food',

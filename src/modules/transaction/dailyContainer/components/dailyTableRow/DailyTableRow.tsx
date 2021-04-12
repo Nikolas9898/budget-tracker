@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import {TransactionEventWithAmountNumber, TransactionWithAmountNumber} from '../../../../../models/Transaction';
 import {TransactionTypes} from '../../../../../helpers/Variables';
 import styles from './DailyTableRow.module.css';
+
 type Props = {
   handleSelectEvent: (transactionEvent: TransactionEventWithAmountNumber, transactionId: string) => void;
   transactionEvent: TransactionEventWithAmountNumber;
@@ -9,9 +10,11 @@ type Props = {
 };
 
 const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, transaction}) => {
+  const {_id: transactionId} = transaction;
+
   const selectEvent = useCallback(() => {
-    handleSelectEvent(transactionEvent, transaction._id);
-  }, [transactionEvent]);
+    handleSelectEvent(transactionEvent, transactionId);
+  }, [handleSelectEvent, transactionId, transactionEvent]);
   return (
     <tr onClick={selectEvent}>
       <td>

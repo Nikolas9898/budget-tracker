@@ -1,6 +1,6 @@
+import Moment from 'moment';
 import {ActionTypes} from '../actionTypes';
 import {TransactionEvent} from '../../../models/Transaction';
-import Moment from 'moment';
 
 export interface State {
   date: Date;
@@ -25,33 +25,40 @@ const initialState = {
     transactionId: ''
   }
 };
-export default function (state = initialState, action: any) {
+export default (state = initialState, action: any) => {
   switch (action.type) {
-    case ActionTypes.HANDLE_NEXT_MONTH:
+    case ActionTypes.HANDLE_NEXT_MONTH: {
       const nextMonth = Moment(state.date).add(1, 'month');
       return {
         ...state,
         date: nextMonth
       };
-    case ActionTypes.HANDLE_PREVIOUS_MONTH:
+    }
+
+    case ActionTypes.HANDLE_PREVIOUS_MONTH: {
       const previousMonth = Moment(state.date).add(-1, 'month');
       return {
         ...state,
         date: previousMonth
       };
-    case ActionTypes.HANDLE_NEXT_YEAR:
-      let nextYear = Moment(state.date).add(1, 'year').toDate();
+    }
+
+    case ActionTypes.HANDLE_NEXT_YEAR: {
+      const nextYear = Moment(state.date).add(1, 'year').toDate();
 
       return {
         ...state,
         date: nextYear
       };
-    case ActionTypes.HANDLE_PREVIOUS_YEAR:
-      let previousYear = Moment(state.date).add(-1, 'year');
+    }
+
+    case ActionTypes.HANDLE_PREVIOUS_YEAR: {
+      const previousYear = Moment(state.date).add(-1, 'year');
       return {
         ...state,
         date: previousYear
       };
+    }
 
     case ActionTypes.HANDLE_INPUT:
       if (action.payload.name === 'type') {
@@ -64,15 +71,15 @@ export default function (state = initialState, action: any) {
             to: ''
           }
         };
-      } else {
-        return {
-          ...state,
-          transactionEvent: {
-            ...state.transactionEvent,
-            [action.payload.name]: action.payload.value
-          }
-        };
       }
+      return {
+        ...state,
+        transactionEvent: {
+          ...state.transactionEvent,
+          [action.payload.name]: action.payload.value
+        }
+      };
+
     case ActionTypes.SET_TRANSACTION:
       return {
         ...state,
@@ -86,4 +93,4 @@ export default function (state = initialState, action: any) {
     default:
       return state;
   }
-}
+};

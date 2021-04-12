@@ -2,6 +2,7 @@ import React from 'react';
 import {TransactionEvent} from '../../../../../../models/Transaction';
 import {TransactionTypes} from '../../../../../../helpers/Variables';
 import styles from '../../AddTransactionStyle.module.css';
+
 type Props = {
   transaction: TransactionEvent;
   isFeesOpen: boolean;

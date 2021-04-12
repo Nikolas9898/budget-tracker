@@ -3,7 +3,7 @@ import AddTransactionButton from '../../layout/addTranasctionButton/AddTransacti
 import NavBar from '../../layout/header/Header';
 import DailyContainer from '../../modules/transaction/dailyContainer/DailyContainer';
 
-const DailyPage = () => {
+const DailyPage = (): JSX.Element => {
   return (
     <>
       <NavBar />

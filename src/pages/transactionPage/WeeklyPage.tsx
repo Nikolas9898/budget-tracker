@@ -3,7 +3,7 @@ import AddTransactionButton from '../../layout/addTranasctionButton/AddTransacti
 import NavBar from '../../layout/header/Header';
 import WeeklyContainer from '../../modules/transaction/weeklyContainer/WeeklyContainer';
 
-const WeeklyPage = () => {
+const WeeklyPage = (): JSX.Element => {
   return (
     <>
       <NavBar />

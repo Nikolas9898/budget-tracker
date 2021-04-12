@@ -1,14 +1,14 @@
 import React, {useCallback} from 'react';
+import {Tabs, TabList, TabPanel, Tab} from 'react-tabs';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
+import Moment from 'moment';
 import styles from './AddTransactionStyle.module.css';
 import {TransactionEvent} from '../../../../models/Transaction';
 import {Error} from '../../../../models/Error';
 import {HandleInput} from '../../../../models/Function';
 import {TransactionTypes} from '../../../../helpers/Variables';
-import {Tabs, TabList, TabPanel, Tab} from 'react-tabs';
 import Form from './form/Form';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
-import Moment from 'moment';
 
 type Props = {
   isAddTransactionOpen: boolean;
@@ -41,30 +41,35 @@ const AddTransactionModal: React.FC<Props> = ({
         return 1;
       case TransactionTypes.Transfer:
         return 2;
+      default:
+        return 0;
     }
   };
 
   const handleOpen = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isEditTransactionOpen ? handleOpenEdit(transactionEvent) : handleOpenTransaction(Moment().toDate());
-  }, [isEditTransactionOpen, transactionEvent]);
+  }, [handleOpenEdit, handleOpenTransaction, isEditTransactionOpen, transactionEvent]);
   const handleSetIncomeType = useCallback(() => {
     handleInputChange({
       target: {value: TransactionTypes.Income, name: 'type'}
     });
-  }, []);
+  }, [handleInputChange]);
   const handleSetExpenseType = useCallback(() => {
     handleInputChange({
       target: {value: TransactionTypes.Expense, name: 'type'}
     });
-  }, []);
+  }, [handleInputChange]);
   const handleSetTransferType = useCallback(() => {
     handleInputChange({
       target: {value: TransactionTypes.Transfer, name: 'type'}
     });
-  }, []);
+  }, [handleInputChange]);
   const handleDeleteTransaction = useCallback(() => {
-    handleDelete(transactionEvent._id);
-  }, [transactionEvent._id]);
+    const {_id: transactionEventId} = transactionEvent;
+
+    handleDelete(transactionEventId);
+  }, [handleDelete, transactionEvent]);
   return (
     <div>
       {isAddTransactionOpen || isEditTransactionOpen ? (
@@ -104,17 +109,17 @@ const AddTransactionModal: React.FC<Props> = ({
 
             {isEditTransactionOpen ? (
               <div className={styles.buttons_content}>
-                <button className={styles.save_button} onClick={handleSave}>
+                <button type="button" className={styles.save_button} onClick={handleSave}>
                   Save
                 </button>
 
-                <button className={styles.delete_button} onClick={handleDeleteTransaction}>
+                <button type="button" className={styles.delete_button} onClick={handleDeleteTransaction}>
                   Delete
                 </button>
               </div>
             ) : (
               <div className={styles.buttons_content}>
-                <button className={styles.save_button} onClick={handleSave}>
+                <button type="button" className={styles.save_button} onClick={handleSave}>
                   Save
                 </button>
               </div>

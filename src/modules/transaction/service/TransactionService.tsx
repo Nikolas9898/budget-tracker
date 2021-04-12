@@ -1,9 +1,8 @@
 import axios from 'axios';
-import {Transaction, TransactionReducer} from '../../../models/Transaction';
 
-let config = {
+const config = {
   headers: {
-    Authorization: 'Bearer ' + localStorage.getItem('jwt')
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`
   }
 };
 

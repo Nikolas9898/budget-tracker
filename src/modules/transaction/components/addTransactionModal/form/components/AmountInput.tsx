@@ -4,6 +4,7 @@ import {TransactionEvent} from '../../../../../../models/Transaction';
 import {HandleInput} from '../../../../../../models/Function';
 import {errorMsg} from '../../../../../../helpers/Validation';
 import {TransactionTypes} from '../../../../../../helpers/Variables';
+
 type Props = {
   handleInputChange: (event: HandleInput) => void;
   setIsFeesOpen: (isOpen: boolean) => void;
@@ -15,7 +16,7 @@ type Props = {
 const AmountInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transaction, isFeesOpen, error}) => {
   const setFeesOpen = useCallback(() => {
     setIsFeesOpen(!isFeesOpen);
-  }, []);
+  }, [isFeesOpen, setIsFeesOpen]);
 
   return (
     <div className={styles.input_container}>
@@ -28,9 +29,9 @@ const AmountInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transac
           onChange={handleInputChange}
         />
         {transaction.type === TransactionTypes.Transfer && !isFeesOpen ? (
-          <div className={styles.fees} onClick={setFeesOpen}>
+          <button type="button" className={styles.fees} onClick={setFeesOpen}>
             Fees
-          </div>
+          </button>
         ) : null}
       </div>
       {errorMsg(error)}

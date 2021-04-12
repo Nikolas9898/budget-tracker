@@ -21,7 +21,7 @@ const DailyContainer = () => {
     <div className="wrapper">
       <NavBarMenu />
       <div className="stats_container">
-        <StatsForm stats={data} isIncome={true} />
+        <StatsForm stats={data} isIncome />
         <StatsForm stats={data} isIncome={false} />
       </div>
     </div>

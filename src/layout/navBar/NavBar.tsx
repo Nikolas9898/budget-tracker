@@ -18,9 +18,11 @@ const NavBarMenu = () => {
   const state = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
 
   const handlePreviousYearOrMonth = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isSelectedTitle(location.pathname, 'yearly') ? dispatch(handlePreviousYear()) : dispatch(handlePreviousMonth());
   }, [dispatch, location.pathname]);
   const handleNextYearOrMonth = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isSelectedTitle(location.pathname, 'yearly') ? dispatch(handleNextYear()) : dispatch(handleNextMonth());
   }, [dispatch, location.pathname]);
   return (
@@ -62,15 +64,15 @@ const NavBarMenu = () => {
         </Link>
       </div>
       <div className={styles.change_month_content}>
-        <div className={styles.change_month_button} onClick={handlePreviousYearOrMonth}>
+        <button type="button" className={styles.change_month_button} onClick={handlePreviousYearOrMonth}>
           {'<'}
-        </div>
+        </button>
         {isSelectedTitle(location.pathname, 'yearly')
           ? Moment(state.date).format('YYYY')
           : Moment(state.date).format('MMM YYYY')}
-        <div className={styles.change_month_button} onClick={handleNextYearOrMonth}>
+        <button type="button" className={styles.change_month_button} onClick={handleNextYearOrMonth}>
           {'>'}
-        </div>
+        </button>
       </div>
     </div>
   );

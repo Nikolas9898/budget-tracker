@@ -16,7 +16,7 @@ import {UserReducer} from '../../../models/User';
 import styles from './WeeklyStyle.module.css';
 import '../../../scss/variables.scss';
 
-const WeeklyContainer = () => {
+const WeeklyContainer = (): JSX.Element => {
   const [weeks, setWeeks] = useState<Month[]>([]);
   const [sumIncome, setSumIncome] = useState(0);
   const [sumExpense, setSumExpense] = useState(0);

@@ -1,6 +1,7 @@
 import React, {forwardRef, useState, useCallback} from 'react';
-import styles from '../AddTransactionStyle.module.css';
 import Moment from 'moment';
+import DatePicker from 'react-datepicker';
+import styles from '../AddTransactionStyle.module.css';
 import {TransactionEvent} from '../../../../../models/Transaction';
 import {HandleInput} from '../../../../../models/Function';
 import {Error} from '../../../../../models/Error';
@@ -9,7 +10,6 @@ import InputTitles from './components/InputTitles';
 import SelectInput from './components/SelectInputs';
 import FeesInput from './components/FeesInput';
 import AmountInput from './components/AmountInput';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 type Props = {
@@ -26,19 +26,20 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   const selectOptions = (transactionType: string) => {
     if (transactionType === TransactionTypes.Transfer) {
       return accounts;
-    } else {
-      if (transactionType === TransactionTypes.Income) {
-        return categoriesIncome;
-      } else {
-        return categoriesExpense;
-      }
     }
+    if (transactionType === TransactionTypes.Income) {
+      return categoriesIncome;
+    }
+    return categoriesExpense;
   };
-  const handleSetDate = useCallback((date) => {
-    handleInputChange({
-      target: {value: Moment(date).toDate(), name: 'date'}
-    });
-  }, []);
+  const handleSetDate = useCallback(
+    (date) => {
+      handleInputChange({
+        target: {value: Moment(date).toDate(), name: 'date'}
+      });
+    },
+    [handleInputChange]
+  );
   const ExampleCustomInput: React.FC<any> = forwardRef(({value, onClick}) => (
     <div className={styles.input_container}>
       <input className={styles.input} onClick={onClick} value={value} />

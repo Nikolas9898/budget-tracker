@@ -1,6 +1,7 @@
 import React from 'react';
 import {PieChart} from 'react-minimal-pie-chart';
 import './StatsFormStyle.css';
+
 type Props = {
   stats: any;
   isIncome: boolean;
@@ -17,7 +18,7 @@ const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
           })}
           radius={42}
           labelPosition={112}
-          animate={true}
+          animate
           label={({dataEntry}) => dataEntry.category}
           data={stats}
         />

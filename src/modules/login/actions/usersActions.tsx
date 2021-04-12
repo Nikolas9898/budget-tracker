@@ -19,3 +19,5 @@ export const singIn = (user: {
     console.log(e);
   }
 };
+
+export default singIn;

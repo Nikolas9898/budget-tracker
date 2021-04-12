@@ -19,9 +19,9 @@ const AccountMenu = () => {
         <FontAwesomeIcon className={styles.user_email} icon={faCog} /> Settings
       </Link>
 
-      <div className={styles.dropdown_item} onClick={handleExit}>
+      <button type="button" className={styles.dropdown_item} onClick={handleExit}>
         <FontAwesomeIcon className={styles.user_email} icon={faSignOutAlt} /> Exit
-      </div>
+      </button>
     </div>
   );
 };
