@@ -28,18 +28,16 @@
   margin-top: 20px;
   font-size: 1.5em;
   min-width: 400px;
-
-  /* tbody tr {
-    border-bottom: 1px solid black;
-  }
-  td {
-    border-top: none;
-    padding: 10px;
-  }
-  tr:last-of-type {
-    border: none;
-  } */
 }
+
+td {
+  border-top: none;
+  padding: 10px;
+}
+tr:last-of-type {
+  border: none;
+}
+
 .percent_content {
   width: 40px;
 }

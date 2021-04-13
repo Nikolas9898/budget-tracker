@@ -83,7 +83,7 @@ const AddTransactionButton = (): JSX.Element => {
         handleInput({
           target: {
             name: 'date',
-            value: 'sdfsdf'
+            value: Moment().toDate()
           }
         })
       );

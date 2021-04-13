@@ -26,7 +26,7 @@ const WeeklyContainer = (): JSX.Element => {
   );
 
   const getWeeks = async (date: Date) => {
-    // const weeks: Month[] = [];
+    const weeks: Month[] = [];
 
     weeks.push({
       from: firstDateOfFirstWeekOfTheMonth(date).toDate(),
@@ -70,7 +70,7 @@ const WeeklyContainer = (): JSX.Element => {
 
   useEffect(() => {
     getWeeks(stateTransaction.date);
-  });
+  }, [stateTransaction.date]);
   return (
     <div className="wrapper">
       <NavBarMenu />

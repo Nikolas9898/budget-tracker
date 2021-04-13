@@ -31,8 +31,6 @@ const LoginContainer = (): JSX.Element => {
     });
   };
 
-  // const handleEnterPress = (event: any) => {
-  // };
   const handleLogin = async () => {
     const validationErrors = validateLogin(user, isLogin);
     const isValid = Object.values(errors).filter(Boolean).length <= 0;
@@ -50,7 +48,7 @@ const LoginContainer = (): JSX.Element => {
     if (loggedUser.data.user) {
       dispatch(singIn(loggedUser.data));
       window.location.pathname = '/';
-      await setErrors({email: '', password: '', confirmPassword: ''});
+      setErrors({email: '', password: '', confirmPassword: ''});
     } else {
       setErrors({
         email: '',

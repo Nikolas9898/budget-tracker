@@ -11,22 +11,16 @@ const InfoTableHead: React.FC<Props> = ({sumIncome, sumExpense}) => {
     <thead>
       <tr>
         <th>
-          <label htmlFor="Income" className={styles.info_title}>
-            Income
-            <div className={styles.income}>{(sumIncome / 100).toFixed(2)}</div>
-          </label>
+          <div className={styles.info_title}>Income</div>
+          <div className={styles.income}>{(sumIncome / 100).toFixed(2)}</div>
         </th>
         <th>
-          <label htmlFor="Expense" className={styles.info_title}>
-            Expense
-            <div className={styles.expense}>{(sumExpense / 100).toFixed(2)}</div>
-          </label>
+          <div className={styles.info_title}>Expense </div>
+          <div className={styles.expense}>{(sumExpense / 100).toFixed(2)}</div>
         </th>
         <th>
-          <label htmlFor="Total" className={styles.info_title}>
-            Total
-            <div className={styles.total}>{((sumIncome - sumExpense) / 100).toFixed(2)}</div>
-          </label>
+          <div className={styles.info_title}>Total</div>
+          <div className={styles.total}>{((sumIncome - sumExpense) / 100).toFixed(2)}</div>
         </th>
       </tr>
     </thead>
