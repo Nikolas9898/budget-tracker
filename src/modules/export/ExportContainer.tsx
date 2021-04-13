@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './ExportStyle.css';
 
-const ExportContainer = (props: any) => {
+const ExportContainer = (props: any): JSX.Element => {
   const [selectedType, setSelectedType] = useState('');
   const options = [' ', 'salary', 'bonus', 'petty cash', 'other'];
   const handleInputChange = (event: any) => {};

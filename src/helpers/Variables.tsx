@@ -1,6 +1,5 @@
 import Moment from 'moment';
 import {TransactionEvent} from '../models/Transaction';
-import {Error} from '../models/Error';
 
 export enum DaysOfWeek {
   Monday = 'M',
@@ -25,35 +24,37 @@ export enum TransactionPage {
   Accounts = 'accounts'
 }
 
-export const firstDateOfTheMonth = (date: Date) => Moment(date).startOf('month');
+export const firstDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).startOf('month');
 
-export const lastDateOfTheMonth = (date: Date) => Moment(date).endOf('month');
+export const lastDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).endOf('month');
 
-export const firstDateOfFirstWeekOfTheMonth = (date: Date) => firstDateOfTheMonth(date).startOf('isoWeek');
+export const firstDateOfFirstWeekOfTheMonth = (date: Date): Moment.Moment =>
+  firstDateOfTheMonth(date).startOf('isoWeek');
 
-export const lastDateOfFirstWeekOfTheMonth = (date: Date) => firstDateOfTheMonth(date).endOf('isoWeek');
+export const lastDateOfFirstWeekOfTheMonth = (date: Date): Moment.Moment => firstDateOfTheMonth(date).endOf('isoWeek');
 
-export const firstDateOfLastWeekOfTheMonth = (date: Date) => lastDateOfTheMonth(date).startOf('isoWeek');
+export const firstDateOfLastWeekOfTheMonth = (date: Date): Moment.Moment => lastDateOfTheMonth(date).startOf('isoWeek');
 
-export const lastDateOfLastWeekOfTheMonth = (date: Date) => lastDateOfTheMonth(date).startOf('day').endOf('isoWeek');
+export const lastDateOfLastWeekOfTheMonth = (date: Date): Moment.Moment =>
+  lastDateOfTheMonth(date).startOf('day').endOf('isoWeek');
 
-export const isTheSameDate = (calendarDate: Date, transactionDate: Date) =>
+export const isTheSameDate = (calendarDate: Date, transactionDate: Date): boolean =>
   Moment(calendarDate).diff(transactionDate, 'day') === 0;
 
-export const isTypeTransfer = (type: string) => type.toLowerCase() === TransactionTypes.Transfer;
+export const isTypeTransfer = (type: string): boolean => type.toLowerCase() === TransactionTypes.Transfer;
 
-export const isTransactionContainer = (pathname: string) => pathname.includes(TransactionPage.Transaction);
+export const isTransactionContainer = (pathname: string): boolean => pathname.includes(TransactionPage.Transaction);
 
-export const isSelectedTitle = (pathname: string, path: string) =>
+export const isSelectedTitle = (pathname: string, path: string): boolean =>
   pathname === `/transaction/${path}` || pathname === `/stats/${path}`;
 
-export const isTransactionTypeIncome = (type: string, amount: string) =>
+export const isTransactionTypeIncome = (type: string, amount: string): string =>
   type === TransactionTypes.Income ? (parseFloat(amount) / 100).toFixed(2) : '';
 
-export const isTransactionTypeExpense = (type: string, amount: string) =>
+export const isTransactionTypeExpense = (type: string, amount: string): string =>
   type === TransactionTypes.Expense || type === TransactionTypes.Transfer ? (parseFloat(amount) / 100).toFixed(2) : '';
 
-export const headerTitle = (path: string) => {
+export const headerTitle = (path: string): string => {
   switch (true) {
     case path.includes('/transaction'):
       return TransactionPage.Transaction.toLocaleUpperCase();

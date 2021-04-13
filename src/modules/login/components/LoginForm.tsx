@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 import LoginContainerStyle from '../LoginContainerStyle.module.css';
 
 type Props = {

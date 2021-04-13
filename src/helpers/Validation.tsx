@@ -5,7 +5,7 @@ import {Error} from '../models/Error';
 import {TransactionTypes, TransactionPage} from './Variables';
 import {UserRegister} from '../models/User';
 
-export const validateTransaction = (value: TransactionEvent) => {
+export const validateTransaction = (value: TransactionEvent): Error => {
   const errors: Error = {
     account: '',
     from: '',
@@ -38,7 +38,14 @@ export const validateTransaction = (value: TransactionEvent) => {
   return errors;
 };
 
-export const validateLogin = (user: UserRegister, isLogin: boolean) => {
+export const validateLogin = (
+  user: UserRegister,
+  isLogin: boolean
+): {
+  email: string;
+  password: string;
+  confirmPassword: string;
+} => {
   const isValidEmail = RegExp(
     "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
   );

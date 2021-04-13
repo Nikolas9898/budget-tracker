@@ -13,7 +13,7 @@ const initialState = {
   loading: true
 };
 
-export default function (state = initialState, action: any) {
+export default (state = initialState, action: any) => {
   switch (action.type) {
     case SIGN_IN:
       if (action.payload.token) {
@@ -29,4 +29,4 @@ export default function (state = initialState, action: any) {
     default:
       return state;
   }
-}
+};

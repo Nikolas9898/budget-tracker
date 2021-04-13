@@ -12,7 +12,7 @@ import {isTransactionContainer, isSelectedTitle} from '../../helpers/Variables';
 import {TransactionReducer} from '../../models/Transaction';
 import styles from './NavBarStyle.module.css';
 
-const NavBarMenu = () => {
+const NavBarMenu = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
   const state = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);

@@ -9,7 +9,7 @@ export const singIn = (user: {
   updatedAt: string;
   type: string;
   id: string;
-}) => async (dispatch: any) => {
+}) => async (dispatch: any): Promise<void> => {
   try {
     await dispatch({
       type: SIGN_IN,

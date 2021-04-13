@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faApple, faFacebookF, faGoogle, faTwitter} from '@fortawesome/free-brands-svg-icons';
 import LoginContainerStyle from '../LoginContainerStyle.module.css';
 
-const SocialNetworks = () => {
+const SocialNetworks = (): JSX.Element => {
   return (
     <div className={LoginContainerStyle.social_container}>
       <FontAwesomeIcon className={LoginContainerStyle.social_icon} icon={faFacebookF} />

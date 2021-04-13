@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSignOutAlt, faCog, faUserCog} from '@fortawesome/free-solid-svg-icons';
 import styles from '../header/HeaderStyle.module.css';
 
-const AccountMenu = () => {
+const AccountMenu = (): JSX.Element => {
   const handleExit = () => {
     localStorage.removeItem('jwt');
     window.location.pathname = '/authentication';
