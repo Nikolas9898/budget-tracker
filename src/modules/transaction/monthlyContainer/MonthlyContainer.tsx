@@ -107,8 +107,8 @@ class MonthlyContainer extends React.Component<Props> {
     const from: Date = firstDateOfFirstWeekOfTheMonth(date).toDate();
     const to: Date = lastDateOfLastWeekOfTheMonth(date).toDate();
     const data = await getSpecificDatePeriod(from, to);
-    data.transactions.forEach((singleTransaction: Transaction) => {
-      if (isTheSameDate(selectedDay.createdAt, singleTransaction.createdAt)) {
+    data.transactions.forEach((transaction: Transaction) => {
+      if (isTheSameDate(selectedDay.createdAt, transaction.createdAt)) {
         this.setState({
           selectedDay: transaction
         });
@@ -256,6 +256,7 @@ class MonthlyContainer extends React.Component<Props> {
 
     if (isEditTransactionOpen) {
       await editTransaction(selectedDayId, transactionEventId, event.events[0]);
+      console.log('vlezoh');
       this.getTransactions(transactionEvent.date);
       this.clearState();
     } else {
