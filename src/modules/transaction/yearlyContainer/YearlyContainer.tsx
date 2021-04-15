@@ -17,7 +17,7 @@ const YearlyContainer = (): JSX.Element => {
   const stateTransaction = useSelector(
     (state: {userReducer: UserReducer; transactionReducer: TransactionReducer}) => state.transactionReducer
   );
-  function setMonths(months: Month[]) {
+  const setMonths = (months: Month[]) => {
     const year: Month[] = [];
     const newMonths: Month[] = months.filter((month) => month.expense > 0 || month.income > 0);
     let lastMonth: number = Moment().get('month');
@@ -37,7 +37,7 @@ const YearlyContainer = (): JSX.Element => {
       }
     }
     setMonthsInYear(year.reverse());
-  }
+  };
 
   const getYear = async (date: Date) => {
     const months: Month[] = [];
@@ -58,26 +58,9 @@ const YearlyContainer = (): JSX.Element => {
       setSumExpense(data.sumExpense);
       setSumIncome(data.sumIncome);
     }
+
     if (Moment(date).get('year') === Moment().get('year')) {
-      const year: Month[] = [];
-      const newMonths: Month[] = data.months.filter((month: Month) => month.expense > 0 || month.income > 0);
-      let lastMonth: number = Moment().get('month');
-      if (newMonths.length > 0 && lastMonth < Moment(newMonths[newMonths.length - 1].from).get('month')) {
-        lastMonth = Moment(newMonths[newMonths.length - 1].from).get('month');
-      }
-      for (let i = 0; i <= lastMonth; i += 1) {
-        if (newMonths.filter((month) => Moment(month.from).get('month') === i).length > 0) {
-          year.push(newMonths.filter((month) => Moment(month.from).get('month') === i)[0]);
-        } else {
-          year.push({
-            from: Moment().startOf('month').set('month', i).toDate(),
-            to: Moment().endOf('month').set('month', i).toDate(),
-            income: 0,
-            expense: 0
-          });
-        }
-      }
-      setMonthsInYear(year.reverse());
+      setMonths(data.months);
       setSumExpense(data.sumExpense);
       setSumIncome(data.sumIncome);
     }

@@ -18,12 +18,16 @@ const NavBarMenu = (): JSX.Element => {
   const state = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
 
   const handlePreviousYearOrMonth = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    isSelectedTitle(location.pathname, 'yearly') ? dispatch(handlePreviousYear()) : dispatch(handlePreviousMonth());
+    if (isSelectedTitle(location.pathname, 'yearly')) {
+      return dispatch(handlePreviousYear());
+    }
+    return dispatch(handlePreviousMonth());
   }, [dispatch, location.pathname]);
   const handleNextYearOrMonth = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    isSelectedTitle(location.pathname, 'yearly') ? dispatch(handleNextYear()) : dispatch(handleNextMonth());
+    if (isSelectedTitle(location.pathname, 'yearly')) {
+      return dispatch(handleNextYear());
+    }
+    return dispatch(handleNextMonth());
   }, [dispatch, location.pathname]);
   return (
     <div className={styles.container}>

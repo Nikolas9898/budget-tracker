@@ -17,10 +17,8 @@ const CalendarDate: React.FC<Props> = ({calendarDate, transactions, date, handle
   }, [calendarDate.date, handleOpenInfoModal]);
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-    <div
-      role="button"
-      tabIndex={0}
+    <button
+      type="button"
       className={
         Moment(date).get('month') === Moment(calendarDate.date).get('month')
           ? styles.calendar_date_box_container
@@ -47,7 +45,7 @@ const CalendarDate: React.FC<Props> = ({calendarDate, transactions, date, handle
           </div>
         ) : null;
       })}
-    </div>
+    </button>
   );
 };
 

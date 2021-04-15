@@ -107,10 +107,10 @@ class MonthlyContainer extends React.Component<Props> {
     const from: Date = firstDateOfFirstWeekOfTheMonth(date).toDate();
     const to: Date = lastDateOfLastWeekOfTheMonth(date).toDate();
     const data = await getSpecificDatePeriod(from, to);
-    data.transactions.forEach((transaction: Transaction) => {
-      if (isTheSameDate(selectedDay.createdAt, transaction.createdAt)) {
+    data.transactions.forEach((transactionItem: Transaction) => {
+      if (isTheSameDate(selectedDay.createdAt, transactionItem.createdAt)) {
         this.setState({
-          selectedDay: transaction
+          selectedDay: transactionItem
         });
       }
     });
