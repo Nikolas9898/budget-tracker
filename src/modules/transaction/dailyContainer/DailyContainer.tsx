@@ -12,7 +12,7 @@ import {
   TransactionEvent
 } from '../../../models/Transaction';
 import {getSpecificDatePeriod} from '../service/TransactionService';
-import {firstDateOfTheMonth, lastDateOfTheMonth} from '../../../helpers/Variables';
+import {firstDateOfTheMonth, lastDateOfTheMonth, UnitOfTime} from '../../../helpers/Variables';
 import {setTransaction} from '../actions/transactionActions';
 import styles from './DailyStyle.module.css';
 import '../../../scss/variables.scss';
@@ -57,7 +57,7 @@ const DailyContainer = (): JSX.Element => {
 
           {transactions
             .sort((a, b) => {
-              return Moment(a.createdAt).get('date') - Moment(b.createdAt).get('date');
+              return Moment(a.createdAt).get(UnitOfTime.Date) - Moment(b.createdAt).get(UnitOfTime.Date);
             })
             .reverse()
             .map((transaction: TransactionWithAmountNumber) => (

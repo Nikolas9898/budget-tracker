@@ -9,7 +9,7 @@ const MonthlyPage = (props: any): JSX.Element => {
   return (
     <>
       <NavBar />
-      <MonthlyContainer filters={filters} />
+      <MonthlyContainer />
     </>
   );
 };

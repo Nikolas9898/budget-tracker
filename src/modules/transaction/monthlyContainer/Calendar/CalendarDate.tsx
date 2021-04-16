@@ -1,12 +1,12 @@
 import React, {useCallback} from 'react';
 import Moment from 'moment';
-import {Transaction} from '../../../../models/Transaction';
-import {isTheSameDate, transaction} from '../../../../helpers/Variables';
+import {Transaction, TransactionWithAmountNumber} from '../../../../models/Transaction';
+import {isTheSameDate} from '../../../../helpers/Variables';
 import styles from '../MonthlyStyle.module.css';
 
 type Props = {
   calendarDate: {date: Date};
-  transactions: Transaction[];
+  transactions: TransactionWithAmountNumber[];
   date: Date;
   handleOpenInfoModal: (date: Date) => void;
 };

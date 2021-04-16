@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import CalendarDate from './CalendarDate';
-import {Transaction, CalendarDates} from '../../../../models/Transaction';
+import {Transaction, CalendarDates, TransactionWithAmountNumber} from '../../../../models/Transaction';
 import {DaysOfWeek} from '../../../../helpers/Variables';
 import styles from '../MonthlyStyle.module.css';
 
 type Props = {
   calendarDates: CalendarDates[];
   date: Date;
-  transactions: Transaction[];
+  transactions: TransactionWithAmountNumber[];
   handleOpenInfoModal: (date: Date) => void;
 };
 

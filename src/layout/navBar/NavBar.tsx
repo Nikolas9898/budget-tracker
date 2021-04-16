@@ -15,7 +15,7 @@ import styles from './NavBarStyle.module.css';
 const NavBarMenu = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const state = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
+  const date = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer.date);
 
   const handlePreviousYearOrMonth = useCallback(() => {
     if (isSelectedTitle(location.pathname, 'yearly')) {
@@ -71,9 +71,7 @@ const NavBarMenu = (): JSX.Element => {
         <button type="button" className={styles.change_month_button} onClick={handlePreviousYearOrMonth}>
           {'<'}
         </button>
-        {isSelectedTitle(location.pathname, 'yearly')
-          ? Moment(state.date).format('YYYY')
-          : Moment(state.date).format('MMM YYYY')}
+        {isSelectedTitle(location.pathname, 'yearly') ? Moment(date).format('YYYY') : Moment(date).format('MMM YYYY')}
         <button type="button" className={styles.change_month_button} onClick={handleNextYearOrMonth}>
           {'>'}
         </button>

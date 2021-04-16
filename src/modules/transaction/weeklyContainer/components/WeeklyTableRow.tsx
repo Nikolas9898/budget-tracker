@@ -7,7 +7,7 @@ type Props = {
 };
 
 const WeeklyTableRow: React.FC<Props> = ({week}) => {
-  const isDateInWeek = (week: Props['week']) => {
+  const isDateInWeek = () => {
     return (
       Moment(week.from).startOf('isoWeek').diff(Moment(), 'week') === 0 &&
       Moment(week.to).endOf('isoWeek').diff(Moment(), 'week') === 0
@@ -16,7 +16,7 @@ const WeeklyTableRow: React.FC<Props> = ({week}) => {
   return (
     <tr>
       <td className={styles.date_container}>
-        <div className={isDateInWeek(week) ? styles.selected_date : styles.date}>
+        <div className={isDateInWeek() ? styles.selected_date : styles.date}>
           {Moment(week.from).format('DD.MM')} ~ {Moment(week.to).format('DD.MM')}
         </div>
       </td>

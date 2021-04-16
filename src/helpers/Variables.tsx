@@ -24,6 +24,13 @@ export enum TransactionPage {
   Accounts = 'accounts'
 }
 
+export enum UnitOfTime {
+  Date = 'date',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year'
+}
+
 export const firstDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).startOf('month');
 
 export const lastDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).endOf('month');
@@ -48,11 +55,11 @@ export const isTransactionContainer = (pathname: string): boolean => pathname.in
 export const isSelectedTitle = (pathname: string, path: string): boolean =>
   pathname === `/transaction/${path}` || pathname === `/stats/${path}`;
 
-export const isTransactionTypeIncome = (type: string, amount: string): string =>
-  type === TransactionTypes.Income ? (parseFloat(amount) / 100).toFixed(2) : '';
+export const isTransactionTypeIncome = (type: string, amount: number): string =>
+  type === TransactionTypes.Income ? (amount / 100).toFixed(2) : '';
 
-export const isTransactionTypeExpense = (type: string, amount: string): string =>
-  type === TransactionTypes.Expense || type === TransactionTypes.Transfer ? (parseFloat(amount) / 100).toFixed(2) : '';
+export const isTransactionTypeExpense = (type: string, amount: number): string =>
+  type === TransactionTypes.Expense || type === TransactionTypes.Transfer ? (amount / 100).toFixed(2) : '';
 
 export const headerTitle = (path: string): string => {
   switch (true) {
@@ -69,7 +76,7 @@ export const headerTitle = (path: string): string => {
   }
 };
 
-export const transaction = (transactionEvent: TransactionEvent) => {
+export const getTransaction = (transactionEvent: TransactionEvent) => {
   const {type, transferId, date, account, category, from, fees, to, amount, note, description} = transactionEvent;
   return {
     events: [

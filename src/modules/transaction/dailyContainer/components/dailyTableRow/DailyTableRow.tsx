@@ -20,7 +20,9 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
       <td>
         <div className={styles.account_container}>
           <div className={styles.account}>
-            {transactionEvent.type === TransactionTypes.Transfer ? 'transfer' : transactionEvent.category}
+            {transactionEvent.type === TransactionTypes.Transfer
+              ? TransactionTypes.Transfer
+              : transactionEvent.category}
           </div>
           <div className={styles.category}>
             <div>{transactionEvent.note}</div>

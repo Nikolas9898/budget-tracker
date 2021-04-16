@@ -1,6 +1,6 @@
 import React from 'react';
 import Moment from 'moment';
-import {isTheSameDate} from '../../../../../helpers/Variables';
+import {isTheSameDate, UnitOfTime} from '../../../../../helpers/Variables';
 import {TransactionWithAmountNumber} from '../../../../../models/Transaction';
 import styles from '../../DailyStyle.module.css';
 
@@ -17,7 +17,7 @@ const DailyTableHeader: React.FC<Props> = ({transaction}) => {
             <div className={styles.date_year}>{Moment(transaction.createdAt).format('MM.YYYY')}</div>
             <div
               className={
-                isTheSameDate(transaction.createdAt, Moment().startOf('date').toDate())
+                isTheSameDate(transaction.createdAt, Moment().startOf(UnitOfTime.Date).toDate())
                   ? styles.date_day_select
                   : styles.date_day
               }

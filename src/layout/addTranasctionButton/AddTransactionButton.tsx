@@ -7,7 +7,7 @@ import {TransactionReducer} from '../../models/Transaction';
 import {handleInput, setTransaction, setDate} from '../../modules/transaction/actions/transactionActions';
 import AddTransactionModal from '../../modules/transaction/components/addTransactionModal/AddTransactionModal';
 import {validateTransaction} from '../../helpers/Validation';
-import {transaction} from '../../helpers/Variables';
+import {getTransaction} from '../../helpers/Variables';
 import {
   createTransactionRequest,
   deleteTransaction,
@@ -60,7 +60,7 @@ const AddTransactionButton = (): JSX.Element => {
       return;
     }
 
-    const event = transaction(stateTransaction.transactionEvent);
+    const event = getTransaction(stateTransaction.transactionEvent);
 
     if (transactionId) {
       await editTransaction(transactionId, transactionEventId, event.events[0]);
