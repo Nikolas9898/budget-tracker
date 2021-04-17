@@ -25,28 +25,33 @@ export enum TransactionPage {
 }
 
 export enum UnitOfTime {
-  Date = 'date',
-  Week = 'week',
-  Month = 'month',
-  Year = 'year'
+  DATE = 'date',
+  WEEK = 'week',
+  MONTH = 'month',
+  YEAR = 'year',
+  DAYS = 'days',
+  DAY = 'day',
+  ISO_WEEK = 'isoWeek'
 }
 
-export const firstDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).startOf('month');
+const {DATE, MONTH, DAY, ISO_WEEK} = UnitOfTime;
 
-export const lastDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).endOf('month');
+export const firstDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).startOf(MONTH);
+
+export const lastDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).endOf(MONTH);
 
 export const firstDateOfFirstWeekOfTheMonth = (date: Date): Moment.Moment =>
-  firstDateOfTheMonth(date).startOf('isoWeek');
+  firstDateOfTheMonth(date).startOf(ISO_WEEK);
 
-export const lastDateOfFirstWeekOfTheMonth = (date: Date): Moment.Moment => firstDateOfTheMonth(date).endOf('isoWeek');
+export const lastDateOfFirstWeekOfTheMonth = (date: Date): Moment.Moment => firstDateOfTheMonth(date).endOf(ISO_WEEK);
 
-export const firstDateOfLastWeekOfTheMonth = (date: Date): Moment.Moment => lastDateOfTheMonth(date).startOf('isoWeek');
+export const firstDateOfLastWeekOfTheMonth = (date: Date): Moment.Moment => lastDateOfTheMonth(date).startOf(ISO_WEEK);
 
 export const lastDateOfLastWeekOfTheMonth = (date: Date): Moment.Moment =>
-  lastDateOfTheMonth(date).startOf('day').endOf('isoWeek');
+  lastDateOfTheMonth(date).startOf(DAY).endOf(ISO_WEEK);
 
 export const isTheSameDate = (calendarDate: Date, transactionDate: Date): boolean =>
-  Moment(calendarDate).diff(transactionDate, 'day') === 0;
+  Moment(calendarDate).diff(transactionDate, DAY) === 0;
 
 export const isTypeTransfer = (type: string): boolean => type.toLowerCase() === TransactionTypes.Transfer;
 
@@ -95,6 +100,6 @@ export const getTransaction = (transactionEvent: TransactionEvent) => {
         description
       }
     ],
-    createdAt: Moment(transactionEvent.date).startOf('date')
+    createdAt: Moment(transactionEvent.date).startOf(DATE)
   };
 };

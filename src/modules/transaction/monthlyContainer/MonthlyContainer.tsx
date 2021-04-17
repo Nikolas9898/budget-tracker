@@ -10,12 +10,12 @@ import {
   firstDateOfTheMonth,
   lastDateOfTheMonth,
   lastDateOfLastWeekOfTheMonth,
-  isTheSameDate
+  isTheSameDate,
+  UnitOfTime
 } from '../../../helpers/Variables';
 import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
 import {handleInput, setTransaction} from '../actions/transactionActions';
 import {
-  CalendarDates,
   Transaction,
   TransactionEvent,
   TransactionEventWithAmountNumber,
@@ -121,7 +121,6 @@ const MonthlyContainer = (): JSX.Element => {
     const {_id: selectedDayId} = selectedTransaction;
 
     await deleteTransaction(selectedDayId, eventId);
-    // eslint-disable-next-line no-underscore-dangle
     const newEvents: TransactionEventWithAmountNumber[] = selectedTransaction.events.filter(
       ({_id: transactionEventId}) => transactionEventId !== eventId
     );
@@ -157,7 +156,7 @@ const MonthlyContainer = (): JSX.Element => {
   };
 
   const handleNextDay = async () => {
-    const newDate: Date = Moment(selectedTransaction.createdAt).add(1, 'days').toDate();
+    const newDate: Date = Moment(selectedTransaction.createdAt).add(1, UnitOfTime.DAYS).toDate();
     setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
 
     // this.setState({
@@ -173,7 +172,7 @@ const MonthlyContainer = (): JSX.Element => {
   };
 
   const handlePreviousDay = async () => {
-    const newDate: Date = Moment(selectedTransaction.createdAt).add(-1, 'days').toDate();
+    const newDate: Date = Moment(selectedTransaction.createdAt).add(-1, UnitOfTime.DAYS).toDate();
     // this.setState({
     //   selectedDay: {createdAt: newDate, events: []},
     //   date: newDate
@@ -196,7 +195,7 @@ const MonthlyContainer = (): JSX.Element => {
     } else {
       handleInput({
         target: {
-          name: 'date',
+          name: UnitOfTime.DATE,
           value: createdAt
         }
       });
@@ -255,11 +254,11 @@ const MonthlyContainer = (): JSX.Element => {
   // };
 
   const setFirstWeek = (date: Date) => {
-    const lastDateOfPreviusMonth: number = Moment(date).set('date', 0).get('date');
+    const lastDateOfPreviusMonth: number = Moment(date).set(UnitOfTime.DATE, 0).get(UnitOfTime.DATE);
     const calendar: any = [];
-    for (let i = firstDateOfFirstWeekOfTheMonth(date).get('date'); i <= lastDateOfPreviusMonth; i += 1) {
+    for (let i = firstDateOfFirstWeekOfTheMonth(date).get(UnitOfTime.DATE); i <= lastDateOfPreviusMonth; i += 1) {
       calendar.push({
-        date: Moment(firstDateOfFirstWeekOfTheMonth(date)).set('date', i).toDate()
+        date: Moment(firstDateOfFirstWeekOfTheMonth(date)).set(UnitOfTime.DATE, i).toDate()
       });
     }
     return calendar;
@@ -267,9 +266,9 @@ const MonthlyContainer = (): JSX.Element => {
 
   const setLastWeek = (date: Date) => {
     const calendar: any = [];
-    for (let i = 1; i <= lastDateOfLastWeekOfTheMonth(date).get('date'); i += 1) {
+    for (let i = 1; i <= lastDateOfLastWeekOfTheMonth(date).get(UnitOfTime.DATE); i += 1) {
       calendar.push({
-        date: Moment(lastDateOfLastWeekOfTheMonth(date)).startOf('date').set('date', i).toDate()
+        date: Moment(lastDateOfLastWeekOfTheMonth(date)).startOf(UnitOfTime.DATE).set(UnitOfTime.DATE, i).toDate()
       });
     }
     return calendar;
@@ -279,17 +278,17 @@ const MonthlyContainer = (): JSX.Element => {
     setCalendarDates([]);
     let calendar: State['calendarDates'] = [];
 
-    if (firstDateOfTheMonth(date).get('day') !== 1) {
+    if (firstDateOfTheMonth(date).get(UnitOfTime.DAY) !== 1) {
       calendar = setFirstWeek(date);
     }
 
-    for (let i = 1; i <= lastDateOfTheMonth(date).get('date'); i += 1) {
+    for (let i = 1; i <= lastDateOfTheMonth(date).get(UnitOfTime.DATE); i += 1) {
       calendar.push({
-        date: Moment(firstDateOfTheMonth(date)).set('date', i).toDate()
+        date: Moment(firstDateOfTheMonth(date)).set(UnitOfTime.DATE, i).toDate()
       });
     }
 
-    if (lastDateOfTheMonth(date).get('day') !== 0) {
+    if (lastDateOfTheMonth(date).get(UnitOfTime.DAY) !== 0) {
       setLastWeek(date);
       calendar = calendar.concat(setLastWeek(date));
     }

@@ -57,7 +57,7 @@ const DailyContainer = (): JSX.Element => {
 
           {transactions
             .sort((a, b) => {
-              return Moment(a.createdAt).get(UnitOfTime.Date) - Moment(b.createdAt).get(UnitOfTime.Date);
+              return Moment(a.createdAt).get(UnitOfTime.DATE) - Moment(b.createdAt).get(UnitOfTime.DATE);
             })
             .reverse()
             .map((transaction: TransactionWithAmountNumber) => (

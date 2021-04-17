@@ -9,7 +9,8 @@ import {
   firstDateOfFirstWeekOfTheMonth,
   lastDateOfFirstWeekOfTheMonth,
   firstDateOfLastWeekOfTheMonth,
-  lastDateOfLastWeekOfTheMonth
+  lastDateOfLastWeekOfTheMonth,
+  UnitOfTime
 } from '../../../helpers/Variables';
 import {Month, TransactionReducer} from '../../../models/Transaction';
 import {UserReducer} from '../../../models/User';
@@ -29,7 +30,6 @@ const WeeklyContainer = (): JSX.Element => {
     const weeks: Month[] = [];
 
     setWeeks([]);
-    console.log(weeks);
     weeks.push({
       from: firstDateOfFirstWeekOfTheMonth(date).toDate(),
       to: lastDateOfFirstWeekOfTheMonth(date).toDate(),
@@ -38,18 +38,18 @@ const WeeklyContainer = (): JSX.Element => {
     });
 
     for (
-      let i = lastDateOfFirstWeekOfTheMonth(date).get('date');
-      i <= firstDateOfLastWeekOfTheMonth(date).get('date') - 7;
+      let i = lastDateOfFirstWeekOfTheMonth(date).get(UnitOfTime.DATE);
+      i <= firstDateOfLastWeekOfTheMonth(date).get(UnitOfTime.DATE) - 7;
       i += 7
     ) {
       weeks.push({
         from: Moment(date)
-          .set('date', i + 1)
-          .startOf('date')
+          .set(UnitOfTime.DATE, i + 1)
+          .startOf(UnitOfTime.DATE)
           .toDate(),
         to: Moment(date)
-          .set('date', i + 7)
-          .startOf('date')
+          .set(UnitOfTime.DATE, i + 7)
+          .startOf(UnitOfTime.DATE)
           .toDate(),
         income: 0,
         expense: 0
@@ -57,8 +57,8 @@ const WeeklyContainer = (): JSX.Element => {
     }
 
     weeks.push({
-      from: firstDateOfLastWeekOfTheMonth(date).startOf('date').toDate(),
-      to: lastDateOfLastWeekOfTheMonth(date).startOf('date').toDate(),
+      from: firstDateOfLastWeekOfTheMonth(date).startOf(UnitOfTime.DATE).toDate(),
+      to: lastDateOfLastWeekOfTheMonth(date).startOf(UnitOfTime.DATE).toDate(),
       income: 0,
       expense: 0
     });

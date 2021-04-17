@@ -7,7 +7,7 @@ import {TransactionReducer} from '../../models/Transaction';
 import {handleInput, setTransaction, setDate} from '../../modules/transaction/actions/transactionActions';
 import AddTransactionModal from '../../modules/transaction/components/addTransactionModal/AddTransactionModal';
 import {validateTransaction} from '../../helpers/Validation';
-import {getTransaction} from '../../helpers/Variables';
+import {getTransaction, UnitOfTime} from '../../helpers/Variables';
 import {
   createTransactionRequest,
   deleteTransaction,
@@ -82,7 +82,7 @@ const AddTransactionButton = (): JSX.Element => {
       dispatch(
         handleInput({
           target: {
-            name: 'date',
+            name: UnitOfTime.DATE,
             value: stateTransaction.date
           }
         })
