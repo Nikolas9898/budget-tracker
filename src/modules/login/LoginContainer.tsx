@@ -86,6 +86,7 @@ const LoginContainer = (): JSX.Element => {
         setErrors({email: '', password: '', confirmPassword: ''});
       }
     } catch (e) {
+      // eslint-disable-next-line no-alert
       alert(e);
     }
   };

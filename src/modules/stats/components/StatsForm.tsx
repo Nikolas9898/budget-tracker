@@ -12,7 +12,7 @@ const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
       <div className="title">{isIncome ? 'Income' : 'Expense'}</div>
       <div className="pie_wrapper">
         <PieChart
-          labelStyle={(index) => ({
+          labelStyle={() => ({
             fontSize: '8px',
             fontFamily: 'sans-serif'
           })}

@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import Moment from 'moment';
-import {Transaction, TransactionWithAmountNumber} from '../../../../models/Transaction';
+import {TransactionWithAmountNumber} from '../../../../models/Transaction';
 import {isTheSameDate} from '../../../../helpers/Variables';
 import styles from '../MonthlyStyle.module.css';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {faPen, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {isTransactionTypeIncome, isTransactionTypeExpense} from '../../../../../helpers/Variables';
-import {TransactionEvent, TransactionEventWithAmountNumber} from '../../../../../models/Transaction';
+import {TransactionEventWithAmountNumber} from '../../../../../models/Transaction';
 import styles from '../infoModalStyle.module.css';
 
 type Props = {

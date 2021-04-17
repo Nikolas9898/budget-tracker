@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import {getUserByJWToken} from '../modules/transaction/service/TransactionService';
 import {singIn} from '../modules/login/actions/usersActions';
 
-const AuthProvider = (props: any): any => {
+const AuthProvider = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();

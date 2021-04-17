@@ -2,27 +2,18 @@ import React, {useEffect, useState} from 'react';
 
 import Moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
-import AddTransactionModal from '../components/addTransactionModal/AddTransactionModal';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoModal from '../components/infoModal/InfoModal';
 import Calendar from './Calendar/Calendar';
-import {State as StateTransaction} from '../reducers/transactionReducer';
 import {
   firstDateOfFirstWeekOfTheMonth,
-  getTransaction,
   firstDateOfTheMonth,
   lastDateOfTheMonth,
   lastDateOfLastWeekOfTheMonth,
   isTheSameDate
 } from '../../../helpers/Variables';
-import {validateTransaction} from '../../../helpers/Validation';
-import {
-  createTransactionRequest,
-  deleteTransaction,
-  editTransaction,
-  getSpecificDatePeriod
-} from '../service/TransactionService';
-import {handleInput, setDate, setTransaction} from '../actions/transactionActions';
+import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
+import {handleInput, setTransaction} from '../actions/transactionActions';
 import {
   Transaction,
   TransactionEvent,
@@ -30,18 +21,9 @@ import {
   TransactionReducer,
   TransactionWithAmountNumber
 } from '../../../models/Transaction';
-import {HandleInput} from '../../../models/Function';
 import {Error} from '../../../models/Error';
 import '../../../scss/variables.scss';
 import AddTransactionButton from '../../../layout/addTranasctionButton/AddTransactionButton';
-
-type Props = {
-  filters: any;
-  stateTransaction: StateTransaction;
-  handleInput: (event: HandleInput) => void;
-  setTransaction: (event: TransactionEvent) => void;
-  setDate: (date: Date) => void;
-};
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -55,7 +37,7 @@ type State = {
   transactions: Transaction[];
 };
 
-const MonthlyContainer = () => {
+const MonthlyContainer = (): JSX.Element => {
   const [transactions, setTransactions] = useState<TransactionWithAmountNumber[]>([]);
   const [selectedTransaction, setSelectedTransaction] = useState<TransactionWithAmountNumber>({
     _id: '',
@@ -64,9 +46,7 @@ const MonthlyContainer = () => {
     expense: 0,
     income: 0
   });
-  const [errors, setErrors] = useState({account: '', from: '', category: '', to: '', amount: ''});
-  const [calendarDates, setCalendarDates] = useState<State['calendarDates']>([]);
-  const [isTransfer, setIsTransfer] = useState(false);
+  // const [calendarDates] = useState<State['calendarDates']>([]);
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [isInfoTransactionOpen, setIsInfoTransactionOpen] = useState(false);
@@ -276,7 +256,7 @@ const MonthlyContainer = () => {
     const lastDateOfPreviusMonth: number = Moment(date).set('date', 0).get('date');
 
     for (let i = firstDateOfFirstWeekOfTheMonth(date).get('date'); i <= lastDateOfPreviusMonth; i += 1) {
-      calendarDates.push({
+      stateTransaction.calendarDates.push({
         date: Moment(firstDateOfFirstWeekOfTheMonth(date)).set('date', i).toDate()
       });
     }
@@ -284,7 +264,7 @@ const MonthlyContainer = () => {
 
   const setLastWeek = (date: Date) => {
     for (let i = 1; i <= lastDateOfLastWeekOfTheMonth(date).get('date'); i += 1) {
-      calendarDates.push({
+      stateTransaction.calendarDates.push({
         date: Moment(lastDateOfLastWeekOfTheMonth(date)).startOf('date').set('date', i).toDate()
       });
     }
@@ -296,7 +276,7 @@ const MonthlyContainer = () => {
     }
 
     for (let i = 1; i <= lastDateOfTheMonth(date).get('date'); i += 1) {
-      calendarDates.push({
+      stateTransaction.calendarDates.push({
         date: Moment(firstDateOfTheMonth(date)).set('date', i).toDate()
       });
     }
@@ -317,7 +297,7 @@ const MonthlyContainer = () => {
       <Calendar
         handleOpenInfoModal={handleOpenInfoModal}
         transactions={transactions}
-        calendarDates={calendarDates}
+        calendarDates={stateTransaction.calendarDates}
         date={stateTransaction.date}
       />
       <InfoModal

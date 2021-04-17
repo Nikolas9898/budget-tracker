@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import CalendarDate from './CalendarDate';
-import {Transaction, CalendarDates, TransactionWithAmountNumber} from '../../../../models/Transaction';
+import {CalendarDates, TransactionWithAmountNumber} from '../../../../models/Transaction';
 import {DaysOfWeek} from '../../../../helpers/Variables';
 import styles from '../MonthlyStyle.module.css';
 

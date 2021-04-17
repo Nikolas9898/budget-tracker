@@ -8,6 +8,7 @@ export interface State {
 }
 const initialState = {
   date: Moment().toDate(),
+  calendarDates: [],
 
   transactionEvent: {
     _id: '',
@@ -31,6 +32,7 @@ export default (state = initialState, action: any) => {
       const nextMonth = Moment(state.date).add(1, 'month');
       return {
         ...state,
+        calendarDates: [],
         date: nextMonth
       };
     }
@@ -39,6 +41,7 @@ export default (state = initialState, action: any) => {
       const previousMonth = Moment(state.date).add(-1, 'month');
       return {
         ...state,
+        calendarDates: [],
         date: previousMonth
       };
     }

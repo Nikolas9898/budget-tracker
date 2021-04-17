@@ -1,17 +1,16 @@
-
 export interface UserReducer {
-    user: User;
-    token: string;
-    isLoading: boolean;
+  user: User;
+  token: string;
+  isLoading: boolean;
 }
 export interface User {
   id: string;
   username: string;
   email: string;
-  type: string
-  categories: string[]
+  type: string;
+  categories: string[];
   createdAt: Date;
-  updatedAt:Date
+  updatedAt: Date;
 }
 export interface UserRegister {
   email: string;

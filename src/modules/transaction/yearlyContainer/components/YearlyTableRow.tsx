@@ -2,7 +2,6 @@ import React from 'react';
 import Moment from 'moment';
 import {useHistory} from 'react-router-dom';
 import styles from '../YearlyStyle.module.css';
-import {isTheSameDate} from '../../../../helpers/Variables';
 
 type Props = {
   month: {from: Date; to: Date; expense: number; income: number};
