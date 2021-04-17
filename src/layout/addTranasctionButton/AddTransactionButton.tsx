@@ -33,7 +33,7 @@ const AddTransactionButton = (): JSX.Element => {
   const clearState = () => {
     setErrors({account: '', from: '', category: '', to: '', amount: ''});
     setIsTransactionOpen(false);
-    dispatch(setDate(Moment().toDate()));
+    // dispatch(setDate(stateTransaction.date));
     dispatch(
       setTransaction({
         _id: '',
@@ -83,7 +83,7 @@ const AddTransactionButton = (): JSX.Element => {
         handleInput({
           target: {
             name: 'date',
-            value: Moment().toDate()
+            value: stateTransaction.date
           }
         })
       );

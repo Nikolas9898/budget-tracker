@@ -15,6 +15,7 @@ import {
 import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
 import {handleInput, setTransaction} from '../actions/transactionActions';
 import {
+  CalendarDates,
   Transaction,
   TransactionEvent,
   TransactionEventWithAmountNumber,
@@ -46,7 +47,8 @@ const MonthlyContainer = (): JSX.Element => {
     expense: 0,
     income: 0
   });
-  // const [calendarDates] = useState<State['calendarDates']>([]);
+
+  const [calendarDates, setCalendarDates] = useState<State['calendarDates']>([]);
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
   const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
   const [isInfoTransactionOpen, setIsInfoTransactionOpen] = useState(false);
@@ -54,7 +56,7 @@ const MonthlyContainer = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
-
+  const {amount} = stateTransaction.transactionEvent;
   // eslint-disable-next-line react/state-in-constructor
 
   // componentDidMount() {
@@ -254,42 +256,51 @@ const MonthlyContainer = (): JSX.Element => {
 
   const setFirstWeek = (date: Date) => {
     const lastDateOfPreviusMonth: number = Moment(date).set('date', 0).get('date');
-
+    const calendar: any = [];
     for (let i = firstDateOfFirstWeekOfTheMonth(date).get('date'); i <= lastDateOfPreviusMonth; i += 1) {
-      stateTransaction.calendarDates.push({
+      calendar.push({
         date: Moment(firstDateOfFirstWeekOfTheMonth(date)).set('date', i).toDate()
       });
     }
+    return calendar;
   };
 
   const setLastWeek = (date: Date) => {
+    const calendar: any = [];
     for (let i = 1; i <= lastDateOfLastWeekOfTheMonth(date).get('date'); i += 1) {
-      stateTransaction.calendarDates.push({
+      calendar.push({
         date: Moment(lastDateOfLastWeekOfTheMonth(date)).startOf('date').set('date', i).toDate()
       });
     }
+    return calendar;
   };
 
-  const setCalendar = (date: Date) => {
+  const setCalendar = async (date: Date) => {
+    setCalendarDates([]);
+    let calendar: State['calendarDates'] = [];
+
     if (firstDateOfTheMonth(date).get('day') !== 1) {
-      setFirstWeek(date);
+      calendar = setFirstWeek(date);
     }
 
     for (let i = 1; i <= lastDateOfTheMonth(date).get('date'); i += 1) {
-      stateTransaction.calendarDates.push({
+      calendar.push({
         date: Moment(firstDateOfTheMonth(date)).set('date', i).toDate()
       });
     }
 
     if (lastDateOfTheMonth(date).get('day') !== 0) {
       setLastWeek(date);
+      calendar = calendar.concat(setLastWeek(date));
     }
+
+    setCalendarDates(calendar);
   };
 
   useEffect(() => {
     setCalendar(stateTransaction.date);
     getTransactions(stateTransaction.date);
-  }, [stateTransaction.date]);
+  }, [amount, stateTransaction.date]);
 
   return (
     <div className="wrapper">
@@ -297,7 +308,7 @@ const MonthlyContainer = (): JSX.Element => {
       <Calendar
         handleOpenInfoModal={handleOpenInfoModal}
         transactions={transactions}
-        calendarDates={stateTransaction.calendarDates}
+        calendarDates={calendarDates}
         date={stateTransaction.date}
       />
       <InfoModal

@@ -25,7 +25,7 @@ const DailyContainer = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
-
+  const {amount} = stateTransaction.transactionEvent;
   const getTransactions = async (date: Date) => {
     const data = await getSpecificDatePeriod(firstDateOfTheMonth(date).toDate(), lastDateOfTheMonth(date).toDate());
     setTransactions(data.transactions);
@@ -35,7 +35,7 @@ const DailyContainer = (): JSX.Element => {
 
   useEffect(() => {
     getTransactions(stateTransaction.date);
-  }, [stateTransaction.date]);
+  }, [amount, stateTransaction.date]);
 
   const handleSelectEvent = (transactioEvent: TransactionEventWithAmountNumber, transactionId: string) => {
     const Event: TransactionEvent = {

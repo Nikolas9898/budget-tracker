@@ -17,17 +17,19 @@ import styles from './WeeklyStyle.module.css';
 import '../../../scss/variables.scss';
 
 const WeeklyContainer = (): JSX.Element => {
-  const [weeks, setWeeks] = useState<Month[]>([]);
+  const [weeksInMonth, setWeeks] = useState<Month[]>([]);
   const [sumIncome, setSumIncome] = useState(0);
   const [sumExpense, setSumExpense] = useState(0);
 
   const stateTransaction = useSelector(
     (state: {userReducer: UserReducer; transactionReducer: TransactionReducer}) => state.transactionReducer
   );
-
+  const {amount} = stateTransaction.transactionEvent;
   const getWeeks = async (date: Date) => {
-    // const weeks: Month[] = [];
+    const weeks: Month[] = [];
 
+    setWeeks([]);
+    console.log(weeks);
     weeks.push({
       from: firstDateOfFirstWeekOfTheMonth(date).toDate(),
       to: lastDateOfFirstWeekOfTheMonth(date).toDate(),
@@ -70,7 +72,7 @@ const WeeklyContainer = (): JSX.Element => {
 
   useEffect(() => {
     getWeeks(stateTransaction.date);
-  }, [stateTransaction.date]);
+  }, [amount, stateTransaction.date]);
   return (
     <div className="wrapper">
       <NavBarMenu />
@@ -78,7 +80,7 @@ const WeeklyContainer = (): JSX.Element => {
         <table className={styles.table}>
           <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
           <tbody>
-            {weeks.map((week) => (
+            {weeksInMonth.map((week) => (
               <WeeklyTableRow week={week} />
             ))}
           </tbody>
