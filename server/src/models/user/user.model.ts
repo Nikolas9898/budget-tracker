@@ -1,15 +1,5 @@
-import { Schema, model } from "mongoose";
-
-export interface UserInterface {
-  _id: string;
-  username: string;
-  password: string;
-  email: string;
-  type: string;
-  categories: { name: string }[];
-  createdAt: string;
-  updatedAt: string;
-}
+import {Schema, model} from 'mongoose';
+import {UserType} from '../../interfaces/user';
 
 const userSchema = new Schema(
   {
@@ -17,42 +7,36 @@ const userSchema = new Schema(
       type: String,
       unique: true,
       trim: true,
-      minlength: 3,
+      minlength: 3
     },
     password: {
       type: String,
       required: true,
       trim: true,
-      minlength: 3,
+      minlength: 3
     },
-    categories: {
-      type: [
-        {
-          name: String,
-        },
-      ],
-    },
+
     email: {
       type: String,
       unique: true,
       required: true,
       trim: true,
-      minlength: 3,
+      minlength: 3
     },
     currency: {
       type: String,
       required: true,
       trim: true,
-      minlength: 2,
+      minlength: 2
     },
     type: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
-export default model("User", userSchema);
+export default model<UserType>('User', userSchema);
