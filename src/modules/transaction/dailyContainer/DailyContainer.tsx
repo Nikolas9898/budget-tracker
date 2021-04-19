@@ -13,7 +13,7 @@ import {
 } from '../../../models/Transaction';
 import {getSpecificDatePeriod} from '../service/TransactionService';
 import {firstDateOfTheMonth, lastDateOfTheMonth, UnitOfTime} from '../../../helpers/Variables';
-import {setTransaction} from '../actions/transactionActions';
+import {setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
 import styles from './DailyStyle.module.css';
 import '../../../scss/variables.scss';
 
@@ -44,7 +44,7 @@ const DailyContainer = (): JSX.Element => {
       fees: (transactioEvent.fees / 100).toFixed(2),
       transactionId
     };
-
+    dispatch(setIsTransactionOpen());
     dispatch(setTransaction(Event));
   };
 

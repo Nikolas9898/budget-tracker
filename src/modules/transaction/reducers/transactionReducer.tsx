@@ -8,7 +8,7 @@ export interface State {
 }
 const initialState = {
   date: Moment().toDate(),
-  calendarDates: [],
+  isTransactionOpen: false,
 
   transactionEvent: {
     _id: '',
@@ -92,6 +92,11 @@ export default (state = initialState, action: any) => {
       return {
         ...state,
         date: action.payload
+      };
+    case ActionTypes.SET_IS_TRANSACTION_OPEN:
+      return {
+        ...state,
+        isTransactionOpen: !state.isTransactionOpen
       };
     default:
       return state;

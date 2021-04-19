@@ -4,7 +4,12 @@ import Moment from 'moment';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {TransactionReducer} from '../../models/Transaction';
-import {handleInput, setTransaction, setDate} from '../../modules/transaction/actions/transactionActions';
+import {
+  handleInput,
+  setTransaction,
+  setDate,
+  setIsTransactionOpen
+} from '../../modules/transaction/actions/transactionActions';
 import AddTransactionModal from '../../modules/transaction/components/addTransactionModal/AddTransactionModal';
 import {validateTransaction} from '../../helpers/Validation';
 import {getTransaction, UnitOfTime} from '../../helpers/Variables';
@@ -16,7 +21,6 @@ import {
 import styles from '../../modules/transaction/dailyContainer/DailyStyle.module.css';
 
 const AddTransactionButton = (): JSX.Element => {
-  const [isTransactionOpen, setIsTransactionOpen] = useState(false);
   const [errors, setErrors] = useState({
     account: '',
     from: '',
@@ -32,8 +36,7 @@ const AddTransactionButton = (): JSX.Element => {
 
   const clearState = () => {
     setErrors({account: '', from: '', category: '', to: '', amount: ''});
-    setIsTransactionOpen(false);
-    // dispatch(setDate(stateTransaction.date));
+    dispatch(setIsTransactionOpen());
     dispatch(
       setTransaction({
         _id: '',
@@ -67,6 +70,7 @@ const AddTransactionButton = (): JSX.Element => {
     } else {
       await createTransactionRequest(event);
     }
+
     clearState();
   };
   const handleDelete = async (eventId: string) => {
@@ -75,10 +79,10 @@ const AddTransactionButton = (): JSX.Element => {
   };
 
   const handleOpenTransaction = () => {
-    if (isTransactionOpen) {
+    if (stateTransaction.isTransactionOpen) {
       clearState();
     } else {
-      setIsTransactionOpen(true);
+      dispatch(setIsTransactionOpen());
       dispatch(
         handleInput({
           target: {
@@ -95,7 +99,7 @@ const AddTransactionButton = (): JSX.Element => {
       <FontAwesomeIcon className={styles.add_button} icon={faPlusCircle} onClick={handleOpenTransaction} />
 
       <AddTransactionModal
-        isAddTransactionOpen={isTransactionOpen}
+        isAddTransactionOpen={stateTransaction.isTransactionOpen}
         transactionEvent={stateTransaction.transactionEvent}
         errors={errors}
         isEditTransactionOpen={transactionId.length > 0}

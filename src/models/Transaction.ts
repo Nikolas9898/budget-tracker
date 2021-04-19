@@ -43,7 +43,7 @@ export interface TransactionEventWithAmountNumber {
 export type TransactionReducer = {
   date: Date;
   transactionEvent: TransactionEvent;
-  calendarDates: {date: Date}[];
+  isTransactionOpen: boolean;
 };
 export interface Month {
   from: Date;

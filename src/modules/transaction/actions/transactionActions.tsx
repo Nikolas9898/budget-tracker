@@ -52,3 +52,8 @@ export const setDate = (
   type: ActionTypes.SET_DATE,
   payload: date
 });
+export const setIsTransactionOpen = (): {
+  type: ActionTypes;
+} => ({
+  type: ActionTypes.SET_IS_TRANSACTION_OPEN
+});

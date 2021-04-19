@@ -14,7 +14,7 @@ import {
   UnitOfTime
 } from '../../../helpers/Variables';
 import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
-import {handleInput, setTransaction} from '../actions/transactionActions';
+import {handleInput, setDate, setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
 import {
   Transaction,
   TransactionEvent,
@@ -38,7 +38,11 @@ type State = {
   transactions: Transaction[];
 };
 
-const MonthlyContainer = (): JSX.Element => {
+type Props = {
+  filters: any;
+};
+
+const MonthlyContainer: React.FC<Props> = ({filters}): JSX.Element => {
   const [transactions, setTransactions] = useState<TransactionWithAmountNumber[]>([]);
   const [selectedTransaction, setSelectedTransaction] = useState<TransactionWithAmountNumber>({
     _id: '',
@@ -49,8 +53,7 @@ const MonthlyContainer = (): JSX.Element => {
   });
 
   const [calendarDates, setCalendarDates] = useState<State['calendarDates']>([]);
-  const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false);
-  const [isAddTransactionOpen, setIsAddTransactionOpen] = useState(false);
+
   const [isInfoTransactionOpen, setIsInfoTransactionOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -58,35 +61,6 @@ const MonthlyContainer = (): JSX.Element => {
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
   const {amount} = stateTransaction.transactionEvent;
   // eslint-disable-next-line react/state-in-constructor
-
-  // componentDidMount() {
-  //   const {stateTransaction, filters, setDate: setDateWithFilter} = this.props;
-  //   if (filters.date) {
-  //     this.setState({
-  //       date: filters.date
-  //     });
-  //     setDateWithFilter(filters.date);
-  //     this.getTransactions(filters.date);
-  //     this.setCalendar(filters.date);
-  //   } else {
-  //     this.setState({
-  //       date: stateTransaction.date
-  //     });
-  //     this.getTransactions(stateTransaction.date);
-  //     this.setCalendar(stateTransaction.date);
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps: Readonly<Props>) {
-  //   const {stateTransaction, filters} = this.props;
-
-  //   if (prevProps.stateTransaction.date !== stateTransaction.date) {
-  //     if (!filters.date) {
-  //       this.setCalendar(stateTransaction.date);
-  //       this.getTransactions(stateTransaction.date);
-  //     }
-  //   }
-  // }
 
   const getTransactions = async (date: Date) => {
     const from: Date = firstDateOfFirstWeekOfTheMonth(date).toDate();
@@ -124,10 +98,7 @@ const MonthlyContainer = (): JSX.Element => {
     const newEvents: TransactionEventWithAmountNumber[] = selectedTransaction.events.filter(
       ({_id: transactionEventId}) => transactionEventId !== eventId
     );
-    // this.setState({
-    //   selectedDay: {...selectedDay, events: newEvents},
-    //   isEditTransactionOpen: false
-    // });
+
     setSelectedTransaction({...selectedTransaction, events: newEvents});
     clearState();
     getTransactions(stateTransaction.date);
@@ -137,32 +108,21 @@ const MonthlyContainer = (): JSX.Element => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
 
     const {_id: selectedTransactionId} = selectedTransaction;
-    if (isEditTransactionOpen) {
-      setIsEditTransactionOpen(false);
 
-      clearState();
-    } else {
-      setIsEditTransactionOpen(true);
+    const Event: TransactionEvent = {
+      ...event,
+      amount: (event.amount / 100).toFixed(2),
+      fees: (event.fees / 100).toFixed(2),
+      transactionId: selectedTransactionId
+    };
 
-      const Event: TransactionEvent = {
-        ...event,
-        amount: (event.amount / 100).toFixed(2),
-        fees: (event.fees / 100).toFixed(2),
-        transactionId: selectedTransactionId
-      };
-
-      dispatch(setTransaction(Event));
-    }
+    dispatch(setTransaction(Event));
+    dispatch(setIsTransactionOpen());
   };
 
   const handleNextDay = async () => {
     const newDate: Date = Moment(selectedTransaction.createdAt).add(1, UnitOfTime.DAYS).toDate();
     setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
-
-    // this.setState({
-    //   selectedDay: {createdAt: newDate, events: []},
-    //   date: newDate
-    // });
 
     transactions.forEach((transaction) => {
       if (isTheSameDate(newDate, transaction.createdAt)) {
@@ -173,10 +133,7 @@ const MonthlyContainer = (): JSX.Element => {
 
   const handlePreviousDay = async () => {
     const newDate: Date = Moment(selectedTransaction.createdAt).add(-1, UnitOfTime.DAYS).toDate();
-    // this.setState({
-    //   selectedDay: {createdAt: newDate, events: []},
-    //   date: newDate
-    // });
+
     setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
 
     transactions.forEach((transaction) => {
@@ -188,18 +145,18 @@ const MonthlyContainer = (): JSX.Element => {
 
   const handleOpenTransaction = () => {
     const {createdAt} = selectedTransaction;
-    // const {handleInput} = this.props;
-    if (isAddTransactionOpen) {
-      setIsAddTransactionOpen(false);
+    dispatch(setIsTransactionOpen());
+    if (stateTransaction.isTransactionOpen) {
       clearState();
     } else {
-      handleInput({
-        target: {
-          name: UnitOfTime.DATE,
-          value: createdAt
-        }
-      });
-      setIsAddTransactionOpen(true);
+      dispatch(
+        handleInput({
+          target: {
+            name: UnitOfTime.DATE,
+            value: createdAt
+          }
+        })
+      );
     }
   };
 
@@ -223,39 +180,9 @@ const MonthlyContainer = (): JSX.Element => {
     }
   };
 
-  // const handleSave = async () => {
-  //   const {_id: transactionEventId} = stateTransaction.transactionEvent;
-  //   const errors1: Error = validateTransaction(stateTransaction.transactionEvent);
-  //   const isValid: boolean = Object.values(errors1).filter(Boolean).length <= 0;
-
-  //   if (!isValid) {
-  //     setErrors(errors);
-  //     return;
-  //   }
-  //   const event = getTransaction(stateTransaction.transactionEvent);
-
-  //   if (isEditTransactionOpen) {
-  //     await editTransaction(selectedDayId, transactionEventId, event.events[0]);
-
-  //     this.getTransactions(transactionEvent.date);
-  //     this.clearState();
-  //   } else {
-  //     await createTransactionRequest(event);
-  //     this.getTransactions(date);
-  //     this.clearState();
-  //   }
-  //   this.setState({
-  //     // eslint-disable-next-line react/no-access-state-in-setstate
-  //     ...this.state,
-  //     errors: {},
-  //     isAddTransactionOpen: false,
-  //     isEditTransactionOpen: false
-  //   });
-  // };
-
   const setFirstWeek = (date: Date) => {
     const lastDateOfPreviusMonth: number = Moment(date).set(UnitOfTime.DATE, 0).get(UnitOfTime.DATE);
-    const calendar: any = [];
+    const calendar: State['calendarDates'] = [];
     for (let i = firstDateOfFirstWeekOfTheMonth(date).get(UnitOfTime.DATE); i <= lastDateOfPreviusMonth; i += 1) {
       calendar.push({
         date: Moment(firstDateOfFirstWeekOfTheMonth(date)).set(UnitOfTime.DATE, i).toDate()
@@ -265,7 +192,7 @@ const MonthlyContainer = (): JSX.Element => {
   };
 
   const setLastWeek = (date: Date) => {
-    const calendar: any = [];
+    const calendar: State['calendarDates'] = [];
     for (let i = 1; i <= lastDateOfLastWeekOfTheMonth(date).get(UnitOfTime.DATE); i += 1) {
       calendar.push({
         date: Moment(lastDateOfLastWeekOfTheMonth(date)).startOf(UnitOfTime.DATE).set(UnitOfTime.DATE, i).toDate()
@@ -297,8 +224,14 @@ const MonthlyContainer = (): JSX.Element => {
   };
 
   useEffect(() => {
-    setCalendar(stateTransaction.date);
-    getTransactions(stateTransaction.date);
+    if (filters.date && filters.date === stateTransaction.date) {
+      dispatch(setDate(filters.date));
+      getTransactions(filters.date);
+      setCalendar(filters.date);
+    } else {
+      getTransactions(stateTransaction.date);
+      setCalendar(stateTransaction.date);
+    }
   }, [amount, stateTransaction.date]);
 
   return (
@@ -321,17 +254,6 @@ const MonthlyContainer = (): JSX.Element => {
         handleOpenEdit={handleOpenEdit}
       />
       <AddTransactionButton />
-      {/* <AddTransactionModal
-        isEditTransactionOpen={isEditTransactionOpen}
-        errors={errors}
-        transactionEvent={transactionEvent}
-        handleSave={handleSave}
-        handleOpenEdit={handleOpenEdit}
-        handleInputChange={handleInput}
-        isAddTransactionOpen={isAddTransactionOpen}
-        handleOpenTransaction={handleOpenTransaction}
-        handleDelete={handleDelete}
-      /> */}
     </div>
   );
 };
