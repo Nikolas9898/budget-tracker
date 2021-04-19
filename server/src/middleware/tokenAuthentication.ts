@@ -1,33 +1,25 @@
-import jwt from "jsonwebtoken";
-import User from "../models/user/user.model";
-import { NextFunction, Request, RequestHandler, Response } from "express";
-import { UserInterface } from "../models/user/user.model";
+import jwt from 'jsonwebtoken';
+import {NextFunction, Request, RequestHandler, Response} from 'express';
+import User from '../models/user/user.model';
+import {Token, TokenMessages} from '../interfaces/token';
 
-export const tokenAuth: RequestHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  let token: any = req.headers.authorization;
+export const tokenAuth: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+  const {authorization} = req.headers;
+  let token: string | any = authorization;
 
-  if (!token) return res.status(401).json({ msg: "No token, access denied" });
+  if (!token) return res.status(401).json({msg: TokenMessages.NO_TOKEN});
 
-  token = token.split(" ").pop();
+  token = token.split(' ').pop();
 
   try {
-    let decodedToken: any = jwt.decode(token);
+    const decodedToken: Token | any = jwt.decode(token);
 
-    if (!decodedToken) return res.status(401).json({ msg: "Wrong token" });
+    if (!decodedToken) return res.status(401).json({msg: TokenMessages.WRONG_TOKEN});
 
-    await User.findOne(
-      { _id: decodedToken.id },
-      (err: any, user: UserInterface) => {
-        try {
-          return next();
-        } catch (error) {
-          res.json({ msg: error });
-        }
-      }
-    );
-  } catch (error) {}
+    await User.findOne({_id: decodedToken.id}, () => {
+      return next();
+    });
+  } catch (error) {
+    return res.json({msg: error});
+  }
 };
