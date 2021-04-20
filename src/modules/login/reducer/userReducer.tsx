@@ -13,7 +13,14 @@ const initialState = {
   loading: true
 };
 
-export default (state = initialState, action: any) => {
+export const userReducer = (
+  state = initialState,
+  action: any
+): {
+  user: any;
+  token: string;
+  loading: boolean;
+} => {
   switch (action.type) {
     case SIGN_IN:
       if (action.payload.token) {

@@ -81,7 +81,7 @@ export enum SuccessMessages {
 export enum ErrorMessages {
   NO_EXISTING_TRANSACTION = 'Not authorized or transaction does not exist',
   NO_TRANSACTION = 'No such transaction available',
-  TWO_DATES_PICKET = 'Please ensure you pick two dates'
+  TWO_DATES_PICKED = 'Please ensure you pick two dates'
 }
 
 export enum MomentConstants {

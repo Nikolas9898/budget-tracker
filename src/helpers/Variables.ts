@@ -2,26 +2,26 @@ import Moment from 'moment';
 import {TransactionEvent} from '../models/Transaction';
 
 export enum DaysOfWeek {
-  Monday = 'M',
-  Thuesday = 'T',
-  Wednesday = 'W',
-  Thursday = 'Th',
-  Friday = 'F',
-  Saturday = 'Sa',
-  Sunday = 'Su'
+  MONDAY = 'M',
+  THUESDAY = 'T',
+  WEDNESDAY = 'W',
+  THURSDAY = 'Th',
+  FRIDAY = 'F',
+  SATURDAY = 'Sa',
+  SUNDAY = 'Su'
 }
 
 export enum TransactionTypes {
-  Transfer = 'transfer',
-  Income = 'income',
-  Expense = 'expense',
-  Currency = 'Bg'
+  TRANSFER = 'transfer',
+  INCOME = 'income',
+  EXPENSE = 'expense',
+  CURRENCY = 'Bg'
 }
 export enum TransactionPage {
-  Transaction = 'transaction',
-  Stats = 'stats',
-  Export = 'export',
-  Accounts = 'accounts'
+  TRANSACTION = 'transaction',
+  STATS = 'stats',
+  EXPORT = 'export',
+  ACCOUNTS = 'accounts'
 }
 
 export enum UnitOfTime {
@@ -53,29 +53,29 @@ export const lastDateOfLastWeekOfTheMonth = (date: Date): Moment.Moment =>
 export const isTheSameDate = (calendarDate: Date, transactionDate: Date): boolean =>
   Moment(calendarDate).diff(transactionDate, DAY) === 0;
 
-export const isTypeTransfer = (type: string): boolean => type.toLowerCase() === TransactionTypes.Transfer;
+export const isTypeTransfer = (type: string): boolean => type.toLowerCase() === TransactionTypes.TRANSFER;
 
-export const isTransactionContainer = (pathname: string): boolean => pathname.includes(TransactionPage.Transaction);
+export const isTransactionContainer = (pathname: string): boolean => pathname.includes(TransactionPage.TRANSACTION);
 
 export const isSelectedTitle = (pathname: string, path: string): boolean =>
   pathname === `/transaction/${path}` || pathname === `/stats/${path}`;
 
 export const isTransactionTypeIncome = (type: string, amount: number): string =>
-  type === TransactionTypes.Income ? (amount / 100).toFixed(2) : '';
+  type === TransactionTypes.INCOME ? (amount / 100).toFixed(2) : '';
 
 export const isTransactionTypeExpense = (type: string, amount: number): string =>
-  type === TransactionTypes.Expense || type === TransactionTypes.Transfer ? (amount / 100).toFixed(2) : '';
+  type === TransactionTypes.EXPENSE || type === TransactionTypes.TRANSFER ? (amount / 100).toFixed(2) : '';
 
 export const headerTitle = (path: string): string => {
   switch (true) {
     case path.includes('/transaction'):
-      return TransactionPage.Transaction.toLocaleUpperCase();
+      return TransactionPage.TRANSACTION.toLocaleUpperCase();
     case path.includes('/stats'):
-      return TransactionPage.Stats.toLocaleUpperCase();
+      return TransactionPage.STATS.toLocaleUpperCase();
     case path.includes('/export'):
-      return TransactionPage.Export.toLocaleUpperCase();
+      return TransactionPage.EXPORT.toLocaleUpperCase();
     case path.includes('/accounts'):
-      return TransactionPage.Accounts.toLocaleUpperCase();
+      return TransactionPage.ACCOUNTS.toLocaleUpperCase();
     default:
       return '';
   }
@@ -87,13 +87,13 @@ export const getTransaction = (transactionEvent: TransactionEvent) => {
     events: [
       {
         type: type.toLowerCase(),
-        currency: TransactionTypes.Currency,
+        currency: TransactionTypes.CURRENCY,
         transferId,
         date: Moment(date),
         account: isTypeTransfer(type) ? '' : account,
         category: isTypeTransfer(type) ? '' : category,
         from: isTypeTransfer(type) ? from : '',
-        fees: parseFloat(fees!) * 100,
+        fees: fees ? parseFloat(fees) * 100 : '',
         to: isTypeTransfer(type) ? to : '',
         amount: parseFloat(amount) * 100,
         note,

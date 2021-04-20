@@ -15,26 +15,26 @@ export const validateTransaction = (value: TransactionEvent): Error => {
     fees: ''
   };
 
-  if (!value.account && value.type !== TransactionPage.Transaction) {
+  if (!value.account && value.type !== TransactionPage.TRANSACTION) {
     errors.account = 'Please select an account';
   }
 
-  if (value.type === TransactionTypes.Transfer && !value.from) {
+  if (value.type === TransactionTypes.TRANSFER && !value.from) {
     errors.from = 'Please select from';
   }
-  if (!value.category && value.type !== TransactionTypes.Transfer) {
+  if (!value.category && value.type !== TransactionTypes.TRANSFER) {
     errors.category = 'Please select a category';
   }
-  if (value.type === TransactionTypes.Transfer && !value.to) {
+  if (value.type === TransactionTypes.TRANSFER && !value.to) {
     errors.to = 'Please select to';
   }
   if (!value.amount) {
     errors.amount = 'Please add an amount';
   }
-
-  if (parseFloat(value.fees!) > parseFloat(value.amount)) {
-    errors.fees = "Fees can't be greater then amount";
-  }
+  if (value.fees)
+    if (parseFloat(value.fees) > parseFloat(value.amount)) {
+      errors.fees = "Fees can't be greater then amount";
+    }
   return errors;
 };
 

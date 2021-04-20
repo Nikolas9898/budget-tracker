@@ -1,7 +1,7 @@
 import {RequestHandler, Request, Response} from 'express';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
-import {UserType, ResponseUser, succsessMessages, UserErrors} from '../../interfaces/user';
-import User from '../../models/user/user.model';
+import {UserType, ResponseUser, succsessMessages, UserErrors} from '../../models/user';
+import User from '../../dbModels/user/user.model';
 
 export const getLoggedUser: RequestHandler = async (req: Request, res: Response) => {
   try {

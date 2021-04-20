@@ -13,13 +13,13 @@ type Props = {
 
 const Calendar: React.FC<Props> = ({calendarDates, date, transactions, handleOpenInfoModal}) => {
   const [days] = useState([
-    DaysOfWeek.Monday,
-    DaysOfWeek.Thuesday,
-    DaysOfWeek.Wednesday,
-    DaysOfWeek.Thursday,
-    DaysOfWeek.Friday,
-    DaysOfWeek.Saturday,
-    DaysOfWeek.Sunday
+    DaysOfWeek.MONDAY,
+    DaysOfWeek.THUESDAY,
+    DaysOfWeek.WEDNESDAY,
+    DaysOfWeek.THURSDAY,
+    DaysOfWeek.FRIDAY,
+    DaysOfWeek.SATURDAY,
+    DaysOfWeek.SUNDAY
   ]);
 
   return (

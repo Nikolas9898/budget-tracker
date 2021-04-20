@@ -28,7 +28,7 @@ const AmountInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transac
           value={transaction.amount}
           onChange={handleInputChange}
         />
-        {transaction.type === TransactionTypes.Transfer && !isFeesOpen ? (
+        {transaction.type === TransactionTypes.TRANSFER && !isFeesOpen ? (
           <button type="button" className={styles.fees} onClick={setFeesOpen}>
             Fees
           </button>

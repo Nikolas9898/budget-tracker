@@ -1,6 +1,6 @@
 import {RequestHandler, Request, Response} from 'express';
 import moment from 'moment';
-import {Months, Month} from '../../interfaces/month';
+import {Months, Month} from '../../models/month';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
 import TransactionType, {
   ErrorMessages,
@@ -8,8 +8,8 @@ import TransactionType, {
   MomentConstants,
   SuccessMessages,
   TransactionEvent
-} from '../../interfaces/transactions';
-import Transaction from '../../models/transaction/transaction.model';
+} from '../../models/transactions';
+import Transaction from '../../dbModels/transaction/transaction.model';
 import {calculateTotalExpenseAndIncome} from '../../helpers/calculateTotalExpenseAndIncome';
 import {
   createOrdinaryEvent,
@@ -78,7 +78,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (req: Re
 
   if (from === '' || to === '') {
     return res.status(400).json({
-      errorMSG: ErrorMessages.TWO_DATES_PICKET
+      errorMSG: ErrorMessages.TWO_DATES_PICKED
     });
   }
 

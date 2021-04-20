@@ -24,10 +24,10 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   const categoriesExpense = ['', 'food', 'culture', 'socialLife', 'selfDevelopment', 'transportation', 'other'];
 
   const selectOptions = (transactionType: string) => {
-    if (transactionType === TransactionTypes.Transfer) {
+    if (transactionType === TransactionTypes.TRANSFER) {
       return accounts;
     }
-    if (transactionType === TransactionTypes.Income) {
+    if (transactionType === TransactionTypes.INCOME) {
       return categoriesIncome;
     }
     return categoriesExpense;
@@ -62,18 +62,18 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
         />
 
         <SelectInput
-          selectValue={transaction.type === TransactionTypes.Transfer ? transaction.from : transaction.account}
-          transactionType={transaction.type === TransactionTypes.Transfer ? 'from' : 'account'}
+          selectValue={transaction.type === TransactionTypes.TRANSFER ? transaction.from : transaction.account}
+          transactionType={transaction.type === TransactionTypes.TRANSFER ? 'from' : 'account'}
           options={accounts}
           handleInputChange={handleInputChange}
-          error={transaction.type === TransactionTypes.Transfer ? errors.from : errors.account}
+          error={transaction.type === TransactionTypes.TRANSFER ? errors.from : errors.account}
         />
         <SelectInput
-          selectValue={transaction.type === TransactionTypes.Transfer ? transaction.to : transaction.category}
-          transactionType={transaction.type === TransactionTypes.Transfer ? 'to' : 'category'}
+          selectValue={transaction.type === TransactionTypes.TRANSFER ? transaction.to : transaction.category}
+          transactionType={transaction.type === TransactionTypes.TRANSFER ? 'to' : 'category'}
           options={selectOptions(transaction.type)}
           handleInputChange={handleInputChange}
-          error={transaction.type === TransactionTypes.Transfer ? errors.to : errors.category}
+          error={transaction.type === TransactionTypes.TRANSFER ? errors.to : errors.category}
         />
         <AmountInput
           transaction={transaction}

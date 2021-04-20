@@ -26,7 +26,7 @@ const initialState = {
     transactionId: ''
   }
 };
-export default (state = initialState, action: any) => {
+export const transactionReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case ActionTypes.HANDLE_NEXT_MONTH: {
       const nextMonth = Moment(state.date).add(1, 'month');

@@ -4,12 +4,7 @@ import Moment from 'moment';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {TransactionReducer} from '../../models/Transaction';
-import {
-  handleInput,
-  setTransaction,
-  setDate,
-  setIsTransactionOpen
-} from '../../modules/transaction/actions/transactionActions';
+import {handleInput, setTransaction, setIsTransactionOpen} from '../../modules/transaction/actions/transactionActions';
 import AddTransactionModal from '../../modules/transaction/components/addTransactionModal/AddTransactionModal';
 import {validateTransaction} from '../../helpers/Validation';
 import {getTransaction, UnitOfTime} from '../../helpers/Variables';

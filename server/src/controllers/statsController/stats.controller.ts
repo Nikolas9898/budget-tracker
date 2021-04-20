@@ -1,9 +1,9 @@
 import {RequestHandler, Request, Response} from 'express';
 import moment from 'moment';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
-import Transaction from '../../models/transaction/transaction.model';
-import {SumStats} from '../../interfaces/stats';
-import {EventTypes, MomentConstants} from '../../interfaces/transactions';
+import Transaction from '../../dbModels/transaction/transaction.model';
+import {SumStats} from '../../models/stats';
+import {EventTypes, MomentConstants} from '../../models/transactions';
 
 export const getStats: RequestHandler = async (req: Request, res: Response) => {
   const userId = tokenDecoder(req.headers.authorization);

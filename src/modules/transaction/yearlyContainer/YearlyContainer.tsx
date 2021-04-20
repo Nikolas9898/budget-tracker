@@ -9,6 +9,7 @@ import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import YearlyTableRow from './components/YearlyTableRow';
 import styles from './YearlyStyle.module.css';
 import {UnitOfTime} from '../../../helpers/Variables';
+/* eslint-disable react-hooks/exhaustive-deps */
 
 const YearlyContainer = (): JSX.Element => {
   const [monthsInYear, setMonthsInYear] = useState<Month[]>([]);

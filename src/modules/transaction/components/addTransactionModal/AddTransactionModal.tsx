@@ -35,11 +35,11 @@ const AddTransactionModal: React.FC<Props> = ({
 }) => {
   const ChooseCategory = (event: string) => {
     switch (event) {
-      case TransactionTypes.Income:
+      case TransactionTypes.INCOME:
         return 0;
-      case TransactionTypes.Expense:
+      case TransactionTypes.EXPENSE:
         return 1;
-      case TransactionTypes.Transfer:
+      case TransactionTypes.TRANSFER:
         return 2;
       default:
         return 0;
@@ -52,17 +52,17 @@ const AddTransactionModal: React.FC<Props> = ({
   }, [handleOpenEdit, handleOpenTransaction, isEditTransactionOpen, transactionEvent]);
   const handleSetIncomeType = useCallback(() => {
     handleInputChange({
-      target: {value: TransactionTypes.Income, name: 'type'}
+      target: {value: TransactionTypes.INCOME, name: 'type'}
     });
   }, [handleInputChange]);
   const handleSetExpenseType = useCallback(() => {
     handleInputChange({
-      target: {value: TransactionTypes.Expense, name: 'type'}
+      target: {value: TransactionTypes.EXPENSE, name: 'type'}
     });
   }, [handleInputChange]);
   const handleSetTransferType = useCallback(() => {
     handleInputChange({
-      target: {value: TransactionTypes.Transfer, name: 'type'}
+      target: {value: TransactionTypes.TRANSFER, name: 'type'}
     });
   }, [handleInputChange]);
   const handleDeleteTransaction = useCallback(() => {

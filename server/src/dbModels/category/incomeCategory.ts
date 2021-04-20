@@ -1,5 +1,5 @@
 import {Schema, model} from 'mongoose';
-import Category from '../../interfaces/category';
+import Category from '../../models/category';
 
 const incomeCategorySchema = new Schema(
   {

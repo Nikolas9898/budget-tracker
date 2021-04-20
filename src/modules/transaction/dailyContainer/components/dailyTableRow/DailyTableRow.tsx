@@ -20,13 +20,13 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
       <td>
         <div className={styles.account_container}>
           <div className={styles.account}>
-            {transactionEvent.type === TransactionTypes.Transfer
-              ? TransactionTypes.Transfer
+            {transactionEvent.type === TransactionTypes.TRANSFER
+              ? TransactionTypes.TRANSFER
               : transactionEvent.category}
           </div>
           <div className={styles.category}>
             <div>{transactionEvent.note}</div>
-            {transactionEvent.type === TransactionTypes.Transfer ? (
+            {transactionEvent.type === TransactionTypes.TRANSFER ? (
               <div>
                 {transactionEvent.from}
                 {' ---> '}
@@ -39,11 +39,11 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
         </div>
       </td>
       <td className={styles.income}>
-        {transactionEvent.type === TransactionTypes.Income ? (transactionEvent.amount / 100).toFixed(2) : null}
+        {transactionEvent.type === TransactionTypes.INCOME ? (transactionEvent.amount / 100).toFixed(2) : null}
       </td>
-      <td className={transactionEvent.type === TransactionTypes.Expense ? styles.expense : styles.transfer}>
+      <td className={transactionEvent.type === TransactionTypes.EXPENSE ? styles.expense : styles.transfer}>
         <div>
-          {transactionEvent.type === TransactionTypes.Expense || transactionEvent.type === TransactionTypes.Transfer
+          {transactionEvent.type === TransactionTypes.EXPENSE || transactionEvent.type === TransactionTypes.TRANSFER
             ? (transactionEvent.amount / 100).toFixed(2)
             : null}
         </div>

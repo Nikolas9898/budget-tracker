@@ -1,13 +1,13 @@
 import {Response} from 'express';
 import {calculateTotalExpenseAndIncome} from '../calculateTotalExpenseAndIncome';
-import Transaction from '../../models/transaction/transaction.model';
+import Transaction from '../../dbModels/transaction/transaction.model';
 import TransactionType, {
   TransactionEvent,
   Expense,
   DummyExpenseEvent,
   TransferWithFees,
   SuccessMessages
-} from '../../interfaces/transactions';
+} from '../../models/transactions';
 
 export const createTransferWithFees = (
   events: TransactionEvent,
@@ -66,7 +66,7 @@ export const createOrdinaryEvent = (
   return transaction;
 };
 
-export const deleteTransaction = (transaction: TransactionType, res: Response): Response<any> => {
+export const deleteTransaction = (transaction: TransactionType, res: Response): Response<unknown> => {
   try {
     transaction.remove();
     return res.json({msg: SuccessMessages.DELETED_SUCCESSFULLY});
@@ -141,7 +141,7 @@ export const editIntoTransfer = async (
   return transaction;
 };
 
-export const saveAndSendResponse = async (resItem: TransactionType, res: Response): Promise<Response<any>> => {
+export const saveAndSendResponse = async (resItem: TransactionType, res: Response): Promise<Response<unknown>> => {
   try {
     await resItem.save();
     return res.json(resItem);

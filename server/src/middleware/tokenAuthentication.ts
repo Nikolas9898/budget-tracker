@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import {NextFunction, Request, RequestHandler, Response} from 'express';
-import User from '../models/user/user.model';
-import {Token, TokenMessages} from '../interfaces/token';
+import User from '../dbModels/user/user.model';
+import {Token, TokenMessages} from '../models/token';
 
 export const tokenAuth: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const {authorization} = req.headers;

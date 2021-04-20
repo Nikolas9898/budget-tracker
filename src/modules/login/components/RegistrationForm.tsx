@@ -8,7 +8,7 @@ type Props = {
     password: string;
     confirmPassword: string;
   };
-  handleInput: (event: any) => void;
+  handleInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {

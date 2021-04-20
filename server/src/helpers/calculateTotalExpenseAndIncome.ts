@@ -1,4 +1,4 @@
-import TransactionType, {EventTypes} from '../interfaces/transactions';
+import TransactionType, {EventTypes} from '../models/transactions';
 
 export const calculateTotalExpenseAndIncome = async (
   transaction: TransactionType,

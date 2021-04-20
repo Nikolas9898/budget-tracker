@@ -1,8 +1,8 @@
-import Category, {DUMMY_EXPENSE_CATEGORIES, DUMMY_INCOME_CATEGORIES} from '../../interfaces/category';
-import ExpenseCategories from '../../models/category/expenseCategory';
-import IncomeCategories from '../../models/category/incomeCategory';
+import Category, {DUMMY_EXPENSE_CATEGORIES, DUMMY_INCOME_CATEGORIES} from '../../models/category';
+import ExpenseCategories from '../../dbModels/category/expenseCategory';
+import IncomeCategories from '../../dbModels/category/incomeCategory';
 
-export const addCategories = async (userId: string): Promise<any> => {
+export const addCategories = async (userId: string): Promise<unknown> => {
   try {
     const expenseCategories: Category = await new ExpenseCategories({
       userId,
