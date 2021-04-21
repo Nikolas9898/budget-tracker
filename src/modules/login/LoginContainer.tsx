@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {MouseEventHandler, useCallback, useState} from 'react';
 import {Tabs, TabList, TabPanel, Tab} from 'react-tabs';
 import {useDispatch} from 'react-redux';
 import axios from 'axios';
@@ -33,7 +33,7 @@ const LoginContainer = (): JSX.Element => {
 
   const handleLogin = async () => {
     const validationErrors = validateLogin(user, isLogin);
-    const isValid = Object.values(errors).filter(Boolean).length <= 0;
+    const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
     if (!isValid) {
       setErrors({
         email: validationErrors.email,
@@ -59,7 +59,7 @@ const LoginContainer = (): JSX.Element => {
   };
   const handleRegister = async () => {
     const validationErrors = validateLogin(user, isLogin);
-    const isValid = Object.values(errors).filter(Boolean).length <= 0;
+    const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
     if (!isValid) {
       setErrors({
         email: validationErrors.email,
@@ -90,29 +90,24 @@ const LoginContainer = (): JSX.Element => {
       alert(e);
     }
   };
+
+  const changeTab: (event: boolean) => MouseEventHandler<HTMLLIElement> = useCallback(
+    (event: boolean) => () => {
+      setUser({email: '', password: '', confirmPassword: ''});
+      setErrors({email: '', password: '', confirmPassword: ''});
+      setIsLogin(event);
+    },
+    []
+  );
   return (
     <div className={style.container}>
       <div className={style.login_form}>
         <Tabs selectedTabClassName={style.selected_tab}>
           <TabList className={style.tab_list}>
-            <Tab
-              className={style.tab}
-              onClick={() => {
-                setUser({email: '', password: '', confirmPassword: ''});
-                setErrors({email: '', password: '', confirmPassword: ''});
-                setIsLogin(true);
-              }}
-            >
+            <Tab className={style.tab} onClick={changeTab(true)}>
               Sign In
             </Tab>
-            <Tab
-              className={style.tab}
-              onClick={() => {
-                setUser({email: '', password: '', confirmPassword: ''});
-                setErrors({email: '', password: '', confirmPassword: ''});
-                setIsLogin(false);
-              }}
-            >
+            <Tab className={style.tab} onClick={changeTab(false)}>
               Register
             </Tab>
           </TabList>

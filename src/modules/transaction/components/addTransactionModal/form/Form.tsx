@@ -5,7 +5,7 @@ import styles from '../AddTransactionStyle.module.css';
 import {TransactionEvent} from '../../../../../models/Transaction';
 import {HandleInput} from '../../../../../models/Function';
 import {Error} from '../../../../../models/Error';
-import {TransactionTypes} from '../../../../../helpers/Variables';
+import {TransactionTypes, SelectInputTitle} from '../../../../../helpers/Variables';
 import InputTitles from './components/InputTitles';
 import SelectInput from './components/SelectInputs';
 import FeesInput from './components/FeesInput';
@@ -16,6 +16,10 @@ type Props = {
   transaction: TransactionEvent;
   errors: Error;
   handleInputChange: (event: HandleInput) => void;
+};
+type CustomInput = {
+  value: string | number;
+  onClick: React.MouseEventHandler<HTMLInputElement> | undefined;
 };
 const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   const [isFeesOpen, setIsFeesOpen] = useState(false);
@@ -40,11 +44,12 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
     },
     [handleInputChange]
   );
-  const ExampleCustomInput: React.FC<any> = forwardRef(({value, onClick}) => (
+  const ExampleCustomInput: React.FC<CustomInput> = forwardRef(({value, onClick}) => (
     <div className={styles.input_container}>
       <input className={styles.input} onClick={onClick} value={value} />
     </div>
   ));
+
   return (
     <div className={styles.content}>
       <InputTitles transaction={transaction} isFeesOpen={isFeesOpen} />
@@ -58,19 +63,23 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
           timeIntervals={15}
           timeCaption="time"
           locale="pt-BR"
-          customInput={<ExampleCustomInput />}
+          customInput={React.createElement(ExampleCustomInput)}
         />
 
         <SelectInput
           selectValue={transaction.type === TransactionTypes.TRANSFER ? transaction.from : transaction.account}
-          transactionType={transaction.type === TransactionTypes.TRANSFER ? 'from' : 'account'}
+          transactionType={
+            transaction.type === TransactionTypes.TRANSFER ? SelectInputTitle.FROM : SelectInputTitle.ACCOUNT
+          }
           options={accounts}
           handleInputChange={handleInputChange}
           error={transaction.type === TransactionTypes.TRANSFER ? errors.from : errors.account}
         />
         <SelectInput
           selectValue={transaction.type === TransactionTypes.TRANSFER ? transaction.to : transaction.category}
-          transactionType={transaction.type === TransactionTypes.TRANSFER ? 'to' : 'category'}
+          transactionType={
+            transaction.type === TransactionTypes.TRANSFER ? SelectInputTitle.TO : SelectInputTitle.CATEGORY
+          }
           options={selectOptions(transaction.type)}
           handleInputChange={handleInputChange}
           error={transaction.type === TransactionTypes.TRANSFER ? errors.to : errors.category}

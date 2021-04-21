@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import Moment from 'moment';
 import {TransactionWithAmountNumber} from '../../../../models/Transaction';
-import {isTheSameDate} from '../../../../helpers/Variables';
+import {isTheSameDate, UnitOfTime} from '../../../../helpers/Variables';
 import styles from '../MonthlyStyle.module.css';
 
 type Props = {
@@ -13,14 +13,14 @@ type Props = {
 
 const CalendarDate: React.FC<Props> = ({calendarDate, transactions, date, handleOpenInfoModal}) => {
   const openInfoModal = useCallback(() => {
-    handleOpenInfoModal(Moment(calendarDate.date).startOf('date').toDate());
+    handleOpenInfoModal(Moment(calendarDate.date).startOf(UnitOfTime.DATE).toDate());
   }, [calendarDate.date, handleOpenInfoModal]);
 
   return (
     <button
       type="button"
       className={
-        Moment(date).get('month') === Moment(calendarDate.date).get('month')
+        Moment(date).get(UnitOfTime.MONTH) === Moment(calendarDate.date).get(UnitOfTime.MONTH)
           ? styles.calendar_date_box_container
           : styles.calendar_date_box_container_other_month
       }
@@ -28,12 +28,12 @@ const CalendarDate: React.FC<Props> = ({calendarDate, transactions, date, handle
     >
       <div
         className={
-          isTheSameDate(calendarDate.date, Moment().startOf('date').toDate())
+          isTheSameDate(calendarDate.date, Moment().startOf(UnitOfTime.DATE).toDate())
             ? styles.current_date
             : styles.calendar_date
         }
       >
-        {Moment(calendarDate.date).get('date')}
+        {Moment(calendarDate.date).get(UnitOfTime.DATE)}
       </div>
       {transactions.map((transaction) => {
         const {_id: transactionId} = transaction;

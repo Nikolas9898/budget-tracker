@@ -24,6 +24,13 @@ export enum TransactionPage {
   ACCOUNTS = 'accounts'
 }
 
+export enum SelectInputTitle {
+  FROM = 'from',
+  TO = 'to',
+  CATEGORY = 'category',
+  ACCOUNT = 'account'
+}
+
 export enum UnitOfTime {
   DATE = 'date',
   WEEK = 'week',

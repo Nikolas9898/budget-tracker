@@ -1,6 +1,7 @@
 import React from 'react';
 import Moment from 'moment';
 import styles from '../WeeklyStyle.module.css';
+import {UnitOfTime} from '../../../../helpers/Variables';
 
 type Props = {
   week: {from: Date; to: Date; income: number; expense: number};
@@ -9,8 +10,8 @@ type Props = {
 const WeeklyTableRow: React.FC<Props> = ({week}) => {
   const isDateInWeek = () => {
     return (
-      Moment(week.from).startOf('isoWeek').diff(Moment(), 'week') === 0 &&
-      Moment(week.to).endOf('isoWeek').diff(Moment(), 'week') === 0
+      Moment(week.from).startOf(UnitOfTime.ISO_WEEK).diff(Moment(), UnitOfTime.WEEK) === 0 &&
+      Moment(week.to).endOf(UnitOfTime.ISO_WEEK).diff(Moment(), UnitOfTime.WEEK) === 0
     );
   };
   return (

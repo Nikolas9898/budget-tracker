@@ -2,6 +2,7 @@ import React from 'react';
 import Moment from 'moment';
 import {useHistory} from 'react-router-dom';
 import styles from '../YearlyStyle.module.css';
+import {UnitOfTime} from '../../../../helpers/Variables';
 
 type Props = {
   month: {from: Date; to: Date; expense: number; income: number};
@@ -15,7 +16,7 @@ const YearlyTableRow: React.FC<Props> = ({month}) => {
       <td className={styles.month_content}>
         <div
           className={
-            Moment(month.from).diff(Moment().startOf('month').toDate(), 'month') === 0
+            Moment(month.from).diff(Moment().startOf(UnitOfTime.MONTH).toDate(), UnitOfTime.MONTH) === 0
               ? styles.month_selected
               : styles.month
           }
