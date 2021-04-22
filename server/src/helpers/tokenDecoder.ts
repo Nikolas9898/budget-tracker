@@ -1,9 +1,11 @@
-import jwt from 'jsonwebtoken';
+import jwt_decode from 'jwt-decode';
+import {Token} from '../models/token';
 
-export const tokenDecoder = (token: any): string => {
-  token = token.split(' ').pop();
+export const tokenDecoder = (token: string | undefined): string => {
+  token = token ? token.split(' ').pop() : '';
 
-  const decodedToken: any = jwt.decode(token);
+  const decodedToken: Token = jwt_decode(token ? token : '');
+  // const decodedToken: Token | any = jwt.decode(token ? token : '');
 
-  return decodedToken.id;
+  return decodedToken.sub;
 };

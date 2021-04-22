@@ -1,6 +1,8 @@
-export interface Token {
-  id?: string;
-  iat?: number;
+import {JwtPayload} from 'jwt-decode';
+
+export interface Token extends JwtPayload {
+  sub: string;
+  iat: number;
 }
 
 export enum TokenMessages {

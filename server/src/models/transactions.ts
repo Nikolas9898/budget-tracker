@@ -11,7 +11,7 @@ export default interface TransactionType extends Document {
   __v: number;
 }
 
-interface IObjectKeys {
+export interface IObjectKeys {
   [key: string]: string | number | undefined;
 }
 
