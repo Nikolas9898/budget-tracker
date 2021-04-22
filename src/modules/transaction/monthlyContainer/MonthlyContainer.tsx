@@ -14,7 +14,7 @@ import {
   UnitOfTime
 } from '../../../helpers/Variables';
 import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
-import {handleInput, setDate, setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
+import {handleInput, setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
 import {
   Transaction,
   TransactionEvent,
@@ -38,11 +38,7 @@ type State = {
   transactions: Transaction[];
 };
 
-type Props = {
-  filters: any;
-};
-
-const MonthlyContainer: React.FC<Props> = ({filters}): JSX.Element => {
+const MonthlyContainer = (): JSX.Element => {
   const [transactions, setTransactions] = useState<TransactionWithAmountNumber[]>([]);
   const [selectedTransaction, setSelectedTransaction] = useState<TransactionWithAmountNumber>({
     _id: '',
@@ -224,14 +220,8 @@ const MonthlyContainer: React.FC<Props> = ({filters}): JSX.Element => {
   };
 
   useEffect(() => {
-    if (filters.date && filters.date === stateTransaction.date) {
-      dispatch(setDate(filters.date));
-      getTransactions(filters.date);
-      setCalendar(filters.date);
-    } else {
-      getTransactions(stateTransaction.date);
-      setCalendar(stateTransaction.date);
-    }
+    getTransactions(stateTransaction.date);
+    setCalendar(stateTransaction.date);
   }, [amount, stateTransaction.date]);
 
   return (

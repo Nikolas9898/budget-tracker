@@ -6,7 +6,7 @@ import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
 import SocialNetworks from './components/SocialNetworks';
 import {validateLogin} from '../../helpers/Validation';
-import {singIn} from './actions/usersActions';
+import {signIn} from './actions/usersActions';
 import style from './LoginContainerStyle.module.css';
 
 const LoginContainer = (): JSX.Element => {
@@ -46,7 +46,7 @@ const LoginContainer = (): JSX.Element => {
     const loggedUser = await axios.post(`http://localhost:5000/signIn`, user);
 
     if (loggedUser.data.user) {
-      dispatch(singIn(loggedUser.data));
+      dispatch(signIn(loggedUser.data));
       window.location.pathname = '/';
       setErrors({email: '', password: '', confirmPassword: ''});
     } else {
@@ -81,7 +81,7 @@ const LoginContainer = (): JSX.Element => {
       const signUp = await axios.post(`http://localhost:5000/signUp`, newUser);
 
       if (signUp.data.user) {
-        dispatch(singIn(signUp.data));
+        dispatch(signIn(signUp.data));
         window.location.pathname = '/';
         setErrors({email: '', password: '', confirmPassword: ''});
       }

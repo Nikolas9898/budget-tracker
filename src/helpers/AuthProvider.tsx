@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {getUserByJWToken} from '../modules/transaction/service/TransactionService';
-import {singIn} from '../modules/login/actions/usersActions';
+import {signIn} from '../modules/login/actions/usersActions';
 
 type Props = {
   children: JSX.Element;
@@ -18,7 +18,7 @@ const AuthProvider = (props: Props): JSX.Element => {
       localStorage.removeItem('jwt');
       setIsLoading(false);
     } else {
-      dispatch(singIn(user));
+      dispatch(signIn(user));
       setIsLoading(false);
     }
   };

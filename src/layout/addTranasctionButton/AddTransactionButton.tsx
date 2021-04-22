@@ -54,7 +54,7 @@ const AddTransactionButton = (): JSX.Element => {
     const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
 
     if (!isValid) {
-      setErrors(errors);
+      setErrors(validationErrors);
       return;
     }
 

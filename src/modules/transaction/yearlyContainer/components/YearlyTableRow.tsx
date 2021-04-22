@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import Moment from 'moment';
+import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import styles from '../YearlyStyle.module.css';
 import {UnitOfTime} from '../../../../helpers/Variables';
+import {setDate} from '../../actions/transactionActions';
 
 type Props = {
   month: {from: Date; to: Date; expense: number; income: number};
@@ -10,9 +12,14 @@ type Props = {
 
 const YearlyTableRow: React.FC<Props> = ({month}) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const openMonthContainer = useCallback(() => {
+    dispatch(setDate(month.from));
+    history.push(`/transaction/monthly`);
+  }, [dispatch, history, month.from]);
+
   return (
-    <tr onClick={() => history.push(`/transaction/monthly?date=${month.from}`)}>
-      {' '}
+    <tr onClick={openMonthContainer}>
       <td className={styles.month_content}>
         <div
           className={

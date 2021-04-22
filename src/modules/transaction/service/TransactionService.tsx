@@ -48,7 +48,14 @@ export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<any> 
   }
 };
 
-export const getYearlyOrWeekly = async (data: any): Promise<any> => {
+export const getYearlyOrWeekly = async (
+  data: {
+    from: Date;
+    to: Date;
+    expense: number;
+    income: number;
+  }[]
+): Promise<any> => {
   const url = `http://localhost:5000/transaction/getYearlyOrWeekly`;
 
   const request: any = {

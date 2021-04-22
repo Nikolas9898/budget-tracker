@@ -17,3 +17,13 @@ export interface UserRegister {
   password: string;
   confirmPassword: string;
 }
+export interface SignInUser {
+  email: string;
+  password: string;
+  categories: [];
+  createdAt: string;
+  username: string;
+  updatedAt: string;
+  type: string;
+  id: string;
+}

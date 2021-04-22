@@ -1,5 +1,5 @@
 import {UserRegister} from '../../../models/User';
-import {SIGN_IN} from '../actionTypes';
+import {ActionTypes} from '../actionTypes';
 
 export interface State {
   user: UserRegister;
@@ -22,7 +22,7 @@ export const userReducer = (
   loading: boolean;
 } => {
   switch (action.type) {
-    case SIGN_IN:
+    case ActionTypes.SIGN_IN:
       if (action.payload.token) {
         localStorage.setItem('jwt', action.payload.token);
       }

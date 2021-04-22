@@ -1,23 +1,14 @@
-import {SIGN_IN} from '../actionTypes';
+import {SignInUser} from '../../../models/User';
+import {ActionTypes} from '../actionTypes';
 
-export const singIn = (user: {
-  email: string;
-  password: string;
-  categories: [];
-  createdAt: string;
-  username: string;
-  updatedAt: string;
+export const signIn = (
+  user: SignInUser
+): {
   type: string;
-  id: string;
-}) => async (dispatch: any): Promise<void> => {
-  try {
-    await dispatch({
-      type: SIGN_IN,
-      payload: user
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
+  payload: SignInUser;
+} => ({
+  type: ActionTypes.SIGN_IN,
+  payload: user
+});
 
-export default singIn;
+export default signIn;

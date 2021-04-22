@@ -1,3 +1,5 @@
+import {Moment} from 'moment';
+
 export interface Transaction {
   _id: string;
   createdAt: Date;
@@ -5,6 +7,7 @@ export interface Transaction {
   income: number;
   expense: number;
 }
+
 export interface TransactionEvent {
   _id: string;
   type: string;
