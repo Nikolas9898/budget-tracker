@@ -14,25 +14,25 @@ export const validateTransaction = (value: TransactionEvent): Error => {
     amount: '',
     fees: ''
   };
+  const {account, type, category, to, from, fees, amount} = value;
 
-  if (!value.account && value.type !== TransactionPage.TRANSACTION) {
+  if (!account && type !== TransactionPage.TRANSACTION) {
     errors.account = 'Please select an account';
   }
-
-  if (value.type === TransactionTypes.TRANSFER && !value.from) {
+  if (type === TransactionTypes.TRANSFER && !from) {
     errors.from = 'Please select from';
   }
-  if (!value.category && value.type !== TransactionTypes.TRANSFER) {
+  if (!category && type !== TransactionTypes.TRANSFER) {
     errors.category = 'Please select a category';
   }
-  if (value.type === TransactionTypes.TRANSFER && !value.to) {
+  if (type === TransactionTypes.TRANSFER && !to) {
     errors.to = 'Please select to';
   }
-  if (!value.amount) {
+  if (!amount) {
     errors.amount = 'Please add an amount';
   }
-  if (value.fees)
-    if (parseFloat(value.fees) > parseFloat(value.amount)) {
+  if (fees)
+    if (parseFloat(fees) > parseFloat(amount)) {
       errors.fees = "Fees can't be greater then amount";
     }
   return errors;
@@ -54,13 +54,15 @@ export const validateLogin = (
     password: '',
     confirmPassword: ''
   };
-  if (!isValidEmail.test(user.email)) {
+  const {email, password, confirmPassword} = user;
+
+  if (!isValidEmail.test(email)) {
     errors.email = 'Please enter a valid email.';
   }
-  if (user.password !== user.confirmPassword && !isLogin) {
+  if (password !== confirmPassword && !isLogin) {
     errors.confirmPassword = 'The password does not match. ';
   }
-  if (!user.password.match(/^[0-9a-zA-Z]+$/) || user.password.length > 20 || user.password.length < 6) {
+  if (!password.match(/^[0-9a-zA-Z]+$/) || password.length > 20 || password.length < 6) {
     errors.password = 'Please enter 6-20 characters [A-Z, a-z, 0-9 only].';
   }
   return errors;

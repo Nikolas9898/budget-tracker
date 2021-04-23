@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {getUserByJWToken} from '../modules/transaction/service/TransactionService';
 import {signIn} from '../modules/login/actions/usersActions';
 
 type Props = {
-  children: JSX.Element;
+  children: ReactNode;
 };
-const AuthProvider = (props: Props): JSX.Element => {
+const AuthProvider = ({children}: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
@@ -35,6 +35,6 @@ const AuthProvider = (props: Props): JSX.Element => {
     return <div />;
   }
 
-  return props.children;
+  return <>{children}</>;
 };
 export default AuthProvider;

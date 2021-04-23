@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, {Method, AxiosResponse, AxiosRequestConfig, AxiosError} from 'axios';
 
 const config = {
   headers: {
@@ -9,14 +9,14 @@ const config = {
 export const createTransactionRequest = async (
   data: any
 ): Promise<
-  | AxiosResponse<any>
+  | AxiosResponse
   | {
-      error: any;
+      error: AxiosError;
     }
 > => {
   const url = `http://localhost:5000/transaction/create`;
 
-  const request: any = {
+  const request: AxiosRequestConfig = {
     method: 'POST',
     data,
     headers: config.headers,
@@ -24,8 +24,7 @@ export const createTransactionRequest = async (
   };
 
   try {
-    const response = await axios(request);
-    return response;
+    return await axios(request);
   } catch (e) {
     return {error: e};
   }
@@ -34,7 +33,7 @@ export const createTransactionRequest = async (
 export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<any> => {
   const url = `http://localhost:5000/transaction/specificDatePeriod/${from}/${to}`;
 
-  const request: any = {
+  const request: AxiosRequestConfig = {
     method: 'GET',
     headers: config.headers,
     url
@@ -43,8 +42,7 @@ export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<any> 
     const response = await axios(request);
     return response.data;
   } catch (e) {
-    console.error(e);
-    return [];
+    return {error: e};
   }
 };
 
@@ -58,7 +56,7 @@ export const getYearlyOrWeekly = async (
 ): Promise<any> => {
   const url = `http://localhost:5000/transaction/getYearlyOrWeekly`;
 
-  const request: any = {
+  const request: AxiosRequestConfig = {
     method: 'POST',
     data,
     headers: config.headers,
@@ -68,8 +66,7 @@ export const getYearlyOrWeekly = async (
     const response = await axios(request);
     return response.data;
   } catch (e) {
-    console.error(e);
-    return [];
+    return {error: e};
   }
 };
 export const editTransaction = async (
@@ -77,14 +74,14 @@ export const editTransaction = async (
   transactionId: string,
   data: any
 ): Promise<
-  | AxiosResponse<any>
+  | AxiosResponse
   | {
-      error: any;
+      error: AxiosError;
     }
 > => {
   const url = `http://localhost:5000/transaction/event/edit/${selectedDayId}/${transactionId}`;
 
-  const request: any = {
+  const request: AxiosRequestConfig = {
     method: 'PUT',
     data,
     headers: config.headers,
@@ -92,8 +89,7 @@ export const editTransaction = async (
   };
 
   try {
-    const response = await axios(request);
-    return response;
+    return await axios(request);
   } catch (e) {
     return {error: e};
   }
@@ -102,14 +98,14 @@ export const deleteTransaction = async (
   selectedDayId: string,
   transactionId: string
 ): Promise<
-  | AxiosResponse<any>
+  | AxiosResponse
   | {
-      error: any;
+      error: AxiosError;
     }
 > => {
   const url = `http://localhost:5000/transaction/event/delete/${selectedDayId}/${transactionId}`;
 
-  const request: any = {
+  const request: AxiosRequestConfig = {
     method: 'PUT',
     data: {},
     headers: config.headers,
@@ -117,8 +113,7 @@ export const deleteTransaction = async (
   };
 
   try {
-    const response = await axios(request);
-    return response;
+    return await axios(request);
   } catch (e) {
     return {error: e};
   }
@@ -126,7 +121,7 @@ export const deleteTransaction = async (
 export const getUserByJWToken = async (): Promise<any> => {
   const url = `http://localhost:5000/user/logged`;
 
-  const request: any = {
+  const request: AxiosRequestConfig = {
     method: 'GET',
     headers: config.headers,
     url
@@ -136,7 +131,6 @@ export const getUserByJWToken = async (): Promise<any> => {
 
     return response.data;
   } catch (e) {
-    console.error(e);
-    return [];
+    return {error: e};
   }
 };
