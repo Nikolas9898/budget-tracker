@@ -1,4 +1,4 @@
-import axios, {Method, AxiosResponse, AxiosRequestConfig, AxiosError} from 'axios';
+import axios, {AxiosResponse, AxiosRequestConfig, AxiosError} from 'axios';
 
 const config = {
   headers: {
@@ -40,6 +40,7 @@ export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<any> 
   };
   try {
     const response = await axios(request);
+    console.log(response.data);
     return response.data;
   } catch (e) {
     return {error: e};

@@ -1,5 +1,3 @@
-import {Moment} from 'moment';
-
 export interface Transaction {
   _id: string;
   createdAt: Date;
