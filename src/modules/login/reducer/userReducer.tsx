@@ -1,3 +1,4 @@
+import {AnyAction} from 'redux';
 import {UserRegister} from '../../../models/User';
 import {ActionTypes} from '../actionTypes';
 
@@ -8,19 +9,12 @@ export interface State {
 }
 
 const initialState = {
-  user: {},
+  user: {email: '', password: '', confirmPassword: ''},
   token: '',
   loading: true
 };
 
-export const userReducer = (
-  state = initialState,
-  action: any
-): {
-  user: any;
-  token: string;
-  loading: boolean;
-} => {
+export const userReducer = (state = initialState, action: AnyAction): State => {
   switch (action.type) {
     case ActionTypes.SIGN_IN:
       if (action.payload.token) {

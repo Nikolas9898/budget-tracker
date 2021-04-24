@@ -1,12 +1,17 @@
 import React from 'react';
 import {PieChart} from 'react-minimal-pie-chart';
+import {Stat} from '../../../models/Stats';
 import './StatsFormStyle.css';
 
 type Props = {
-  stats: any;
+  stats: Stat[];
   isIncome: boolean;
 };
 const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
+  let sumValue = 0;
+  stats.forEach((stat) => {
+    sumValue += stat.value;
+  });
   return (
     <div className="form_wrapper">
       <div className="title">{isIncome ? 'Income' : 'Expense'}</div>
@@ -26,11 +31,11 @@ const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
       <div>
         <table className="content_table">
           <tbody>
-            {stats.map((stat: any) => (
+            {stats.map((stat: Stat) => (
               <tr>
                 <td className="percent_content">
                   <div className="percent" style={{backgroundColor: stat.color}}>
-                    63%
+                    {((stat.value / sumValue) * 100).toFixed(1)}%
                   </div>
                 </td>
                 <td>{stat.category.charAt(0).toUpperCase() + stat.category.slice(1)}</td>

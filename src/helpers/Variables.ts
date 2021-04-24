@@ -1,5 +1,5 @@
 import Moment from 'moment';
-import {TransactionEvent} from '../models/Transaction';
+import {ServiceTransaction, TransactionEvent} from '../models/Transaction';
 
 export enum DaysOfWeek {
   MONDAY = 'M',
@@ -88,7 +88,7 @@ export const headerTitle = (path: string): string => {
   }
 };
 
-export const getTransaction = (transactionEvent: TransactionEvent) => {
+export const getTransaction = (transactionEvent: TransactionEvent): ServiceTransaction => {
   const {type, transferId, date, account, category, from, fees, to, amount, note, description} = transactionEvent;
   return {
     events: [
@@ -100,7 +100,7 @@ export const getTransaction = (transactionEvent: TransactionEvent) => {
         account: isTypeTransfer(type) ? '' : account,
         category: isTypeTransfer(type) ? '' : category,
         from: isTypeTransfer(type) ? from : '',
-        fees: fees ? parseFloat(fees) * 100 : '',
+        fees: fees ? parseFloat(fees) * 100 : 0,
         to: isTypeTransfer(type) ? to : '',
         amount: parseFloat(amount) * 100,
         note,

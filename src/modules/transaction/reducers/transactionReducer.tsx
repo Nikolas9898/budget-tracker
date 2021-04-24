@@ -1,10 +1,12 @@
 import Moment from 'moment';
+import {AnyAction} from '@reduxjs/toolkit';
 import {ActionTypes} from '../actionTypes';
 import {TransactionEvent} from '../../../models/Transaction';
 
 export interface State {
   date: Date;
   transactionEvent: TransactionEvent;
+  isTransactionOpen: boolean;
 }
 const initialState = {
   date: Moment().toDate(),
@@ -13,7 +15,7 @@ const initialState = {
   transactionEvent: {
     _id: '',
     type: 'income',
-    date: '',
+    date: Moment().toDate(),
     account: '',
     from: '',
     category: '',
@@ -26,14 +28,13 @@ const initialState = {
     transactionId: ''
   }
 };
-export const transactionReducer = (state = initialState, action: any) => {
+export const transactionReducer = (state = initialState, action: AnyAction): State => {
   switch (action.type) {
     case ActionTypes.HANDLE_NEXT_MONTH: {
       const nextMonth = Moment(state.date).add(1, 'month');
       return {
         ...state,
-        calendarDates: [],
-        date: nextMonth
+        date: nextMonth.toDate()
       };
     }
 
@@ -41,8 +42,7 @@ export const transactionReducer = (state = initialState, action: any) => {
       const previousMonth = Moment(state.date).add(-1, 'month');
       return {
         ...state,
-        calendarDates: [],
-        date: previousMonth
+        date: previousMonth.toDate()
       };
     }
 
@@ -59,7 +59,7 @@ export const transactionReducer = (state = initialState, action: any) => {
       const previousYear = Moment(state.date).add(-1, 'year');
       return {
         ...state,
-        date: previousYear
+        date: previousYear.toDate()
       };
     }
 

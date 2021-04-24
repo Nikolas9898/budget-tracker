@@ -1,4 +1,5 @@
 import axios, {AxiosResponse, AxiosRequestConfig, AxiosError} from 'axios';
+import {ServiceTransaction, ServiceTransactionEvent} from '../../../models/Transaction';
 
 const config = {
   headers: {
@@ -7,7 +8,7 @@ const config = {
 };
 
 export const createTransactionRequest = async (
-  data: any
+  data: ServiceTransaction
 ): Promise<
   | AxiosResponse
   | {
@@ -38,6 +39,7 @@ export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<any> 
     headers: config.headers,
     url
   };
+
   try {
     const response = await axios(request);
     console.log(response.data);
@@ -73,7 +75,7 @@ export const getYearlyOrWeekly = async (
 export const editTransaction = async (
   selectedDayId: string,
   transactionId: string,
-  data: any
+  data: ServiceTransactionEvent
 ): Promise<
   | AxiosResponse
   | {

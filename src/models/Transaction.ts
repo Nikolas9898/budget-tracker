@@ -1,3 +1,5 @@
+import {Moment} from 'moment';
+
 export interface Transaction {
   _id: string;
   createdAt: Date;
@@ -20,6 +22,39 @@ export interface TransactionEvent {
   description: string;
   transferId?: string;
   transactionId: string;
+}
+export interface ServiceTransaction {
+  createdAt: Moment;
+  events: ServiceTransactionEvent[];
+}
+export interface ServiceTransactionEvent {
+  account?: string;
+  amount: number;
+  category?: string;
+  currency: string;
+  date: Moment | Date;
+  description: string;
+  fees: number;
+  from?: string;
+  note: string;
+  to?: string;
+  transferId?: string;
+  type: string;
+  _id?: string;
+}
+export interface SpecificDatePeriod {
+  transactions: any;
+  // createdAt: Date;
+  // events: ServiceTransactionEvent[];
+  // expense: number;
+  // income: number;
+  // updatedAt: Date;
+  // userId: string;
+  // __v: number;
+  // _id: string;
+  // }[];
+  sumIncome: number;
+  sumExpense: number;
 }
 export interface TransactionWithAmountNumber {
   _id: string;
