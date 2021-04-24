@@ -43,7 +43,7 @@ export interface ServiceTransactionEvent {
   _id?: string;
 }
 export interface SpecificDatePeriod {
-  transactions: any;
+  // transactions: any;
   // createdAt: Date;
   // events: ServiceTransactionEvent[];
   // expense: number;

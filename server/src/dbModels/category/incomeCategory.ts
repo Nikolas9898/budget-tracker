@@ -8,7 +8,7 @@ const incomeCategorySchema = new Schema(
       required: true,
       minlength: 3
     },
-    expenseCategories: {
+    incomeCategories: {
       type: [
         {
           name: String

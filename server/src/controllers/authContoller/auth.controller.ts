@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import {Request, RequestHandler, Response} from 'express';
 import User from '../../dbModels/user/user.model';
 import {UserType, ResponseUser, UserErrors} from '../../models/user';
-import {addCategories} from '../../helpers/userHelpers/userHelpers';
+import {addCategories} from '../categoryController/category.controller';
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
   try {
