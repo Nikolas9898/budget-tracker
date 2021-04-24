@@ -1,4 +1,5 @@
 import React from 'react';
+import {AuthenticationTitles} from '../../../helpers/LanguageConsts';
 import LoginContainerStyle from '../LoginContainerStyle.module.css';
 
 type Props = {
@@ -15,7 +16,7 @@ const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
   return (
     <div className={LoginContainerStyle.login_content}>
       <label htmlFor="Email" className={LoginContainerStyle.login_label}>
-        Email
+        {AuthenticationTitles.EMAIL}
         <input className={LoginContainerStyle.input} name="email" onChange={handleInput} />
       </label>
       {errors.email && (
@@ -24,7 +25,7 @@ const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
         </div>
       )}
       <label htmlFor="Password" className={LoginContainerStyle.login_label}>
-        Password
+        {AuthenticationTitles.PASSWORD}
         <input type="password" className={LoginContainerStyle.input} name="password" onChange={handleInput} />
       </label>
       {errors.password && (
@@ -33,7 +34,7 @@ const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
         </div>
       )}
       <label htmlFor="Confirm password" className={LoginContainerStyle.login_label}>
-        Confirm Password
+        {AuthenticationTitles.CONFIRM_PASSWORD}{' '}
         <input type="password" className={LoginContainerStyle.input} name="confirmPassword" onChange={handleInput} />
       </label>
       {errors.confirmPassword && (
@@ -42,7 +43,7 @@ const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
         </div>
       )}
       <button type="button" className={LoginContainerStyle.login_button} onClick={Submit}>
-        Register
+        {AuthenticationTitles.SIGN_UP}
       </button>
     </div>
   );

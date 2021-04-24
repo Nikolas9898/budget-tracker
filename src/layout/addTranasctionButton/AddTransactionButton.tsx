@@ -7,7 +7,7 @@ import {TransactionReducer} from '../../models/Transaction';
 import {handleInput, setTransaction, setIsTransactionOpen} from '../../modules/transaction/actions/transactionActions';
 import AddTransactionModal from '../../modules/transaction/components/addTransactionModal/AddTransactionModal';
 import {validateTransaction} from '../../helpers/Validation';
-import {getTransaction, UnitOfTime} from '../../helpers/Variables';
+import {getTransaction, TransactionTypes, UnitOfTime} from '../../helpers/Variables';
 import {
   createTransactionRequest,
   deleteTransaction,
@@ -35,7 +35,7 @@ const AddTransactionButton = (): JSX.Element => {
     dispatch(
       setTransaction({
         _id: '',
-        type: 'income',
+        type: TransactionTypes.INCOME,
         date: Moment().toDate(),
         account: '',
         from: '',

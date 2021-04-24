@@ -4,6 +4,18 @@ import {TransactionEvent} from '../models/Transaction';
 import {Error} from '../models/Error';
 import {TransactionTypes, TransactionPage} from './Variables';
 import {UserRegister} from '../models/User';
+import {
+  EMAIL_CHECKER,
+  FEES_CAN_NOT_BE_GREATER,
+  NO_MATCHING_PASSWORDS,
+  PLEASE_ADD_AN_AMOUNT,
+  PLEASE_ENTER_VALID_EMAIL,
+  PLEASE_ENTER_VALID_PASSWORD,
+  PLEASE_SELECT_AN_ACCOUNT,
+  PLEASE_SELECT_A_CATEGORY,
+  PLEASE_SELECT_FROM,
+  PLEASE_SELECT_TO
+} from './ValidationContants';
 
 export const validateTransaction = (value: TransactionEvent): Error => {
   const errors: Error = {
@@ -17,23 +29,23 @@ export const validateTransaction = (value: TransactionEvent): Error => {
   const {account, type, category, to, from, fees, amount} = value;
 
   if (!account && type !== TransactionPage.TRANSACTION) {
-    errors.account = 'Please select an account';
+    errors.account = PLEASE_SELECT_AN_ACCOUNT;
   }
   if (type === TransactionTypes.TRANSFER && !from) {
-    errors.from = 'Please select from';
+    errors.from = PLEASE_SELECT_FROM;
   }
   if (!category && type !== TransactionTypes.TRANSFER) {
-    errors.category = 'Please select a category';
+    errors.category = PLEASE_SELECT_A_CATEGORY;
   }
   if (type === TransactionTypes.TRANSFER && !to) {
-    errors.to = 'Please select to';
+    errors.to = PLEASE_SELECT_TO;
   }
   if (!amount) {
-    errors.amount = 'Please add an amount';
+    errors.amount = PLEASE_ADD_AN_AMOUNT;
   }
   if (fees)
     if (parseFloat(fees) > parseFloat(amount)) {
-      errors.fees = "Fees can't be greater then amount";
+      errors.fees = FEES_CAN_NOT_BE_GREATER;
     }
   return errors;
 };
@@ -46,9 +58,7 @@ export const validateLogin = (
   password: string;
   confirmPassword: string;
 } => {
-  const isValidEmail = RegExp(
-    "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
-  );
+  const isValidEmail = RegExp(EMAIL_CHECKER);
   const errors = {
     email: '',
     password: '',
@@ -57,13 +67,13 @@ export const validateLogin = (
   const {email, password, confirmPassword} = user;
 
   if (!isValidEmail.test(email)) {
-    errors.email = 'Please enter a valid email.';
+    errors.email = PLEASE_ENTER_VALID_EMAIL;
   }
   if (password !== confirmPassword && !isLogin) {
-    errors.confirmPassword = 'The password does not match. ';
+    errors.confirmPassword = NO_MATCHING_PASSWORDS;
   }
   if (!password.match(/^[0-9a-zA-Z]+$/) || password.length > 20 || password.length < 6) {
-    errors.password = 'Please enter 6-20 characters [A-Z, a-z, 0-9 only].';
+    errors.password = PLEASE_ENTER_VALID_PASSWORD;
   }
   return errors;
 };

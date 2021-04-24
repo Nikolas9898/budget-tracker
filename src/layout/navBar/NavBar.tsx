@@ -11,6 +11,7 @@ import {
 import {isTransactionContainer, isSelectedTitle} from '../../helpers/Variables';
 import {TransactionReducer} from '../../models/Transaction';
 import styles from './NavBarStyle.module.css';
+import {NavBarOptions} from '../../helpers/LanguageConsts';
 
 const NavBarMenu = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -36,28 +37,28 @@ const NavBarMenu = (): JSX.Element => {
           to={isTransactionContainer(location.pathname) ? '/transaction/daily' : '/stats/daily'}
           className={isSelectedTitle(location.pathname, 'daily') ? styles.title_selected : styles.title}
         >
-          Daily
+          {NavBarOptions.DAILY}
         </Link>
 
         <Link
           to={isTransactionContainer(location.pathname) ? '/transaction/weekly' : '/stats/weekly'}
           className={isSelectedTitle(location.pathname, 'weekly') ? styles.title_selected : styles.title}
         >
-          Weekly
+          {NavBarOptions.WEEKLY}
         </Link>
 
         <Link
           to={isTransactionContainer(location.pathname) ? '/transaction/monthly' : '/stats/monthly'}
           className={isSelectedTitle(location.pathname, 'monthly') ? styles.title_selected : styles.title}
         >
-          Monthly
+          {NavBarOptions.MONTHLY}
         </Link>
 
         <Link
           to={isTransactionContainer(location.pathname) ? '/transaction/yearly' : '/stats/yearly'}
           className={isSelectedTitle(location.pathname, 'yearly') ? styles.title_selected : styles.title}
         >
-          Yearly
+          {NavBarOptions.YEARLY}
         </Link>
 
         <Link

@@ -17,8 +17,9 @@ const NavBar = (): JSX.Element => {
     <div>
       <nav className={styles.container}>
         <FontAwesomeIcon className={styles.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} />
-
-        <div className={styles.page_title}>{headerTitle(window.location.pathname)}</div>
+        <div className={styles.page_title}>
+          {window.location.pathname === '/' ? 'Budget-Tracker' : headerTitle(window.location.pathname)}
+        </div>
         <div className={styles.dropdown}>
           <div className={styles.user_content}>
             <FontAwesomeIcon className={styles.user_email} icon={faUser} />
