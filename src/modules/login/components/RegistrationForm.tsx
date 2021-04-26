@@ -1,5 +1,5 @@
 import React from 'react';
-import {AuthenticationTitles} from '../../../helpers/LanguageConsts';
+import languageWords from '../../../helpers/LanguageConsts';
 import LoginContainerStyle from '../LoginContainerStyle.module.css';
 
 type Props = {
@@ -16,7 +16,8 @@ const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
   return (
     <div className={LoginContainerStyle.login_content}>
       <label htmlFor="Email" className={LoginContainerStyle.login_label}>
-        {AuthenticationTitles.EMAIL}
+        {languageWords.EMAIL}
+
         <input className={LoginContainerStyle.input} name="email" onChange={handleInput} />
       </label>
       {errors.email && (
@@ -25,7 +26,7 @@ const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
         </div>
       )}
       <label htmlFor="Password" className={LoginContainerStyle.login_label}>
-        {AuthenticationTitles.PASSWORD}
+        {languageWords.PASSWORD}
         <input type="password" className={LoginContainerStyle.input} name="password" onChange={handleInput} />
       </label>
       {errors.password && (
@@ -34,7 +35,7 @@ const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
         </div>
       )}
       <label htmlFor="Confirm password" className={LoginContainerStyle.login_label}>
-        {AuthenticationTitles.CONFIRM_PASSWORD}{' '}
+        {languageWords.CONFIRM_PASSWORD}{' '}
         <input type="password" className={LoginContainerStyle.input} name="confirmPassword" onChange={handleInput} />
       </label>
       {errors.confirmPassword && (
@@ -43,7 +44,7 @@ const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
         </div>
       )}
       <button type="button" className={LoginContainerStyle.login_button} onClick={Submit}>
-        {AuthenticationTitles.SIGN_UP}
+        {languageWords.SIGN_UP}
       </button>
     </div>
   );

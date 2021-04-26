@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import {Link} from 'react-router-dom';
 import SideBarStyle from './SideBarStyle.module.css';
-import {SideBarOptions} from '../../helpers/LanguageConsts';
+import languageWords from '../../helpers/LanguageConsts';
 
 interface Props {
   isSideBarOpen: boolean;
@@ -21,16 +21,16 @@ const SideBar: React.FC<Props> = ({isSideBarOpen, setIsSideBarOpen}) => {
           <FontAwesomeIcon className={SideBarStyle.close_button} icon={faTimes} onClick={closeSideBar} />
           <div className={SideBarStyle.content}>
             <Link to="/transaction/monthly" className={SideBarStyle.title}>
-              {SideBarOptions.TRANSACTIONS}
+              {languageWords.TRANSACTIONS}
             </Link>
             <Link to="/stats/monthly" className={SideBarStyle.title}>
-              {SideBarOptions.STATS}
+              {languageWords.STATS}
             </Link>
             <Link to="/export" className={SideBarStyle.title}>
-              {SideBarOptions.EXPORT}
+              {languageWords.EXPORT}
             </Link>
             <Link to="/accounts" className={SideBarStyle.title}>
-              {SideBarOptions.ACCOUNT}
+              {languageWords.ACCOUNT}
             </Link>
           </div>
         </div>

@@ -1,4 +1,7 @@
 import axios, {AxiosResponse, AxiosRequestConfig, AxiosError} from 'axios';
+import axiosConfig from '../../../axiosConfig';
+import {GET_YERALY_OR_WEEKLY, SPECIFIC_DATE_PERIOD} from '../../../helpers/axiosRoutes.ts/transactionRoutes';
+import GET_LOGGED_USER from '../../../helpers/axiosRoutes.ts/userRoutes';
 import {ServiceTransaction, ServiceTransactionEvent} from '../../../models/Transaction';
 
 const config = {
@@ -31,21 +34,8 @@ export const createTransactionRequest = async (
   }
 };
 
-export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<any> => {
-  const url = `http://localhost:5000/transaction/specificDatePeriod/${from}/${to}`;
-
-  const request: AxiosRequestConfig = {
-    method: 'GET',
-    headers: config.headers,
-    url
-  };
-
-  try {
-    const response = await axios(request);
-    return response.data;
-  } catch (e) {
-    return {error: e};
-  }
+export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<AxiosResponse> => {
+  return axiosConfig.get(`${SPECIFIC_DATE_PERIOD}/${from}/${to}`, config);
 };
 
 export const getYearlyOrWeekly = async (
@@ -55,21 +45,8 @@ export const getYearlyOrWeekly = async (
     expense: number;
     income: number;
   }[]
-): Promise<any> => {
-  const url = `http://localhost:5000/transaction/getYearlyOrWeekly`;
-
-  const request: AxiosRequestConfig = {
-    method: 'POST',
-    data,
-    headers: config.headers,
-    url
-  };
-  try {
-    const response = await axios(request);
-    return response.data;
-  } catch (e) {
-    return {error: e};
-  }
+): Promise<AxiosResponse> => {
+  return axiosConfig.post(`${GET_YERALY_OR_WEEKLY}`, data, config);
 };
 export const editTransaction = async (
   selectedDayId: string,
@@ -120,19 +97,6 @@ export const deleteTransaction = async (
     return {error: e};
   }
 };
-export const getUserByJWToken = async (): Promise<any> => {
-  const url = `http://localhost:5000/user/logged`;
-
-  const request: AxiosRequestConfig = {
-    method: 'GET',
-    headers: config.headers,
-    url
-  };
-  try {
-    const response = await axios(request);
-
-    return response.data;
-  } catch (e) {
-    return {error: e};
-  }
+export const getUserByJWToken = async (): Promise<AxiosResponse> => {
+  return axiosConfig.get(`${GET_LOGGED_USER}`, config);
 };

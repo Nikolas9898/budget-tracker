@@ -53,23 +53,28 @@ const YearlyContainer = (): JSX.Element => {
       });
     }
 
-    const data = await getYearlyOrWeekly(months);
+    try {
+      const response = await getYearlyOrWeekly(months);
+      const {data} = response;
 
-    if (Moment(date).get(UnitOfTime.YEAR) < Moment().get(UnitOfTime.YEAR)) {
-      setMonthsInYear(data.months.reverse());
-      setSumExpense(data.sumExpense);
-      setSumIncome(data.sumIncome);
-    }
+      if (Moment(date).get(UnitOfTime.YEAR) < Moment().get(UnitOfTime.YEAR)) {
+        setMonthsInYear(data.months.reverse());
+        setSumExpense(data.sumExpense);
+        setSumIncome(data.sumIncome);
+      }
 
-    if (Moment(date).get(UnitOfTime.YEAR) === Moment().get(UnitOfTime.YEAR)) {
-      setMonths(data.months);
-      setSumExpense(data.sumExpense);
-      setSumIncome(data.sumIncome);
-    }
-    if (Moment(date).get(UnitOfTime.YEAR) > Moment().get(UnitOfTime.YEAR)) {
-      setMonthsInYear(data.months.filter((month: Month) => month.expense > 0 || month.income > 0).reverse());
-      setSumExpense(data.sumExpense);
-      setSumIncome(data.sumIncome);
+      if (Moment(date).get(UnitOfTime.YEAR) === Moment().get(UnitOfTime.YEAR)) {
+        setMonths(data.months);
+        setSumExpense(data.sumExpense);
+        setSumIncome(data.sumIncome);
+      }
+      if (Moment(date).get(UnitOfTime.YEAR) > Moment().get(UnitOfTime.YEAR)) {
+        setMonthsInYear(data.months.filter((month: Month) => month.expense > 0 || month.income > 0).reverse());
+        setSumExpense(data.sumExpense);
+        setSumIncome(data.sumIncome);
+      }
+    } catch (error) {
+      throw new Error(error.message);
     }
   };
 

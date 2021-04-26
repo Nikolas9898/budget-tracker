@@ -27,10 +27,18 @@ const DailyContainer = (): JSX.Element => {
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
   const {amount} = stateTransaction.transactionEvent;
   const getTransactions = async (date: Date) => {
-    const data = await getSpecificDatePeriod(firstDateOfTheMonth(date).toDate(), lastDateOfTheMonth(date).toDate());
-    setTransactions(data.transactions);
-    setSumExpense(data.sumExpense);
-    setSumIncome(data.sumIncome);
+    try {
+      const response = await getSpecificDatePeriod(
+        firstDateOfTheMonth(date).toDate(),
+        lastDateOfTheMonth(date).toDate()
+      );
+      const {data} = response;
+      setTransactions(data.transactions);
+      setSumExpense(data.sumExpense);
+      setSumIncome(data.sumIncome);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 
   useEffect(() => {

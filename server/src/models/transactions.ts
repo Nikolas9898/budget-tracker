@@ -74,15 +74,11 @@ export enum EventTypes {
   TRANSFER = 'transfer'
 }
 
-export enum SuccessMessages {
-  DELETED_SUCCESSFULLY = 'Deleted successfully'
-}
+export const DELETED_SUCCESSFULLY = 'Deleted successfully';
 
-export enum ErrorMessages {
-  NO_EXISTING_TRANSACTION = 'Not authorized or transaction does not exist',
-  NO_TRANSACTION = 'No such transaction available',
-  TWO_DATES_PICKED = 'Please ensure you pick two dates'
-}
+export const NO_EXISTING_TRANSACTION = 'Not authorized or transaction does not exist';
+export const NO_TRANSACTION = 'No such transaction available';
+export const TWO_DATES_PICKED = 'Please ensure you pick two dates';
 
 export enum MomentConstants {
   DAY = 'day'

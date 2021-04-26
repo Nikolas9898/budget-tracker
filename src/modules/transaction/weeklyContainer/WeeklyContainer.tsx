@@ -62,12 +62,16 @@ const WeeklyContainer = (): JSX.Element => {
       income: 0,
       expense: 0
     });
+    try {
+      const response = await getYearlyOrWeekly(weeks);
+      const {data} = response;
 
-    const data = await getYearlyOrWeekly(weeks);
-
-    setWeeks(data.months.reverse());
-    setSumExpense(data.sumExpense);
-    setSumIncome(data.sumIncome);
+      setWeeks(data.months.reverse());
+      setSumExpense(data.sumExpense);
+      setSumIncome(data.sumIncome);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 
   useEffect(() => {

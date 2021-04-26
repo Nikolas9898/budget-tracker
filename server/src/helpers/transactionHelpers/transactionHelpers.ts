@@ -6,7 +6,7 @@ import TransactionType, {
   Expense,
   DummyExpenseEvent,
   TransferWithFees,
-  SuccessMessages
+  DELETED_SUCCESSFULLY
 } from '../../models/transactions';
 
 export const createTransferWithFees = (
@@ -69,7 +69,7 @@ export const createOrdinaryEvent = (
 export const deleteTransaction = (transaction: TransactionType, res: Response): Response<unknown> => {
   try {
     transaction.remove();
-    return res.json({msg: SuccessMessages.DELETED_SUCCESSFULLY});
+    return res.json({msg: DELETED_SUCCESSFULLY});
   } catch (error) {
     return res.json({errroMsg: error});
   }

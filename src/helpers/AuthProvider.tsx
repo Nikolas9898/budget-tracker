@@ -12,14 +12,20 @@ const AuthProvider = ({children}: Props): JSX.Element => {
   const dispatch = useDispatch();
 
   const getUser = async () => {
-    const user = await getUserByJWToken();
+    try {
+      const response = await getUserByJWToken();
 
-    if (!user.user) {
-      localStorage.removeItem('jwt');
-      setIsLoading(false);
-    } else {
-      dispatch(signIn(user));
-      setIsLoading(false);
+      const {data} = response;
+
+      if (!data.user) {
+        localStorage.removeItem('jwt');
+        setIsLoading(false);
+      } else {
+        dispatch(signIn(data));
+        setIsLoading(false);
+      }
+    } catch (error) {
+      throw new Error(error.message);
     }
   };
 

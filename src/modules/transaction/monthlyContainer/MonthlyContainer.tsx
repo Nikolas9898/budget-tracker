@@ -61,13 +61,25 @@ const MonthlyContainer = (): JSX.Element => {
   const getTransactions = async (date: Date) => {
     const from: Date = firstDateOfFirstWeekOfTheMonth(date).toDate();
     const to: Date = lastDateOfLastWeekOfTheMonth(date).toDate();
-    const data = await getSpecificDatePeriod(from, to);
-    data.transactions.forEach((transactionItem: TransactionWithAmountNumber) => {
-      if (isTheSameDate(selectedTransaction.createdAt, transactionItem.createdAt)) {
-        setSelectedTransaction(transactionItem);
-      }
-    });
-    setTransactions(data.transactions);
+
+    try {
+      const response = await getSpecificDatePeriod(from, to);
+      response.data.transactions.forEach((transactionItem: TransactionWithAmountNumber) => {
+        if (isTheSameDate(selectedTransaction.createdAt, transactionItem.createdAt)) {
+          setSelectedTransaction(transactionItem);
+        }
+      });
+      setTransactions(response.data.transactions);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+
+    // data.transactions.forEach((transactionItem: TransactionWithAmountNumber) => {
+    //   if (isTheSameDate(selectedTransaction.createdAt, transactionItem.createdAt)) {
+    //     setSelectedTransaction(transactionItem);
+    //   }
+    // });
+    // setTransactions(data.transactions);
   };
 
   const clearState = () => {
