@@ -18,17 +18,17 @@ export const validateTransaction = (value: TransactionEvent): Error => {
   };
   const {account, type, category, to, from, fees, amount} = value;
 
-  if (!account && type !== TransactionPage.TRANSACTION) {
+  if (!account && type !== TransactionTypes.TRANSFER) {
     errors.account = languageWords.PLEASE_SELECT_AN_ACCOUNT;
-  }
-  if (type === TransactionTypes.TRANSFER && !from) {
-    errors.from = languageWords.PLEASE_SELECT_FROM;
   }
   if (!category && type !== TransactionTypes.TRANSFER) {
     errors.category = languageWords.PLEASE_SELECT_A_CATEGORY;
   }
   if (type === TransactionTypes.TRANSFER && !to) {
     errors.to = languageWords.PLEASE_SELECT_TO;
+  }
+  if (type === TransactionTypes.TRANSFER && !from) {
+    errors.from = languageWords.PLEASE_SELECT_FROM;
   }
   if (!amount) {
     errors.amount = languageWords.PLEASE_ADD_AN_AMOUNT;
