@@ -25,7 +25,9 @@ const AuthProvider = ({children}: Props): JSX.Element => {
         setIsLoading(false);
       }
     } catch (error) {
-      throw new Error(error.message);
+      localStorage.removeItem('jwt');
+      setIsLoading(false);
+      // throw new Error(error.message);
     }
   };
 
