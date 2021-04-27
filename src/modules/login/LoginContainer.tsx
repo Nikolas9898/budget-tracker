@@ -1,7 +1,6 @@
 import React, {MouseEventHandler, useCallback, useState} from 'react';
 import {Tabs, TabList, TabPanel, Tab} from 'react-tabs';
 import {useDispatch} from 'react-redux';
-import axios from 'axios';
 import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
 import SocialNetworks from './components/SocialNetworks';
