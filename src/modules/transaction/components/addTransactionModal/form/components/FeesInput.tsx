@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import styles from '../../AddTransactionStyle.module.css';
+import classes from '../../AddTransactionStyle.module.css';
 import {TransactionEvent} from '../../../../../../models/Transaction';
 import {HandleInput} from '../../../../../../models/Function';
 
@@ -18,17 +18,17 @@ const FeesInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transacti
   return (
     <>
       {isFeesOpen ? (
-        <div className={styles.input_container}>
-          <div className={styles.amount_container}>
+        <div className={classes.input_container}>
+          <div className={classes.amount_container}>
             <input
               type="text"
-              className={styles.input}
+              className={classes.input}
               name="fees"
               value={transaction.fees}
               onChange={handleInputChange}
             />
 
-            <button type="button" className={styles.fees} onClick={closeFees}>
+            <button type="button" className={classes.fees} onClick={closeFees}>
               X
             </button>
           </div>

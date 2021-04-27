@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import CalendarDate from './CalendarDate';
 import {CalendarDates, TransactionWithAmountNumber} from '../../../../models/Transaction';
 import {DaysOfWeek} from '../../../../helpers/Variables';
-import styles from '../MonthlyStyle.module.css';
+import classes from '../MonthlyStyle.module.css';
 
 type Props = {
   calendarDates: CalendarDates[];
@@ -23,15 +23,15 @@ const Calendar: React.FC<Props> = ({calendarDates, date, transactions, handleOpe
   ]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.days_wrapper}>
+    <div className={classes.container}>
+      <div className={classes.days_wrapper}>
         {days.map((day) => (
-          <div key={day} className={styles.day_container}>
+          <div key={day} className={classes.day_container}>
             {day}
           </div>
         ))}
       </div>
-      <div className={styles.calendar_wrapper}>
+      <div className={classes.calendar_wrapper}>
         {calendarDates.map((calendarDate: {date: Date}) => (
           <CalendarDate
             calendarDate={calendarDate}

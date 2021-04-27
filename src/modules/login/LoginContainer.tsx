@@ -7,7 +7,7 @@ import RegistrationForm from './components/RegistrationForm';
 import SocialNetworks from './components/SocialNetworks';
 import {validateLogin} from '../../helpers/Validation';
 import {signIn} from './actions/usersActions';
-import style from './LoginContainerStyle.module.css';
+import classes from './LoginContainerStyle.module.css';
 
 const LoginContainer = (): JSX.Element => {
   const [user, setUser] = useState({
@@ -100,14 +100,14 @@ const LoginContainer = (): JSX.Element => {
     []
   );
   return (
-    <div className={style.container}>
-      <div className={style.login_form}>
-        <Tabs selectedTabClassName={style.selected_tab}>
-          <TabList className={style.tab_list}>
-            <Tab className={style.tab} onClick={changeTab(true)}>
+    <div className={classes.container}>
+      <div className={classes.login_form}>
+        <Tabs selectedTabClassName={classes.selected_tab}>
+          <TabList className={classes.tab_list}>
+            <Tab className={classes.tab} onClick={changeTab(true)}>
               Sign In
             </Tab>
-            <Tab className={style.tab} onClick={changeTab(false)}>
+            <Tab className={classes.tab} onClick={changeTab(false)}>
               Register
             </Tab>
           </TabList>

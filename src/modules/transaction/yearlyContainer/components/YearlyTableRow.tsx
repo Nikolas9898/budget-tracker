@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import Moment from 'moment';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import styles from '../YearlyStyle.module.css';
+import classes from '../YearlyStyle.module.css';
 import {UnitOfTime} from '../../../../helpers/Variables';
 import {setDate} from '../../actions/transactionActions';
 
@@ -20,19 +20,19 @@ const YearlyTableRow: React.FC<Props> = ({month}) => {
 
   return (
     <tr onClick={openMonthContainer}>
-      <td className={styles.month_content}>
+      <td className={classes.month_content}>
         <div
           className={
             Moment(month.from).diff(Moment().startOf(UnitOfTime.MONTH).toDate(), UnitOfTime.MONTH) === 0
-              ? styles.month_selected
-              : styles.month
+              ? classes.month_selected
+              : classes.month
           }
         >
           {Moment(month.from).format('MMMM')}
         </div>
       </td>
-      <td className={styles.income}>{(month.income / 100).toFixed(2)}</td>
-      <td className={styles.expense}>{(month.expense / 100).toFixed(2)}</td>
+      <td className={classes.income}>{(month.income / 100).toFixed(2)}</td>
+      <td className={classes.expense}>{(month.expense / 100).toFixed(2)}</td>
     </tr>
   );
 };

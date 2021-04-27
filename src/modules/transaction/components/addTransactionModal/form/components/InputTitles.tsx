@@ -1,7 +1,7 @@
 import React from 'react';
 import {TransactionEvent} from '../../../../../../models/Transaction';
 import {TransactionTypes} from '../../../../../../helpers/Variables';
-import styles from '../../AddTransactionStyle.module.css';
+import classes from '../../AddTransactionStyle.module.css';
 
 type Props = {
   transaction: TransactionEvent;
@@ -10,21 +10,21 @@ type Props = {
 
 const InputTitles: React.FC<Props> = ({transaction, isFeesOpen}) => {
   return (
-    <div className={styles.content_titles}>
-      <div className={styles.title}>Day</div>
+    <div className={classes.content_titles}>
+      <div className={classes.title}>Day</div>
       {transaction.type === TransactionTypes.TRANSFER ? (
-        <div className={styles.title}>From</div>
+        <div className={classes.title}>From</div>
       ) : (
-        <div className={styles.title}>Account</div>
+        <div className={classes.title}>Account</div>
       )}
       {transaction.type === TransactionTypes.TRANSFER ? (
-        <div className={styles.title}>To</div>
+        <div className={classes.title}>To</div>
       ) : (
-        <div className={styles.title}>Category</div>
+        <div className={classes.title}>Category</div>
       )}
-      <div className={styles.title}>Amount</div>
-      {isFeesOpen ? <div className={styles.title}>Fees</div> : null}
-      <div className={styles.title}>Note</div>
+      <div className={classes.title}>Amount</div>
+      {isFeesOpen ? <div className={classes.title}>Fees</div> : null}
+      <div className={classes.title}>Note</div>
     </div>
   );
 };

@@ -13,7 +13,7 @@ import {
   deleteTransaction,
   editTransaction
 } from '../../modules/transaction/service/TransactionService';
-import styles from '../../modules/transaction/dailyContainer/DailyStyle.module.css';
+import classes from '../../modules/transaction/dailyContainer/DailyStyle.module.css';
 
 const AddTransactionButton = (): JSX.Element => {
   const [errors, setErrors] = useState({
@@ -91,7 +91,7 @@ const AddTransactionButton = (): JSX.Element => {
 
   return (
     <>
-      <FontAwesomeIcon className={styles.add_button} icon={faPlusCircle} onClick={handleOpenTransaction} />
+      <FontAwesomeIcon className={classes.add_button} icon={faPlusCircle} onClick={handleOpenTransaction} />
 
       <AddTransactionModal
         isAddTransactionOpen={stateTransaction.isTransactionOpen}

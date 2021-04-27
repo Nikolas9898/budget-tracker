@@ -7,7 +7,7 @@ import {UserReducer} from '../../../models/User';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import YearlyTableRow from './components/YearlyTableRow';
-import styles from './YearlyStyle.module.css';
+import classes from './YearlyStyle.module.css';
 import {UnitOfTime} from '../../../helpers/Variables';
 /* eslint-disable react-hooks/exhaustive-deps */
 
@@ -85,8 +85,8 @@ const YearlyContainer = (): JSX.Element => {
   return (
     <div className="wrapper">
       <NavBarMenu />
-      <div className={styles.container}>
-        <table className={styles.table}>
+      <div className={classes.container}>
+        <table className={classes.table}>
           <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
           <tbody>
             {monthsInYear.map((month) => (

@@ -2,7 +2,7 @@ import React from 'react';
 import Moment from 'moment';
 import {isTheSameDate, UnitOfTime} from '../../../../../helpers/Variables';
 import {TransactionWithAmountNumber} from '../../../../../models/Transaction';
-import styles from '../../DailyStyle.module.css';
+import classes from '../../DailyStyle.module.css';
 
 type Props = {
   transaction: TransactionWithAmountNumber;
@@ -11,15 +11,15 @@ const DailyTableHeader: React.FC<Props> = ({transaction}) => {
   return (
     <tr>
       <th>
-        <div className={styles.date_content}>
-          <div className={styles.date}>{Moment(transaction.createdAt).format('DD')}</div>
+        <div className={classes.date_content}>
+          <div className={classes.date}>{Moment(transaction.createdAt).format('DD')}</div>
           <div>
-            <div className={styles.date_year}>{Moment(transaction.createdAt).format('MM.YYYY')}</div>
+            <div className={classes.date_year}>{Moment(transaction.createdAt).format('MM.YYYY')}</div>
             <div
               className={
                 isTheSameDate(transaction.createdAt, Moment().startOf(UnitOfTime.DATE).toDate())
-                  ? styles.date_day_select
-                  : styles.date_day
+                  ? classes.date_day_select
+                  : classes.date_day
               }
             >
               {Moment(transaction.createdAt).format('ddd')}
@@ -28,10 +28,10 @@ const DailyTableHeader: React.FC<Props> = ({transaction}) => {
         </div>
       </th>
       <th>
-        <div className={styles.income}>{(transaction.income / 100).toFixed(2)}</div>
+        <div className={classes.income}>{(transaction.income / 100).toFixed(2)}</div>
       </th>
       <th>
-        <div className={styles.expense}>{(transaction.expense / 100).toFixed(2)}</div>
+        <div className={classes.expense}>{(transaction.expense / 100).toFixed(2)}</div>
       </th>
     </tr>
   );

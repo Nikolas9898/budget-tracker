@@ -1,6 +1,6 @@
 import React from 'react';
 import languageWords from '../../../helpers/LanguageConsts';
-import LoginContainerStyle from '../LoginContainerStyle.module.css';
+import classes from '../LoginContainerStyle.module.css';
 
 type Props = {
   Submit: () => void;
@@ -14,36 +14,36 @@ type Props = {
 
 const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
   return (
-    <div className={LoginContainerStyle.login_content}>
-      <label htmlFor="Email" className={LoginContainerStyle.login_label}>
+    <div className={classes.login_content}>
+      <label htmlFor="Email" className={classes.login_label}>
         {languageWords.EMAIL}
 
-        <input className={LoginContainerStyle.input} name="email" onChange={handleInput} />
+        <input className={classes.input} name="email" onChange={handleInput} />
       </label>
       {errors.email && (
-        <div className={LoginContainerStyle.error_msg}>
+        <div className={classes.error_msg}>
           <span>{errors.email}</span>
         </div>
       )}
-      <label htmlFor="Password" className={LoginContainerStyle.login_label}>
+      <label htmlFor="Password" className={classes.login_label}>
         {languageWords.PASSWORD}
-        <input type="password" className={LoginContainerStyle.input} name="password" onChange={handleInput} />
+        <input type="password" className={classes.input} name="password" onChange={handleInput} />
       </label>
       {errors.password && (
-        <div className={LoginContainerStyle.error_msg}>
+        <div className={classes.error_msg}>
           <span>{errors.password}</span>
         </div>
       )}
-      <label htmlFor="Confirm password" className={LoginContainerStyle.login_label}>
+      <label htmlFor="Confirm password" className={classes.login_label}>
         {languageWords.CONFIRM_PASSWORD}{' '}
-        <input type="password" className={LoginContainerStyle.input} name="confirmPassword" onChange={handleInput} />
+        <input type="password" className={classes.input} name="confirmPassword" onChange={handleInput} />
       </label>
       {errors.confirmPassword && (
-        <div className={LoginContainerStyle.error_msg}>
+        <div className={classes.error_msg}>
           <span>{errors.confirmPassword}</span>
         </div>
       )}
-      <button type="button" className={LoginContainerStyle.login_button} onClick={Submit}>
+      <button type="button" className={classes.login_button} onClick={Submit}>
         {languageWords.SIGN_UP}
       </button>
     </div>

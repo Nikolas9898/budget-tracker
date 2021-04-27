@@ -14,7 +14,7 @@ import {
 } from '../../../helpers/Variables';
 import {Month, TransactionReducer} from '../../../models/Transaction';
 import {UserReducer} from '../../../models/User';
-import styles from './WeeklyStyle.module.css';
+import classes from './WeeklyStyle.module.css';
 import '../../../scss/variables.scss';
 
 const WeeklyContainer = (): JSX.Element => {
@@ -80,8 +80,8 @@ const WeeklyContainer = (): JSX.Element => {
   return (
     <div className="wrapper">
       <NavBarMenu />
-      <div className={styles.container}>
-        <table className={styles.table}>
+      <div className={classes.container}>
+        <table className={classes.table}>
           <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
           <tbody>
             {weeksInMonth.map((week) => (

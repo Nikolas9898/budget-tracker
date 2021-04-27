@@ -1,6 +1,6 @@
 import React from 'react';
 import Moment from 'moment';
-import styles from '../WeeklyStyle.module.css';
+import classes from '../WeeklyStyle.module.css';
 import {UnitOfTime} from '../../../../helpers/Variables';
 
 type Props = {
@@ -16,13 +16,13 @@ const WeeklyTableRow: React.FC<Props> = ({week}) => {
   };
   return (
     <tr>
-      <td className={styles.date_container}>
-        <div className={isDateInWeek() ? styles.selected_date : styles.date}>
+      <td className={classes.date_container}>
+        <div className={isDateInWeek() ? classes.selected_date : classes.date}>
           {Moment(week.from).format('DD.MM')} ~ {Moment(week.to).format('DD.MM')}
         </div>
       </td>
-      <td className={styles.income}>{(week.income / 100).toFixed(2)}</td>
-      <td className={styles.expense}>{(week.expense / 100).toFixed(2)}</td>
+      <td className={classes.income}>{(week.income / 100).toFixed(2)}</td>
+      <td className={classes.expense}>{(week.expense / 100).toFixed(2)}</td>
     </tr>
   );
 };

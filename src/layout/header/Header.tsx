@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCaretDown, faBars, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
 import SideBar from '../sideBar/SideBar';
-import styles from './HeaderStyle.module.css';
+import classes from './HeaderStyle.module.css';
 import {headerTitle} from '../../helpers/Variables';
 import {UserReducer} from '../../models/User';
 import AccountMenu from '../accountMenu/AccountMenu';
@@ -15,16 +15,16 @@ const NavBar = (): JSX.Element => {
 
   return (
     <div>
-      <nav className={styles.container}>
-        <FontAwesomeIcon className={styles.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} />
-        <div className={styles.page_title}>
+      <nav className={classes.container}>
+        <FontAwesomeIcon className={classes.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} />
+        <div className={classes.page_title}>
           {window.location.pathname === '/' ? 'Budget-Tracker' : headerTitle(window.location.pathname)}
         </div>
-        <div className={styles.dropdown}>
-          <div className={styles.user_content}>
-            <FontAwesomeIcon className={styles.user_email} icon={faUser} />
-            <span className={styles.user_email}>{user.email}</span>
-            <FontAwesomeIcon className={styles.caret_down} icon={faCaretDown} />
+        <div className={classes.dropdown}>
+          <div className={classes.user_content}>
+            <FontAwesomeIcon className={classes.user_email} icon={faUser} />
+            <span className={classes.user_email}>{user.email}</span>
+            <FontAwesomeIcon className={classes.caret_down} icon={faCaretDown} />
           </div>
           <AccountMenu />
         </div>

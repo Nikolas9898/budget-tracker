@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import styles from '../../AddTransactionStyle.module.css';
+import classes from '../../AddTransactionStyle.module.css';
 import {TransactionEvent} from '../../../../../../models/Transaction';
 import {HandleInput} from '../../../../../../models/Function';
 import {errorMsg} from '../../../../../../helpers/Validation';
@@ -19,17 +19,17 @@ const AmountInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transac
   }, [isFeesOpen, setIsFeesOpen]);
 
   return (
-    <div className={styles.input_container}>
-      <div className={styles.amount_container}>
+    <div className={classes.input_container}>
+      <div className={classes.amount_container}>
         <input
           type="number"
           name="amount"
-          className={styles.input}
+          className={classes.input}
           value={transaction.amount}
           onChange={handleInputChange}
         />
         {transaction.type === TransactionTypes.TRANSFER && !isFeesOpen ? (
-          <button type="button" className={styles.fees} onClick={setFeesOpen}>
+          <button type="button" className={classes.fees} onClick={setFeesOpen}>
             Fees
           </button>
         ) : null}
