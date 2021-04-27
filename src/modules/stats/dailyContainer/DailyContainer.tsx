@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, {useEffect, useState} from 'react';
+import axiosConfig from '../../../axiosConfig';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import StatsForm from '../components/StatsForm';
 
@@ -13,15 +13,12 @@ const DailyContainer = (): JSX.Element => {
       }
     };
     try {
-      const response = await axios.get(
-        `http://localhost:5000/stats/2020-01-28T22:00:00.000Z/2021-12-30T21:00:00.000Z`,
-        config
-      );
+      const response = await axiosConfig.get(`/stats/2020-01-28T22:00:00.000Z/2021-12-30T21:00:00.000Z`, config);
+
       setIncomeStats(response.data.incomeStats);
       setExpenseStats(response.data.expenseStats);
     } catch (e) {
-      // eslint-disable-next-line no-alert
-      alert(e);
+      throw new Error(e);
     }
   };
 

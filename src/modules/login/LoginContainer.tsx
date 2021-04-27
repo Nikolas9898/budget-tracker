@@ -8,6 +8,8 @@ import SocialNetworks from './components/SocialNetworks';
 import {validateLogin} from '../../helpers/Validation';
 import {signIn} from './actions/usersActions';
 import classes from './LoginContainerStyle.module.css';
+import axiosConfig from '../../axiosConfig';
+import {SIGN_IN, SIGN_UP} from '../../helpers/axiosRoutes.ts/userRoutes';
 
 const LoginContainer = (): JSX.Element => {
   const [user, setUser] = useState({
@@ -43,7 +45,8 @@ const LoginContainer = (): JSX.Element => {
       return;
     }
     localStorage.removeItem('jwt');
-    const loggedUser = await axios.post(`http://localhost:5000/signIn`, user);
+
+    const loggedUser = await axiosConfig.post(`${SIGN_IN}`, user);
 
     if (loggedUser.data.user) {
       dispatch(signIn(loggedUser.data));
@@ -78,7 +81,7 @@ const LoginContainer = (): JSX.Element => {
       currency: 'BG'
     };
     try {
-      const signUp = await axios.post(`http://localhost:5000/signUp`, newUser);
+      const signUp = await axiosConfig.post(`${SIGN_UP}`, newUser);
 
       if (signUp.data.user) {
         dispatch(signIn(signUp.data));
