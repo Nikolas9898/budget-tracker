@@ -2,7 +2,7 @@ import React from 'react';
 import AddTransactionStyle from '../modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css';
 import {TransactionEvent} from '../models/Transaction';
 import {Error} from '../models/Error';
-import {TransactionTypes, TransactionPage} from './Variables';
+import {TransactionTypes} from './Variables';
 import {UserRegister} from '../models/User';
 import languageWords from './LanguageConsts';
 import EMAIL_VALIDATOR from './ValidationContants';

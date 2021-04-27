@@ -52,14 +52,12 @@ const AddTransactionButton = (): JSX.Element => {
   const handleSave = async () => {
     const validationErrors = validateTransaction(stateTransaction.transactionEvent);
     const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
-    console.log(validationErrors);
     if (!isValid) {
       setErrors(validationErrors);
       return;
     }
 
     const event = getTransaction(stateTransaction.transactionEvent);
-    console.log(event);
     if (transactionId) {
       await editTransaction(transactionId, transactionEventId, event.events[0]);
     } else {
