@@ -8,10 +8,11 @@ import {
   handlePreviousMonth,
   handlePreviousYear
 } from '../../modules/transaction/actions/transactionActions';
-import {isTransactionContainer, isSelectedTitle} from '../../helpers/Variables';
+
 import {TransactionReducer} from '../../models/Transaction';
 import classes from './NavBarStyle.module.css';
 import languageWords from '../../helpers/LanguageConsts';
+import {isSelectedTitle, isTransactionContainer} from '../../helpers/TransactionHelpers';
 
 const NavBarMenu = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -65,7 +66,7 @@ const NavBarMenu = (): JSX.Element => {
           to={isTransactionContainer(location.pathname) ? '/transaction/period' : '/stats/period'}
           className={isSelectedTitle(location.pathname, 'period') ? classes.title_selected : classes.title}
         >
-          Period
+          {languageWords.PERIOD}
         </Link>
       </div>
       <div className={classes.change_month_content}>

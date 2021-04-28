@@ -1,6 +1,6 @@
 import React from 'react';
 import {PieChart} from 'react-minimal-pie-chart';
-import {Stat} from '../../../models/Stats';
+import {Stat} from '../../../models/Stat';
 import './StatsFormStyle.css';
 
 type Props = {

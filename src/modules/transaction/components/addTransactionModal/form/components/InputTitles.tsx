@@ -1,6 +1,5 @@
 import React from 'react';
-import {TransactionEvent} from '../../../../../../models/Transaction';
-import {TransactionTypes} from '../../../../../../helpers/Variables';
+import {TransactionEvent, TransactionTypes} from '../../../../../../models/Transaction';
 import classes from '../../AddTransactionStyle.module.css';
 
 type Props = {

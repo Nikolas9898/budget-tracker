@@ -1,10 +1,10 @@
 import React from 'react';
 import {errorMsg} from '../../../../../../helpers/Validation';
-import {HandleInput} from '../../../../../../models/Function';
+import {HandleInputChange} from '../../../../../../models/Function';
 import classes from '../../AddTransactionStyle.module.css';
 
 type Props = {
-  handleInputChange: (event: HandleInput) => void;
+  handleInputChange: (event: HandleInputChange) => void;
   options: string[];
   transactionType: string;
   selectValue: string | undefined;

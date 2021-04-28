@@ -5,17 +5,18 @@ import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import WeeklyTableRow from './components/WeeklyTableRow';
 import {getYearlyOrWeekly} from '../service/TransactionService';
-import {
-  firstDateOfFirstWeekOfTheMonth,
-  lastDateOfFirstWeekOfTheMonth,
-  firstDateOfLastWeekOfTheMonth,
-  lastDateOfLastWeekOfTheMonth,
-  UnitOfTime
-} from '../../../helpers/Variables';
+
 import {Month, TransactionReducer} from '../../../models/Transaction';
 import {UserReducer} from '../../../models/User';
 import classes from './WeeklyStyle.module.css';
 import '../../../scss/variables.scss';
+import {UnitOfTime} from '../../../models/Clendar';
+import {
+  firstDateOfFirstWeekOfTheMonth,
+  lastDateOfFirstWeekOfTheMonth,
+  firstDateOfLastWeekOfTheMonth,
+  lastDateOfLastWeekOfTheMonth
+} from '../../../helpers/MomentHelpers';
 
 const WeeklyContainer = (): JSX.Element => {
   const [weeksInMonth, setWeeks] = useState<Month[]>([]);

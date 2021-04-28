@@ -3,6 +3,7 @@ import NavBarMenu from '../../../layout/navBar/NavBar';
 import StatsForm from '../components/StatsForm';
 
 const YearlyContainer = (): JSX.Element => {
+  // TODO/mockup state//
   const data = [
     {
       category: 'food',

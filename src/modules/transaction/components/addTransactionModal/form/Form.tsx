@@ -2,10 +2,9 @@ import React, {forwardRef, useState, useCallback} from 'react';
 import Moment from 'moment';
 import DatePicker from 'react-datepicker';
 import styles from '../AddTransactionStyle.module.css';
-import {TransactionEvent} from '../../../../../models/Transaction';
-import {HandleInput} from '../../../../../models/Function';
+import {SelectInputTitle, TransactionEvent, TransactionTypes} from '../../../../../models/Transaction';
+import {HandleInputChange} from '../../../../../models/Function';
 import {Error} from '../../../../../models/Error';
-import {TransactionTypes, SelectInputTitle} from '../../../../../helpers/Variables';
 import InputTitles from './components/InputTitles';
 import SelectInput from './components/SelectInputs';
 import FeesInput from './components/FeesInput';
@@ -15,7 +14,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 type Props = {
   transaction: TransactionEvent;
   errors: Error;
-  handleInputChange: (event: HandleInput) => void;
+  handleInputChange: (event: HandleInputChange) => void;
 };
 type CustomInput = {
   value: string | number;
@@ -23,6 +22,8 @@ type CustomInput = {
 };
 const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   const [isFeesOpen, setIsFeesOpen] = useState(false);
+
+  // TODO/mockup state//
   const accounts = ['', 'cash', 'card', 'accounts'];
   const categoriesIncome = [' ', 'salary', 'bonus', 'petty cash', 'other'];
   const categoriesExpense = ['', 'food', 'culture', 'socialLife', 'selfDevelopment', 'transportation', 'other'];

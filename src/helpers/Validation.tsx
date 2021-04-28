@@ -1,11 +1,10 @@
 import React from 'react';
-import AddTransactionStyle from '../modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css';
-import {TransactionEvent} from '../models/Transaction';
+import {TransactionEvent, TransactionTypes} from '../models/Transaction';
 import {Error} from '../models/Error';
-import {TransactionTypes} from './Variables';
 import {UserRegister} from '../models/User';
 import languageWords from './LanguageConsts';
-import EMAIL_VALIDATOR from './ValidationContants';
+import EMAIL_VALIDATOR from './Regex';
+import classes from '../modules/transaction/components/addTransactionModal/AddTransactionStyle.module.css';
 
 export const validateTransaction = (value: TransactionEvent): Error => {
   const errors: Error = {
@@ -69,5 +68,5 @@ export const validateLogin = (
 };
 
 export const errorMsg = (error: string): JSX.Element => {
-  return <>{error && <div className={AddTransactionStyle.error_msg}>{error}</div>}</>;
+  return <>{error && <div className={classes.error_msg}>{error}</div>}</>;
 };

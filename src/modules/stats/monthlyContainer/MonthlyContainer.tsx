@@ -4,6 +4,7 @@ import StatsForm from '../components/StatsForm';
 import '../../../scss/variables.scss';
 
 const MonthlyContainer = (): JSX.Element => {
+  // TODO/mockup state//
   const data = [
     {
       category: 'food',

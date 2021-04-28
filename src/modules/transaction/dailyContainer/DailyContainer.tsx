@@ -12,10 +12,11 @@ import {
   TransactionEvent
 } from '../../../models/Transaction';
 import {getSpecificDatePeriod} from '../service/TransactionService';
-import {firstDateOfTheMonth, lastDateOfTheMonth, UnitOfTime} from '../../../helpers/Variables';
 import {setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
 import styles from './DailyStyle.module.css';
 import '../../../scss/variables.scss';
+import {UnitOfTime} from '../../../models/Clendar';
+import {firstDateOfTheMonth, lastDateOfTheMonth} from '../../../helpers/MomentHelpers';
 
 const DailyContainer = (): JSX.Element => {
   const [transactions, setTransactions] = useState<TransactionWithAmountNumber[]>([]);

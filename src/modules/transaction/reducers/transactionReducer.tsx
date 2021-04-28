@@ -2,6 +2,7 @@ import Moment from 'moment';
 import {AnyAction} from '@reduxjs/toolkit';
 import {ActionTypes} from '../actionTypes';
 import {TransactionEvent} from '../../../models/Transaction';
+import {UnitOfTime} from '../../../models/Clendar';
 
 export interface State {
   date: Date;
@@ -31,7 +32,7 @@ const initialState = {
 export const transactionReducer = (state = initialState, action: AnyAction): State => {
   switch (action.type) {
     case ActionTypes.HANDLE_NEXT_MONTH: {
-      const nextMonth = Moment(state.date).add(1, 'month');
+      const nextMonth = Moment(state.date).add(1, UnitOfTime.MONTH);
       return {
         ...state,
         date: nextMonth.toDate()
@@ -39,7 +40,7 @@ export const transactionReducer = (state = initialState, action: AnyAction): Sta
     }
 
     case ActionTypes.HANDLE_PREVIOUS_MONTH: {
-      const previousMonth = Moment(state.date).add(-1, 'month');
+      const previousMonth = Moment(state.date).add(-1, UnitOfTime.MONTH);
       return {
         ...state,
         date: previousMonth.toDate()
@@ -47,7 +48,7 @@ export const transactionReducer = (state = initialState, action: AnyAction): Sta
     }
 
     case ActionTypes.HANDLE_NEXT_YEAR: {
-      const nextYear = Moment(state.date).add(1, 'year').toDate();
+      const nextYear = Moment(state.date).add(1, UnitOfTime.YEAR).toDate();
 
       return {
         ...state,
@@ -56,14 +57,14 @@ export const transactionReducer = (state = initialState, action: AnyAction): Sta
     }
 
     case ActionTypes.HANDLE_PREVIOUS_YEAR: {
-      const previousYear = Moment(state.date).add(-1, 'year');
+      const previousYear = Moment(state.date).add(-1, UnitOfTime.YEAR);
       return {
         ...state,
         date: previousYear.toDate()
       };
     }
 
-    case ActionTypes.HANDLE_INPUT:
+    case ActionTypes.TRANSACTION_INPUT_CHANGE:
       if (action.payload.name === 'type') {
         return {
           ...state,

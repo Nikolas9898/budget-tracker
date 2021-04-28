@@ -1,6 +1,10 @@
 import React, {useCallback} from 'react';
-import {TransactionEventWithAmountNumber, TransactionWithAmountNumber} from '../../../../../models/Transaction';
-import {TransactionTypes} from '../../../../../helpers/Variables';
+import {
+  TransactionEventWithAmountNumber,
+  TransactionTypes,
+  TransactionWithAmountNumber
+} from '../../../../../models/Transaction';
+
 import classes from './DailyTableRow.module.css';
 
 type Props = {

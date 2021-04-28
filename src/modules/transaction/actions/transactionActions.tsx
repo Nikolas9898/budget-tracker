@@ -1,5 +1,5 @@
 import {TransactionEvent} from '../../../models/Transaction';
-import {HandleInput} from '../../../models/Function';
+import {HandleInputChange} from '../../../models/Function';
 import {ActionTypes} from '../actionTypes';
 
 export const handleNextMonth = (): {
@@ -22,8 +22,8 @@ export const handlePreviousYear = (): {
 } => ({
   type: ActionTypes.HANDLE_PREVIOUS_YEAR
 });
-export const handleInput = (
-  event: HandleInput
+export const transactionInputChange = (
+  event: HandleInputChange
 ): {
   type: ActionTypes;
   payload: {
@@ -31,7 +31,7 @@ export const handleInput = (
     value: string | number | Date;
   };
 } => ({
-  type: ActionTypes.HANDLE_INPUT,
+  type: ActionTypes.TRANSACTION_INPUT_CHANGE,
   payload: {name: event.target.name, value: event.target.value}
 });
 export const setTransaction = (

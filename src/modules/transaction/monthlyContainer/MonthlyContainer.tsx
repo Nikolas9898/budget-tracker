@@ -1,20 +1,11 @@
 import React, {useEffect, useState} from 'react';
-
 import Moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoModal from '../components/infoModal/InfoModal';
 import Calendar from './Calendar/Calendar';
-import {
-  firstDateOfFirstWeekOfTheMonth,
-  firstDateOfTheMonth,
-  lastDateOfTheMonth,
-  lastDateOfLastWeekOfTheMonth,
-  isTheSameDate,
-  UnitOfTime
-} from '../../../helpers/Variables';
 import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
-import {handleInput, setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
+import {transactionInputChange, setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
 import {
   Transaction,
   TransactionEvent,
@@ -25,6 +16,14 @@ import {
 import {Error} from '../../../models/Error';
 import '../../../scss/variables.scss';
 import AddTransactionButton from '../../../layout/addTranasctionButton/AddTransactionButton';
+import {UnitOfTime} from '../../../models/Clendar';
+import {
+  firstDateOfFirstWeekOfTheMonth,
+  lastDateOfLastWeekOfTheMonth,
+  isTheSameDate,
+  firstDateOfTheMonth,
+  lastDateOfTheMonth
+} from '../../../helpers/MomentHelpers';
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -158,7 +157,7 @@ const MonthlyContainer = (): JSX.Element => {
       clearState();
     } else {
       dispatch(
-        handleInput({
+        transactionInputChange({
           target: {
             name: UnitOfTime.DATE,
             value: createdAt

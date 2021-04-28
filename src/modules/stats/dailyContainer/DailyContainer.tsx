@@ -12,7 +12,9 @@ const DailyContainer = (): JSX.Element => {
         Authorization: `Bearer ${localStorage.getItem('jwt')}`
       }
     };
+
     try {
+      // TODO TODO/mockup dates//
       const response = await axiosConfig.get(`/stats/2020-01-28T22:00:00.000Z/2021-12-30T21:00:00.000Z`, config);
 
       setIncomeStats(response.data.incomeStats);

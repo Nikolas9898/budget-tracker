@@ -3,8 +3,9 @@ import Moment from 'moment';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import classes from '../YearlyStyle.module.css';
-import {UnitOfTime} from '../../../../helpers/Variables';
+
 import {setDate} from '../../actions/transactionActions';
+import {UnitOfTime} from '../../../../models/Clendar';
 
 type Props = {
   month: {from: Date; to: Date; expense: number; income: number};

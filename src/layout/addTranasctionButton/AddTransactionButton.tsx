@@ -3,17 +3,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import Moment from 'moment';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
-import {TransactionReducer} from '../../models/Transaction';
-import {handleInput, setTransaction, setIsTransactionOpen} from '../../modules/transaction/actions/transactionActions';
+import {TransactionReducer, TransactionTypes} from '../../models/Transaction';
+import {
+  transactionInputChange,
+  setTransaction,
+  setIsTransactionOpen
+} from '../../modules/transaction/actions/transactionActions';
 import AddTransactionModal from '../../modules/transaction/components/addTransactionModal/AddTransactionModal';
 import {validateTransaction} from '../../helpers/Validation';
-import {getTransaction, TransactionTypes, UnitOfTime} from '../../helpers/Variables';
+
 import {
   createTransactionRequest,
   deleteTransaction,
   editTransaction
 } from '../../modules/transaction/service/TransactionService';
 import classes from '../../modules/transaction/dailyContainer/DailyStyle.module.css';
+import {UnitOfTime} from '../../models/Clendar';
+import {getTransaction} from '../../helpers/TransactionHelpers';
 
 const AddTransactionButton = (): JSX.Element => {
   const [errors, setErrors] = useState({
@@ -77,7 +83,7 @@ const AddTransactionButton = (): JSX.Element => {
     } else {
       dispatch(setIsTransactionOpen());
       dispatch(
-        handleInput({
+        transactionInputChange({
           target: {
             name: UnitOfTime.DATE,
             value: stateTransaction.date
@@ -96,7 +102,7 @@ const AddTransactionButton = (): JSX.Element => {
         transactionEvent={stateTransaction.transactionEvent}
         errors={errors}
         isEditTransactionOpen={transactionId.length > 0}
-        handleInputChange={(event) => dispatch(handleInput(event))}
+        handleInputChange={(event) => dispatch(transactionInputChange(event))}
         handleSave={handleSave}
         handleOpenTransaction={handleOpenTransaction}
         handleOpenEdit={clearState}

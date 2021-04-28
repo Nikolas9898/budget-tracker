@@ -7,7 +7,6 @@ export interface Transaction {
   income: number;
   expense: number;
 }
-
 export interface TransactionEvent {
   _id: string;
   type: string;
@@ -22,39 +21,6 @@ export interface TransactionEvent {
   description: string;
   transferId?: string;
   transactionId: string;
-}
-export interface ServiceTransaction {
-  createdAt: Moment;
-  events: ServiceTransactionEvent[];
-}
-export interface ServiceTransactionEvent {
-  account?: string;
-  amount: number;
-  category?: string;
-  currency: string;
-  date: Moment | Date;
-  description: string;
-  fees: number;
-  from?: string;
-  note: string;
-  to?: string;
-  transferId?: string;
-  type: string;
-  _id?: string;
-}
-export interface SpecificDatePeriod {
-  // transactions: any;
-  // createdAt: Date;
-  // events: ServiceTransactionEvent[];
-  // expense: number;
-  // income: number;
-  // updatedAt: Date;
-  // userId: string;
-  // __v: number;
-  // _id: string;
-  // }[];
-  sumIncome: number;
-  sumExpense: number;
 }
 export interface TransactionWithAmountNumber {
   _id: string;
@@ -76,6 +42,25 @@ export interface TransactionEventWithAmountNumber {
   note: string;
   description: string;
 }
+export interface ServiceTransaction {
+  createdAt: Moment;
+  events: ServiceTransactionEvent[];
+}
+export interface ServiceTransactionEvent {
+  type: string;
+  date: Moment;
+  currency: string;
+  account: string | undefined;
+  from: string | undefined;
+  to: string | undefined;
+  category: string | undefined;
+  amount: number;
+  fees: number;
+  note: string;
+  description: string;
+  transferId: string | undefined;
+}
+
 export type TransactionReducer = {
   date: Date;
   transactionEvent: TransactionEvent;
@@ -107,3 +92,22 @@ export interface DailyContainerInterface {
 export type CalendarDates = {
   date: Date;
 };
+export enum TransactionTypes {
+  TRANSFER = 'transfer',
+  INCOME = 'income',
+  EXPENSE = 'expense',
+  CURRENCY = 'Bg'
+}
+export enum TransactionPage {
+  TRANSACTION = 'transaction',
+  STATS = 'stats',
+  EXPORT = 'export',
+  ACCOUNTS = 'accounts'
+}
+
+export enum SelectInputTitle {
+  FROM = 'from',
+  TO = 'to',
+  CATEGORY = 'category',
+  ACCOUNT = 'account'
+}

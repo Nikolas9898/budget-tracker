@@ -1,8 +1,10 @@
 import React from 'react';
 import Moment from 'moment';
-import {isTheSameDate, UnitOfTime} from '../../../../../helpers/Variables';
+
 import {TransactionWithAmountNumber} from '../../../../../models/Transaction';
 import classes from '../../DailyStyle.module.css';
+import {UnitOfTime} from '../../../../../models/Clendar';
+import {isTheSameDate} from '../../../../../helpers/MomentHelpers';
 
 type Props = {
   transaction: TransactionWithAmountNumber;

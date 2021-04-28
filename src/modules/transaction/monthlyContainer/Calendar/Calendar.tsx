@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import CalendarDate from './CalendarDate';
 import {CalendarDates, TransactionWithAmountNumber} from '../../../../models/Transaction';
-import {DaysOfWeek} from '../../../../helpers/Variables';
+
 import classes from '../MonthlyStyle.module.css';
+import {DaysOfWeek} from '../../../../models/Clendar';
 
 type Props = {
   calendarDates: CalendarDates[];

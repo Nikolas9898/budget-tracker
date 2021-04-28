@@ -1,12 +1,11 @@
 import React, {useCallback} from 'react';
 import classes from '../../AddTransactionStyle.module.css';
-import {TransactionEvent} from '../../../../../../models/Transaction';
-import {HandleInput} from '../../../../../../models/Function';
+import {TransactionEvent, TransactionTypes} from '../../../../../../models/Transaction';
+import {HandleInputChange} from '../../../../../../models/Function';
 import {errorMsg} from '../../../../../../helpers/Validation';
-import {TransactionTypes} from '../../../../../../helpers/Variables';
 
 type Props = {
-  handleInputChange: (event: HandleInput) => void;
+  handleInputChange: (event: HandleInputChange) => void;
   setIsFeesOpen: (isOpen: boolean) => void;
   transaction: TransactionEvent;
   isFeesOpen: boolean;

@@ -1,8 +1,9 @@
 import React, {useCallback} from 'react';
 import Moment from 'moment';
 import {TransactionWithAmountNumber} from '../../../../models/Transaction';
-import {isTheSameDate, UnitOfTime} from '../../../../helpers/Variables';
 import styles from '../MonthlyStyle.module.css';
+import {UnitOfTime} from '../../../../models/Clendar';
+import {isTheSameDate} from '../../../../helpers/MomentHelpers';
 
 type Props = {
   calendarDate: {date: Date};

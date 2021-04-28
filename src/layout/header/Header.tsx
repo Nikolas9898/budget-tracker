@@ -4,9 +4,10 @@ import {faCaretDown, faBars, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
 import SideBar from '../sideBar/SideBar';
 import classes from './HeaderStyle.module.css';
-import {headerTitle} from '../../helpers/Variables';
+
 import {UserReducer} from '../../models/User';
 import AccountMenu from '../accountMenu/AccountMenu';
+import {getHeaderTitle} from '../../helpers/TransactionHelpers';
 
 const NavBar = (): JSX.Element => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -18,7 +19,7 @@ const NavBar = (): JSX.Element => {
       <nav className={classes.container}>
         <FontAwesomeIcon className={classes.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} />
         <div className={classes.page_title}>
-          {window.location.pathname === '/' ? 'Budget-Tracker' : headerTitle(window.location.pathname)}
+          {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
         </div>
         <div className={classes.dropdown}>
           <div className={classes.user_content}>

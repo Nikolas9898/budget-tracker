@@ -4,10 +4,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import Moment from 'moment';
 import classes from './AddTransactionStyle.module.css';
-import {TransactionEvent} from '../../../../models/Transaction';
+import {TransactionEvent, TransactionTypes} from '../../../../models/Transaction';
 import {Error} from '../../../../models/Error';
-import {HandleInput} from '../../../../models/Function';
-import {TransactionTypes} from '../../../../helpers/Variables';
+import {HandleInputChange} from '../../../../models/Function';
+
 import Form from './form/Form';
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
   transactionEvent: TransactionEvent;
   errors: Error;
   isEditTransactionOpen: boolean;
-  handleInputChange: (event: HandleInput) => void;
+  handleInputChange: (event: HandleInputChange) => void;
   handleSave: () => void;
   handleOpenTransaction: (date: Date) => void;
   handleOpenEdit: (event: TransactionEvent) => void;
