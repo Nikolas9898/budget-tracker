@@ -36,16 +36,16 @@ const CalendarDate: React.FC<Props> = ({calendarDate, transactions, date, handle
       >
         {Moment(calendarDate.date).get(UnitOfTime.DATE)}
       </div>
-      {transactions.map((transaction) => {
+      {/* {transactions.map((transaction) => {
         const {_id: transactionId} = transaction;
         return isTheSameDate(calendarDate.date, transaction.createdAt) ? (
-          <div key={transactionId} className={styles.calendar_events_content}>
+          <div key={transactionId}>
             <div className={styles.income}>{(transaction.income / 100).toFixed(2)}</div>
             <div className={styles.expense}>{(transaction.expense / 100).toFixed(2)}</div>
             <div className={styles.total}>{((transaction.income - transaction.expense) / 100).toFixed(2)}</div>
           </div>
         ) : null;
-      })}
+      })} */}
     </button>
   );
 };

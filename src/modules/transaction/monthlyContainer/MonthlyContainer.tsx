@@ -236,15 +236,16 @@ const MonthlyContainer = (): JSX.Element => {
   }, [amount, stateTransaction.date]);
 
   return (
-    <div className="wrapper">
-      <NavBarMenu />
+    <div className="container w-100 h-100">
+      {' '}
+      <NavBarMenu />{' '}
       <Calendar
         handleOpenInfoModal={handleOpenInfoModal}
         transactions={transactions}
         calendarDates={calendarDates}
         date={stateTransaction.date}
       />
-      <InfoModal
+      {/* <InfoModal
         handleDelete={handleDelete}
         selectedTransaction={selectedTransaction}
         handleNextDay={handleNextDay}
@@ -253,8 +254,8 @@ const MonthlyContainer = (): JSX.Element => {
         handleOpenInfoModal={handleOpenInfoModal}
         handleOpenTransaction={handleOpenTransaction}
         handleOpenEdit={handleOpenEdit}
-      />
-      <AddTransactionButton />
+      /> */}
+      {/* <AddTransactionButton /> */}
     </div>
   );
 };

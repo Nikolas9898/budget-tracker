@@ -10,7 +10,7 @@ import {
 } from '../../modules/transaction/actions/transactionActions';
 
 import {TransactionReducer} from '../../models/Transaction';
-import classes from './NavBarStyle.module.css';
+import './NavBarStyle.css';
 import languageWords from '../../helpers/LanguageConsts';
 import {isSelectedTitle, isTransactionContainer} from '../../helpers/TransactionHelpers';
 
@@ -32,49 +32,42 @@ const NavBarMenu = (): JSX.Element => {
     return dispatch(handleNextMonth());
   }, [dispatch, location.pathname]);
   return (
-    <div className={classes.container}>
-      <div className={classes.container_navigation}>
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/daily' : '/stats/daily'}
-          className={isSelectedTitle(location.pathname, 'daily') ? classes.title_selected : classes.title}
-        >
-          {languageWords.DAILY}
-        </Link>
-
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/weekly' : '/stats/weekly'}
-          className={isSelectedTitle(location.pathname, 'weekly') ? classes.title_selected : classes.title}
-        >
-          {languageWords.WEEKLY}
-        </Link>
-
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/monthly' : '/stats/monthly'}
-          className={isSelectedTitle(location.pathname, 'monthly') ? classes.title_selected : classes.title}
-        >
-          {languageWords.MONTHLY}
-        </Link>
-
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/yearly' : '/stats/yearly'}
-          className={isSelectedTitle(location.pathname, 'yearly') ? classes.title_selected : classes.title}
-        >
-          {languageWords.YEARLY}
-        </Link>
-
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/period' : '/stats/period'}
-          className={isSelectedTitle(location.pathname, 'period') ? classes.title_selected : classes.title}
-        >
-          {languageWords.PERIOD}
-        </Link>
+    <div className="row m-3 w-100">
+      <div className="col-md container_navigation">
+        <div className="row justify-content-md-center">
+          <Link
+            to={isTransactionContainer(location.pathname) ? '/transaction/daily' : '/stats/daily'}
+            className={isSelectedTitle(location.pathname, 'daily') ? 'col btn disabled' : 'col btn'}
+          >
+            {languageWords.DAILY}
+          </Link>{' '}
+          <Link
+            to={isTransactionContainer(location.pathname) ? '/transaction/weekly' : '/stats/weekly'}
+            className={isSelectedTitle(location.pathname, 'weekly') ? 'col btn disabled' : 'col btn'}
+          >
+            {languageWords.WEEKLY}
+          </Link>
+          <Link
+            to={isTransactionContainer(location.pathname) ? '/transaction/monthly' : '/stats/monthly'}
+            className={isSelectedTitle(location.pathname, 'monthly') ? 'col btn disabled' : 'col btn'}
+          >
+            {languageWords.MONTHLY}
+          </Link>{' '}
+          <Link
+            to={isTransactionContainer(location.pathname) ? '/transaction/yearly' : '/stats/yearly'}
+            className={isSelectedTitle(location.pathname, 'yearly') ? 'col btn disabled' : 'col btn'}
+          >
+            {languageWords.YEARLY}
+          </Link>{' '}
+        </div>
       </div>
-      <div className={classes.change_month_content}>
-        <button type="button" className={classes.change_month_button} onClick={handlePreviousYearOrMonth}>
+      <div className="col-md-auto">
+        {' '}
+        <button className="btn mr-2 " type="button" onClick={handlePreviousYearOrMonth}>
           {'<'}
         </button>
         {isSelectedTitle(location.pathname, 'yearly') ? Moment(date).format('YYYY') : Moment(date).format('MMM YYYY')}
-        <button type="button" className={classes.change_month_button} onClick={handleNextYearOrMonth}>
+        <button className="btn ml-2" type="button" onClick={handleNextYearOrMonth}>
           {'>'}
         </button>
       </div>

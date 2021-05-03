@@ -1,19 +1,22 @@
-.container {
+/* .container {
   display: flex;
   align-items: center;
   margin-top: 50px;
   margin-bottom: 50px;
-}
+} */
 .container_navigation {
-  margin-right: 30px;
-  padding-left: 0px;
-  display: flex;
-  justify-content: space-between;
   background: #0160b2;
-  width: 40%;
-  min-width: 366px;
 }
-.title {
+
+.btn-lg {
+  color: white;
+  text-decoration: none;
+}
+.btn {
+  color: white !important;
+  background: #0160b2 !important;
+}
+/* .title {
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -47,4 +50,4 @@
 }
 .change_month_button {
   cursor: pointer;
-}
+} */
