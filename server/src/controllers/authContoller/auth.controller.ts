@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import {Request, RequestHandler, Response} from 'express';
-import User from '../../models/user/user.model';
-import {UserType, ResponseUser, UserErrors} from '../../interfaces/user';
-import {addCategories} from '../../helpers/userHelpers/userHelpers';
+import User from '../../dbModels/user/user.model';
+import {UserType, ResponseUser, UserErrors} from '../../models/user';
+import {addCategories} from '../categoryController/category.controller';
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
   try {
@@ -33,7 +33,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
 
       const token: string = jwt.sign(
         {
-          id: _id
+          sub: _id
         },
         'somesecretkeyforjsonwebtoken'
       );
@@ -72,7 +72,7 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
       };
       const token: string = jwt.sign(
         {
-          id: user._id
+          sub: user._id
         },
         'somesecretkeyforjsonwebtoken'
       );

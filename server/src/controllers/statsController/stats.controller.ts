@@ -1,9 +1,9 @@
 import {RequestHandler, Request, Response} from 'express';
 import moment from 'moment';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
-import Transaction from '../../models/transaction/transaction.model';
-import {SumStats} from '../../interfaces/stats';
-import {EventTypes, MomentConstants} from '../../interfaces/transactions';
+import Transaction from '../../dbModels/transaction/transaction.model';
+import {KeyStringNumber, SumStats} from '../../models/stats';
+import {EventTypes, MomentConstants} from '../../models/transactions';
 
 export const getStats: RequestHandler = async (req: Request, res: Response) => {
   const userId = tokenDecoder(req.headers.authorization);
@@ -17,8 +17,8 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
         $lt: moment(to).endOf(MomentConstants.DAY).toDate()
       }
     });
-    const income: any = {};
-    const expense: any = {};
+    const income: KeyStringNumber = {};
+    const expense: KeyStringNumber = {};
     const incomeStats: SumStats[] = [];
     const expenseStats: SumStats[] = [];
 
@@ -35,14 +35,28 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
     });
 
     Object.keys(income).forEach((key) => {
-      incomeStats.push({category: key, value: income[key]});
+      incomeStats.push({
+        category: key,
+        value: income[key],
+        color: generateRandomColor(),
+        label: key
+      });
     });
     Object.keys(expense).forEach((key) => {
-      expenseStats.push({category: key, value: expense[key]});
+      expenseStats.push({
+        category: key,
+        value: expense[key],
+        color: generateRandomColor(),
+        label: key
+      });
     });
 
     return res.json({incomeStats, expenseStats});
   } catch (error) {
     return res.json(error);
   }
+};
+
+const generateRandomColor = (): string => {
+  return '#' + Math.floor(Math.random() * 16777215).toString(16);
 };

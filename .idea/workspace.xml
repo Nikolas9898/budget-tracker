@@ -4,9 +4,30 @@
     <list default="true" id="1cc0ffbc-a50f-4766-90ae-9ec2eaa22938" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/controlers/authContoler/auth.controler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controlers/authContoler/auth.controler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/layout/navBar/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/layout/navBar/NavBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/login/LoginContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/layout/navBarMenu/NavBarMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/layout/navBarMenu/NavBarMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/stats/dailyContainer/DailyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/stats/dailyContainer/DailyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/stats/monthlyContainer/MonthlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/stats/monthlyContainer/MonthlyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/stats/weeklyContainer/WeeklyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/stats/weeklyContainer/WeeklyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/stats/yearlyContainer/YearlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/stats/yearlyContainer/YearlyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoRow/InfoRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoRow/InfoRow.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/components/dailyTableRow/DailyTableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/components/dailyTableRow/DailyTableRow.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/NewCalendar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/MonthlyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/MonthlyStyle.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyTableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyTableRow.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyTableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyTableRow.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/pages/transactionPage/MonthlyPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/pages/transactionPage/MonthlyPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/store/actions/transactionActions.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/store/reducers/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/store/reducers/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/store/reducers/transactionReducer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/store/types.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/store/types.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,9 +62,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../exo.bg" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -90,6 +112,15 @@
       <workItem from="1610955635488" duration="5947000" />
       <workItem from="1610966831251" duration="20841000" />
       <workItem from="1611218524593" duration="319000" />
+      <workItem from="1612874995411" duration="7106000" />
+      <workItem from="1612891301204" duration="10949000" />
+      <workItem from="1612946672605" duration="409000" />
+      <workItem from="1612947604309" duration="2000" />
+      <workItem from="1612947616218" duration="150000" />
+      <workItem from="1612947809177" duration="2000" />
+      <workItem from="1612986818421" duration="1501000" />
+      <workItem from="1613255362463" duration="1064000" />
+      <workItem from="1613342558307" duration="4000" />
     </task>
     <servers />
   </component>
@@ -98,16 +129,5 @@
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx</url>
-          <line>127</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

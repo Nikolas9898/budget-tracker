@@ -1,15 +1,17 @@
 import {RequestHandler, Request, Response} from 'express';
 import moment from 'moment';
-import {Months, Month} from '../../interfaces/month';
+import {Months, Month} from '../../models/month';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
 import TransactionType, {
-  ErrorMessages,
+  DELETED_SUCCESSFULLY,
   EventTypes,
   MomentConstants,
-  SuccessMessages,
-  TransactionEvent
-} from '../../interfaces/transactions';
-import Transaction from '../../models/transaction/transaction.model';
+  NO_EXISTING_TRANSACTION,
+  NO_TRANSACTION,
+  TransactionEvent,
+  TWO_DATES_PICKED
+} from '../../models/transactions';
+import Transaction from '../../dbModels/transaction/transaction.model';
 import {calculateTotalExpenseAndIncome} from '../../helpers/calculateTotalExpenseAndIncome';
 import {
   createOrdinaryEvent,
@@ -78,7 +80,7 @@ export const getTransactionInSpecificDatePeriod: RequestHandler = async (req: Re
 
   if (from === '' || to === '') {
     return res.status(400).json({
-      errorMSG: ErrorMessages.TWO_DATES_PICKET
+      errorMSG: TWO_DATES_PICKED
     });
   }
 
@@ -112,7 +114,7 @@ export const getTransactionById: RequestHandler = async (req: Request, res: Resp
   Transaction.findOne({_id: id, userId}, (err, transaction: TransactionType) => {
     try {
       if (!transaction) {
-        return res.status(400).json({errorMsg: ErrorMessages.NO_TRANSACTION});
+        return res.status(400).json({errorMsg: NO_TRANSACTION});
       }
       return res.json(transaction);
     } catch (error) {
@@ -133,7 +135,7 @@ export const deleteTransactionById: RequestHandler = async (req: Request, res: R
 
     if (transaction) {
       transaction.remove();
-      return res.json({msg: SuccessMessages.DELETED_SUCCESSFULLY});
+      return res.json({msg: DELETED_SUCCESSFULLY});
     }
   } catch (error) {
     res.json({errroMsg: error});
@@ -232,7 +234,7 @@ export const deleteTransactionEvent: RequestHandler = async (req: Request, res: 
 
   if (transaction === null) {
     return res.json({
-      errorMsg: ErrorMessages.NO_EXISTING_TRANSACTION
+      errorMsg: NO_EXISTING_TRANSACTION
     });
   }
 

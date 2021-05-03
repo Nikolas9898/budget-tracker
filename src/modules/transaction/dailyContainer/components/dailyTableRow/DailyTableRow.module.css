@@ -1,0 +1,44 @@
+td {
+  border-top: lightslategray solid 2px;
+  cursor: pointer;
+}
+
+.account_container {
+  height: 80px;
+  width: 300px;
+  font-size: 20px;
+  color: dimgrey;
+  display: flex;
+  align-items: center;
+}
+.account {
+  width: 200px;
+}
+.category {
+  width: 450px;
+  font-size: 20px;
+  color: dimgrey;
+}
+.income {
+  text-align: center;
+  height: 80px;
+  width: 200px;
+  font-size: 25px;
+  color: dodgerblue;
+  font-weight: bolder;
+}
+.expense {
+  text-align: center;
+  height: 80px;
+  width: 200px;
+  font-size: 25px;
+  color: coral;
+  font-weight: bolder;
+}
+.transfer {
+  text-align: center;
+  height: 80px;
+  width: 400px;
+  font-size: 25px;
+  font-weight: bolder;
+}

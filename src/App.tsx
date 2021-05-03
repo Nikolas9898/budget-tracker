@@ -1,12 +1,13 @@
 import React from 'react';
-import Routes from './desktop/routes'
+import AuthProvider from './helpers/AuthProvider';
+import Routes from './routes';
 
-function App() {
+export const App = (): JSX.Element => {
   return (
-      <React.Fragment>
-        <Routes />
-      </React.Fragment>
+    <AuthProvider>
+      <Routes />
+    </AuthProvider>
   );
-}
+};
 
 export default App;
