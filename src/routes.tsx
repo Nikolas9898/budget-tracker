@@ -10,6 +10,7 @@ import DailyStatsPage from './pages/statsPage/DailyPage';
 import YearlyStatsPage from './pages/statsPage/YearlyPage';
 import MonthlyStatsPage from './pages/statsPage/MonthlyPage';
 import ExportPage from './pages/exportPage/ExportPage';
+import BootstrapMonthly from './pages/BootstrapMonthlyPage';
 
 const Routes = (): JSX.Element => {
   return (
@@ -18,6 +19,7 @@ const Routes = (): JSX.Element => {
         <Route path="/authentication" exact component={LoginPage} />
         <Route path="/" exact component={HomePage} />
         <Route path="/transaction/monthly" exact component={MonthlyPage} />
+        <Route path="/transaction/monthly/bootstrap" exact component={BootstrapMonthly} />
         <Route path="/transaction/daily" exact component={DailyPage} />
         <Route path="/transaction/yearly" exact component={YearlyPage} />
         <Route path="/transaction/weekly" exact component={WeeklyPage} />
