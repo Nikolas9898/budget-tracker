@@ -31,38 +31,40 @@ const BootstrapNavBarMenu = (): JSX.Element => {
     return dispatch(handleNextMonth());
   }, [dispatch, location.pathname]);
   return (
-    <div className="row mb-3 mt-3 w-100 justify-content-center">
-      {/* <div className="col-12 mb-3 col-lg-8 container_navigation"> */}
-      {/* <div className="row"> */}
+    <div className="row ml-3 mb-3 mt-3 w-100">
       <Link
-        to={isTransactionContainer(location.pathname) ? '/transaction/daily' : '/stats/daily'}
-        className={isSelectedTitle(location.pathname, 'daily') ? 'col-2 btn disabled' : 'col btn navBarBtn'}
+        to={isTransactionContainer(location.pathname) ? '/transaction/daily/bootstrap' : '/stats/daily'}
+        className={`col-1 mr-1 btn ${
+          isSelectedTitle(location.pathname, 'daily/bootstrap') ? 'navBarBtnActive' : 'navBarBtn'
+        }`}
       >
         {languageWords.DAILY}
       </Link>{' '}
       <Link
-        to={isTransactionContainer(location.pathname) ? '/transaction/weekly' : '/stats/weekly'}
-        className={isSelectedTitle(location.pathname, 'weekly') ? 'col btn navBarBtnActive' : 'col btn navBarBtn'}
+        to={isTransactionContainer(location.pathname) ? '/transaction/weekly/bootstrap' : '/stats/weekly'}
+        className={`col-1 mr-1 btn ${
+          isSelectedTitle(location.pathname, 'weekly/bootstrap') ? 'navBarBtnActive' : 'navBarBtn'
+        }`}
       >
         {languageWords.WEEKLY}
       </Link>
       <Link
         to={isTransactionContainer(location.pathname) ? '/transaction/monthly/bootstrap' : '/stats/monthly'}
-        className={
-          isSelectedTitle(location.pathname, 'monthly/bootstrap') ? 'col btn navBarBtnActive' : 'col btn navBarBtn'
-        }
+        className={`col-1 mr-1 btn ${
+          isSelectedTitle(location.pathname, 'monthly/bootstrap') ? 'navBarBtnActive' : 'navBarBtn'
+        }`}
       >
         {languageWords.MONTHLY}
       </Link>{' '}
       <Link
         to={isTransactionContainer(location.pathname) ? '/transaction/yearly' : '/stats/yearly'}
-        className={isSelectedTitle(location.pathname, 'yearly') ? 'col btn navBarBtnActive' : 'col btn navBarBtn'}
+        className={`col-1 mr-1 btn ${
+          isSelectedTitle(location.pathname, 'yearly/bootstrap') ? 'navBarBtnActive' : 'navBarBtn'
+        }`}
       >
         {languageWords.YEARLY}
       </Link>{' '}
-      {/* </div>
-      </div> */}
-      <div className="col-6 col-md-4 text-center">
+      <div className="col-8 col-md-4 text-center">
         {' '}
         <button className="btn navBarBtn mr-2 " type="button" onClick={handlePreviousYearOrMonth}>
           {'<'}

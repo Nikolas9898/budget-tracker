@@ -32,7 +32,7 @@ const BootstrapDailyTableHead: React.FC<Props> = ({transaction}) => {
       <div className="col-4 align-self-center">
         <h2>{(transaction.income / 100).toFixed(2)}</h2>
       </div>
-      <div className="col-4 align-self-center">
+      <div className="col-2 align-self-center">
         <h2>{(transaction.expense / 100).toFixed(2)}</h2>
       </div>
     </div>

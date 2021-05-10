@@ -5,7 +5,7 @@ import {faAngleRight, faAngleLeft, faPlusCircle} from '@fortawesome/free-solid-s
 import {faTimesCircle} from '@fortawesome/free-regular-svg-icons';
 import BootstrapTableRow from './components/BootstrapTableRow';
 import {TransactionEventWithAmountNumber, TransactionWithAmountNumber} from '../../../../models/Transaction';
-import classes from '../infoModal/infoModalStyle.module.css';
+import './bootstrapInfoModalStyle.css';
 
 type Props = {
   isInfoTransactionOpen: boolean;
@@ -32,14 +32,14 @@ const BootstrapInfoModal: React.FC<Props> = ({
   }, [handleOpenInfoModal]);
   return (
     <>
-      <div className={classes.modal_wrapper}>
-        <div className={classes.wrapper_container}>
-          {/* <FontAwesomeIcon onClick={handlePreviousDay} className={classes.change_date} icon={faAngleLeft} /> */}
-          <div>
-            <FontAwesomeIcon onClick={openInfoModal} className={classes.close_button} icon={faTimesCircle} />
-            <div className={classes.container}>
-              <div className={classes.date}>{Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}</div>
-              <div className={classes.content}>
+      <div className="modal_wrapper">
+        <div className="container row align-items-center">
+          <FontAwesomeIcon onClick={handlePreviousDay} icon={faAngleLeft} className="col-2 change_previous_date" />
+          <div className="col-8 modal_info_wrapper">
+            <FontAwesomeIcon onClick={openInfoModal} icon={faTimesCircle} />
+            <div>
+              <div>{Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}</div>
+              <div>
                 <table>
                   {selectedTransaction.events.map((event) => (
                     <BootstrapTableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
@@ -47,14 +47,14 @@ const BootstrapInfoModal: React.FC<Props> = ({
                 </table>
               </div>
 
-              {/* <FontAwesomeIcon
+              <FontAwesomeIcon
                 onClick={() => handleOpenTransaction(Moment().toDate())}
-                className={classes.add_button}
                 icon={faPlusCircle}
-              /> */}
+                className="add_button"
+              />
             </div>
           </div>
-          {/* <FontAwesomeIcon onClick={handleNextDay} className={classes.change_date} icon={faAngleRight} /> */}
+          <FontAwesomeIcon onClick={handleNextDay} icon={faAngleRight} className="col-2 change_previous_date" />
         </div>
       </div>
     </>

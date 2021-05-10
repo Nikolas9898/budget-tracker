@@ -22,7 +22,7 @@
 .navBarBtnActive {
   color: #0160b2 !important;
   background-color: white !important;
-  border: #0160b2 1px solid;
+  border: #0160b2 1px solid !important;
 }
 .navBarBtn:hover {
   color: #0160b2 !important;

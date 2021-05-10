@@ -17,6 +17,7 @@ import {
 } from '../../../helpers/MomentHelpers';
 import WeeklyTableRow from './BootstrapWeeklyTableRow';
 import BootstrapNavBarMenu from '../../../layout/bootstrapNavBar/BootstrapNavBar';
+import BootstrapInfoTableHead from '../components/BootstrapInfoTableHead';
 
 const BootstrapWeeklyContainer = (): JSX.Element => {
   const [weeksInMonth, setWeeks] = useState<Month[]>([]);
@@ -82,6 +83,8 @@ const BootstrapWeeklyContainer = (): JSX.Element => {
     <div className="container-fluid">
       <BootstrapNavBarMenu />
       <div className="container">
+        <BootstrapInfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
+
         {weeksInMonth.map((week) => (
           <WeeklyTableRow week={week} />
         ))}

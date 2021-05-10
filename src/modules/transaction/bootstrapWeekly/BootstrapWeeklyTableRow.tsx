@@ -15,7 +15,7 @@ const WeeklyTableRow: React.FC<Props> = ({week}) => {
     );
   };
   return (
-    <div className="row justify-content-center m-4 tw">
+    <div className="row justify-content-center">
       <div className="col-3 align-self-center">
         <div className={isDateInWeek() ? classes.selected_date : classes.date}>
           {Moment(week.from).format('DD.MM')} ~ {Moment(week.to).format('DD.MM')}

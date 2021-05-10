@@ -1,17 +1,36 @@
 .modal_wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1050;
-  background-color: rgba(192, 192, 192, 0.8);
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 1050 !important;
+  background-color: rgba(192, 192, 192, 0.8) !important;
 }
-.wrapper_container {
-  margin: 200px auto auto auto;
-  width: 1100px;
-  display: flex;
+/* .wrapper_container {
+  margin: 25% auto auto auto !important;
+  width: 50% !important;
+  display: flex !important;
+} */
+.modal_info_wrapper {
+  width: 80%;
+  min-height: 400px;
+  background: #0160b2;
+  color: white;
+  border-radius: 9px;
+  margin: auto !important;
 }
+.change_previous_date {
+  color: #0160b2;
+  cursor: pointer;
+}
+.add_button {
+  margin-top: 54%;
+  margin-left: 89%;
+  font-size: 2rem;
+  cursor: pointer;
+}
+/*
 .change_date {
   font-size: 100px;
   padding: 30px;
@@ -19,12 +38,7 @@
   color: #0160b2;
   margin: auto;
 }
-.container {
-  width: 640px;
-  min-height: 400px;
-  background: #0160b2;
-  color: white;
-}
+
 .date {
   padding: 10px;
   font-size: 20px;
@@ -76,4 +90,4 @@
 .edit:hover {
   color: yellow;
   cursor: pointer;
-}
+} */

@@ -235,16 +235,19 @@ const MonthlyContainer = (): JSX.Element => {
     setCalendar(stateTransaction.date);
   }, [amount, stateTransaction.date]);
 
+  const test = true;
   return (
-    <div className="container">
+    <div className="container-fluid">
       {' '}
       <BootstrapNavBarMenu />
-      <BootstrapCalendar
-        handleOpenInfoModal={handleOpenInfoModal}
-        transactions={transactions}
-        calendarDates={calendarDates}
-        date={stateTransaction.date}
-      />
+      <div className="container">
+        <BootstrapCalendar
+          handleOpenInfoModal={handleOpenInfoModal}
+          transactions={transactions}
+          calendarDates={calendarDates}
+          date={stateTransaction.date}
+        />
+      </div>
       {isInfoTransactionOpen && (
         <BootstrapInfoModal
           handleDelete={handleDelete}
