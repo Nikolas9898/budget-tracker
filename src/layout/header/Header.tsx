@@ -15,10 +15,10 @@ const NavBar = (): JSX.Element => {
   const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);
 
   return (
-    <div>
-      <nav className={classes.container}>
+    <>
+      <nav className={`navbar navbar-expand-lg  ${classes.container}`}>
         <FontAwesomeIcon className={classes.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} />
-        <div className={classes.page_title}>
+        <div className={`collapse navbar-collapse ${classes.page_title}`}>
           {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
         </div>
         <div className={classes.dropdown}>
@@ -30,8 +30,9 @@ const NavBar = (): JSX.Element => {
           <AccountMenu />
         </div>
       </nav>
+
       <SideBar isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen} />
-    </div>
+    </>
   );
 };
 export default NavBar;
