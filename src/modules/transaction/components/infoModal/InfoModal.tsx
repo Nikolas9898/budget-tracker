@@ -32,30 +32,30 @@ const InfoModal: React.FC<Props> = ({
   return (
     <>
       <div className={classes.modal_wrapper}>
-        <div className="container row align-items-center">
+        <div className={`container row align-items-center ${classes.modal_container_wrapper}`}>
           <FontAwesomeIcon
             onClick={handlePreviousDay}
             icon={faAngleLeft}
             className={`col-2 ${classes.change_previous_date}`}
           />
           <div className={`col-8 ${classes.modal_info_wrapper}`}>
-            <FontAwesomeIcon onClick={openInfoModal} icon={faTimesCircle} />
-            <div>
-              <div>{Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}</div>
-              <div>
-                <table>
-                  {selectedTransaction.events.map((event) => (
-                    <TableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
-                  ))}
-                </table>
-              </div>
+            <FontAwesomeIcon onClick={openInfoModal} icon={faTimesCircle} className={classes.close_button} />
 
-              <FontAwesomeIcon
-                onClick={() => handleOpenTransaction(Moment().toDate())}
-                icon={faPlusCircle}
-                className="add_button"
-              />
+            <div className="text-center font-weight-bold">
+              {Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}
             </div>
+
+            <table className="container mt-2">
+              {selectedTransaction.events.map((event) => (
+                <TableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
+              ))}
+            </table>
+
+            <FontAwesomeIcon
+              onClick={() => handleOpenTransaction(Moment().toDate())}
+              icon={faPlusCircle}
+              className={classes.add_button}
+            />
           </div>
           <FontAwesomeIcon
             onClick={handleNextDay}

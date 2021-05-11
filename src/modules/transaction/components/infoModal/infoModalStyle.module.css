@@ -12,6 +12,13 @@
   width: 50% !important;
   display: flex !important;
 } */
+
+.modal_container_wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .modal_info_wrapper {
   width: 80%;
   min-height: 400px;
@@ -21,13 +28,32 @@
   margin: auto !important;
 }
 .change_previous_date {
-  color: #0160b2;
+  font-size: 8rem;
+  color: #0160b2 !important;
   cursor: pointer;
 }
+.change_previous_date:hover {
+  font-size: 10rem;
+}
 .add_button {
-  margin-top: 54%;
-  margin-left: 89%;
+  position: absolute;
+  bottom: 27px;
+  right: 25px;
   font-size: 2rem;
+}
+.add_button:hover {
+  cursor: pointer;
+  color: coral;
+}
+.close_button {
+  position: absolute;
+  bottom: 105%;
+  left: 45%;
+  font-size: 3rem;
+  color: #0160b2;
+}
+.close_button:hover {
+  color: red;
   cursor: pointer;
 }
 /*

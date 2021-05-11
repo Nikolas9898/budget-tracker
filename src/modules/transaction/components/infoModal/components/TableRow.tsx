@@ -2,7 +2,6 @@ import React from 'react';
 import {faPen, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {TransactionEventWithAmountNumber} from '../../../../../models/Transaction';
-import styles from '../infoModalStyle.module.css';
 import {isTransactionTypeIncome, isTransactionTypeExpense} from '../../../../../helpers/TransactionHelpers';
 
 type Props = {
@@ -14,20 +13,20 @@ const TableRow: React.FC<Props> = ({handleDelete, handleOpenEdit, event}) => {
   const {category, from, account, to, type, amount, _id: eventId} = event;
   return (
     <tr>
-      <th className={styles.content_row}>
+      <th>
         {category}
         {from}
       </th>
-      <th className={styles.content_row}>
+      <th>
         {account}
         {to}
       </th>
-      <th className={styles.content_row}>{isTransactionTypeIncome(type, amount)}</th>
-      <th className={styles.content_row}>{isTransactionTypeExpense(type, amount)}</th>
-      <th className={styles.content_row}>
-        <div className={styles.function_container}>
-          <FontAwesomeIcon onClick={() => handleOpenEdit(event)} icon={faPen} />
-          <FontAwesomeIcon onClick={() => handleDelete(eventId)} icon={faTrash} />
+      <th>{isTransactionTypeIncome(type, amount)}</th>
+      <th>{isTransactionTypeExpense(type, amount)}</th>
+      <th>
+        <div className="row">
+          <FontAwesomeIcon onClick={() => handleOpenEdit(event)} icon={faPen} className="col-6" />
+          <FontAwesomeIcon onClick={() => handleDelete(eventId)} icon={faTrash} className="col-6" />
         </div>
       </th>
     </tr>

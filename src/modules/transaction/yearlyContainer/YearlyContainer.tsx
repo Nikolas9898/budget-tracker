@@ -7,7 +7,6 @@ import {UserReducer} from '../../../models/User';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import YearlyTableRow from './components/YearlyTableRow';
-import classes from './YearlyStyle.module.css';
 import {UnitOfTime} from '../../../models/Clendar';
 /* eslint-disable react-hooks/exhaustive-deps */
 
