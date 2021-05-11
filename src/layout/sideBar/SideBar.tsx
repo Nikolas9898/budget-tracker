@@ -15,26 +15,27 @@ const SideBar: React.FC<Props> = ({isSideBarOpen, setIsSideBarOpen}) => {
     setIsSideBarOpen(false);
   }, [setIsSideBarOpen]);
   return (
-    <div>
-      {isSideBarOpen ? (
-        <div className={classes.wrapper}>
-          <FontAwesomeIcon className={classes.close_button} icon={faTimes} onClick={closeSideBar} />
-          <div className={classes.content}>
-            <Link to="/transaction/monthly" className={classes.title}>
-              {languageWords.TRANSACTIONS}
-            </Link>
-            <Link to="/stats/monthly" className={classes.title}>
-              {languageWords.STATS}
-            </Link>
-            <Link to="/export" className={classes.title}>
-              {languageWords.EXPORT}
-            </Link>
-            <Link to="/accounts" className={classes.title}>
-              {languageWords.ACCOUNT}
-            </Link>
-          </div>
-        </div>
-      ) : null}
+    <div className={isSideBarOpen ? classes.container : classes.container_back}>
+      <nav className={isSideBarOpen ? classes.wrapper : classes.wrapper_back}>
+        <FontAwesomeIcon className={classes.close_button} icon={faTimes} onClick={closeSideBar} />
+        <ul className={classes.content}>
+          <Link to="/transaction/monthly" className={classes.title}>
+            {languageWords.TRANSACTIONS}
+          </Link>
+
+          <Link to="/stats/monthly" className={classes.title}>
+            {languageWords.STATS}
+          </Link>
+
+          <Link to="/export" className={classes.title}>
+            {languageWords.EXPORT}
+          </Link>
+
+          <Link to="/accounts" className={classes.title}>
+            {languageWords.ACCOUNT}
+          </Link>
+        </ul>
+      </nav>
     </div>
   );
 };

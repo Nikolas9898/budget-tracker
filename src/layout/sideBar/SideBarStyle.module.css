@@ -1,3 +1,15 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1050;
+  background-color: rgba(22, 21, 21, 0.8);
+}
+.container_back {
+  height: 0;
+}
 .wrapper {
   position: fixed;
   left: 0;
@@ -6,6 +18,19 @@
   width: 300px;
   height: 100vh;
   box-shadow: 17px 2px 18px 5px rgba(0, 0, 0, 0.52);
+  z-index: 9999;
+  transition: all 0.5s;
+}
+.wrapper_back {
+  position: fixed;
+  left: -330px;
+  top: 0;
+  background: #0160b2;
+  width: 300px;
+  height: 100vh;
+  box-shadow: 17px 2px 18px 5px rgba(0, 0, 0, 0.52);
+  z-index: 9999;
+  transition: all 0.5s;
 }
 .close_button {
   font-size: 40px;
@@ -15,14 +40,24 @@
   margin-top: 10px;
 }
 .content {
-  padding: 30px;
+  padding: 30px 0;
   margin-top: 70px;
   display: grid;
+  text-decoration: none;
+}
+.content li:hover {
+  background-color: white;
 }
 .title {
+  padding-left: 20px;
   font-size: 30px;
   color: white;
   margin-top: 10px;
   cursor: pointer;
+}
+.title:hover {
   text-decoration: none;
+  color: #0160b2;
+  background-color: white;
+  transition: all 0.3s;
 }
