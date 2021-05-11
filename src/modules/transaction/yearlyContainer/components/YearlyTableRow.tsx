@@ -20,8 +20,14 @@ const YearlyTableRow: React.FC<Props> = ({month}) => {
   }, [dispatch, history, month.from]);
 
   return (
-    <tr onClick={openMonthContainer}>
-      <td className={classes.month_content}>
+    <div
+      role="button"
+      tabIndex={-1}
+      onClick={openMonthContainer}
+      onKeyDown={openMonthContainer}
+      className="row justify-content-center"
+    >
+      <div className="col-3 align-align-self-center">
         <div
           className={
             Moment(month.from).diff(Moment().startOf(UnitOfTime.MONTH).toDate(), UnitOfTime.MONTH) === 0
@@ -31,10 +37,10 @@ const YearlyTableRow: React.FC<Props> = ({month}) => {
         >
           {Moment(month.from).format('MMMM')}
         </div>
-      </td>
-      <td className={classes.income}>{(month.income / 100).toFixed(2)}</td>
-      <td className={classes.expense}>{(month.expense / 100).toFixed(2)}</td>
-    </tr>
+      </div>
+      <div className={`col-3 align-self-center ${classes.income}`}>{(month.income / 100).toFixed(2)}</div>
+      <div className={`col-3 align-self-center ${classes.expense}`}>{(month.expense / 100).toFixed(2)}</div>
+    </div>
   );
 };
 

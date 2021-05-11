@@ -13,7 +13,7 @@ import {
 } from '../../../models/Transaction';
 import {getSpecificDatePeriod} from '../service/TransactionService';
 import {setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
-import styles from './DailyStyle.module.css';
+import classes from './DailyStyle.module.css';
 import '../../../scss/variables.scss';
 import {UnitOfTime} from '../../../models/Clendar';
 import {firstDateOfTheMonth, lastDateOfTheMonth} from '../../../helpers/MomentHelpers';
@@ -58,35 +58,32 @@ const DailyContainer = (): JSX.Element => {
   };
 
   return (
-    <div className="wrapper">
+    <div className="container-fluid">
       <NavBarMenu />
-      <div className={styles.container}>
-        <table className={styles.table}>
-          <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
+      <div className="container">
+        <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
 
-          {transactions
-            .sort((a, b) => {
-              return Moment(a.createdAt).get(UnitOfTime.DATE) - Moment(b.createdAt).get(UnitOfTime.DATE);
-            })
-            .reverse()
-            .map((transaction: TransactionWithAmountNumber) => (
-              <tbody className={styles.table_container}>
-                <DailyTableHeader transaction={transaction} />
-
-                {transaction.events.map((event: TransactionEventWithAmountNumber) => {
-                  const {_id: eventId} = event;
-                  return (
-                    <DailyTableRow
-                      key={eventId}
-                      transaction={transaction}
-                      transactionEvent={event}
-                      handleSelectEvent={handleSelectEvent}
-                    />
-                  );
-                })}
-              </tbody>
-            ))}
-        </table>
+        {transactions
+          .sort((a, b) => {
+            return Moment(a.createdAt).get(UnitOfTime.DATE) - Moment(b.createdAt).get(UnitOfTime.DATE);
+          })
+          .reverse()
+          .map((transaction: TransactionWithAmountNumber) => (
+            <div className={classes.table_container}>
+              <DailyTableHeader transaction={transaction} />
+              {transaction.events.map((event: TransactionEventWithAmountNumber) => {
+                const {_id: eventId} = event;
+                return (
+                  <DailyTableRow
+                    key={eventId}
+                    transaction={transaction}
+                    transactionEvent={event}
+                    handleSelectEvent={handleSelectEvent}
+                  />
+                );
+              })}
+            </div>
+          ))}
       </div>
     </div>
   );

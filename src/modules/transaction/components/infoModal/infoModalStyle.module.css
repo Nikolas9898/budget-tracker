@@ -7,73 +7,87 @@
   z-index: 1050 !important;
   background-color: rgba(192, 192, 192, 0.8) !important;
 }
-.wrapper_container {
-  margin: 200px auto auto auto !important;
-  width: 1100px !important;
+/* .wrapper_container {
+  margin: 25% auto auto auto !important;
+  width: 50% !important;
   display: flex !important;
-}
-.change_date {
-  font-size: 100px !important;
-  padding: 30px !important;
-  cursor: pointer !important;
-  color: #0160b2 !important;
+} */
+.modal_info_wrapper {
+  width: 80%;
+  min-height: 400px;
+  background: #0160b2;
+  color: white;
+  border-radius: 9px;
   margin: auto !important;
 }
-.container {
-  width: 640px !important;
-  min-height: 400px !important;
-  background: #0160b2 !important;
-  color: white !important;
-}
-.date {
-  padding: 10px !important;
-  font-size: 20px !important;
-}
-.content {
-  margin-top: 40px !important;
-  margin-left: 20px !important;
-  min-height: 230px !important;
-}
-.content_row {
-  min-width: 100px !important;
-  align-items: center !important;
-  padding-right: 10px !important;
-  padding-bottom: 10px !important;
-  font-size: 20px !important;
-  flex-wrap: wrap !important;
-  word-break: break-all !important;
+.change_previous_date {
+  color: #0160b2;
+  cursor: pointer;
 }
 .add_button {
-  cursor: pointer !important;
+  margin-top: 54%;
+  margin-left: 89%;
+  font-size: 2rem;
+  cursor: pointer;
+}
+/*
+.change_date {
+  font-size: 100px;
+  padding: 30px;
+  cursor: pointer;
+  color: #0160b2;
+  margin: auto;
+}
+
+.date {
+  padding: 10px;
+  font-size: 20px;
+}
+.content {
+  margin-top: 40px;
+  margin-left: 20px;
+  min-height: 230px;
+}
+.content_row {
+  min-width: 100px;
+  align-items: center;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  font-size: 20px;
+  flex-wrap: wrap;
+  word-break: break-all;
+}
+.add_button {
+  cursor: pointer;
   font-size: 40px;
-  margin-left: 510px !important;
-  padding: 20px !important;
+  margin-left: 510px;
+  padding: 20px;
 }
 .close_button {
-  color: #0160b2 !important;
+  color: #0160b2;
 
-  font-size: 60px !important;
-  display: flex !important;
-  margin: auto !important;
-  padding: 20px !important;
-  cursor: pointer !important;
+  font-size: 60px;
+  display: flex;
+  margin: auto;
+  padding: 20px;
+  cursor: pointer;
 }
 .function_container {
-  display: flex !important;
+  display: flex;
 }
 .delete {
-  cursor: pointer !important;
-  padding-left: 20px !important;
+  cursor: pointer;
+  padding-left: 20px;
 }
 .delete:hover {
-  color: red !important;
-  cursor: pointer !important;
+  color: red;
+  cursor: pointer;
 }
 .edit {
-  cursor: pointer !important;
-  padding-left: 20px !important;
+  cursor: pointer;
+  padding-left: 20px;
 }
 .edit:hover {
-  color: yellow !important;
-  cursor: pointer !important;
-}
+  color: yellow;
+  cursor: pointer;
+} */

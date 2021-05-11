@@ -11,8 +11,8 @@ type Props = {
 };
 const DailyTableHeader: React.FC<Props> = ({transaction}) => {
   return (
-    <tr>
-      <th>
+    <div className="row text-center ">
+      <div className="col-4 align-self-center ">
         <div className={classes.date_content}>
           <div className={classes.date}>{Moment(transaction.createdAt).format('DD')}</div>
           <div>
@@ -28,14 +28,14 @@ const DailyTableHeader: React.FC<Props> = ({transaction}) => {
             </div>
           </div>
         </div>
-      </th>
-      <th>
-        <div className={classes.income}>{(transaction.income / 100).toFixed(2)}</div>
-      </th>
-      <th>
-        <div className={classes.expense}>{(transaction.expense / 100).toFixed(2)}</div>
-      </th>
-    </tr>
+      </div>
+      <div className="col-4 align-self-center">
+        <h2>{(transaction.income / 100).toFixed(2)}</h2>
+      </div>
+      <div className="col-2 align-self-center">
+        <h2>{(transaction.expense / 100).toFixed(2)}</h2>
+      </div>
+    </div>
   );
 };
 

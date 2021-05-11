@@ -15,15 +15,17 @@ const WeeklyTableRow: React.FC<Props> = ({week}) => {
     );
   };
   return (
-    <tr>
-      <td className={classes.date_container}>
-        <div className={isDateInWeek() ? classes.selected_date : classes.date}>
-          {Moment(week.from).format('DD.MM')} ~ {Moment(week.to).format('DD.MM')}
-        </div>
-      </td>
-      <td className={classes.income}>{(week.income / 100).toFixed(2)}</td>
-      <td className={classes.expense}>{(week.expense / 100).toFixed(2)}</td>
-    </tr>
+    <div className="row justify-content-center">
+      <div className={`col-3 align-self-center ${isDateInWeek() ? classes.selected_date : classes.date}`}>
+        {Moment(week.from).format('DD.MM')} ~ {Moment(week.to).format('DD.MM')}
+      </div>
+      <div className="col-3 text-center align-self-center">
+        <h3 className={classes.income}>{(week.income / 100).toFixed(2)}</h3>
+      </div>
+      <div className="col-3 text-center align-self-center">
+        <h3 className={classes.expense}> {(week.expense / 100).toFixed(2)}</h3>
+      </div>
+    </div>
   );
 };
 

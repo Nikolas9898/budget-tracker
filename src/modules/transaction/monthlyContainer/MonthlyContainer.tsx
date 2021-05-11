@@ -15,7 +15,6 @@ import {
 } from '../../../models/Transaction';
 import {Error} from '../../../models/Error';
 import '../../../scss/variables.scss';
-import AddTransactionButton from '../../../layout/addTranasctionButton/AddTransactionButton';
 import {UnitOfTime} from '../../../models/Clendar';
 import {
   firstDateOfFirstWeekOfTheMonth,
@@ -236,25 +235,28 @@ const MonthlyContainer = (): JSX.Element => {
   }, [amount, stateTransaction.date]);
 
   return (
-    <div className="wrapper">
+    <div className="container-fluid">
+      {' '}
       <NavBarMenu />
-      <Calendar
-        handleOpenInfoModal={handleOpenInfoModal}
-        transactions={transactions}
-        calendarDates={calendarDates}
-        date={stateTransaction.date}
-      />
-      <InfoModal
-        handleDelete={handleDelete}
-        selectedTransaction={selectedTransaction}
-        handleNextDay={handleNextDay}
-        isInfoTransactionOpen={isInfoTransactionOpen}
-        handlePreviousDay={handlePreviousDay}
-        handleOpenInfoModal={handleOpenInfoModal}
-        handleOpenTransaction={handleOpenTransaction}
-        handleOpenEdit={handleOpenEdit}
-      />
-      <AddTransactionButton />
+      <div className="container">
+        <Calendar
+          handleOpenInfoModal={handleOpenInfoModal}
+          transactions={transactions}
+          calendarDates={calendarDates}
+          date={stateTransaction.date}
+        />
+      </div>
+      {isInfoTransactionOpen && (
+        <InfoModal
+          handleDelete={handleDelete}
+          selectedTransaction={selectedTransaction}
+          handleNextDay={handleNextDay}
+          handlePreviousDay={handlePreviousDay}
+          handleOpenInfoModal={handleOpenInfoModal}
+          handleOpenTransaction={handleOpenTransaction}
+          handleOpenEdit={handleOpenEdit}
+        />
+      )}
     </div>
   );
 };

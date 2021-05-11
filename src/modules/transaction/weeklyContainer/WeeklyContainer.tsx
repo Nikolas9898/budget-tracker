@@ -8,7 +8,6 @@ import {getYearlyOrWeekly} from '../service/TransactionService';
 
 import {Month, TransactionReducer} from '../../../models/Transaction';
 import {UserReducer} from '../../../models/User';
-import classes from './WeeklyStyle.module.css';
 import '../../../scss/variables.scss';
 import {UnitOfTime} from '../../../models/Clendar';
 import {
@@ -79,17 +78,14 @@ const WeeklyContainer = (): JSX.Element => {
     getWeeks(stateTransaction.date);
   }, [amount, stateTransaction.date]);
   return (
-    <div className="wrapper">
+    <div className="container-fluid">
       <NavBarMenu />
-      <div className={classes.container}>
-        <table className={classes.table}>
-          <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
-          <tbody>
-            {weeksInMonth.map((week) => (
-              <WeeklyTableRow week={week} />
-            ))}
-          </tbody>
-        </table>
+      <div className="container">
+        <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
+
+        {weeksInMonth.map((week) => (
+          <WeeklyTableRow week={week} />
+        ))}
       </div>
     </div>
   );

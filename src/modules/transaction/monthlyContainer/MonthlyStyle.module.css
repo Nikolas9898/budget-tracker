@@ -1,6 +1,6 @@
 .wrapper {
   margin: auto;
-  width: 90%;
+  width: 100%;
 }
 .container {
   width: 60%;
@@ -81,10 +81,10 @@
   background: lightgray;
 }
 .calendar_date {
-  padding: 5px;
+  padding: 2px;
 }
 .current_date {
-  padding: 5px;
+  padding: 2px;
   background: #0160b2;
   color: white;
 }
