@@ -20,15 +20,23 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
     handleSelectEvent(transactionEvent, transactionId);
   }, [handleSelectEvent, transactionId, transactionEvent]);
   return (
-    <tr onClick={selectEvent}>
-      <td>
-        <div className={classes.account_container}>
-          <div className={classes.account}>
-            {transactionEvent.type === TransactionTypes.TRANSFER
-              ? TransactionTypes.TRANSFER
-              : transactionEvent.category}
+    <div
+      className="row align-self-center text-center"
+      role="button"
+      tabIndex={0}
+      onKeyDown={selectEvent}
+      onClick={selectEvent}
+    >
+      <div className="col-4 align-self-center ">
+        <div className="row justify-content-center ">
+          <div className="col-6 align-self-center">
+            {transactionEvent.type === TransactionTypes.TRANSFER ? (
+              TransactionTypes.TRANSFER
+            ) : (
+              <h2>{transactionEvent.category}</h2>
+            )}
           </div>
-          <div className={classes.category}>
+          <div className="col-6 align-self-center">
             <div>{transactionEvent.note}</div>
             {transactionEvent.type === TransactionTypes.TRANSFER ? (
               <div>
@@ -37,22 +45,22 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
                 {transactionEvent.to}
               </div>
             ) : (
-              transactionEvent.account
+              <h2>{transactionEvent.account}</h2>
             )}
           </div>
         </div>
-      </td>
-      <td className={classes.income}>
+      </div>
+      <h2 className="col-4 align-self-center ">
         {transactionEvent.type === TransactionTypes.INCOME ? (transactionEvent.amount / 100).toFixed(2) : null}
-      </td>
-      <td className={transactionEvent.type === TransactionTypes.EXPENSE ? classes.expense : classes.transfer}>
-        <div>
+      </h2>
+      <div className="col-4 align-self-center">
+        <h2>
           {transactionEvent.type === TransactionTypes.EXPENSE || transactionEvent.type === TransactionTypes.TRANSFER
             ? (transactionEvent.amount / 100).toFixed(2)
             : null}
-        </div>
-      </td>
-    </tr>
+        </h2>
+      </div>
+    </div>
   );
 };
 

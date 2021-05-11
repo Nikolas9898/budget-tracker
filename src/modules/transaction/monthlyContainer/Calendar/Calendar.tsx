@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import CalendarDate from './CalendarDate';
 import {CalendarDates, TransactionWithAmountNumber} from '../../../../models/Transaction';
-
-import classes from '../MonthlyStyle.module.css';
 import {DaysOfWeek} from '../../../../models/Clendar';
 
 type Props = {
@@ -24,15 +22,15 @@ const Calendar: React.FC<Props> = ({calendarDates, date, transactions, handleOpe
   ]);
 
   return (
-    <div className={classes.container}>
-      <div className={classes.days_wrapper}>
+    <div className="row justify-content-center">
+      <div className="row w-100">
         {days.map((day) => (
-          <div key={day} className={classes.day_container}>
+          <div key={day} className="col">
             {day}
           </div>
         ))}
       </div>
-      <div className={classes.calendar_wrapper}>
+      <div className="row w-100">
         {calendarDates.map((calendarDate: {date: Date}) => (
           <CalendarDate
             calendarDate={calendarDate}

@@ -26,8 +26,8 @@ const TableRow: React.FC<Props> = ({handleDelete, handleOpenEdit, event}) => {
       <th className={styles.content_row}>{isTransactionTypeExpense(type, amount)}</th>
       <th className={styles.content_row}>
         <div className={styles.function_container}>
-          <FontAwesomeIcon className={styles.edit} onClick={() => handleOpenEdit(event)} icon={faPen} />
-          <FontAwesomeIcon className={styles.delete} onClick={() => handleDelete(eventId)} icon={faTrash} />
+          <FontAwesomeIcon onClick={() => handleOpenEdit(event)} icon={faPen} />
+          <FontAwesomeIcon onClick={() => handleDelete(eventId)} icon={faTrash} />
         </div>
       </th>
     </tr>

@@ -1,0 +1,25 @@
+.container_navigation {
+  background: #0160b2;
+  border-radius: 5px;
+}
+
+.btn-lg {
+  color: white;
+  text-decoration: none;
+}
+
+.navBarBtn {
+  color: white !important;
+  font-weight: bold !important;
+  background: #0160b2 !important;
+}
+.navBarBtnActive {
+  color: #0160b2 !important;
+  background-color: white !important;
+  border: #0160b2 1px solid !important;
+}
+.navBarBtn:hover {
+  color: #0160b2 !important;
+  background-color: white !important;
+  border: #0160b2 1px solid;
+}

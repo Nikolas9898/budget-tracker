@@ -83,19 +83,26 @@ const YearlyContainer = (): JSX.Element => {
   }, [stateTransaction.date]);
 
   return (
-    <div className="wrapper">
+    <div className="container-fluid">
       <NavBarMenu />
-      <div className={classes.container}>
-        <table className={classes.table}>
-          <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
-          <tbody>
-            {monthsInYear.map((month) => (
-              <YearlyTableRow month={month} />
-            ))}
-          </tbody>
-        </table>
+      <div className="container">
+        <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
+        {monthsInYear.map((month) => (
+          <YearlyTableRow month={month} />
+        ))}
       </div>
     </div>
+
+    // <div className="container-fluid">
+    //   <NavBarMenu />
+    //   <div className="container">
+    //     <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
+
+    //     {weeksInMonth.map((week) => (
+    //       <WeeklyTableRow week={week} />
+    //     ))}
+    //   </div>
+    // </div>
   );
 };
 

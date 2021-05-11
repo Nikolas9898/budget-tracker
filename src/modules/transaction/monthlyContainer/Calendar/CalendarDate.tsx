@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import Moment from 'moment';
 import {TransactionWithAmountNumber} from '../../../../models/Transaction';
-import styles from '../MonthlyStyle.module.css';
+import classes from '../MonthlyStyle.module.css';
 import {UnitOfTime} from '../../../../models/Clendar';
 import {isTheSameDate} from '../../../../helpers/MomentHelpers';
 
@@ -18,35 +18,37 @@ const CalendarDate: React.FC<Props> = ({calendarDate, transactions, date, handle
   }, [calendarDate.date, handleOpenInfoModal]);
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
+      onKeyDown={openInfoModal}
       className={
         Moment(date).get(UnitOfTime.MONTH) === Moment(calendarDate.date).get(UnitOfTime.MONTH)
-          ? styles.calendar_date_box_container
-          : styles.calendar_date_box_container_other_month
+          ? classes.calendar_date_box_container
+          : classes.calendar_date_box_container_other_month
       }
       onClick={openInfoModal}
     >
       <div
         className={
           isTheSameDate(calendarDate.date, Moment().startOf(UnitOfTime.DATE).toDate())
-            ? styles.current_date
-            : styles.calendar_date
+            ? classes.current_date
+            : classes.calendar_date
         }
       >
         {Moment(calendarDate.date).get(UnitOfTime.DATE)}
       </div>
       {transactions.map((transaction) => {
-        const {_id: transactionId} = transaction;
+        const {_id: transactionId, income, expense} = transaction;
         return isTheSameDate(calendarDate.date, transaction.createdAt) ? (
-          <div key={transactionId} className={styles.calendar_events_content}>
-            <div className={styles.income}>{(transaction.income / 100).toFixed(2)}</div>
-            <div className={styles.expense}>{(transaction.expense / 100).toFixed(2)}</div>
-            <div className={styles.total}>{((transaction.income - transaction.expense) / 100).toFixed(2)}</div>
+          <div key={transactionId}>
+            <div className="text-success text-center">{(income / 100).toFixed(2)}</div>
+            <div className="text-danger text-center">{(expense / 100).toFixed(2)}</div>
+            <div className="text-muted text-center">{((income - expense) / 100).toFixed(2)}</div>
           </div>
         ) : null;
       })}
-    </button>
+    </div>
   );
 };
 
