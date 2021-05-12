@@ -1,7 +1,7 @@
 import React from 'react';
 import {faPen, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {TransactionEventWithAmountNumber} from '../../../../../models/Transaction';
+import {TransactionEventWithAmountNumber, TransactionTypes} from '../../../../../models/Transaction';
 import {isTransactionTypeIncome, isTransactionTypeExpense} from '../../../../../helpers/TransactionHelpers';
 
 type Props = {
@@ -21,8 +21,10 @@ const TableRow: React.FC<Props> = ({handleDelete, handleOpenEdit, event}) => {
         {account}
         {to}
       </th>
-      <th>{isTransactionTypeIncome(type, amount)}</th>
-      <th>{isTransactionTypeExpense(type, amount)}</th>
+      <th className="text-success">{isTransactionTypeIncome(type, amount)}</th>
+      <th className={`text-${type === TransactionTypes.EXPENSE ? 'danger' : 'light  '}`}>
+        {isTransactionTypeExpense(type, amount)}
+      </th>
       <th>
         <div className="row">
           <FontAwesomeIcon onClick={() => handleOpenEdit(event)} icon={faPen} className="col-6" />
