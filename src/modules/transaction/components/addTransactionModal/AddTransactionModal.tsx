@@ -71,21 +71,21 @@ const AddTransactionModal: React.FC<Props> = ({
     handleDelete(transactionEventId);
   }, [handleDelete, transactionEvent]);
   return (
-    <div>
+    <>
       {isAddTransactionOpen || isEditTransactionOpen ? (
         <div className={classes.modal_wrapper}>
-          <div className={classes.container}>
+          <div className={` ${classes.container}`}>
             <FontAwesomeIcon className={classes.close_button} onClick={handleOpen} icon={faTimesCircle} />
             <Tabs selectedTabClassName={classes.selected_tab} selectedIndex={ChooseCategory(transactionEvent.type)}>
-              <TabList className={classes.tab_list}>
+              <TabList className="row w-100">
                 <Tab className={classes.tab} onClick={handleSetIncomeType}>
-                  <span>Income</span>
+                  Income
                 </Tab>
                 <Tab className={classes.tab} onClick={handleSetExpenseType}>
-                  <span>Expense</span>
+                  Expense
                 </Tab>
                 <Tab className={classes.tab} onClick={handleSetTransferType}>
-                  <span>Transfer</span>
+                  Transfer
                 </Tab>
               </TabList>
 
@@ -99,14 +99,15 @@ const AddTransactionModal: React.FC<Props> = ({
                 <Form transaction={transactionEvent} handleInputChange={handleInputChange} errors={errors} />
               </TabPanel>
             </Tabs>
-            <input
-              type="text"
-              className={classes.input}
+
+            <textarea
+              className={classes.input_description}
               name="description"
               value={transactionEvent.description}
               onChange={handleInputChange}
-            />
-
+            >
+              The cat was playing in the garden.
+            </textarea>
             {isEditTransactionOpen ? (
               <div className={classes.buttons_content}>
                 <button type="button" className={classes.save_button} onClick={handleSave}>
@@ -127,7 +128,7 @@ const AddTransactionModal: React.FC<Props> = ({
           </div>
         </div>
       ) : null}
-    </div>
+    </>
   );
 };
 

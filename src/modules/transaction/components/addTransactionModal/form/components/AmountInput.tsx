@@ -18,7 +18,7 @@ const AmountInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transac
   }, [isFeesOpen, setIsFeesOpen]);
 
   return (
-    <div className={classes.input_container}>
+    <>
       <div className={classes.amount_container}>
         <input
           type="number"
@@ -34,7 +34,7 @@ const AmountInput: React.FC<Props> = ({handleInputChange, setIsFeesOpen, transac
         ) : null}
       </div>
       {errorMsg(error)}
-    </div>
+    </>
   );
 };
 export default AmountInput;

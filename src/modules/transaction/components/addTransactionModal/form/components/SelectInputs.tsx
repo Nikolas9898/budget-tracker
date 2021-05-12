@@ -13,14 +13,14 @@ type Props = {
 
 const SelectInput: React.FC<Props> = ({handleInputChange, options, transactionType, selectValue, error}) => {
   return (
-    <div className={classes.input_container}>
-      <select className={classes.input} value={selectValue} onChange={handleInputChange} name={transactionType}>
+    <>
+      <select className="w-100" value={selectValue} onChange={handleInputChange} name={transactionType}>
         {options.map((option) => (
           <option value={option}>{option}</option>
         ))}
       </select>
       {errorMsg(error)}
-    </div>
+    </>
   );
 };
 export default SelectInput;

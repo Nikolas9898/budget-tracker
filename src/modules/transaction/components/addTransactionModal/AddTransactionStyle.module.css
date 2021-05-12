@@ -7,7 +7,7 @@
   z-index: 1050;
 }
 .container {
-  width: 400px;
+  width: 640px;
   min-height: 400px;
   text-align: center;
   border: 120px solid #0160b2;
@@ -15,6 +15,9 @@
   border-bottom: 50px solid #0160b2;
   margin: 200px auto auto;
   background: white;
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
 }
 
 .content {
@@ -32,22 +35,21 @@
 .input_container {
   height: 60px;
 }
-.amount_container{
+.amount_container {
   display: flex;
   align-items: center;
 }
-.fees{
+.fees {
   padding: 5px;
   border: dimgrey solid 2px;
   color: dimgrey;
-  margin-left:7px;
+  margin-left: 7px;
   cursor: pointer;
   border-radius: 12px;
-
 }
 .input {
   font-size: 20px;
-  width: 98%;
+  width: 100%;
   margin-bottom: 5px;
 }
 .description {
@@ -67,7 +69,7 @@
   font-weight: bold;
   cursor: pointer;
 }
-.delete_button{
+.delete_button {
   padding: 10px 10px 10px 10px;
   border-radius: 5px;
   color: white;
@@ -90,6 +92,7 @@
   border: coral 2px solid;
   font-weight: bold;
   color: coral;
+  text-decoration: none;
 }
 .tab_list {
   display: flex;
@@ -112,4 +115,9 @@
 }
 .close_button:hover {
   color: coral;
+}
+.input_description {
+  width: 90%;
+  height: 100px;
+  margin-top: 20px;
 }
