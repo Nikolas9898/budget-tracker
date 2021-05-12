@@ -5,7 +5,6 @@ import classes from '../AddTransactionStyle.module.css';
 import {SelectInputTitle, TransactionEvent, TransactionTypes} from '../../../../../models/Transaction';
 import {HandleInputChange} from '../../../../../models/Function';
 import {Error} from '../../../../../models/Error';
-import InputTitles from './components/InputTitles';
 import SelectInput from './components/SelectInputs';
 import FeesInput from './components/FeesInput';
 import AmountInput from './components/AmountInput';

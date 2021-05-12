@@ -77,7 +77,7 @@ const AddTransactionModal: React.FC<Props> = ({
           <div className={` ${classes.container}`}>
             <FontAwesomeIcon className={classes.close_button} onClick={handleOpen} icon={faTimesCircle} />
             <Tabs selectedTabClassName={classes.selected_tab} selectedIndex={ChooseCategory(transactionEvent.type)}>
-              <TabList className="row w-100">
+              <TabList className="row w-100 justify-content-center">
                 <Tab className={classes.tab} onClick={handleSetIncomeType}>
                   Income
                 </Tab>

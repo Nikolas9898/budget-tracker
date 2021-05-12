@@ -34,6 +34,8 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
       });
     });
 
+    const test: [string, number][] = Object.entries(income);
+
     Object.keys(income).forEach((key) => {
       incomeStats.push({
         category: key,
@@ -51,7 +53,7 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
       });
     });
 
-    return res.json({incomeStats, expenseStats});
+    return res.json({incomeStats, expenseStats, test});
   } catch (error) {
     return res.json(error);
   }
