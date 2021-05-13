@@ -16,9 +16,10 @@ const MonthlyContainer = (): JSX.Element => {
     {category: 'culture', value: 45699, color: 'blue', label: 'culture'}
   ];
   return (
-    <div className="wrapper">
+    <div className="container-fluid">
       <NavBarMenu />
-      <div className="stats_container">
+
+      <div className="row justify-content-center">
         <StatsForm stats={data} isIncome />
         <StatsForm stats={data} isIncome={false} />
       </div>

@@ -13,9 +13,9 @@ const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
     sumValue += stat.value;
   });
   return (
-    <div className="form_wrapper">
-      <div className="title">{isIncome ? 'Income' : 'Expense'}</div>
-      <div className="pie_wrapper">
+    <div className="col-5 text-center form_wrapper">
+      <div className="row justify-content-center title">{isIncome ? 'Income' : 'Expense'}</div>
+      <div className="row justify-content-center">
         <PieChart
           labelStyle={() => ({
             fontSize: '8px',
@@ -28,7 +28,7 @@ const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
           data={stats}
         />
       </div>
-      <div>
+      <div className="row justify-content-center">
         <table className="content_table">
           <tbody>
             {stats.map((stat: Stat) => (

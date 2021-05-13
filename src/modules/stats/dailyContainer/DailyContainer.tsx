@@ -28,9 +28,9 @@ const DailyContainer = (): JSX.Element => {
     getDailyStats();
   }, []);
   return (
-    <div className="wrapper">
+    <div className="container-fluid">
       <NavBarMenu />
-      <div className="stats_container">
+      <div className="row justify-content-center">
         <StatsForm stats={incomeStats} isIncome />
         <StatsForm stats={expenseStats} isIncome={false} />
       </div>
