@@ -11,11 +11,14 @@
 .navBarBtn {
   color: white !important;
   font-weight: bold !important;
+  margin-right: 5px;
   background: #0160b2 !important;
 }
 .navBarBtnActive {
   color: #0160b2 !important;
   background-color: white !important;
+  margin-right: 5px;
+
   border: #0160b2 1px solid !important;
 }
 .navBarBtn:hover {
