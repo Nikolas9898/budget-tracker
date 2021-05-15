@@ -19,7 +19,7 @@ td {
 }
 .date {
   margin: auto;
-  width: 200px;
+  width: 250px;
   font-size: 20px;
   color: dimgrey;
   font-weight: bold;
@@ -31,7 +31,7 @@ td {
 .selected_date {
   text-align: center;
   margin: auto;
-  width: 200px;
+  width: 250px;
   font-size: 20px;
   color: coral;
   font-weight: bold;

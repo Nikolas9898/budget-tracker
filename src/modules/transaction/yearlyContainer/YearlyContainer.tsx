@@ -82,7 +82,7 @@ const YearlyContainer = (): JSX.Element => {
   }, [stateTransaction.date]);
 
   return (
-    <div className="container-fluid">
+    <div className="m-5">
       <NavBarMenu />
       <div className="container">
         <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />

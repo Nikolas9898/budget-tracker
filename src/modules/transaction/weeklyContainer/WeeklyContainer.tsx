@@ -78,7 +78,7 @@ const WeeklyContainer = (): JSX.Element => {
     getWeeks(stateTransaction.date);
   }, [amount, stateTransaction.date]);
   return (
-    <div className="container-fluid">
+    <div className="m-5">
       <NavBarMenu />
       <div className="container">
         <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />

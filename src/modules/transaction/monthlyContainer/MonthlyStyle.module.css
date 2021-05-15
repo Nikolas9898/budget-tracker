@@ -93,3 +93,7 @@
   padding-left: 10px;
   overflow: hidden;
 }
+.actions {
+  font-size: 2.4em;
+  cursor: pointer;
+}

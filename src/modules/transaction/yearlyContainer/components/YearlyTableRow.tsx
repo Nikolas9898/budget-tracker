@@ -27,17 +27,18 @@ const YearlyTableRow: React.FC<Props> = ({month}) => {
       onKeyDown={openMonthContainer}
       className="row justify-content-center"
     >
-      <div className="col-3 align-align-self-center">
+      <div className="col-3 d-flex justify-content-center">
         <div
-          className={
+          className={` align-self-center ${
             Moment(month.from).diff(Moment().startOf(UnitOfTime.MONTH).toDate(), UnitOfTime.MONTH) === 0
               ? classes.month_selected
               : classes.month
-          }
+          }`}
         >
           {Moment(month.from).format('MMMM')}
         </div>
       </div>
+
       <div className={`col-3 align-self-center ${classes.income}`}>{(month.income / 100).toFixed(2)}</div>
       <div className={`col-3 align-self-center ${classes.expense}`}>{(month.expense / 100).toFixed(2)}</div>
     </div>

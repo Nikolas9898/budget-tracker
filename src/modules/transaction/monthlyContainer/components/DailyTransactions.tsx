@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faAngleRight, faAngleLeft, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {faTimesCircle} from '@fortawesome/free-regular-svg-icons';
 import {TransactionEventWithAmountNumber, TransactionWithAmountNumber} from '../../../../models/Transaction';
-import classes from './infoModalStyle.module.css';
+import TableRow from './TableRow';
 
 type Props = {
   handleOpenTransaction: (date: Date) => void;
@@ -16,7 +16,7 @@ type Props = {
   handleOpenEdit: (event: TransactionEventWithAmountNumber) => void;
 };
 
-const InfoModal: React.FC<Props> = ({
+const DailyTransactions: React.FC<Props> = ({
   handleOpenTransaction,
   handleDelete,
   handleOpenInfoModal,
@@ -30,7 +30,26 @@ const InfoModal: React.FC<Props> = ({
   }, [handleOpenInfoModal]);
   return (
     <>
-      <div className={classes.modal_wrapper}>
+      <div className="text-center font-weight-bold">
+        {Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}
+      </div>
+      <table className="table table-hover ">
+        <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Account</th>
+            <th scope="col">Income</th>
+            <th scope="col">Expense</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {selectedTransaction.events.map((event) => (
+            <TableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
+          ))}
+        </tbody>
+      </table>
+      {/* <div className={classes.modal_wrapper}>
         <div className={`container row align-items-center ${classes.modal_container_wrapper}`}>
           <FontAwesomeIcon
             onClick={handlePreviousDay}
@@ -44,11 +63,11 @@ const InfoModal: React.FC<Props> = ({
               {Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}
             </div>
 
-            {/* <table className="container mt-2">
+            <table className="container mt-2">
               {selectedTransaction.events.map((event) => (
                 <TableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
               ))}
-            </table> */}
+            </table>
 
             <FontAwesomeIcon
               onClick={() => handleOpenTransaction(Moment().toDate())}
@@ -62,8 +81,8 @@ const InfoModal: React.FC<Props> = ({
             className={`col-2 ${classes.change_previous_date}`}
           />
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
-export default InfoModal;
+export default DailyTransactions;

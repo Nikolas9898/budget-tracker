@@ -13,7 +13,7 @@
 }
 td {
   border-top: lightslategray solid 2px;
-    height: 40px;
+  height: 40px;
 }
 .content_row {
   height: 80px;
@@ -26,7 +26,7 @@ td {
 }
 .month_content {
   width: 200px;
-    text-align: -webkit-center;
+  text-align: -webkit-center;
 }
 .month {
   width: 150px;
@@ -35,8 +35,8 @@ td {
   border: dimgrey 2px solid;
   border-radius: 10px;
   text-align: center;
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 .month_selected {
   width: 150px;

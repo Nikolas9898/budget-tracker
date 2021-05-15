@@ -23,6 +23,7 @@ import {
   firstDateOfTheMonth,
   lastDateOfTheMonth
 } from '../../../helpers/MomentHelpers';
+import DailyTransactions from './components/DailyTransactions';
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -175,15 +176,7 @@ const MonthlyContainer = (): JSX.Element => {
   };
 
   const handleOpenInfoModal = (date: Date) => {
-    if (isInfoTransactionOpen) {
-      setIsInfoTransactionOpen(false);
-      setSelectedTransaction({...selectedTransaction, events: []});
-    } else {
-      setIsInfoTransactionOpen(true);
-      setSelectedTransaction({...selectedTransaction, createdAt: date, events: []});
-
-      selectedDay(date);
-    }
+    selectedDay(date);
   };
 
   const setFirstWeek = (date: Date) => {
@@ -235,18 +228,32 @@ const MonthlyContainer = (): JSX.Element => {
   }, [amount, stateTransaction.date]);
 
   return (
-    <div className="container-fluid">
+    <div className="m-5">
       {' '}
       <NavBarMenu />
-      <div className="container">
-        <Calendar
-          handleOpenInfoModal={handleOpenInfoModal}
-          transactions={transactions}
-          calendarDates={calendarDates}
-          date={stateTransaction.date}
-        />
+      <div className="row">
+        <div className="col-8">
+          <Calendar
+            handleOpenInfoModal={handleOpenInfoModal}
+            transactions={transactions}
+            calendarDates={calendarDates}
+            date={stateTransaction.date}
+          />
+        </div>
+
+        <div className="col-4">
+          <DailyTransactions
+            handleDelete={handleDelete}
+            selectedTransaction={selectedTransaction}
+            handleNextDay={handleNextDay}
+            handlePreviousDay={handlePreviousDay}
+            handleOpenInfoModal={handleOpenInfoModal}
+            handleOpenTransaction={handleOpenTransaction}
+            handleOpenEdit={handleOpenEdit}
+          />
+        </div>
       </div>
-      {isInfoTransactionOpen && (
+      {/* {isInfoTransactionOpen && (
         <InfoModal
           handleDelete={handleDelete}
           selectedTransaction={selectedTransaction}
@@ -256,7 +263,7 @@ const MonthlyContainer = (): JSX.Element => {
           handleOpenTransaction={handleOpenTransaction}
           handleOpenEdit={handleOpenEdit}
         />
-      )}
+      )} */}
     </div>
   );
 };

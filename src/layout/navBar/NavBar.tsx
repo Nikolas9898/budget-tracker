@@ -56,12 +56,14 @@ const NavBarMenu = (): JSX.Element => {
       >
         {languageWords.YEARLY}
       </Link>{' '}
-      <div className="col-8 col-md-4 text-center">
+      <div className="col-8 col-md-4  d-flex justify-content-center">
         {' '}
         <button className="btn navBarBtn mr-2 " type="button" onClick={handlePreviousYearOrMonth}>
           {'<'}
         </button>
-        {isSelectedTitle(location.pathname, 'yearly') ? Moment(date).format('YYYY') : Moment(date).format('MMM YYYY')}
+        <div className="date">
+          {isSelectedTitle(location.pathname, 'yearly') ? Moment(date).format('YYYY') : Moment(date).format('MMM YYYY')}
+        </div>
         <button className="btn navBarBtn ml-2" type="button" onClick={handleNextYearOrMonth}>
           {'>'}
         </button>

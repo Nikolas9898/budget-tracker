@@ -15,8 +15,8 @@ const SideBar: React.FC<Props> = ({isSideBarOpen, setIsSideBarOpen}) => {
     setIsSideBarOpen(false);
   }, [setIsSideBarOpen]);
   return (
-    <div className={isSideBarOpen ? classes.container : classes.container_back}>
-      <nav className={isSideBarOpen ? classes.wrapper : classes.wrapper_back}>
+    <nav className={isSideBarOpen ? classes.container : classes.container_back}>
+      <div className={isSideBarOpen ? classes.wrapper : classes.wrapper_back}>
         <FontAwesomeIcon className={classes.close_button} icon={faTimes} onClick={closeSideBar} />
         <ul className={classes.content}>
           <Link to="/transaction/monthly" className={classes.title}>
@@ -35,8 +35,8 @@ const SideBar: React.FC<Props> = ({isSideBarOpen, setIsSideBarOpen}) => {
             {languageWords.ACCOUNT}
           </Link>
         </ul>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 };
 
