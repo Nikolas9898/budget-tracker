@@ -10,7 +10,7 @@ type Props = {
   handleOpenEdit: (event: TransactionEventWithAmountNumber) => void;
   event: TransactionEventWithAmountNumber;
 };
-const TableRow: React.FC<Props> = ({handleDelete, handleOpenEdit, event}) => {
+const DailyInfoTableRow: React.FC<Props> = ({handleDelete, handleOpenEdit, event}) => {
   const {category, from, account, to, type, amount, _id: eventId} = event;
   return (
     <tr>
@@ -37,4 +37,4 @@ const TableRow: React.FC<Props> = ({handleDelete, handleOpenEdit, event}) => {
     </tr>
   );
 };
-export default TableRow;
+export default DailyInfoTableRow;

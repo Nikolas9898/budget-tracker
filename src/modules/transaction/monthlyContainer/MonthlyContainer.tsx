@@ -5,7 +5,7 @@ import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoModal from '../components/infoModal/InfoModal';
 import Calendar from './Calendar/Calendar';
 import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
-import {transactionInputChange, setIsTransactionOpen, setTransaction} from '../actions/transactionActions';
+import {transactionInputChange, setIsTransactionOpen, setTransaction, setDate} from '../actions/transactionActions';
 import {
   Transaction,
   TransactionEvent,
@@ -24,6 +24,7 @@ import {
   lastDateOfTheMonth
 } from '../../../helpers/MomentHelpers';
 import DailyTransactions from './components/DailyTransactions';
+import classes from '*.module.css';
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -176,6 +177,8 @@ const MonthlyContainer = (): JSX.Element => {
   };
 
   const handleOpenInfoModal = (date: Date) => {
+    dispatch(setDate(date));
+    setSelectedTransaction({_id: '', createdAt: date, events: [], expense: 0, income: 0});
     selectedDay(date);
   };
 
@@ -241,29 +244,14 @@ const MonthlyContainer = (): JSX.Element => {
           />
         </div>
 
-        <div className="col-4">
+        <div className={`col-4 `} style={{borderLeft: 'solid 2px #0d6efd'}}>
           <DailyTransactions
             handleDelete={handleDelete}
             selectedTransaction={selectedTransaction}
-            handleNextDay={handleNextDay}
-            handlePreviousDay={handlePreviousDay}
-            handleOpenInfoModal={handleOpenInfoModal}
-            handleOpenTransaction={handleOpenTransaction}
             handleOpenEdit={handleOpenEdit}
           />
         </div>
       </div>
-      {/* {isInfoTransactionOpen && (
-        <InfoModal
-          handleDelete={handleDelete}
-          selectedTransaction={selectedTransaction}
-          handleNextDay={handleNextDay}
-          handlePreviousDay={handlePreviousDay}
-          handleOpenInfoModal={handleOpenInfoModal}
-          handleOpenTransaction={handleOpenTransaction}
-          handleOpenEdit={handleOpenEdit}
-        />
-      )} */}
     </div>
   );
 };

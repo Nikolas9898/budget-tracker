@@ -97,3 +97,8 @@
   font-size: 2.4em;
   cursor: pointer;
 }
+.table_scroll {
+  height: 550px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

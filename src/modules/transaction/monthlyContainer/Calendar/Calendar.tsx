@@ -22,15 +22,15 @@ const Calendar: React.FC<Props> = ({calendarDates, date, transactions, handleOpe
   ]);
 
   return (
-    <div className="row justify-content-center">
-      <div className="row w-100">
+    <div className="row ">
+      <div className="row justify-content-center">
         {days.map((day) => (
           <div key={day} className="col">
             {day}
           </div>
         ))}
       </div>
-      <div className="row w-100">
+      <div className="row justify-content-center">
         {calendarDates.map((calendarDate: {date: Date}) => (
           <CalendarDate
             calendarDate={calendarDate}
