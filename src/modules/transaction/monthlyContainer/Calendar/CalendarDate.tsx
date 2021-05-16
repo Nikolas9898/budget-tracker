@@ -22,11 +22,13 @@ const CalendarDate: React.FC<Props> = ({calendarDate, transactions, date, handle
       role="button"
       tabIndex={0}
       onKeyDown={openInfoModal}
-      className={
-        Moment(date).get(UnitOfTime.MONTH) === Moment(calendarDate.date).get(UnitOfTime.MONTH)
-          ? classes.calendar_date_box_container
-          : classes.calendar_date_box_container_other_month
-      }
+      className={`
+        ${
+          Moment(date).get(UnitOfTime.MONTH) === Moment(calendarDate.date).get(UnitOfTime.MONTH)
+            ? classes.calendar_date_box_container
+            : classes.calendar_date_box_container_other_month
+        }
+      `}
       onClick={openInfoModal}
     >
       <div

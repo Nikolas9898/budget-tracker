@@ -16,8 +16,8 @@ type Props = {
 const DailyTransactions: React.FC<Props> = ({handleDelete, selectedTransaction, handleOpenEdit}) => {
   return (
     <>
-      <div className="text-center font-weight-bold">
-        {Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}
+      <div className="text-center font-weight-bold pt-sm-3 pb-3">
+        <h5>{Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}</h5>
       </div>
       <div className={classes.table_scroll}>
         <table className="table table-hover ">
