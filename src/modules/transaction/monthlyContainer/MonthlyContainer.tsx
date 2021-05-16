@@ -2,10 +2,9 @@ import React, {useEffect, useState} from 'react';
 import Moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBarMenu from '../../../layout/navBar/NavBar';
-import InfoModal from '../components/infoModal/InfoModal';
 import Calendar from './Calendar/Calendar';
 import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
-import {transactionInputChange, setIsTransactionOpen, setTransaction, setDate} from '../actions/transactionActions';
+import {setIsTransactionOpen, setTransaction, setDate} from '../actions/transactionActions';
 import {
   Transaction,
   TransactionEvent,
@@ -24,7 +23,6 @@ import {
   lastDateOfTheMonth
 } from '../../../helpers/MomentHelpers';
 import DailyTransactions from './components/DailyTransactions';
-import classes from '*.module.css';
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -50,12 +48,9 @@ const MonthlyContainer = (): JSX.Element => {
 
   const [calendarDates, setCalendarDates] = useState<State['calendarDates']>([]);
 
-  const [isInfoTransactionOpen, setIsInfoTransactionOpen] = useState(false);
-
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
-  const {amount} = stateTransaction.transactionEvent;
   // eslint-disable-next-line react/state-in-constructor
 
   const getTransactions = async (date: Date) => {
@@ -73,13 +68,6 @@ const MonthlyContainer = (): JSX.Element => {
     } catch (error) {
       throw new Error(error.message);
     }
-
-    // data.transactions.forEach((transactionItem: TransactionWithAmountNumber) => {
-    //   if (isTheSameDate(selectedTransaction.createdAt, transactionItem.createdAt)) {
-    //     setSelectedTransaction(transactionItem);
-    //   }
-    // });
-    // setTransactions(data.transactions);
   };
 
   const clearState = () => {
@@ -106,7 +94,6 @@ const MonthlyContainer = (): JSX.Element => {
     const newEvents: TransactionEventWithAmountNumber[] = selectedTransaction.events.filter(
       ({_id: transactionEventId}) => transactionEventId !== eventId
     );
-
     setSelectedTransaction({...selectedTransaction, events: newEvents});
     clearState();
     getTransactions(stateTransaction.date);
@@ -128,45 +115,45 @@ const MonthlyContainer = (): JSX.Element => {
     dispatch(setIsTransactionOpen());
   };
 
-  const handleNextDay = async () => {
-    const newDate: Date = Moment(selectedTransaction.createdAt).add(1, UnitOfTime.DAYS).toDate();
-    setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
+  // const handleNextDay = async () => {
+  //   const newDate: Date = Moment(selectedTransaction.createdAt).add(1, UnitOfTime.DAYS).toDate();
+  //   setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
 
-    transactions.forEach((transaction) => {
-      if (isTheSameDate(newDate, transaction.createdAt)) {
-        setSelectedTransaction(transaction);
-      }
-    });
-  };
+  //   transactions.forEach((transaction) => {
+  //     if (isTheSameDate(newDate, transaction.createdAt)) {
+  //       setSelectedTransaction(transaction);
+  //     }
+  //   });
+  // };
 
-  const handlePreviousDay = async () => {
-    const newDate: Date = Moment(selectedTransaction.createdAt).add(-1, UnitOfTime.DAYS).toDate();
+  // const handlePreviousDay = async () => {
+  //   const newDate: Date = Moment(selectedTransaction.createdAt).add(-1, UnitOfTime.DAYS).toDate();
 
-    setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
+  //   setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
 
-    transactions.forEach((transaction) => {
-      if (isTheSameDate(newDate, transaction.createdAt)) {
-        setSelectedTransaction(transaction);
-      }
-    });
-  };
+  //   transactions.forEach((transaction) => {
+  //     if (isTheSameDate(newDate, transaction.createdAt)) {
+  //       setSelectedTransaction(transaction);
+  //     }
+  //   });
+  // };
 
-  const handleOpenTransaction = () => {
-    const {createdAt} = selectedTransaction;
-    dispatch(setIsTransactionOpen());
-    if (stateTransaction.isTransactionOpen) {
-      clearState();
-    } else {
-      dispatch(
-        transactionInputChange({
-          target: {
-            name: UnitOfTime.DATE,
-            value: createdAt
-          }
-        })
-      );
-    }
-  };
+  // const handleOpenTransaction = () => {
+  //   const {createdAt} = selectedTransaction;
+  //   dispatch(setIsTransactionOpen());
+  //   if (stateTransaction.isTransactionOpen) {
+  //     clearState();
+  //   } else {
+  //     dispatch(
+  //       transactionInputChange({
+  //         target: {
+  //           name: UnitOfTime.DATE,
+  //           value: createdAt
+  //         }
+  //       })
+  //     );
+  //   }
+  // };
 
   const selectedDay = (date: Date) => {
     transactions.forEach((transaction) => {
@@ -228,7 +215,7 @@ const MonthlyContainer = (): JSX.Element => {
   useEffect(() => {
     getTransactions(stateTransaction.date);
     setCalendar(stateTransaction.date);
-  }, [amount, stateTransaction.date]);
+  }, [stateTransaction.isTransactionOpen, stateTransaction.date]);
 
   return (
     <div className=" m-5">

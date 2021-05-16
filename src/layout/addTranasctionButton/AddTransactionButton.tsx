@@ -37,7 +37,7 @@ const AddTransactionButton = (): JSX.Element => {
 
   const clearState = () => {
     setErrors({account: '', from: '', category: '', to: '', amount: ''});
-    dispatch(setIsTransactionOpen());
+    // dispatch(setIsTransactionOpen());
     dispatch(
       setTransaction({
         _id: '',
@@ -92,22 +92,24 @@ const AddTransactionButton = (): JSX.Element => {
       );
     }
   };
+  const {isTransactionOpen} = stateTransaction;
 
   return (
     <>
       <FontAwesomeIcon className={classes.add_button} icon={faPlusCircle} onClick={handleOpenTransaction} />
 
-      <AddTransactionModal
-        isAddTransactionOpen={stateTransaction.isTransactionOpen}
-        transactionEvent={stateTransaction.transactionEvent}
-        errors={errors}
-        isEditTransactionOpen={transactionId.length > 0}
-        handleInputChange={(event) => dispatch(transactionInputChange(event))}
-        handleSave={handleSave}
-        handleOpenTransaction={handleOpenTransaction}
-        handleOpenEdit={clearState}
-        handleDelete={handleDelete}
-      />
+      {(isTransactionOpen || transactionId.length) > 0 && (
+        <AddTransactionModal
+          transactionEvent={stateTransaction.transactionEvent}
+          errors={errors}
+          isEditTransactionOpen={transactionId.length > 0}
+          handleInputChange={(event) => dispatch(transactionInputChange(event))}
+          handleSave={handleSave}
+          handleOpenTransaction={handleOpenTransaction}
+          handleOpenEdit={clearState}
+          handleDelete={handleDelete}
+        />
+      )}
     </>
   );
 };

@@ -13,7 +13,7 @@ type Props = {
 const DailyInfoTableRow: React.FC<Props> = ({handleDelete, handleOpenEdit, event}) => {
   const {category, from, account, to, type, amount, _id: eventId} = event;
   return (
-    <tr>
+    <tr role="button">
       <th>
         {category}
         {from}
