@@ -218,11 +218,11 @@ const MonthlyContainer = (): JSX.Element => {
   }, [stateTransaction.isTransactionOpen, stateTransaction.date]);
 
   return (
-    <div className=" m-5">
+    <div className="container-xx m-5">
       {' '}
       <NavBarMenu />
       <div className="row">
-        <div className="col-xxl-7 me-5 col-sm-12 ">
+        <div className="col-xxl-7 col-xl-4 pe-4 col-xl-12 ">
           <Calendar
             handleOpenInfoModal={handleOpenInfoModal}
             transactions={transactions}
@@ -231,7 +231,7 @@ const MonthlyContainer = (): JSX.Element => {
           />
         </div>
 
-        <div className={`col-xxl-4 ps-5 col-sm-12 pt-sm-5 pt-xxl-0 `} style={{borderLeft: 'solid 4px #0d6efd'}}>
+        <div className={`col-xxl-5 col-xl-12  p-2 pt-sm-5 pt-xxl-0 `} style={{borderLeft: 'solid 4px #0d6efd'}}>
           <DailyTransactions
             handleDelete={handleDelete}
             selectedTransaction={selectedTransaction}

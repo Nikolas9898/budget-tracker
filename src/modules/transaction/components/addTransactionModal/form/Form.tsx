@@ -45,7 +45,7 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
     [handleInputChange]
   );
   const ExampleCustomInput: React.FC<CustomInput> = forwardRef(({value, onClick}) => (
-    <div className={classes.input_container}>
+    <div className=" align-items-center ">
       <input className={classes.input} onClick={onClick} value={value} />
     </div>
   ));
@@ -53,9 +53,9 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   return (
     <>
       {/* <InputTitles transaction={transaction} isFeesOpen={isFeesOpen} /> */}
-      <div className="row align-items-start">
-        <div className="col-3">Day</div>
-        <div className="col-8">
+      <div className="row  align-items-center justify-content-center">
+        <div className={`col-3 align-items-start ${classes.title}`}>Day</div>
+        <div className="col-8 ">
           <DatePicker
             selected={Moment(transaction.date).toDate()}
             dateFormat=" dd / MMMM / yyyy  h:mm aa"
@@ -70,8 +70,10 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
         </div>
       </div>
 
-      <div className="row">
-        <div className="col-3">{transaction.type === TransactionTypes.TRANSFER ? 'From' : 'Account'}</div>
+      <div className="row  align-items-center justify-content-center">
+        <div className={`col-3 ${classes.title}`}>
+          {transaction.type === TransactionTypes.TRANSFER ? 'From' : 'Account'}
+        </div>
         <div className="col-8 ">
           {' '}
           <SelectInput
@@ -86,8 +88,11 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
         </div>
       </div>
 
-      <div className="row">
-        <div className="col-3"> {transaction.type === TransactionTypes.TRANSFER ? 'To' : 'Category'}</div>
+      <div className="row  align-items-center justify-content-center">
+        <div className={`col-3 ${classes.title}`}>
+          {' '}
+          {transaction.type === TransactionTypes.TRANSFER ? 'To' : 'Category'}
+        </div>
         <div className="col-8">
           {' '}
           <SelectInput
@@ -102,8 +107,8 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
         </div>
       </div>
 
-      <div className="row">
-        <div className="col-3">Amount</div>
+      <div className="row  align-items-center justify-content-center">
+        <div className={`col-3 ${classes.title}`}>Amount</div>
         <div className="col-8">
           {' '}
           <AmountInput
@@ -117,8 +122,8 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
       </div>
 
       {isFeesOpen ? (
-        <div className="row">
-          <div className="col-3">Fees</div>
+        <div className="row  align-items-center justify-content-center">
+          <div className={`col-3 ${classes.title}`}>Fees</div>
           <div className="col-8">
             {' '}
             <FeesInput
@@ -131,8 +136,8 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
         </div>
       ) : null}
 
-      <div className="row">
-        <div className="col-3">Note</div>
+      <div className="row  align-items-center justify-content-center">
+        <div className={`col-3 ${classes.title}`}>Note</div>
         <div className="col-8">
           <input type="text" className="w-100" name="note" value={transaction.note} onChange={handleInputChange} />
         </div>

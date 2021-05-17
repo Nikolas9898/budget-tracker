@@ -12,6 +12,7 @@ import {HandleInputChange} from '../../../../models/Function';
 
 import Form from './form/Form';
 import {setIsTransactionOpen} from '../../actions/transactionActions';
+import {validateTransaction} from '../../../../helpers/Validation';
 
 type Props = {
   transactionEvent: TransactionEvent;
@@ -74,16 +75,22 @@ const AddTransactionModal: React.FC<Props> = ({
     handleDelete(transactionEventId);
   }, [handleDelete, transactionEvent]);
 
+  const onHiddenBsModal = () => {
+    dispatch(setIsTransactionOpen());
+    handleOpen();
+  };
   useEffect(() => {
     const myModal = new BootstrapModal('#RealBootstrapModal');
     myModal.show();
 
     const myModalDom = document.getElementById('RealBootstrapModal');
-    myModalDom?.addEventListener('hidden.bs.modal', () => {
-      dispatch(setIsTransactionOpen());
-      handleOpen();
-    });
+    myModalDom?.addEventListener('hidden.bs.modal', onHiddenBsModal);
+    return () => {
+      myModalDom?.removeEventListener('hidden.bs.modal', onHiddenBsModal);
+    };
   }, []);
+  const validationErrors = validateTransaction(transactionEvent);
+  const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
   return (
     <div
       className="modal fade"
@@ -105,16 +112,16 @@ const AddTransactionModal: React.FC<Props> = ({
 
             {/* <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" /> */}
           </div>
-          <div className="modal-body justify-content-center">
+          <div className="modal-body justify-content-center ">
             <Tabs selectedTabClassName={classes.selected_tab} selectedIndex={ChooseCategory(transactionEvent.type)}>
-              <TabList className="row w-100 justify-content-center">
-                <Tab className={classes.tab} onClick={handleSetIncomeType}>
+              <TabList className="row p-0 justify-content-evenly">
+                <Tab className={`col-3  ${classes.tab}`} onClick={handleSetIncomeType}>
                   Income
                 </Tab>
-                <Tab className={classes.tab} onClick={handleSetExpenseType}>
+                <Tab className={`col-3 ${classes.tab}`} onClick={handleSetExpenseType}>
                   Expense
                 </Tab>
-                <Tab className={classes.tab} onClick={handleSetTransferType}>
+                <Tab className={`col-3 ${classes.tab}`} onClick={handleSetTransferType}>
                   Transfer
                 </Tab>
               </TabList>
@@ -140,7 +147,12 @@ const AddTransactionModal: React.FC<Props> = ({
           <div className={`modal-footer justify-content-center ${classes.input_description}`}>
             {isEditTransactionOpen ? (
               <div className={classes.buttons_content}>
-                <button type="button" className={classes.save_button} data-bs-dismiss="modal" onClick={handleSave}>
+                <button
+                  type="button"
+                  className={classes.save_button}
+                  data-bs-dismiss={isValid ? 'modal' : ''}
+                  onClick={handleSave}
+                >
                   Save
                 </button>
 
@@ -155,7 +167,12 @@ const AddTransactionModal: React.FC<Props> = ({
               </div>
             ) : (
               <div className={classes.buttons_content}>
-                <button type="button" className={classes.save_button} data-bs-dismiss="modal" onClick={handleSave}>
+                <button
+                  type="button"
+                  className={classes.save_button}
+                  data-bs-dismiss={isValid ? 'modal' : ''}
+                  onClick={handleSave}
+                >
                   Save
                 </button>
               </div>
@@ -164,63 +181,6 @@ const AddTransactionModal: React.FC<Props> = ({
         </div>
       </div>
     </div>
-
-    // ______________________________________________________________________________________________________________________________
-
-    // <div className={`${classes.modal_wrapper}`} id="RealBootstrapModal">
-    //   <div className={` ${classes.container}`}>
-    // <FontAwesomeIcon className={classes.close_button} onClick={handleOpen} icon={faTimesCircle} />
-    //     <Tabs selectedTabClassName={classes.selected_tab} selectedIndex={ChooseCategory(transactionEvent.type)}>
-    //       <TabList className="row w-100 justify-content-center">
-    //         <Tab className={classes.tab} onClick={handleSetIncomeType}>
-    //           Income
-    //         </Tab>
-    //         <Tab className={classes.tab} onClick={handleSetExpenseType}>
-    //           Expense
-    //         </Tab>
-    //         <Tab className={classes.tab} onClick={handleSetTransferType}>
-    //           Transfer
-    //         </Tab>
-    //       </TabList>
-
-    //       <TabPanel>
-    //         <Form transaction={transactionEvent} handleInputChange={handleInputChange} errors={errors} />
-    //       </TabPanel>
-    //       <TabPanel>
-    //         <Form transaction={transactionEvent} handleInputChange={handleInputChange} errors={errors} />
-    //       </TabPanel>
-    //       <TabPanel>
-    //         <Form transaction={transactionEvent} handleInputChange={handleInputChange} errors={errors} />
-    //       </TabPanel>
-    //     </Tabs>
-
-    //     <textarea
-    //       className={classes.input_description}
-    //       name="description"
-    //       value={transactionEvent.description}
-    //       onChange={handleInputChange}
-    //     >
-    //       The cat was playing in the garden.
-    //     </textarea>
-    //     {isEditTransactionOpen ? (
-    //       <div className={classes.buttons_content}>
-    //         <button type="button" className={classes.save_button} onClick={handleSave}>
-    //           Save
-    //         </button>
-
-    //         <button type="button" className={classes.delete_button} onClick={handleDeleteTransaction}>
-    //           Delete
-    //         </button>
-    //       </div>
-    //     ) : (
-    //       <div className={classes.buttons_content}>
-    //         <button type="button" className={classes.save_button} onClick={handleSave}>
-    //           Save
-    //         </button>
-    //       </div>
-    //     )}
-    //   </div>
-    // </div>
   );
 };
 

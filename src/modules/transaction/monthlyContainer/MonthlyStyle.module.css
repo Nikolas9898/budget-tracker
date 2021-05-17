@@ -99,8 +99,7 @@
   cursor: pointer;
 }
 .table_scroll {
-  height: 500px;
+  height: 600px;
   overflow-y: auto;
   overflow-x: hidden;
-  min-width: 500px;
 }
