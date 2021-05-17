@@ -26,7 +26,6 @@ const DailyContainer = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
-  const {amount} = stateTransaction.transactionEvent;
   const getTransactions = async (date: Date) => {
     try {
       const response = await getSpecificDatePeriod(
