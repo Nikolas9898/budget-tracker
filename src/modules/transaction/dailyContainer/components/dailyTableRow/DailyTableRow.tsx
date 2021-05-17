@@ -5,8 +5,6 @@ import {
   TransactionWithAmountNumber
 } from '../../../../../models/Transaction';
 
-import classes from './DailyTableRow.module.css';
-
 type Props = {
   handleSelectEvent: (transactionEvent: TransactionEventWithAmountNumber, transactionId: string) => void;
   transactionEvent: TransactionEventWithAmountNumber;

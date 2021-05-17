@@ -28,6 +28,7 @@
   "rules": {
     "react/prop-types": 0,
     "no-shadow": "off",
+    "import/prefer-default-export": "off",
     "react-hooks/exhaustive-deps": 0,
     "import/no-named-as-default": 0,
     "linebreak-style": "off",
