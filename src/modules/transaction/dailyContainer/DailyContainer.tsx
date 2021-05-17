@@ -44,7 +44,7 @@ const DailyContainer = (): JSX.Element => {
 
   useEffect(() => {
     getTransactions(stateTransaction.date);
-  }, [amount, stateTransaction.date]);
+  }, [stateTransaction.isTransactionOpen, stateTransaction.date]);
 
   const handleSelectEvent = (transactioEvent: TransactionEventWithAmountNumber, transactionId: string) => {
     const Event: TransactionEvent = {
