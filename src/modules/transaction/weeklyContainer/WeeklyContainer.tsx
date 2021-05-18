@@ -6,8 +6,7 @@ import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import WeeklyTableRow from './components/WeeklyTableRow';
 import {getYearlyOrWeekly} from '../service/TransactionService';
 
-import {Month, TransactionReducer} from '../../../models/Transaction';
-import {UserReducer} from '../../../models/User';
+import {Month} from '../../../models/Transaction';
 import classes from './WeeklyStyle.module.css';
 import '../../../scss/variables.scss';
 import {UnitOfTime} from '../../../models/Clendar';
@@ -17,15 +16,14 @@ import {
   firstDateOfLastWeekOfTheMonth,
   lastDateOfLastWeekOfTheMonth
 } from '../../../helpers/MomentHelpers';
+import {getTransactionState} from '../../../helpers/transactionSelectors';
 
 const WeeklyContainer = (): JSX.Element => {
   const [weeksInMonth, setWeeks] = useState<Month[]>([]);
   const [sumIncome, setSumIncome] = useState(0);
   const [sumExpense, setSumExpense] = useState(0);
 
-  const stateTransaction = useSelector(
-    (state: {userReducer: UserReducer; transactionReducer: TransactionReducer}) => state.transactionReducer
-  );
+  const stateTransaction = useSelector(getTransactionState);
   const {amount} = stateTransaction.transactionEvent;
   const getWeeks = async (date: Date) => {
     const weeks: Month[] = [];

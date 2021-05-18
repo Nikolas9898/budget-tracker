@@ -4,15 +4,14 @@ import {faCaretDown, faBars, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
 import SideBar from '../sideBar/SideBar';
 import classes from './HeaderStyle.module.css';
-
-import {UserReducer} from '../../models/User';
 import AccountMenu from '../accountMenu/AccountMenu';
 import {getHeaderTitle} from '../../helpers/TransactionHelpers';
+import {getUserState} from '../../helpers/userSelectors';
 
 const NavBar = (): JSX.Element => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
-  const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);
+  const user = useSelector(getUserState);
 
   return (
     <div>

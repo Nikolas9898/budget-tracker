@@ -10,7 +10,6 @@ import {
   Transaction,
   TransactionEvent,
   TransactionEventWithAmountNumber,
-  TransactionReducer,
   TransactionWithAmountNumber
 } from '../../../models/Transaction';
 import {Error} from '../../../models/Error';
@@ -24,6 +23,7 @@ import {
   firstDateOfTheMonth,
   lastDateOfTheMonth
 } from '../../../helpers/MomentHelpers';
+import {getTransactionState} from '../../../helpers/transactionSelectors';
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -53,7 +53,7 @@ const MonthlyContainer = (): JSX.Element => {
 
   const dispatch = useDispatch();
 
-  const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
+  const stateTransaction = useSelector(getTransactionState);
   const {amount} = stateTransaction.transactionEvent;
   // eslint-disable-next-line react/state-in-constructor
 

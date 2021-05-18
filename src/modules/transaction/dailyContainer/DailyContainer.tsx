@@ -6,7 +6,6 @@ import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import DailyTableRow from './components/dailyTableRow/DailyTableRow';
 import DailyTableHeader from './components/dailyTableHeader/DailyTableHeader';
 import {
-  TransactionReducer,
   TransactionWithAmountNumber,
   TransactionEventWithAmountNumber,
   TransactionEvent
@@ -17,6 +16,7 @@ import styles from './DailyStyle.module.css';
 import '../../../scss/variables.scss';
 import {UnitOfTime} from '../../../models/Clendar';
 import {firstDateOfTheMonth, lastDateOfTheMonth} from '../../../helpers/MomentHelpers';
+import {getTransactionState} from '../../../helpers/transactionSelectors';
 
 const DailyContainer = (): JSX.Element => {
   const [transactions, setTransactions] = useState<TransactionWithAmountNumber[]>([]);
@@ -25,7 +25,7 @@ const DailyContainer = (): JSX.Element => {
 
   const dispatch = useDispatch();
 
-  const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
+  const stateTransaction = useSelector(getTransactionState);
   const {amount} = stateTransaction.transactionEvent;
   const getTransactions = async (date: Date) => {
     try {
