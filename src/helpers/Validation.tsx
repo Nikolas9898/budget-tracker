@@ -68,5 +68,5 @@ export const validateLogin = (
 };
 
 export const errorMsg = (error: string): JSX.Element => {
-  return <>{error && <div className={classes.error_msg}>{error}</div>}</>;
+  return <>{error && <div className={`col-8  ${classes.error_msg} `}>{error}</div>}</>;
 };

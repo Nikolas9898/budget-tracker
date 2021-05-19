@@ -139,6 +139,7 @@ const AddTransactionModal: React.FC<Props> = ({
 
             <textarea
               className={classes.input_description}
+              placeholder="Description"
               name="description"
               value={transactionEvent.description}
               onChange={handleInputChange}
@@ -146,24 +147,28 @@ const AddTransactionModal: React.FC<Props> = ({
           </div>
           <div className={`modal-footer justify-content-center ${classes.input_description}`}>
             {isEditTransactionOpen ? (
-              <div className={classes.buttons_content}>
-                <button
-                  type="button"
-                  className={classes.save_button}
-                  data-bs-dismiss={isValid ? 'modal' : ''}
-                  onClick={handleSave}
-                >
-                  Save
-                </button>
-
-                <button
-                  type="button"
-                  className={classes.delete_button}
-                  data-bs-dismiss="modal"
-                  onClick={handleDeleteTransaction}
-                >
-                  Delete
-                </button>
+              <div className={`row ${classes.buttons_content}`}>
+                <div className="col">
+                  <button
+                    type="button"
+                    className={classes.save_button}
+                    data-bs-dismiss={isValid ? 'modal' : ''}
+                    onClick={handleSave}
+                  >
+                    Save
+                  </button>
+                </div>
+                <div className="col">
+                  {' '}
+                  <button
+                    type="button"
+                    className={classes.delete_button}
+                    data-bs-dismiss="modal"
+                    onClick={handleDeleteTransaction}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ) : (
               <div className={classes.buttons_content}>

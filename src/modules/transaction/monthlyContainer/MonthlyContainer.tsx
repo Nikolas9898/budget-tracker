@@ -3,7 +3,7 @@ import Moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import Calendar from './Calendar/Calendar';
-import {deleteTransaction, getSpecificDatePeriod} from '../service/TransactionService';
+import {getSpecificDatePeriod} from '../service/TransactionService';
 import {setIsTransactionOpen, setTransaction, setDate} from '../actions/transactionActions';
 import {
   Transaction,
@@ -59,44 +59,29 @@ const MonthlyContainer = (): JSX.Element => {
 
     try {
       const response = await getSpecificDatePeriod(from, to);
-      response.data.transactions.forEach((transactionItem: TransactionWithAmountNumber) => {
+      await response.data.transactions.forEach((transactionItem: TransactionWithAmountNumber) => {
         if (isTheSameDate(selectedTransaction.createdAt, transactionItem.createdAt)) {
           setSelectedTransaction(transactionItem);
         }
       });
       setTransactions(response.data.transactions);
+
+      const isSelectedTransactionExist = response.data.transactions.find((element: TransactionWithAmountNumber) =>
+        isTheSameDate(selectedTransaction.createdAt, element.createdAt)
+      );
+
+      if (!isSelectedTransactionExist) {
+        setSelectedTransaction({
+          _id: '',
+          createdAt: date,
+          events: [],
+          expense: 0,
+          income: 0
+        });
+      }
     } catch (error) {
       throw new Error(error.message);
     }
-  };
-
-  const clearState = () => {
-    setTransaction({
-      _id: '',
-      type: 'income',
-      date: Moment().toDate(),
-      account: '',
-      from: '',
-      category: '',
-      fees: '0',
-      to: '',
-      amount: '0',
-      note: '',
-      description: '',
-      transactionId: ''
-    });
-  };
-
-  const handleDelete = async (eventId: string) => {
-    const {_id: selectedDayId} = selectedTransaction;
-
-    await deleteTransaction(selectedDayId, eventId);
-    const newEvents: TransactionEventWithAmountNumber[] = selectedTransaction.events.filter(
-      ({_id: transactionEventId}) => transactionEventId !== eventId
-    );
-    setSelectedTransaction({...selectedTransaction, events: newEvents});
-    clearState();
-    getTransactions(stateTransaction.date);
   };
 
   const handleOpenEdit = (event: TransactionEventWithAmountNumber) => {
@@ -114,46 +99,6 @@ const MonthlyContainer = (): JSX.Element => {
     dispatch(setTransaction(Event));
     dispatch(setIsTransactionOpen());
   };
-
-  // const handleNextDay = async () => {
-  //   const newDate: Date = Moment(selectedTransaction.createdAt).add(1, UnitOfTime.DAYS).toDate();
-  //   setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
-
-  //   transactions.forEach((transaction) => {
-  //     if (isTheSameDate(newDate, transaction.createdAt)) {
-  //       setSelectedTransaction(transaction);
-  //     }
-  //   });
-  // };
-
-  // const handlePreviousDay = async () => {
-  //   const newDate: Date = Moment(selectedTransaction.createdAt).add(-1, UnitOfTime.DAYS).toDate();
-
-  //   setSelectedTransaction({...selectedTransaction, createdAt: newDate, events: []});
-
-  //   transactions.forEach((transaction) => {
-  //     if (isTheSameDate(newDate, transaction.createdAt)) {
-  //       setSelectedTransaction(transaction);
-  //     }
-  //   });
-  // };
-
-  // const handleOpenTransaction = () => {
-  //   const {createdAt} = selectedTransaction;
-  //   dispatch(setIsTransactionOpen());
-  //   if (stateTransaction.isTransactionOpen) {
-  //     clearState();
-  //   } else {
-  //     dispatch(
-  //       transactionInputChange({
-  //         target: {
-  //           name: UnitOfTime.DATE,
-  //           value: createdAt
-  //         }
-  //       })
-  //     );
-  //   }
-  // };
 
   const selectedDay = (date: Date) => {
     transactions.forEach((transaction) => {
@@ -232,11 +177,7 @@ const MonthlyContainer = (): JSX.Element => {
         </div>
 
         <div className={`col-xxl-5 col-xl-12  p-2 pt-sm-5 pt-xxl-0 `} style={{borderLeft: 'solid 4px #0d6efd'}}>
-          <DailyTransactions
-            handleDelete={handleDelete}
-            selectedTransaction={selectedTransaction}
-            handleOpenEdit={handleOpenEdit}
-          />
+          <DailyTransactions selectedTransaction={selectedTransaction} handleOpenEdit={handleOpenEdit} />
         </div>
       </div>
     </div>

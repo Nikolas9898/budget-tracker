@@ -27,7 +27,8 @@ const AddTransactionButton = (): JSX.Element => {
     from: '',
     category: '',
     to: '',
-    amount: ''
+    amount: '',
+    fees: ''
   });
   const dispatch = useDispatch();
 
@@ -36,7 +37,7 @@ const AddTransactionButton = (): JSX.Element => {
   const {transactionId, _id: transactionEventId} = stateTransaction.transactionEvent;
 
   const clearState = () => {
-    setErrors({account: '', from: '', category: '', to: '', amount: ''});
+    setErrors({account: '', from: '', category: '', to: '', amount: '', fees: ''});
     // dispatch(setIsTransactionOpen());
     dispatch(
       setTransaction({

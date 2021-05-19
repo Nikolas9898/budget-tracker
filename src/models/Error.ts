@@ -4,5 +4,5 @@ export interface Error {
   to: string;
   category: string;
   amount: string;
-  fees?: string;
+  fees: string;
 }

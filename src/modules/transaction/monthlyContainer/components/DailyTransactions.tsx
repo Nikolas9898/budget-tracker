@@ -5,12 +5,11 @@ import DailyInfoTableRow from './DailyInfoTableRow';
 import classes from '../MonthlyStyle.module.css';
 
 type Props = {
-  handleDelete: (eventId: string) => void;
   selectedTransaction: TransactionWithAmountNumber;
   handleOpenEdit: (event: TransactionEventWithAmountNumber) => void;
 };
 
-const DailyTransactions: React.FC<Props> = ({handleDelete, selectedTransaction, handleOpenEdit}) => {
+const DailyTransactions: React.FC<Props> = ({selectedTransaction, handleOpenEdit}) => {
   const {createdAt, events} = selectedTransaction;
   return (
     <>
@@ -28,12 +27,11 @@ const DailyTransactions: React.FC<Props> = ({handleDelete, selectedTransaction, 
                 <th scope="col">Account</th>
                 <th scope="col">Income</th>
                 <th scope="col">Expense</th>
-                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               {events.map((event) => (
-                <DailyInfoTableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
+                <DailyInfoTableRow event={event} handleOpenEdit={handleOpenEdit} />
               ))}
             </tbody>
           </table>

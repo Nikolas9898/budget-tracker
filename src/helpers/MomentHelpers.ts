@@ -23,4 +23,4 @@ export const lastDateOfLastWeekOfTheMonth = (date: Date): Moment.Moment =>
   lastDateOfTheMonth(date).startOf(DAY).endOf(ISO_WEEK);
 
 export const isTheSameDate = (calendarDate: Date, transactionDate: Date): boolean =>
-  Moment(calendarDate).diff(transactionDate, DAY) === 0;
+  Moment(Moment(calendarDate).toDate()).diff(Moment(transactionDate).toDate(), DAY) === 0;

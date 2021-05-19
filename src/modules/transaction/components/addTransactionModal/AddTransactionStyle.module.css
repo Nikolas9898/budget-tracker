@@ -30,11 +30,10 @@
   font-size: 20px;
 }
 .title {
-  /* margin-bottom: 38px; */
   font-size: 1.5rem;
 }
 .input_container {
-  height: 60px;
+  /* height: 60px; */
 }
 .amount_container {
   display: flex;
@@ -52,6 +51,10 @@
   font-size: 20px;
   width: 100%;
   margin-bottom: 5px;
+  height: 35px;
+  border: none;
+  background-color: white;
+  border-bottom: 2px solid lightgrey;
 }
 .description {
   width: 90%;
@@ -69,6 +72,9 @@
   color: white;
   font-weight: bold;
   cursor: pointer;
+}
+.save_button:hover {
+  background-color: chocolate;
 }
 .delete_button {
   padding: 10px 10px 10px 10px;
@@ -114,7 +120,7 @@
 .close_button {
   font-size: 30px;
   cursor: pointer;
-  margin-left: 370px;
+  margin-left: 440px;
 }
 .close_button:hover {
   color: coral;

@@ -9,6 +9,7 @@ import SelectInput from './components/SelectInputs';
 import FeesInput from './components/FeesInput';
 import AmountInput from './components/AmountInput';
 import 'react-datepicker/dist/react-datepicker.css';
+import {errorMsg} from '../../../../../helpers/Validation';
 
 type Props = {
   transaction: TransactionEvent;
@@ -53,7 +54,7 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   return (
     <>
       {/* <InputTitles transaction={transaction} isFeesOpen={isFeesOpen} /> */}
-      <div className="row  align-items-center justify-content-center">
+      <div className="row  align-items-center justify-content-center mb-2">
         <div className={`col-3 align-items-start ${classes.title}`}>Day</div>
         <div className="col-8 ">
           <DatePicker
@@ -70,11 +71,11 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
         </div>
       </div>
 
-      <div className="row  align-items-center justify-content-center">
+      <div className="row  align-items-center justify-content-center mb-2">
         <div className={`col-3 ${classes.title}`}>
           {transaction.type === TransactionTypes.TRANSFER ? 'From' : 'Account'}
         </div>
-        <div className="col-8 ">
+        <div className="col-8">
           {' '}
           <SelectInput
             selectValue={transaction.type === TransactionTypes.TRANSFER ? transaction.from : transaction.account}
@@ -83,12 +84,13 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
             }
             options={accounts}
             handleInputChange={handleInputChange}
-            error={transaction.type === TransactionTypes.TRANSFER ? errors.from : errors.account}
           />
         </div>
+        <div className="col-3" />
+        {errorMsg(transaction.type === TransactionTypes.TRANSFER ? errors.from : errors.account)}
       </div>
 
-      <div className="row  align-items-center justify-content-center">
+      <div className="row  align-items-center justify-content-center mb-2">
         <div className={`col-3 ${classes.title}`}>
           {' '}
           {transaction.type === TransactionTypes.TRANSFER ? 'To' : 'Category'}
@@ -102,12 +104,13 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
             }
             options={selectOptions(transaction.type)}
             handleInputChange={handleInputChange}
-            error={transaction.type === TransactionTypes.TRANSFER ? errors.to : errors.category}
           />
         </div>
+        <div className="col-3" />
+        {errorMsg(transaction.type === TransactionTypes.TRANSFER ? errors.to : errors.category)}
       </div>
 
-      <div className="row  align-items-center justify-content-center">
+      <div className="row  align-items-center justify-content-center mb-2">
         <div className={`col-3 ${classes.title}`}>Amount</div>
         <div className="col-8">
           {' '}
@@ -116,13 +119,14 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
             handleInputChange={handleInputChange}
             setIsFeesOpen={setIsFeesOpen}
             isFeesOpen={isFeesOpen}
-            error={errors.amount}
           />
         </div>
+        <div className="col-3" />
+        {errorMsg(errors.amount)}
       </div>
 
       {isFeesOpen ? (
-        <div className="row  align-items-center justify-content-center">
+        <div className="row  align-items-center justify-content-center mb-2">
           <div className={`col-3 ${classes.title}`}>Fees</div>
           <div className="col-8">
             {' '}
@@ -133,13 +137,21 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
               isFeesOpen={isFeesOpen}
             />
           </div>
+          <div className="col-3" />
+          {errorMsg(errors.fees)}
         </div>
       ) : null}
 
-      <div className="row  align-items-center justify-content-center">
+      <div className="row  align-items-center justify-content-center mb-2">
         <div className={`col-3 ${classes.title}`}>Note</div>
         <div className="col-8">
-          <input type="text" className="w-100" name="note" value={transaction.note} onChange={handleInputChange} />
+          <input
+            type="text"
+            className={classes.input}
+            name="note"
+            value={transaction.note}
+            onChange={handleInputChange}
+          />
         </div>
       </div>
     </>
