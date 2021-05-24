@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faCaretDown, faBars, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faCaretDown, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
-import SideBar from '../sideBar/SideBar';
 import classes from './HeaderStyle.module.css';
 
 import {UserReducer} from '../../models/User';
@@ -10,7 +9,7 @@ import AccountMenu from '../accountMenu/AccountMenu';
 import {getHeaderTitle} from '../../helpers/TransactionHelpers';
 
 const NavBar = (): JSX.Element => {
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  // const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);
 
@@ -18,7 +17,7 @@ const NavBar = (): JSX.Element => {
     <>
       <nav className={`navbar navbar-expand-sm   ${classes.container}`}>
         <div className={`container-fluid `}>
-          <FontAwesomeIcon className={classes.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} />
+          {/* <FontAwesomeIcon className={classes.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} /> */}
           <div className={`collapse navbar-collapse ${classes.page_title}`}>
             {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
           </div>
@@ -33,7 +32,7 @@ const NavBar = (): JSX.Element => {
         </div>
       </nav>
 
-      <SideBar isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen} />
+      {/* <SideBar isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen} /> */}
     </>
   );
 };

@@ -48,6 +48,7 @@
   padding: 20px;
 }
 .select_options_wrraper {
+  position: absolute;
   width: 100%;
   border-top: 5px solid white;
   background-color: #0160b2;
@@ -80,4 +81,8 @@
   font-size: 20px;
   margin-left: 20px;
   cursor: pointer;
+}
+.multi_select[class*='_control'] {
+  background-color: lemonchiffon;
+  padding: 10px;
 }

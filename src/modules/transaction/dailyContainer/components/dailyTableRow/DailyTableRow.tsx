@@ -19,7 +19,8 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
   }, [handleSelectEvent, transactionId, transactionEvent]);
   return (
     <div
-      className="row align-self-center text-center"
+      className="row align-self-center text-center "
+      style={{borderTop: '2px solid black', padding: '15px 0 15px 0'}}
       role="button"
       tabIndex={0}
       onKeyDown={selectEvent}
@@ -27,21 +28,21 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
     >
       <div className="col-4 align-self-center ">
         <div className="row justify-content-center ">
-          <div className="col-6 align-self-center">
+          <div className="col-xxl-6 col-xl-6 align-self-center">
             {transactionEvent.type === TransactionTypes.TRANSFER ? (
-              TransactionTypes.TRANSFER
+              <h2>{TransactionTypes.TRANSFER}</h2>
             ) : (
               <h2>{transactionEvent.category}</h2>
             )}
           </div>
-          <div className="col-6 align-self-center">
-            <div>{transactionEvent.note}</div>
+          <div className="col-xll-6 col-xl-6 align-self-center">
+            {/* <div>{transactionEvent.note}</div> */}
             {transactionEvent.type === TransactionTypes.TRANSFER ? (
-              <div>
+              <h4>
                 {transactionEvent.from}
                 {' ---> '}
                 {transactionEvent.to}
-              </div>
+              </h4>
             ) : (
               <h2>{transactionEvent.account}</h2>
             )}

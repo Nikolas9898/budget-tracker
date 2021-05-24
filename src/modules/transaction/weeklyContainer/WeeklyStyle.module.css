@@ -41,18 +41,14 @@ td {
 }
 .income {
   height: 60px;
-  font-size: 25px;
   color: dodgerblue;
   font-weight: bold;
-  padding: 10px;
   text-align: center;
 }
 .expense {
   height: 60px;
-  font-size: 25px;
   color: coral;
   font-weight: bold;
-  padding: 10px;
   text-align: center;
 }
 .info_row {

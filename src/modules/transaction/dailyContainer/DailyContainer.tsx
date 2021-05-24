@@ -57,7 +57,7 @@ const DailyContainer = (): JSX.Element => {
   };
 
   return (
-    <div className="m-5">
+    <div className="col">
       <NavBarMenu />
       <div className="container">
         <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
@@ -68,19 +68,21 @@ const DailyContainer = (): JSX.Element => {
           })
           .reverse()
           .map((transaction: TransactionWithAmountNumber) => (
-            <div className={classes.table_container}>
-              <DailyTableHeader transaction={transaction} />
-              {transaction.events.map((event: TransactionEventWithAmountNumber) => {
-                const {_id: eventId} = event;
-                return (
-                  <DailyTableRow
-                    key={eventId}
-                    transaction={transaction}
-                    transactionEvent={event}
-                    handleSelectEvent={handleSelectEvent}
-                  />
-                );
-              })}
+            <div className={`row ${classes.table_container}`}>
+              <div className="col-12">
+                <DailyTableHeader transaction={transaction} />
+                {transaction.events.map((event: TransactionEventWithAmountNumber) => {
+                  const {_id: eventId} = event;
+                  return (
+                    <DailyTableRow
+                      key={eventId}
+                      transaction={transaction}
+                      transactionEvent={event}
+                      handleSelectEvent={handleSelectEvent}
+                    />
+                  );
+                })}
+              </div>
             </div>
           ))}
       </div>

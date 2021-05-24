@@ -1,8 +1,10 @@
 import React, {forwardRef, useCallback, useState} from 'react';
 import {CSVLink} from 'react-csv';
 import Moment from 'moment';
+import Select, {OptionsType, OptionTypeBase} from 'react-select';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faCalendarDay, faCaretDown, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {faCalendarDay, faCaretDown} from '@fortawesome/free-solid-svg-icons';
+import makeAnimated from 'react-select/animated';
 import DatePicker from 'react-datepicker';
 import classes from './ExportStyle.module.css';
 import {errorMsg} from '../../helpers/Validation';
@@ -12,12 +14,22 @@ type CustomInput = {
   onClick: React.MouseEventHandler<HTMLInputElement> | undefined;
 };
 
+type OptionType = {
+  value: string;
+  label: string;
+};
+const animatedComponents = makeAnimated();
 const ExportContainer = (): JSX.Element => {
   const [selectedType, setSelectedType] = useState('Income');
-  const [selectedAccounts, setSelectedAccounts] = useState<string[]>(['Cash']);
-  const [isSelectedAccountOpen, setIsSelectedAccountOpen] = useState(false);
+  const [accounts] = useState<OptionType[]>([
+    {label: 'Card', value: 'card'},
+    {label: 'Account', value: 'account'},
+    {label: 'Cash', value: 'cash'}
+  ]);
+  const [selectedAccounts, setSelectedAccounts] = useState<OptionTypeBase | OptionsType<OptionTypeBase> | null>([]);
+  // const [isSelectedAccountOpen, setIsSelectedAccountOpen] = useState(false);
   const [isSelectedTypeOpen, setIsSelectedTypeOpen] = useState(false);
-  const [accounts, setAccounts] = useState<string[]>(['Card', 'Account']);
+
   const [from, setFrom] = useState<Date>(Moment().toDate());
   const [to, setTo] = useState(Moment().toDate());
   const [error, setError] = useState('');
@@ -47,36 +59,12 @@ const ExportContainer = (): JSX.Element => {
     },
     []
   );
-
-  const removeSelectAccount = (account: string) => {
-    const result = selectedAccounts.filter((word) => word !== account);
-    setSelectedAccounts(result);
-    setAccounts([...accounts, account]);
+  const handleAccountSelect = (option: OptionTypeBase | OptionsType<OptionTypeBase> | null) => {
+    setSelectedAccounts(option);
   };
-  const handleSelectAccount = (account: string) => {
-    selectedAccounts.push(account);
-    const result = accounts.filter((word) => word !== account);
-    setAccounts(result);
-    setError('');
-    setIsSelectedAccountOpen(false);
-  };
-  // const handleSelect = useCallback(
-  //   (account) => () => {
-  //     selectedAccounts.push(account);
-  //     const result = accounts.filter((word) => word !== account);
-  //     setAccounts(result);
-  //     setIsSelectedAccountOpen(false);
-  //   },
-  //   []
-  // );
-
   const openTypeOptions = useCallback(() => {
-    setIsSelectedTypeOpen(!isSelectedTypeOpen);
+    setIsSelectedTypeOpen(true);
   }, [isSelectedTypeOpen]);
-
-  const openAccountOptions = useCallback(() => {
-    setIsSelectedAccountOpen(!isSelectedAccountOpen);
-  }, [isSelectedAccountOpen]);
 
   const headers = [
     {label: 'First Name', key: 'firstname'},
@@ -97,27 +85,56 @@ const ExportContainer = (): JSX.Element => {
       </div>
     </div>
   ));
+
+  const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      backgroundColor: '#0160b2',
+      color: 'white',
+      height: '70px'
+    }),
+    placeholder: (provided: any) => ({
+      ...provided,
+      fonSize: '2rem',
+      color: 'white'
+    }),
+
+    menu: (provided: any, state: any) => ({
+      ...provided,
+      // color: state.isFocused ? 'white' : 'red',
+      backgroundColor: 'coral',
+      fonSize: '2rem',
+      border: '2px solid coral'
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      color: state.isFocused ? '#0160b2' : 'white',
+      backgroundColor: state.isFocused ? 'white' : 'coral',
+      fonSize: '2rem'
+    })
+  };
+
   return (
-    <div className="container-xx m-5">
+    <div className=" col container-xx mt-5 ">
       <div className="row justify-content-between">
         <div className="col-xxl-3 col-sm-12 col-lg-6 mb-2">
           <div className={classes.label}>Transaction Type</div>
-          <div
-            className={classes.input}
-            role="button"
-            tabIndex={0}
-            onKeyDown={openTypeOptions}
-            onClick={openTypeOptions}
-          >
-            <div className={classes.title}>{selectedType}</div>
-            <div>
-              {' '}
-              <FontAwesomeIcon className={classes.caret_down_icon} icon={faCaretDown} />
+          <div style={{position: 'relative'}}>
+            <div
+              className={classes.input}
+              role="button"
+              tabIndex={0}
+              onKeyDown={openTypeOptions}
+              onClick={openTypeOptions}
+            >
+              <div className={classes.title}>{selectedType}</div>
+              <div>
+                {' '}
+                <FontAwesomeIcon className={classes.caret_down_icon} icon={faCaretDown} />
+              </div>
             </div>
-          </div>
 
-          {isSelectedTypeOpen ? (
-            <div>
+            {isSelectedTypeOpen ? (
               <div
                 className={isSelectedTypeOpen ? classes.select_options_wrraper : classes.select_options_wrraper_back}
               >
@@ -133,58 +150,70 @@ const ExportContainer = (): JSX.Element => {
                   </div>
                 ))}
               </div>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
         <div className="col-xxl-3 col-sm-12 col-lg-6 mb-2">
           <div className={classes.label}>Account</div>
-          <div
-            className={classes.input}
+
+          <Select
+            isMulti
+            styles={customStyles}
+            closeMenuOnSelect={false}
+            onChange={(option) => handleAccountSelect(option)}
+            components={animatedComponents}
+            options={accounts}
+          />
+
+          {/* <div
+            style={{position: 'relative'}}
             role="button"
             tabIndex={0}
             onKeyDown={openAccountOptions}
             onClick={openAccountOptions}
           >
-            <div className={classes.title}>
-              {selectedAccounts.map((account) => (
-                <div className={classes.select_account_box}>
-                  <div>{account}</div>
-                  <FontAwesomeIcon
-                    className={classes.select_delete_icon}
-                    onClick={() => removeSelectAccount(account)}
-                    icon={faTimes}
-                  />
-                </div>
-              ))}
-            </div>
-            <div>
-              {' '}
-              <FontAwesomeIcon
-                className={classes.caret_down_icon}
-                role="button"
-                tabIndex={0}
-                onKeyDown={openAccountOptions}
-                onClick={openAccountOptions}
-                icon={faCaretDown}
-              />
-            </div>
-          </div>
-          {isSelectedAccountOpen ? (
-            <div className={` ${classes.select_options_wrraper}`}>
-              {accounts.map((option) => (
-                <div
-                  className={classes.select_option_title}
+            <div className={classes.input}>
+              <div className={classes.title}>
+                {selectedAccounts.map((account) => (
+                  <div className={classes.select_account_box}>
+                    <div>{account}</div>
+                    <FontAwesomeIcon
+                      className={classes.select_delete_icon}
+                      // onClick={() => removeSelectAccount(account)}
+                      icon={faTimes}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div>
+                {' '}
+                <FontAwesomeIcon
+                  className={classes.caret_down_icon}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={() => handleSelectAccount(option)}
-                  onClick={() => handleSelectAccount(option)}
-                >
-                  {option}
-                </div>
-              ))}
+                  onKeyDown={openAccountOptions}
+                  onClick={openAccountOptions}
+                  icon={faCaretDown}
+                />
+              </div>
             </div>
-          ) : null}
-          <div style={{fontSize: '1.7rem'}}>{errorMsg(error)}</div>
+            {isSelectedAccountOpen ? (
+              <div className={` ${classes.select_options_wrraper}`}>
+                {accounts.map((option) => (
+                  <div
+                    className={classes.select_option_title}
+                    role="button"
+                    tabIndex={0}
+                    // onKeyDown={() => handleSelectAccount(option)}
+                    // onClick={() => handleSelectAccount(option)}
+                  >
+                    {option}
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div> */}
+          <div style={{fontSize: '1.4rem'}}>{errorMsg(error)}</div>
         </div>
         <div className="col-xxl-3 col-sm-12 col-lg-6 mb-2">
           <div className={classes.label}>From</div>
@@ -212,7 +241,7 @@ const ExportContainer = (): JSX.Element => {
       </div>
       <div className="row justify-content-end mt-5">
         <div className="col-xl-3 text-end ">
-          {selectedAccounts.length === 0 ? (
+          {selectedAccounts?.length === 0 ? (
             <button
               onClick={() => {
                 setError('Please select an account');

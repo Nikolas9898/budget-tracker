@@ -163,8 +163,7 @@ const MonthlyContainer = (): JSX.Element => {
   }, [stateTransaction.isTransactionOpen, stateTransaction.date]);
 
   return (
-    <div className="container-xx m-5">
-      {' '}
+    <div className="col">
       <NavBarMenu />
       <div className="row">
         <div className="col-xxl-7 col-xl-4 pe-4 col-xl-12 ">
