@@ -2,7 +2,7 @@ import {RequestHandler, Request, Response} from 'express';
 import moment from 'moment';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
 import Transaction from '../../dbModels/transaction/transaction.model';
-import TransactionType, {MomentConstants, TransactionEvent} from '../../models/transactions';
+import {MomentConstants, TransactionEvent} from '../../models/transactions';
 
 export default interface AggregatedTransactionType extends Document {
   _id: string;
