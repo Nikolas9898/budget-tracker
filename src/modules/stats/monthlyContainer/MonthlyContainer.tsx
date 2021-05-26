@@ -1,17 +1,21 @@
 import React, {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import StatsForm from '../components/StatsForm';
-import '../../../scss/variables.scss';
 import {getStatsInSpecificDatePeriod} from '../service/StatsService';
-import {firstDateOfMonth, lastDateOfMonth} from '../../../helpers/MomentHelpers';
+import {firstDateOfTheMonth, lastDateOfTheMonth} from '../../../helpers/MomentHelpers';
+import {TransactionReducer} from '../../../models/Transaction';
+import '../../../scss/variables.scss';
 
 const MonthlyContainer = (): JSX.Element => {
   const [incomeStats, setIncomeStats] = useState([]);
   const [expenseStats, setExpenseStats] = useState([]);
-  const getMonthlyStats = async () => {
+  const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
+
+  const getMonthlyStats = async (date: Date) => {
     try {
-      const from: string = firstDateOfMonth;
-      const to: string = lastDateOfMonth;
+      const from: Date = firstDateOfTheMonth(date).toDate();
+      const to: Date = lastDateOfTheMonth(date).toDate();
       const response = await getStatsInSpecificDatePeriod(from, to);
 
       setIncomeStats(response.data.incomeStats);
@@ -22,10 +26,10 @@ const MonthlyContainer = (): JSX.Element => {
   };
 
   useEffect(() => {
-    getMonthlyStats();
-  }, []);
+    getMonthlyStats(stateTransaction.date);
+  }, [stateTransaction.date]);
   return (
-    <div className="container-fluid m-5">
+    <div className="wrapper_stats">
       <NavBarMenu />
 
       <div className="row justify-content-center">

@@ -23,6 +23,7 @@ import {
   lastDateOfTheMonth
 } from '../../../helpers/MomentHelpers';
 import DailyTransactions from './components/DailyTransactions';
+import classes from './MonthlyStyle.module.css';
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -163,10 +164,10 @@ const MonthlyContainer = (): JSX.Element => {
   }, [stateTransaction.isTransactionOpen, stateTransaction.date]);
 
   return (
-    <div className="col">
+    <div className={classes.wrapper}>
       <NavBarMenu />
       <div className="row">
-        <div className="col-xxl-7 col-xl-4 pe-4 col-xl-12 ">
+        <div className="col-xxl-7 col-xl-12 pe-4  ">
           <Calendar
             handleOpenInfoModal={handleOpenInfoModal}
             transactions={transactions}

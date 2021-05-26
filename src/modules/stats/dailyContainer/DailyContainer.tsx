@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
 import axiosConfig from '../../../axiosConfig';
 import NavBarMenu from '../../../layout/navBar/NavBar';
+import {TransactionReducer} from '../../../models/Transaction';
 import StatsForm from '../components/StatsForm';
+import '../components/StatsFormStyle.css';
 
 const DailyContainer = (): JSX.Element => {
   const [incomeStats, setIncomeStats] = useState([]);
   const [expenseStats, setExpenseStats] = useState([]);
+
+  const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
   const getDailyStats = async () => {
     const config = {
       headers: {
@@ -26,9 +31,9 @@ const DailyContainer = (): JSX.Element => {
 
   useEffect(() => {
     getDailyStats();
-  }, []);
+  }, [stateTransaction.date]);
   return (
-    <div className="container-fluid">
+    <div className="wrapper_stats">
       <NavBarMenu />
       <div className="row justify-content-center">
         <StatsForm stats={incomeStats} isIncome />

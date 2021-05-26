@@ -15,7 +15,7 @@ const WeeklyContainer = (): JSX.Element => {
     {category: 'culture', value: 45699, color: 'blue', label: 'culture'}
   ];
   return (
-    <div className="container-fluid">
+    <div className="wrapper_stats">
       <NavBarMenu />
       <div className="row justify-content-center">
         <StatsForm stats={data} isIncome />

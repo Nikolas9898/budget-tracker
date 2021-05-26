@@ -57,7 +57,7 @@ const DailyContainer = (): JSX.Element => {
   };
 
   return (
-    <div className="col">
+    <div className={classes.wrapper}>
       <NavBarMenu />
       <div className="container">
         <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />

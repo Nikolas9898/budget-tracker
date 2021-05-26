@@ -1,6 +1,8 @@
 .wrapper {
-  margin: auto;
   width: 100%;
+  padding: 0 40px 0 40px;
+  min-height: 100vh;
+  transition: all 0.3s;
 }
 .container {
   width: 60%;

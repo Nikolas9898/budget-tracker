@@ -13,7 +13,7 @@ const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
     sumValue += stat.value;
   });
   return (
-    <div className="col-5 text-center form_wrapper">
+    <div className="col text-center form_wrapper">
       <div className="row justify-content-center title">{isIncome ? 'Income' : 'Expense'}</div>
       <div className="row justify-content-center">
         <PieChart
@@ -22,9 +22,9 @@ const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
             fontFamily: 'sans-serif'
           })}
           radius={42}
-          labelPosition={112}
+          // labelPosition={112}
           animate
-          label={({dataEntry}) => dataEntry.category}
+          // label={({dataEntry}) => dataEntry.category}
           data={stats}
         />
       </div>
@@ -32,7 +32,7 @@ const StatsForm: React.FC<Props> = ({stats, isIncome}) => {
         <table className="content_table">
           <tbody>
             {stats.map((stat: Stat) => (
-              <tr>
+              <tr className="border-bottom ">
                 <td className="percent_content">
                   <div className="percent" style={{backgroundColor: stat.color}}>
                     {((stat.value / sumValue) * 100).toFixed(1)}%
