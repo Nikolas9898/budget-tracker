@@ -6,18 +6,14 @@ import SideBar from '../../layout/sideBar/SideBar';
 
 const YearlyPage = (): JSX.Element => {
   return (
-    <>
-      <NavBar />
-      <div className="container-fluid min-vw-100">
-        <div className="row flex-nowrap">
-          <div className="row">
-            <SideBar />
-            <YearlyContainer />
-          </div>
-        </div>
+    <div style={{display: 'flex'}}>
+      <SideBar />
+      <div style={{width: '100%'}}>
+        <NavBar />
+        <YearlyContainer />
+        <AddTransactionButton />
       </div>
-      <AddTransactionButton />
-    </>
+    </div>
   );
 };
 

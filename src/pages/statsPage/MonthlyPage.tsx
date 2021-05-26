@@ -1,13 +1,17 @@
 import React from 'react';
 import NavBar from '../../layout/header/Header';
+import SideBar from '../../layout/sideBar/SideBar';
 import MonthlyContainer from '../../modules/stats/monthlyContainer/MonthlyContainer';
 
 const MonthlyPage = (): JSX.Element => {
   return (
-    <>
-      <NavBar />
-      <MonthlyContainer />
-    </>
+    <div style={{display: 'flex'}}>
+      <SideBar />
+      <div style={{width: '100%'}}>
+        <NavBar />
+        <MonthlyContainer />
+      </div>
+    </div>
   );
 };
 

@@ -6,18 +6,14 @@ import MonthlyContainer from '../../modules/transaction/monthlyContainer/Monthly
 
 const MonthlyPage = (): JSX.Element => {
   return (
-    <>
-      <NavBar />
-      <div className="container-fluid min-vw-100">
-        <div className="row flex-nowrap">
-          <div className="row">
-            <SideBar />
-            <MonthlyContainer />
-          </div>
-        </div>
+    <div style={{display: 'flex'}}>
+      <SideBar />
+      <div style={{width: '100%'}}>
+        <NavBar />
+        <MonthlyContainer />
+        <AddTransactionButton />
       </div>
-      <AddTransactionButton />
-    </>
+    </div>
   );
 };
 

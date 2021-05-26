@@ -1,6 +1,8 @@
-.wrapper {
-  width: 90%;
-  margin: auto;
+.wrapper_stats {
+  width: 100%;
+  padding: 0 40px 0 40px;
+  min-height: 100vh;
+  transition: all 0.3s;
 }
 .stats_container {
   display: flex;

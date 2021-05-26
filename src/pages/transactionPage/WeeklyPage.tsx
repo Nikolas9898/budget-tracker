@@ -6,19 +6,14 @@ import WeeklyContainer from '../../modules/transaction/weeklyContainer/WeeklyCon
 
 const WeeklyPage = (): JSX.Element => {
   return (
-    <>
-      <NavBar />
-      <div className="container-fluid min-vw-100">
-        <div className="row flex-nowrap">
-          <div className="row">
-            <SideBar />
-            <WeeklyContainer />
-          </div>
-        </div>
+    <div style={{display: 'flex'}}>
+      <SideBar />
+      <div style={{width: '100%'}}>
+        <NavBar />
+        <WeeklyContainer />
+        <AddTransactionButton />
       </div>
-
-      <AddTransactionButton />
-    </>
+    </div>
   );
 };
 

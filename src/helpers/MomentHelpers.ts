@@ -7,13 +7,12 @@ export const firstDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).s
 
 export const lastDateOfTheMonth = (date: Date): Moment.Moment => Moment(date).endOf(MONTH);
 
+export const firstDateOfTheYear = (date: Date): Moment.Moment => Moment(date).startOf('year');
+
+export const lastDateOfTheYear = (date: Date): Moment.Moment => Moment(date).endOf('year');
+
 export const firstDateOfFirstWeekOfTheMonth = (date: Date): Moment.Moment =>
   firstDateOfTheMonth(date).startOf(ISO_WEEK);
-
-export const firstDateOfYear = Moment().clone().startOf(UnitOfTime.YEAR).format('YYYY-MM-DD hh:mm');
-export const lastDateOfYear = Moment().clone().endOf(UnitOfTime.YEAR).format('YYYY-MM-DD hh:mm');
-export const firstDateOfMonth = Moment().clone().startOf('month').format('YYYY-MM-DD hh:mm');
-export const lastDateOfMonth = Moment().clone().endOf('month').format('YYYY-MM-DD hh:mm');
 
 export const lastDateOfFirstWeekOfTheMonth = (date: Date): Moment.Moment => firstDateOfTheMonth(date).endOf(ISO_WEEK);
 

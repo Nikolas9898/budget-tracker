@@ -1,108 +1,71 @@
 import React, {useCallback, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {
-  faChevronRight,
-  faBook,
-  faChartBar,
-  faFileDownload,
-  faDatabase,
-  faTimes
-} from '@fortawesome/free-solid-svg-icons';
-import {Link} from 'react-router-dom';
+import {faChevronRight, faBook, faChartBar, faFileDownload, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import {Link, useLocation} from 'react-router-dom';
 import classes from './SideBarStyle.module.css';
 import languageWords from '../../helpers/LanguageConsts';
-
-// interface Props {
-//   isSideBarOpen: boolean;
-//   setIsSideBarOpen: (value: boolean) => void;
-// }
 
 const SideBar = (): JSX.Element => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const closeSideBar = useCallback(() => {
     setIsSideBarOpen(!isSideBarOpen);
   }, [isSideBarOpen]);
+
+  const location = useLocation();
+
   return (
-    <>
-      <nav className={isSideBarOpen ? classes.container : classes.container_back}>
-        <div className={isSideBarOpen ? classes.wrapper : classes.wrapper_back}>
-          <FontAwesomeIcon className={classes.close_button} icon={faTimes} onClick={closeSideBar} />
-          <ul className={classes.content}>
-            <Link to="/transaction/monthly" className={classes.title}>
-              {languageWords.TRANSACTIONS}
-            </Link>
+    <nav className={isSideBarOpen ? classes.wrapper : classes.wrapper_back}>
+      <div className={classes.sidebar_header}>{isSideBarOpen ? 'Budget Tracker' : 'BT'}</div>
+      <div className={isSideBarOpen ? classes.close_button_open_sidebar : classes.close_button}>
+        <FontAwesomeIcon icon={isSideBarOpen ? faChevronLeft : faChevronRight} onClick={closeSideBar} />
+      </div>
 
-            <Link to="/stats/monthly" className={classes.title}>
-              {languageWords.STATS}
-            </Link>
+      {isSideBarOpen ? (
+        <ul className={classes.content}>
+          <Link
+            to="/transaction/monthly"
+            className={location.pathname.includes('transaction') ? classes.title_select : classes.title}
+          >
+            <FontAwesomeIcon icon={faBook} /> {languageWords.TRANSACTIONS}
+          </Link>
 
-            <Link to="/export" className={classes.title}>
-              {languageWords.EXPORT}
-            </Link>
+          <Link
+            to="/stats/monthly"
+            className={location.pathname.includes('stats') ? classes.title_select : classes.title}
+          >
+            <FontAwesomeIcon icon={faChartBar} /> {languageWords.STATS}
+          </Link>
 
-            <Link to="/accounts" className={classes.title}>
-              {languageWords.ACCOUNT}
-            </Link>
-          </ul>
-        </div>
-        {isSideBarOpen ? (
-          <div
-            className={classes.container_close_button}
-            role="button"
-            tabIndex={0}
-            aria-label="Mute volume"
-            onKeyDown={closeSideBar}
-            onClick={closeSideBar}
-          />
-        ) : null}
-      </nav>
-      <nav className={` col-xll-1 col-xl-1 col-lg-1 col-md-1 col-sm-2  me-3 `} style={{backgroundColor: '#0160b2'}}>
-        <div className=" text-end">
-          <FontAwesomeIcon className={classes.open_menu} icon={faChevronRight} onClick={closeSideBar} />
-        </div>
-
-        <div className=" text-center  min-vh-100">
-          <ul className={classes.content}>
-            {' '}
-            <Link to="/transaction/monthly" className={classes.menu_icon_container}>
-              <FontAwesomeIcon icon={faBook} />
-            </Link>{' '}
-            <Link to="/stats/monthly" className={classes.menu_icon_container}>
-              <FontAwesomeIcon icon={faChartBar} />
-            </Link>{' '}
-            <Link to="/export" className={classes.menu_icon_container}>
-              <FontAwesomeIcon icon={faFileDownload} />
-            </Link>{' '}
-            <Link to="/accounts" className={classes.menu_icon_container}>
-              <FontAwesomeIcon icon={faDatabase} />
-            </Link>{' '}
-          </ul>
-        </div>
-      </nav>
-    </>
+          <Link to="/export" className={location.pathname.includes('export') ? classes.title_select : classes.title}>
+            <FontAwesomeIcon icon={faFileDownload} /> {languageWords.EXPORT}
+          </Link>
+        </ul>
+      ) : (
+        <ul className={classes.content}>
+          <Link
+            to="/transaction/monthly"
+            className={
+              location.pathname.includes('transaction') ? classes.select_menu_icon : classes.menu_icon_container
+            }
+          >
+            <FontAwesomeIcon icon={faBook} />
+          </Link>{' '}
+          <Link
+            to="/stats/monthly"
+            className={location.pathname.includes('stats') ? classes.select_menu_icon : classes.menu_icon_container}
+          >
+            <FontAwesomeIcon icon={faChartBar} />
+          </Link>{' '}
+          <Link
+            to="/export"
+            className={location.pathname.includes('export') ? classes.select_menu_icon : classes.menu_icon_container}
+          >
+            <FontAwesomeIcon icon={faFileDownload} />
+          </Link>{' '}
+        </ul>
+      )}
+    </nav>
   );
 };
 
 export default SideBar;
-/* // <nav className={isSideBarOpen ? classes.container : classes.container_back}>
-    //   <div className={isSideBarOpen ? classes.wrapper : classes.wrapper_back}>
-    //     <FontAwesomeIcon className={classes.close_button} icon={faTimes} onClick={closeSideBar} />
-    //     <ul className={classes.content}>
-    //       <Link to="/transaction/monthly" className={classes.title}>
-    //         {languageWords.TRANSACTIONS}
-    //       </Link>
-
-    //       <Link to="/stats/monthly" className={classes.title}>
-    //         {languageWords.STATS}
-    //       </Link>
-
-    //       <Link to="/export" className={classes.title}>
-    //         {languageWords.EXPORT}
-    //       </Link>
-
-    //       <Link to="/accounts" className={classes.title}>
-    //         {languageWords.ACCOUNT}
-    //       </Link>
-    //     </ul>
-    //   </div>
-    // </nav> */

@@ -8,6 +8,6 @@ const config = {
   }
 };
 // eslint-disable-next-line import/prefer-default-export
-export const getStatsInSpecificDatePeriod = async (from: string, to: string): Promise<AxiosResponse> => {
+export const getStatsInSpecificDatePeriod = async (from: Date, to: Date): Promise<AxiosResponse> => {
   return axiosConfig.get(`${STATS}/${from}/${to}`, config);
 };
