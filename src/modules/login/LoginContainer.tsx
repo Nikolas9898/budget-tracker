@@ -13,12 +13,14 @@ import {SIGN_IN, SIGN_UP} from '../../helpers/axiosRoutes.ts/userRoutes';
 const LoginContainer = (): JSX.Element => {
   const [user, setUser] = useState({
     email: '',
+    username: '',
     password: '',
     confirmPassword: ''
   });
   const [isLogin, setIsLogin] = useState(true);
   const [errors, setErrors] = useState({
     email: '',
+    username: '',
     password: '',
     confirmPassword: ''
   });
@@ -38,6 +40,7 @@ const LoginContainer = (): JSX.Element => {
     if (!isValid) {
       setErrors({
         email: validationErrors.email,
+        username: validationErrors.username,
         password: validationErrors.password,
         confirmPassword: validationErrors.confirmPassword
       });
@@ -50,10 +53,11 @@ const LoginContainer = (): JSX.Element => {
     if (loggedUser.data.user) {
       dispatch(signIn(loggedUser.data));
       window.location.pathname = '/';
-      setErrors({email: '', password: '', confirmPassword: ''});
+      setErrors({email: '', password: '', confirmPassword: '', username: ''});
     } else {
       setErrors({
         email: '',
+        username: '',
         password: loggedUser.data.errorMSG,
         confirmPassword: ''
       });
@@ -65,6 +69,7 @@ const LoginContainer = (): JSX.Element => {
     if (!isValid) {
       setErrors({
         email: validationErrors.email,
+        username: validationErrors.username,
         password: validationErrors.password,
         confirmPassword: validationErrors.confirmPassword
       });
@@ -73,10 +78,10 @@ const LoginContainer = (): JSX.Element => {
     localStorage.removeItem('jwt');
 
     const newUser = {
-      username: user.email,
+      username: user.username,
       email: user.email,
       password: user.password,
-      type: 'admin',
+      type: 'user',
       currency: 'BG'
     };
     try {
@@ -85,7 +90,7 @@ const LoginContainer = (): JSX.Element => {
       if (signUp.data.user) {
         dispatch(signIn(signUp.data));
         window.location.pathname = '/';
-        setErrors({email: '', password: '', confirmPassword: ''});
+        setErrors({email: '', password: '', confirmPassword: '', username: ''});
       }
     } catch (e) {
       // eslint-disable-next-line no-alert
@@ -95,8 +100,8 @@ const LoginContainer = (): JSX.Element => {
 
   const changeTab: (event: boolean) => MouseEventHandler<HTMLLIElement> = useCallback(
     (event: boolean) => () => {
-      setUser({email: '', password: '', confirmPassword: ''});
-      setErrors({email: '', password: '', confirmPassword: ''});
+      setUser({email: '', password: '', confirmPassword: '', username: ''});
+      setErrors({email: '', password: '', confirmPassword: '', username: ''});
       setIsLogin(event);
     },
     []
@@ -110,7 +115,7 @@ const LoginContainer = (): JSX.Element => {
               Sign In
             </Tab>
             <Tab className={classes.tab} onClick={changeTab(false)}>
-              Register
+              Sign Up
             </Tab>
           </TabList>
           <TabPanel>

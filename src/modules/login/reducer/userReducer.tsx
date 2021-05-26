@@ -9,7 +9,7 @@ export interface State {
 }
 
 const initialState = {
-  user: {email: '', password: '', confirmPassword: ''},
+  user: {email: '', username: '', password: '', confirmPassword: ''},
   token: '',
   loading: true
 };

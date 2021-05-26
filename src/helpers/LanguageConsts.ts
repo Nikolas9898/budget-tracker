@@ -1,5 +1,6 @@
 export const languageWords = {
   EMAIL: 'Email',
+  USERNAME: 'Username',
   PASSWORD: 'Password',
   CONFIRM_PASSWORD: 'Confirm password',
   SIGN_UP: 'Sign up',
@@ -24,6 +25,7 @@ export const languageWords = {
   PLEASE_ADD_AN_AMOUNT: 'Please add an amount',
   FEES_CAN_NOT_BE_GREATER: "Fees can't be greater then amount",
   PLEASE_ENTER_VALID_EMAIL: 'Please enter a valid email.',
+  PLEASE_ENTER_VALID_USERNAME: 'Please enter a valid username.',
   NO_MATCHING_PASSWORDS: 'The password does not match. ',
   PLEASE_ENTER_VALID_PASSWORD: 'Please enter 6-20 characters [A-Z, a-z, 0-9 only].'
 };

@@ -45,18 +45,23 @@ export const validateLogin = (
 ): {
   email: string;
   password: string;
+  username: string;
   confirmPassword: string;
 } => {
   const isValidEmail = RegExp(EMAIL_VALIDATOR);
   const errors = {
     email: '',
+    username: '',
     password: '',
     confirmPassword: ''
   };
-  const {email, password, confirmPassword} = user;
+  const {email, password, confirmPassword, username} = user;
 
   if (!isValidEmail.test(email)) {
     errors.email = languageWords.PLEASE_ENTER_VALID_EMAIL;
+  }
+  if (username.length < 6) {
+    errors.username = languageWords.PLEASE_ENTER_VALID_USERNAME;
   }
   if (password !== confirmPassword && !isLogin) {
     errors.confirmPassword = languageWords.NO_MATCHING_PASSWORDS;

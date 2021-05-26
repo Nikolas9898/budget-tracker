@@ -24,7 +24,7 @@ const NavBar = (): JSX.Element => {
           <div className={classes.dropdown}>
             <div className={classes.user_content}>
               <FontAwesomeIcon className={classes.user_email} icon={faUser} />
-              <span className={classes.user_email}>{user.email}</span>
+              <span className={classes.user_email}>{user.username}</span>
               <FontAwesomeIcon className={classes.caret_down} icon={faCaretDown} />
             </div>
             <AccountMenu />
