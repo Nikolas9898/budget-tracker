@@ -60,7 +60,8 @@ export const validateLogin = (
   if (!isValidEmail.test(email)) {
     errors.email = languageWords.PLEASE_ENTER_VALID_EMAIL;
   }
-  if (username.length < 6) {
+
+  if (username.length < 6 && !isLogin) {
     errors.username = languageWords.PLEASE_ENTER_VALID_USERNAME;
   }
   if (password !== confirmPassword && !isLogin) {

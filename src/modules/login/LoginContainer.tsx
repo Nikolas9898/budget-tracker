@@ -49,6 +49,7 @@ const LoginContainer = (): JSX.Element => {
     localStorage.removeItem('jwt');
 
     const loggedUser = await axiosConfig.post(`${SIGN_IN}`, user);
+    console.log('asdasd');
 
     if (loggedUser.data.user) {
       dispatch(signIn(loggedUser.data));
