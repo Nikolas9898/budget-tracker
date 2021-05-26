@@ -1,4 +1,4 @@
-import React, {forwardRef, useCallback, useState} from 'react';
+import React, {forwardRef, useCallback, useEffect, useState} from 'react';
 import {CSVLink} from 'react-csv';
 import Moment from 'moment';
 import Select, {OptionsType, OptionTypeBase} from 'react-select';
@@ -6,8 +6,11 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCalendarDay, faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import makeAnimated from 'react-select/animated';
 import DatePicker from 'react-datepicker';
+import axios from 'axios';
 import classes from './ExportStyle.module.css';
 import {errorMsg} from '../../helpers/Validation';
+import {getExportApiData} from './service/ExportService';
+import {TransactionEvent} from '../../models/Transaction';
 
 type CustomInput = {
   value: string | number;
@@ -23,18 +26,25 @@ const ExportContainer = (): JSX.Element => {
   const [selectedType, setSelectedType] = useState('Income');
   const [accounts] = useState<OptionType[]>([
     {label: 'Card', value: 'card'},
-    {label: 'Account', value: 'account'},
+    {label: 'Accounts', value: 'accounts'},
     {label: 'Cash', value: 'cash'}
   ]);
   const [selectedAccounts, setSelectedAccounts] = useState<OptionTypeBase | OptionsType<OptionTypeBase> | null>([]);
-  // const [isSelectedAccountOpen, setIsSelectedAccountOpen] = useState(false);
+
   const [isSelectedTypeOpen, setIsSelectedTypeOpen] = useState(false);
 
   const [from, setFrom] = useState<Date>(Moment().toDate());
   const [to, setTo] = useState(Moment().toDate());
   const [error, setError] = useState('');
+  const [exportData, setExportData] = useState<TransactionEvent[]>([]);
 
   const types = ['Income', 'Expense', 'Income & Expense'];
+
+  const getExportData = async () => {
+    const response = await getExportApiData(from, to, selectedType, selectedAccounts);
+
+    setExportData(response.data);
+  };
 
   const handleSetFromDate = useCallback(
     (date) => {
@@ -66,17 +76,12 @@ const ExportContainer = (): JSX.Element => {
     setIsSelectedTypeOpen(true);
   }, [isSelectedTypeOpen]);
 
-  const headers = [
-    {label: 'First Name', key: 'firstname'},
-    {label: 'Last Name', key: 'lastname'},
-    {label: 'Email', key: 'email'}
-  ];
-
-  const data = [
-    {firstname: 'Ahmed', lastname: 'Tomi', email: 'ah@smthing.co.com'},
-    {firstname: 'Raed', lastname: 'Labes', email: 'rl@smthing.co.com'},
-    {firstname: 'Yezzi', lastname: 'Min l3b', email: 'ymin@cocococo.com'}
-  ];
+  useEffect(() => {
+    getExportData();
+    if (selectedAccounts?.length > 0) {
+      setError('');
+    }
+  }, [selectedType, selectedAccounts, from, to]);
   const ExampleCustomInput: React.FC<CustomInput> = forwardRef(({value, onClick}) => (
     <div className="row align-items-center" role="button" tabIndex={0} onKeyDown={() => onClick} onClick={onClick}>
       <div className={`col-9 ps-4 `}>{value}</div>
@@ -166,54 +171,6 @@ const ExportContainer = (): JSX.Element => {
               options={accounts}
             />
 
-            {/* <div
-            style={{position: 'relative'}}
-            role="button"
-            tabIndex={0}
-            onKeyDown={openAccountOptions}
-            onClick={openAccountOptions}
-          >
-            <div className={classes.input}>
-              <div className={classes.title}>
-                {selectedAccounts.map((account) => (
-                  <div className={classes.select_account_box}>
-                    <div>{account}</div>
-                    <FontAwesomeIcon
-                      className={classes.select_delete_icon}
-                      // onClick={() => removeSelectAccount(account)}
-                      icon={faTimes}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div>
-                {' '}
-                <FontAwesomeIcon
-                  className={classes.caret_down_icon}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={openAccountOptions}
-                  onClick={openAccountOptions}
-                  icon={faCaretDown}
-                />
-              </div>
-            </div>
-            {isSelectedAccountOpen ? (
-              <div className={` ${classes.select_options_wrraper}`}>
-                {accounts.map((option) => (
-                  <div
-                    className={classes.select_option_title}
-                    role="button"
-                    tabIndex={0}
-                    // onKeyDown={() => handleSelectAccount(option)}
-                    // onClick={() => handleSelectAccount(option)}
-                  >
-                    {option}
-                  </div>
-                ))}
-              </div>
-            ) : null}
-          </div> */}
             <div style={{fontSize: '1.4rem'}}>{errorMsg(error)}</div>
           </div>
           <div className="col-xxl-3 col-sm-12 col-lg-6 mb-2">
@@ -253,13 +210,7 @@ const ExportContainer = (): JSX.Element => {
                 Export CSV
               </button>
             ) : (
-              <CSVLink
-                className={classes.export_button}
-                data={data}
-                headers={headers}
-                filename="my-file.csv"
-                target="_blank"
-              >
+              <CSVLink className={classes.export_button} data={exportData} filename="my-file.csv" target="_blank">
                 Export CSV
               </CSVLink>
             )}

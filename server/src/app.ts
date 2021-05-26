@@ -5,6 +5,7 @@ import statsRoute from './routes/stats/stats.routes';
 import transactionRoutes from './routes/transaction/transaction.route';
 import authRoute from './routes/authentication/authentication.route';
 import categoryRoutes from './routes/category/category.routes';
+import exportRoutes from './routes/export/export.routes';
 
 const port = 5000;
 const app = express();
@@ -20,5 +21,6 @@ app.use(userRoute);
 app.use(statsRoute);
 app.use(transactionRoutes);
 app.use(categoryRoutes);
+app.use(exportRoutes);
 
 export default app;
