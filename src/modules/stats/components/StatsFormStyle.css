@@ -9,9 +9,15 @@
 }
 .form_wrapper {
   border: black solid 2px;
-  margin: 10px;
-}
 
+  margin: 40px 20px 10px 20px !important;
+
+  max-width: 700px !important;
+  border-radius: 5px;
+  -webkit-box-shadow: 11px 14px 14px -1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 11px 14px 14px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: 11px 14px 14px -1px rgba(0, 0, 0, 0.75);
+}
 .form_wrapper svg {
   width: 80%;
 }
@@ -20,10 +26,10 @@
   margin: auto;
   height: 50%;
 }
-.title {
-  font-size: 20px;
+.title_stats {
+  font-size: 2rem;
   font-weight: bolder;
-  margin: 20px;
+  margin-top: 30px !important;
 }
 
 .content_table {
@@ -45,15 +51,28 @@ text {
 tr:last-of-type {
   border: none;
 }
-
-.percent_content {
-  width: 40px;
+.percent_container {
+  width: 50px !important;
 }
 .percent {
-  background-color: blue;
-  color: white;
-  padding: 10px;
+  padding: 5px;
+  border-radius: 100px;
 }
 .amount {
   text-align: right;
+}
+.table_row {
+  cursor: pointer;
+}
+.table_row:hover {
+  cursor: pointer;
+  background-color: #808080;
+  color: white;
+  font-size: 30px;
+}
+.table_row_selected {
+  cursor: pointer;
+  background-color: #808080;
+  color: white;
+  font-size: 30px;
 }

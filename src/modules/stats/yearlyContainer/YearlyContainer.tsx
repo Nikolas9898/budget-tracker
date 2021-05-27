@@ -9,6 +9,8 @@ import {getStatsInSpecificDatePeriod} from '../service/StatsService';
 const YearlyContainer = (): JSX.Element => {
   const [incomeStats, setIncomeStats] = useState([]);
   const [expenseStats, setExpenseStats] = useState([]);
+  const [selectedIncome, setSelectedIncome] = useState<number | undefined>();
+  const [selectedExpense, setSelectedExpense] = useState<number | undefined>();
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
 
   const getYearlyStats = async (date: Date) => {
@@ -24,6 +26,14 @@ const YearlyContainer = (): JSX.Element => {
     }
   };
 
+  const handleSelect = (value: {index: number | undefined; isIncome: boolean}) => {
+    if (value.isIncome) {
+      setSelectedIncome(value.index);
+    } else {
+      setSelectedExpense(value.index);
+    }
+  };
+
   useEffect(() => {
     getYearlyStats(stateTransaction.date);
   }, [stateTransaction.date]);
@@ -31,9 +41,9 @@ const YearlyContainer = (): JSX.Element => {
   return (
     <div className="wrapper_stats">
       <NavBarMenu />
-      <div className="row justify-content-center">
-        <StatsForm stats={incomeStats} isIncome />
-        <StatsForm stats={expenseStats} isIncome={false} />
+      <div className="row justify-content-evenly">
+        <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />
+        <StatsForm stats={expenseStats} isIncome={false} selected={selectedExpense} handleSelect={handleSelect} />
       </div>
     </div>
   );

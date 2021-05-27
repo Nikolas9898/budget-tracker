@@ -10,8 +10,17 @@ import '../../../scss/variables.scss';
 const MonthlyContainer = (): JSX.Element => {
   const [incomeStats, setIncomeStats] = useState([]);
   const [expenseStats, setExpenseStats] = useState([]);
+  const [selectedIncome, setSelectedIncome] = useState<number | undefined>();
+  const [selectedExpense, setSelectedExpense] = useState<number | undefined>();
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
 
+  const handleSelect = (value: {index: number | undefined; isIncome: boolean}) => {
+    if (value.isIncome) {
+      setSelectedIncome(value.index);
+    } else {
+      setSelectedExpense(value.index);
+    }
+  };
   const getMonthlyStats = async (date: Date) => {
     try {
       const from: Date = firstDateOfTheMonth(date).toDate();
@@ -32,9 +41,9 @@ const MonthlyContainer = (): JSX.Element => {
     <div className="wrapper_stats">
       <NavBarMenu />
 
-      <div className="row justify-content-center">
-        <StatsForm stats={incomeStats} isIncome />
-        <StatsForm stats={expenseStats} isIncome={false} />
+      <div className="row justify-content-evenly ">
+        <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />
+        <StatsForm stats={expenseStats} isIncome={false} selected={selectedExpense} handleSelect={handleSelect} />
       </div>
     </div>
   );
