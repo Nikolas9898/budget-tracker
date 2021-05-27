@@ -4,6 +4,7 @@ import {faChevronRight, faBook, faChartBar, faFileDownload, faChevronLeft} from 
 import {Link, useLocation} from 'react-router-dom';
 import classes from './SideBarStyle.module.css';
 import languageWords from '../../helpers/LanguageConsts';
+import {TransactionPage} from '../../models/Transaction';
 
 const SideBar = (): JSX.Element => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -24,19 +25,22 @@ const SideBar = (): JSX.Element => {
         <ul className={classes.content}>
           <Link
             to="/transaction/monthly"
-            className={location.pathname.includes('transaction') ? classes.title_select : classes.title}
+            className={location.pathname.includes(TransactionPage.TRANSACTION) ? classes.title_select : classes.title}
           >
             <FontAwesomeIcon icon={faBook} /> {languageWords.TRANSACTIONS}
           </Link>
 
           <Link
             to="/stats/monthly"
-            className={location.pathname.includes('stats') ? classes.title_select : classes.title}
+            className={location.pathname.includes(TransactionPage.STATS) ? classes.title_select : classes.title}
           >
             <FontAwesomeIcon icon={faChartBar} /> {languageWords.STATS}
           </Link>
 
-          <Link to="/export" className={location.pathname.includes('export') ? classes.title_select : classes.title}>
+          <Link
+            to="/export"
+            className={location.pathname.includes(TransactionPage.EXPORT) ? classes.title_select : classes.title}
+          >
             <FontAwesomeIcon icon={faFileDownload} /> {languageWords.EXPORT}
           </Link>
         </ul>
@@ -45,20 +49,28 @@ const SideBar = (): JSX.Element => {
           <Link
             to="/transaction/monthly"
             className={
-              location.pathname.includes('transaction') ? classes.select_menu_icon : classes.menu_icon_container
+              location.pathname.includes(TransactionPage.TRANSACTION)
+                ? classes.select_menu_icon
+                : classes.menu_icon_container
             }
           >
             <FontAwesomeIcon icon={faBook} />
           </Link>{' '}
           <Link
             to="/stats/monthly"
-            className={location.pathname.includes('stats') ? classes.select_menu_icon : classes.menu_icon_container}
+            className={
+              location.pathname.includes(TransactionPage.STATS) ? classes.select_menu_icon : classes.menu_icon_container
+            }
           >
             <FontAwesomeIcon icon={faChartBar} />
           </Link>{' '}
           <Link
             to="/export"
-            className={location.pathname.includes('export') ? classes.select_menu_icon : classes.menu_icon_container}
+            className={
+              location.pathname.includes(TransactionPage.EXPORT)
+                ? classes.select_menu_icon
+                : classes.menu_icon_container
+            }
           >
             <FontAwesomeIcon icon={faFileDownload} />
           </Link>{' '}

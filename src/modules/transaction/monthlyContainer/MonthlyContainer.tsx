@@ -167,7 +167,7 @@ const MonthlyContainer = (): JSX.Element => {
     <div className={classes.wrapper}>
       <NavBarMenu />
       <div className="row">
-        <div className="col-xxl-7 col-xl-12 pe-4  ">
+        <div className="col-xxl-7 col-xl-12 pe-4  " style={{minWidth: '600px'}}>
           <Calendar
             handleOpenInfoModal={handleOpenInfoModal}
             transactions={transactions}
