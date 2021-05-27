@@ -67,6 +67,8 @@
 }
 .calendar_date_box_container {
   margin: 0.5%;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
   flex-basis: 13.2857%;
   max-width: 12.2857%;
   height: 100px;
@@ -77,6 +79,8 @@
 .calendar_date_box_container_other_month {
   margin: 0.5%;
   flex-basis: 13.2857%;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
   max-width: 12.2857%;
   height: 100px;
   border: #0160b2 solid 2px;

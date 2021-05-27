@@ -70,10 +70,7 @@
   font-size: 20px;
 }
 .add_button {
-  position: fixed;
-  top: 80%;
-  left: 80%;
-  font-size: 100px;
+  font-size: 2rem;
   color: coral;
   cursor: pointer;
 }
