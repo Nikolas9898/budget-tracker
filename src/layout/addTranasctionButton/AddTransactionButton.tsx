@@ -96,7 +96,7 @@ const AddTransactionButton = (): JSX.Element => {
   const {isTransactionOpen} = stateTransaction;
 
   return (
-    <>
+    <div className="col-md-2 col-lg text-end">
       <FontAwesomeIcon className={classes.add_button} icon={faPlusCircle} onClick={handleOpenTransaction} />
 
       {(isTransactionOpen || transactionId.length) > 0 && (
@@ -111,7 +111,7 @@ const AddTransactionButton = (): JSX.Element => {
           handleDelete={handleDelete}
         />
       )}
-    </>
+    </div>
   );
 };
 

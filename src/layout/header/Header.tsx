@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCaretDown, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
@@ -9,15 +9,7 @@ import AccountMenu from '../accountMenu/AccountMenu';
 import {getHeaderTitle} from '../../helpers/TransactionHelpers';
 
 const NavBar = (): JSX.Element => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);
-
-  const openDropdownMenu = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const test = false;
 
   return (
     <>
