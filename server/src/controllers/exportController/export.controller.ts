@@ -3,25 +3,17 @@ import moment from 'moment';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
 import Transaction from '../../dbModels/transaction/transaction.model';
 import {MomentConstants, TransactionEvent} from '../../models/transactions';
+import {AggregatedTransactionType, EXPENSE_OR_INCOME, Filters} from '../../models/export';
+import {transformIntoEventsArray} from '../../helpers/exportHelpers/exportHelpers';
 
-export default interface AggregatedTransactionType extends Document {
-  _id: string;
-  createdAt: Date;
-  events: TransactionEvent;
-  userId: string;
-  income: number;
-  expense: number;
-  updatedAt: string;
-  __v: number;
-}
 export const exportTransactionByFilters: RequestHandler = async (req: Request, res: Response) => {
   try {
     const {from, to} = req.params;
     const {type} = req.params;
-    const filters: {label: string; value: string}[] = req.body;
+    const filters: Filters[] = req.body;
     const userId: string = tokenDecoder(req.headers.authorization);
     const transactions: AggregatedTransactionType[] | null =
-      type.toLowerCase() === 'income & expense'
+      type.toLowerCase() === EXPENSE_OR_INCOME
         ? await Transaction.aggregate([
             {$match: {userId}},
             {
@@ -49,17 +41,7 @@ export const exportTransactionByFilters: RequestHandler = async (req: Request, r
           ]);
     const eventsArray: TransactionEvent[] = [];
 
-    transactions.forEach(({events}) => {
-      delete events._id;
-      delete events.transferId;
-      delete events.to;
-      delete events.from;
-      events.date = moment(events.date).format('MMMM Do YYYY');
-      events.amount = events.amount / 100;
-      filters.forEach((filter) => {
-        events.account === filter.value && eventsArray.push(events);
-      });
-    });
+    transformIntoEventsArray(eventsArray, transactions, filters);
 
     return res.json(eventsArray);
   } catch (error) {

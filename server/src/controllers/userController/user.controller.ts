@@ -33,21 +33,11 @@ export const getLoggedUser: RequestHandler = async (req: Request, res: Response)
 export const editUser: RequestHandler = async (req: Request, res: Response) => {
   try {
     const {authorization} = req.headers;
-    const {username, email, password, type} = req.body;
     const userId: string = tokenDecoder(authorization);
 
-    await User.updateOne({
-      userId,
-
-      $set: {
-        username,
-        email,
-        type,
-        password
-      }
-    });
+    await User.findByIdAndUpdate(userId, req.body, {new: true, useFindAndModify: false});
     return res.json(succsessMessages.UPDATED_SUCCESSFULLY);
   } catch (error) {
-    res.json(error.message);
+    return res.json(error.message);
   }
 };
