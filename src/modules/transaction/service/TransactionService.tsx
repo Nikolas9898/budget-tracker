@@ -1,4 +1,5 @@
 import {AxiosResponse} from 'axios';
+import moment from 'moment';
 import axiosConfig from '../../../axiosConfig';
 import {
   CREATE_TRANSACTION,
@@ -21,7 +22,7 @@ export const createTransactionRequest = async (data: ServiceTransaction): Promis
 };
 
 export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<AxiosResponse> => {
-  return axiosConfig.get(`${SPECIFIC_DATE_PERIOD}/${from}/${to}`, config);
+  return axiosConfig.get(`${SPECIFIC_DATE_PERIOD}/${moment(from).toISOString()}/${moment(to).toISOString()}`, config);
 };
 
 export const getYearlyOrWeekly = async (

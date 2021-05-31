@@ -56,7 +56,3 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
     return res.json(error);
   }
 };
-
-const generateRandomColor = (): string => {
-  return '#' + Math.floor(Math.random() * 16777215).toString(16);
-};
