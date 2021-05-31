@@ -2,6 +2,16 @@ import {TransactionEvent} from '../../../models/Transaction';
 import {HandleInputChange} from '../../../models/Function';
 import {ActionTypes} from '../actionTypes';
 
+export const handlePreviousWeek = (): {
+  type: ActionTypes;
+} => ({
+  type: ActionTypes.HANDLE_NEXT_WEEK
+});
+export const handleNextWeek = (): {
+  type: ActionTypes;
+} => ({
+  type: ActionTypes.HANDLE_PREVIOUS_WEEK
+});
 export const handleNextMonth = (): {
   type: ActionTypes;
 } => ({

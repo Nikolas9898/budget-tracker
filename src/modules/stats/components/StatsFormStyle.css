@@ -1,9 +1,3 @@
-.wrapper_stats {
-  width: 100%;
-  padding: 0 40px 0 40px;
-  min-height: 100vh;
-  transition: all 0.3s;
-}
 .stats_container {
   display: flex;
 }
@@ -14,9 +8,9 @@
 
   max-width: 700px !important;
   border-radius: 5px;
-  -webkit-box-shadow: 11px 14px 14px -1px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 11px 14px 14px -1px rgba(0, 0, 0, 0.75);
-  box-shadow: 11px 14px 14px -1px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 10px 9px 13px -1px rgba(204, 204, 204, 1);
+  -moz-box-shadow: 10px 9px 13px -1px rgba(204, 204, 204, 1);
+  box-shadow: 10px 9px 13px -1px rgba(204, 204, 204, 1);
 }
 .form_wrapper svg {
   width: 80%;
@@ -45,9 +39,6 @@ td {
   border-top: none;
   padding: 15px;
 }
-text {
-  font-size: 4px !important;
-}
 tr:last-of-type {
   border: none;
 }
@@ -55,8 +46,9 @@ tr:last-of-type {
   width: 50px !important;
 }
 .percent {
-  padding: 5px;
-  border-radius: 100px;
+  width: 20px;
+  border-radius: 50%;
+  height: 20px;
 }
 .amount {
   text-align: right;
@@ -64,15 +56,8 @@ tr:last-of-type {
 .table_row {
   cursor: pointer;
 }
-.table_row:hover {
-  cursor: pointer;
-  background-color: #808080;
-  color: white;
-  font-size: 30px;
-}
+
 .table_row_selected {
+  background-color: lightgrey;
   cursor: pointer;
-  background-color: #808080;
-  color: white;
-  font-size: 30px;
 }

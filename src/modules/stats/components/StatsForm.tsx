@@ -34,27 +34,34 @@ const StatsForm: React.FC<Props> = ({stats, isIncome, selected, handleSelect}) =
         <PieChart
           style={{
             fontFamily: '"Nunito Sans", -apple-system, Helvetica, Arial, sans-serif',
-            fontSize: '8px'
+            fontSize: '0.3rem',
+            width: '420px'
           }}
           data={data}
           radius={PieChart.defaultProps.radius - 6}
           lineWidth={60}
-          segmentsStyle={{transition: 'stroke .3s', cursor: 'pointer'}}
+          segmentsStyle={{
+            transition: 'stroke .3s',
+            cursor: 'pointer'
+          }}
           segmentsShift={(index) => (index === selected ? 6 : 1)}
           animate
           label={({dataEntry}) => dataEntry.percentage.toFixed(1)}
           labelPosition={100 - lineWidth / 2}
           labelStyle={{
             fill: '#fff',
-            opacity: 0.75,
+
             pointerEvents: 'none'
           }}
-          onMouseOver={(_, index) => {
+          onClick={(_, index) => {
             handleSelect({index, isIncome});
           }}
-          onMouseOut={() => {
-            handleSelect({index: undefined, isIncome});
-          }}
+          // onMouseOver={(_, index) => {
+          //   handleSelect({index, isIncome});
+          // }}
+          // onMouseOut={() => {
+          //   handleSelect({index: undefined, isIncome});
+          // }}
         />
       </div>
       <div className="row justify-content-center mt-5">

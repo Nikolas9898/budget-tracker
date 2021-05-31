@@ -12,20 +12,20 @@ const AccountMenu = (): JSX.Element => {
   };
   return (
     <div className={`dropdown-menu ${classes.dropdown_content}`} aria-labelledby="dropdownMenuButton1">
-      <Link to="/" className={classes.dropdown_item}>
-        <FontAwesomeIcon className={classes.user_email} icon={faUser} />
-        <div className={classes.dropdown_item_text}>{languageWords.PROFILE}</div>
+      <Link to="/">
+        <FontAwesomeIcon icon={faUser} />
+        <div>{languageWords.PROFILE}</div>
       </Link>
 
-      <Link to="/" className={classes.dropdown_item}>
-        <FontAwesomeIcon className={classes.user_email} icon={faCog} />
-        <div className={classes.dropdown_item_text}> {languageWords.SETTINGS}</div>
+      <Link to="/">
+        <FontAwesomeIcon icon={faCog} />
+        <div> {languageWords.SETTINGS}</div>
       </Link>
 
-      <button type="button" className={classes.dropdown_item} onClick={handleExit}>
-        <FontAwesomeIcon className={classes.user_email} icon={faSignOutAlt} />
-        <div className={classes.dropdown_item_text}>{languageWords.EXIT}</div>
-      </button>
+      <a type="button" href="/" onClick={handleExit}>
+        <FontAwesomeIcon icon={faSignOutAlt} />
+        <div>{languageWords.EXIT}</div>
+      </a>
     </div>
   );
 };

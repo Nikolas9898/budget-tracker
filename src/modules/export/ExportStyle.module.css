@@ -1,16 +1,10 @@
-.wrapper {
-  width: 100%;
-  padding: 0 40px 0 40px;
-  min-height: 100vh;
-  transition: all 0.3s;
-}
 .label {
   font-size: 1.5rem;
   font-weight: 500;
 }
 .input {
   width: 100%;
-  min-height: 70px;
+  min-height: 60px;
   font-size: 1.5rem;
   background-color: #0160b2;
   color: white;

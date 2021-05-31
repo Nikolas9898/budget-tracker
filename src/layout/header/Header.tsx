@@ -27,9 +27,13 @@ const NavBar = (): JSX.Element => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <FontAwesomeIcon className={classes.user_email} icon={faUser} />
-              <span className={classes.user_email}>{user.username}</span>
-              <FontAwesomeIcon className={classes.caret_down} icon={faCaretDown} />
+              <div className={classes.user_email}>
+                <FontAwesomeIcon icon={faUser} />
+              </div>
+              <div className={classes.user_email}>{user.username}</div>
+              <div className={classes.caret_down}>
+                <FontAwesomeIcon icon={faCaretDown} />
+              </div>
             </div>
             <AccountMenu />
           </div>

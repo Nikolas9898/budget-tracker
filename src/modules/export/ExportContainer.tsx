@@ -1,12 +1,11 @@
 import React, {forwardRef, useCallback, useEffect, useState, CSSProperties} from 'react';
 import {CSVLink} from 'react-csv';
 import Moment from 'moment';
-import Select, {OptionsType, OptionTypeBase, StylesConfig} from 'react-select';
+import Select, {OptionsType, OptionTypeBase, StylesConfig, components} from 'react-select';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCalendarDay} from '@fortawesome/free-solid-svg-icons';
 import makeAnimated from 'react-select/animated';
 import DatePicker from 'react-datepicker';
-
 import classes from './ExportStyle.module.css';
 import {errorMsg} from '../../helpers/Validation';
 import {getExportApiData} from './service/ExportService';
@@ -46,6 +45,7 @@ const ExportContainer = (): JSX.Element => {
     {label: 'Cash', value: 'cash'}
   ];
 
+  const dateFormat = 'dd/MM/yyyy';
   const getExportData = async () => {
     const response = await getExportApiData(from, to, selectedType.value, selectedAccounts);
 
@@ -94,19 +94,19 @@ const ExportContainer = (): JSX.Element => {
     backgroundColor: '#0160b2',
     color: 'white',
     height: '100%',
-    minHeight: '70px',
-    fontSize: '1.5rem',
+    minHeight: '60px',
+    fontSize: '1.3rem',
     borderRadius: '6px'
   };
 
   const customPlaceholderStyle: CSSProperties = {
-    fontSize: '2rem',
+    fontSize: '1rem',
     color: 'white'
   };
   const customOptionStyle: CSSProperties = {
     color: 'white',
     backgroundColor: 'coral',
-    fontSize: '1.5rem'
+    fontSize: '1.3rem'
   };
   const customMenuStyle: CSSProperties = {
     color: 'white',
@@ -115,10 +115,15 @@ const ExportContainer = (): JSX.Element => {
     border: '2px solid lightgrey'
   };
   const customSingleValueStyle: CSSProperties = {
-    color: 'white',
-    fontSize: '1.5rem'
+    color: 'white'
   };
-
+  const customMultiValue: CSSProperties = {
+    backgroundColor: 'white',
+    borderRadius: '5px'
+  };
+  const customMultiValueRemove: CSSProperties = {
+    color: 'black'
+  };
   type IsMulti = true;
 
   const selectStyle: StylesConfig<OptionTypeBase, IsMulti> = {
@@ -134,6 +139,7 @@ const ExportContainer = (): JSX.Element => {
         ...customPlaceholderStyle
       };
     },
+
     option: (provided, state) => {
       return {
         ...provided,
@@ -153,11 +159,44 @@ const ExportContainer = (): JSX.Element => {
         ...provided,
         ...customSingleValueStyle
       };
+    },
+    noOptionsMessage: (provided) => {
+      return {
+        ...provided,
+        ...customSingleValueStyle
+      };
+    },
+    multiValueRemove: (provided) => {
+      return {
+        ...provided,
+        ...customMultiValueRemove
+      };
+    },
+    multiValue: (provided) => {
+      return {
+        ...provided,
+        ...customMultiValue
+      };
     }
   };
-
+  const ValueContainer = ({children, getValue, ...props}: any) => {
+    const {selectProps} = props;
+    const {inputValue} = selectProps;
+    const maxToShow = 1;
+    const {length} = getValue();
+    const displayChips = React.Children.toArray(children).slice(0, maxToShow);
+    const shouldBadgeShow = length > maxToShow;
+    const displayLength = length - maxToShow;
+    return (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <components.ValueContainer {...props}>
+        {!inputValue && displayChips}
+        <div>{shouldBadgeShow && `+ ${displayLength}`}</div>
+      </components.ValueContainer>
+    );
+  };
   return (
-    <div className={classes.wrapper}>
+    <div className="wrapper">
       <div className="container-xx mt-5 ">
         <div className="row justify-content-between  align-items-end">
           <div className="col-xxl col-sm-12 col-lg-6 mb-2">
@@ -178,7 +217,7 @@ const ExportContainer = (): JSX.Element => {
               styles={selectStyle}
               closeMenuOnSelect={false}
               onChange={(option) => handleAccountSelect(option)}
-              components={animatedComponents}
+              components={{ValueContainer}}
               options={accounts}
             />
             <div style={{fontSize: '1.4rem'}}>{errorMsg(error)}</div>
@@ -188,7 +227,7 @@ const ExportContainer = (): JSX.Element => {
             <DatePicker
               wrapperClassName={classes.input}
               selected={from}
-              dateFormat=" dd / MM / yyyy"
+              dateFormat={dateFormat}
               onChange={handleSetFromDate}
               timeCaption="time"
               customInput={React.createElement(ExampleCustomInput)}
@@ -199,7 +238,7 @@ const ExportContainer = (): JSX.Element => {
             <DatePicker
               wrapperClassName={classes.input}
               selected={to}
-              dateFormat=" dd / MM / yyyy"
+              dateFormat={dateFormat}
               onChange={handleSetToDate}
               timeCaption="time"
               minDate={from}

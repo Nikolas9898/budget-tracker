@@ -1,4 +1,4 @@
-.wrapper {
+.wrapper_sideBar {
   min-width: 250px;
   max-width: 250px;
   background: lightgrey;
@@ -6,7 +6,7 @@
   transition: all 0.3s;
   min-height: 100vh;
 }
-.wrapper_back {
+.wrapper_sideBar_back {
   min-width: 80px;
   max-width: 80px;
   text-align: center;
@@ -53,8 +53,17 @@
   margin-top: 30px;
   display: grid;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
 }
-
+.small_sidebar_content {
+  padding: 20px 0;
+  margin-top: 50px;
+  display: grid;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
 .title {
   padding: 10px 0 10px 20px;
   font-size: 2rem;
@@ -63,27 +72,14 @@
   text-decoration: none;
 }
 
-.title:hover {
-  text-decoration: none;
-  color: #0160b2;
-  transition: all 0.3s;
-}
 .title_select {
   padding: 10px 0 10px 20px;
   font-size: 2rem;
   cursor: pointer;
   text-decoration: none;
   color: #0160b2;
-  transition: all 0.3s;
 }
-.title_select:hover {
-  padding: 10px 0 10px 20px;
-  font-size: 2rem;
-  cursor: pointer;
-  text-decoration: none;
-  color: #0160b2;
-  transition: all 0.3s;
-}
+
 .menu_icon_container {
   font-size: 2rem;
   color: white;
@@ -91,21 +87,11 @@
   text-decoration: none;
   padding: 10px 0 10px 0;
 }
-.menu_icon_container:hover {
-  color: #0160b2;
-  text-decoration: none;
-  transition: all 0.3s;
-}
+
 .select_menu_icon {
   color: #0160b2;
   text-decoration: none;
   font-size: 2rem;
   cursor: pointer;
   padding: 10px 0 10px 0;
-}
-.select_menu_icon:hover {
-  color: #0160b2;
-  text-decoration: none;
-  font-size: 2rem;
-  cursor: pointer;
 }

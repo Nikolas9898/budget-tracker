@@ -6,10 +6,12 @@ import {getStatsInSpecificDatePeriod} from '../service/StatsService';
 import {firstDateOfTheMonth, lastDateOfTheMonth} from '../../../helpers/MomentHelpers';
 import {TransactionReducer} from '../../../models/Transaction';
 import '../../../scss/variables.scss';
+import {setStatColor} from '../../../helpers/StatHelper';
+import {Stat} from '../../../models/Stat';
 
 const MonthlyContainer = (): JSX.Element => {
-  const [incomeStats, setIncomeStats] = useState([]);
-  const [expenseStats, setExpenseStats] = useState([]);
+  const [incomeStats, setIncomeStats] = useState<Stat[]>([]);
+  const [expenseStats, setExpenseStats] = useState<Stat[]>([]);
   const [selectedIncome, setSelectedIncome] = useState<number | undefined>();
   const [selectedExpense, setSelectedExpense] = useState<number | undefined>();
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
@@ -27,8 +29,11 @@ const MonthlyContainer = (): JSX.Element => {
       const to: Date = lastDateOfTheMonth(date).toDate();
       const response = await getStatsInSpecificDatePeriod(from, to);
 
-      setIncomeStats(response.data.incomeStats);
-      setExpenseStats(response.data.expenseStats);
+      const income = setStatColor(response.data.incomeStats);
+      const expense = setStatColor(response.data.expenseStats);
+
+      setIncomeStats(income);
+      setExpenseStats(expense);
     } catch (e) {
       throw new Error(e);
     }
@@ -38,7 +43,7 @@ const MonthlyContainer = (): JSX.Element => {
     getMonthlyStats(stateTransaction.date);
   }, [stateTransaction.date]);
   return (
-    <div className="wrapper_stats">
+    <div className="wrapper">
       <NavBarMenu />
 
       <div className="row justify-content-evenly ">

@@ -31,6 +31,21 @@ const initialState = {
 };
 export const transactionReducer = (state = initialState, action: AnyAction): State => {
   switch (action.type) {
+    case ActionTypes.HANDLE_NEXT_WEEK: {
+      const nextMonth = Moment(state.date).set('date', state.date.getDate() - 7);
+      return {
+        ...state,
+        date: nextMonth.toDate()
+      };
+    }
+
+    case ActionTypes.HANDLE_PREVIOUS_WEEK: {
+      const previousMonth = Moment(state.date).set('date', state.date.getDate() + 7);
+      return {
+        ...state,
+        date: previousMonth.toDate()
+      };
+    }
     case ActionTypes.HANDLE_NEXT_MONTH: {
       const nextMonth = Moment(state.date).add(1, UnitOfTime.MONTH);
       return {

@@ -16,7 +16,6 @@ import {
   firstDateOfLastWeekOfTheMonth,
   lastDateOfLastWeekOfTheMonth
 } from '../../../helpers/MomentHelpers';
-import classes from './WeeklyStyle.module.css';
 
 const WeeklyContainer = (): JSX.Element => {
   const [weeksInMonth, setWeeks] = useState<Month[]>([]);
@@ -79,7 +78,7 @@ const WeeklyContainer = (): JSX.Element => {
     getWeeks(stateTransaction.date);
   }, [amount, stateTransaction.date]);
   return (
-    <div className={classes.wrapper}>
+    <div className="wrapper">
       <NavBarMenu />
       <div className="container">
         <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />

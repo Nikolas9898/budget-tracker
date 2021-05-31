@@ -15,7 +15,7 @@ const SideBar = (): JSX.Element => {
   const location = useLocation();
 
   return (
-    <nav className={isSideBarOpen ? classes.wrapper : classes.wrapper_back}>
+    <nav className={isSideBarOpen ? classes.wrapper_sideBar : classes.wrapper_sideBar_back}>
       <div className={classes.sidebar_header}>{isSideBarOpen ? 'Budget Tracker' : 'BT'}</div>
       <div className={isSideBarOpen ? classes.close_button_open_sidebar : classes.close_button}>
         <FontAwesomeIcon icon={isSideBarOpen ? faChevronLeft : faChevronRight} onClick={closeSideBar} />
@@ -45,7 +45,7 @@ const SideBar = (): JSX.Element => {
           </Link>
         </ul>
       ) : (
-        <ul className={classes.content}>
+        <ul className={classes.small_sidebar_content}>
           <Link
             to="/transaction/monthly"
             className={

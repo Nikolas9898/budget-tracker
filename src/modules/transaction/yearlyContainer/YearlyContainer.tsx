@@ -8,7 +8,6 @@ import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import YearlyTableRow from './components/YearlyTableRow';
 import {UnitOfTime} from '../../../models/Clendar';
-import classes from './YearlyStyle.module.css';
 /* eslint-disable react-hooks/exhaustive-deps */
 
 const YearlyContainer = (): JSX.Element => {
@@ -83,7 +82,7 @@ const YearlyContainer = (): JSX.Element => {
   }, [stateTransaction.date]);
 
   return (
-    <div className={classes.wrapper}>
+    <div className="wrapper">
       <NavBarMenu />
       <div className="container">
         <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />

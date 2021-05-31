@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {firstDateOfTheYear, lastDateOfTheYear} from '../../../helpers/MomentHelpers';
+import {setStatColor} from '../../../helpers/StatHelper';
 import NavBarMenu from '../../../layout/navBar/NavBar';
+import {Stat} from '../../../models/Stat';
 import {TransactionReducer} from '../../../models/Transaction';
 import StatsForm from '../components/StatsForm';
 import {getStatsInSpecificDatePeriod} from '../service/StatsService';
 
 const YearlyContainer = (): JSX.Element => {
-  const [incomeStats, setIncomeStats] = useState([]);
-  const [expenseStats, setExpenseStats] = useState([]);
+  const [incomeStats, setIncomeStats] = useState<Stat[]>([]);
+  const [expenseStats, setExpenseStats] = useState<Stat[]>([]);
   const [selectedIncome, setSelectedIncome] = useState<number | undefined>();
   const [selectedExpense, setSelectedExpense] = useState<number | undefined>();
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
@@ -19,8 +21,11 @@ const YearlyContainer = (): JSX.Element => {
       const to: Date = lastDateOfTheYear(date).toDate();
       const response = await getStatsInSpecificDatePeriod(from, to);
 
-      setIncomeStats(response.data.incomeStats);
-      setExpenseStats(response.data.expenseStats);
+      const income = setStatColor(response.data.incomeStats);
+      const expense = setStatColor(response.data.expenseStats);
+
+      setIncomeStats(income);
+      setExpenseStats(expense);
     } catch (e) {
       throw new Error(e);
     }
@@ -39,7 +44,7 @@ const YearlyContainer = (): JSX.Element => {
   }, [stateTransaction.date]);
 
   return (
-    <div className="wrapper_stats">
+    <div className="wrapper">
       <NavBarMenu />
       <div className="row justify-content-evenly">
         <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />

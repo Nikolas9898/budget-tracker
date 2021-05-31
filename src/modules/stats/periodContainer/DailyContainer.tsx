@@ -41,7 +41,7 @@ const DailyContainer = (): JSX.Element => {
     getDailyStats();
   }, [stateTransaction.date]);
   return (
-    <div className="wrapper_stats">
+    <div className="wrapper">
       <NavBarMenu />
       <div className="row justify-content-evenly">
         <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />

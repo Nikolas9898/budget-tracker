@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Moment from 'moment';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {TransactionReducer, TransactionTypes} from '../../models/Transaction';
 import {
   transactionInputChange,
@@ -17,7 +15,7 @@ import {
   deleteTransaction,
   editTransaction
 } from '../../modules/transaction/service/TransactionService';
-import classes from '../../modules/transaction/dailyContainer/DailyStyle.module.css';
+import '../navBar/NavBarStyle.css';
 import {UnitOfTime} from '../../models/Clendar';
 import {getTransaction} from '../../helpers/TransactionHelpers';
 
@@ -97,8 +95,9 @@ const AddTransactionButton = (): JSX.Element => {
 
   return (
     <div className="col-md-2 col-lg text-end">
-      <FontAwesomeIcon className={classes.add_button} icon={faPlusCircle} onClick={handleOpenTransaction} />
-
+      <button type="button" className="btn navBarBtn ml-2" onClick={handleOpenTransaction}>
+        Add Transaction
+      </button>
       {(isTransactionOpen || transactionId.length) > 0 && (
         <AddTransactionModal
           transactionEvent={stateTransaction.transactionEvent}

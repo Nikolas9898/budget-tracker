@@ -1,46 +1,26 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import Moment from 'moment';
-import {faCaretLeft, faCaretRight} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {
-  handleNextMonth,
-  handleNextYear,
-  handlePreviousMonth,
-  handlePreviousYear
-} from '../../modules/transaction/actions/transactionActions';
-import {TransactionReducer} from '../../models/Transaction';
-import './NavBarStyle.css';
 import languageWords from '../../helpers/LanguageConsts';
 import {isSelectedTitle, isTransactionContainer} from '../../helpers/TransactionHelpers';
 import AddTransactionButton from '../addTranasctionButton/AddTransactionButton';
+import ChangeDate from './components/ChangeDate';
+import './NavBarStyle.css';
 
 const NavBarMenu = (): JSX.Element => {
-  const dispatch = useDispatch();
   const location = useLocation();
-  const date = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer.date);
 
-  const handlePreviousYearOrMonth = useCallback(() => {
-    if (isSelectedTitle(location.pathname, 'yearly')) {
-      return dispatch(handlePreviousYear());
-    }
-    return dispatch(handlePreviousMonth());
-  }, [dispatch, location.pathname]);
-  const handleNextYearOrMonth = useCallback(() => {
-    if (isSelectedTitle(location.pathname, 'yearly')) {
-      return dispatch(handleNextYear());
-    }
-    return dispatch(handleNextMonth());
-  }, [dispatch, location.pathname]);
   return (
     <div className="row ml-3 mb-3 mt-3 w-100">
-      <Link
-        to={isTransactionContainer(location.pathname) ? '/transaction/daily' : '/stats/daily'}
-        className={`col-md-1 mr-1 btn ${isSelectedTitle(location.pathname, 'daily') ? 'navBarBtnActive' : 'navBarBtn'}`}
-      >
-        {languageWords.DAILY}
-      </Link>{' '}
+      {location.pathname.includes('transaction') ? (
+        <Link
+          to="/transaction/daily"
+          className={`col-md-1 mr-1 btn ${
+            isSelectedTitle(location.pathname, 'daily') ? 'navBarBtnActive' : 'navBarBtn'
+          }`}
+        >
+          {languageWords.DAILY}
+        </Link>
+      ) : null}
       <Link
         to={isTransactionContainer(location.pathname) ? '/transaction/weekly' : '/stats/weekly'}
         className={`col-md-1 mr-1 btn ${
@@ -64,19 +44,8 @@ const NavBarMenu = (): JSX.Element => {
         }`}
       >
         {languageWords.YEARLY}
-      </Link>{' '}
-      <div className="col-md-2 col-md-4  d-flex justify-content-center">
-        {' '}
-        <button className="btn navBarBtn mr-2 " type="button" onClick={handlePreviousYearOrMonth}>
-          <FontAwesomeIcon icon={faCaretLeft} />
-        </button>
-        <div className="date">
-          {isSelectedTitle(location.pathname, 'yearly') ? Moment(date).format('YYYY') : Moment(date).format('MMM YYYY')}
-        </div>
-        <button className="btn navBarBtn ml-2" type="button" onClick={handleNextYearOrMonth}>
-          <FontAwesomeIcon icon={faCaretRight} />
-        </button>
-      </div>
+      </Link>
+      <ChangeDate />
       <AddTransactionButton />
     </div>
   );
