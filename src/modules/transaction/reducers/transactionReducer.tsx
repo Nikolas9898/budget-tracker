@@ -30,7 +30,7 @@ const initialState = {
   }
 };
 
-const handleInput = (state: State, action: AnyAction) => {
+const changeInput = (state: State, action: AnyAction) => {
   if (action.payload.name === 'type') {
     return {
       ...state,
@@ -51,14 +51,14 @@ const handleInput = (state: State, action: AnyAction) => {
   };
 };
 
-const handleChangeNextMonth = (state: State) => {
+const changeNextMonth = (state: State) => {
   const nextMonth = Moment(state.date).add(1, UnitOfTime.MONTH);
   return {
     ...state,
     date: nextMonth.toDate()
   };
 };
-const handleChangePreviousMonth = (state: State) => {
+const changePreviousMonth = (state: State) => {
   const previousMonth = Moment(state.date).add(-1, UnitOfTime.MONTH);
   return {
     ...state,
@@ -66,7 +66,7 @@ const handleChangePreviousMonth = (state: State) => {
   };
 };
 
-const handleChangeNextYear = (state: State) => {
+const changeNextYear = (state: State) => {
   const nextYear = Moment(state.date).add(1, UnitOfTime.YEAR).toDate();
 
   return {
@@ -75,7 +75,7 @@ const handleChangeNextYear = (state: State) => {
   };
 };
 
-const handleChangePreviousYear = (state: State) => {
+const changePreviousYear = (state: State) => {
   const previousYear = Moment(state.date).add(-1, UnitOfTime.YEAR);
   return {
     ...state,
@@ -83,21 +83,21 @@ const handleChangePreviousYear = (state: State) => {
   };
 };
 
-const handleSetTransaction = (state: State, action: AnyAction) => {
+const setTransaction = (state: State, action: AnyAction) => {
   return {
     ...state,
     transactionEvent: action.payload
   };
 };
 
-const handleSetDate = (state: State, action: AnyAction) => {
+const changeDate = (state: State, action: AnyAction) => {
   return {
     ...state,
     date: action.payload
   };
 };
 
-const handleSetTransactionIsOpen = (state: State) => {
+const setTransactionIsOpen = (state: State) => {
   return {
     ...state,
     isTransactionOpen: !state.isTransactionOpen
@@ -106,27 +106,27 @@ const handleSetTransactionIsOpen = (state: State) => {
 export const transactionReducer = (state = initialState, action: AnyAction): State => {
   switch (action.type) {
     case ActionTypes.HANDLE_NEXT_MONTH: {
-      return handleChangeNextMonth(state);
+      return changeNextMonth(state);
     }
     case ActionTypes.HANDLE_PREVIOUS_MONTH: {
-      return handleChangePreviousMonth(state);
+      return changePreviousMonth(state);
     }
     case ActionTypes.HANDLE_NEXT_YEAR: {
-      return handleChangeNextYear(state);
+      return changeNextYear(state);
     }
     case ActionTypes.HANDLE_PREVIOUS_YEAR: {
-      return handleChangePreviousYear(state);
+      return changePreviousYear(state);
     }
     case ActionTypes.TRANSACTION_INPUT_CHANGE:
-      return handleInput(state, action);
+      return changeInput(state, action);
     case ActionTypes.SET_TRANSACTION:
-      return handleSetTransaction(state, action);
+      return setTransaction(state, action);
 
     case ActionTypes.SET_DATE:
-      return handleSetDate(state, action);
+      return changeDate(state, action);
 
     case ActionTypes.SET_IS_TRANSACTION_OPEN:
-      return handleSetTransactionIsOpen(state);
+      return setTransactionIsOpen(state);
     default:
       return state;
   }

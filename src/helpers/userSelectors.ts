@@ -1,8 +1,12 @@
 import {createSelector} from '@reduxjs/toolkit';
-import {UserReducer} from '../models/User';
+import {UserState} from '../models/User';
 
 // eslint-disable-next-line import/prefer-default-export
 export const getUserState = createSelector(
-  (state: {userReducer: UserReducer}) => state,
+  (state: UserState) => state,
   ({userReducer}) => userReducer.user
+);
+export const getUserEmail = createSelector(
+  (state: UserState) => state,
+  ({userReducer}) => userReducer.user.email
 );

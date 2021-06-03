@@ -21,7 +21,7 @@ const initialState = {
   loading: true
 };
 
-const handleSignInStateChange = (state: State, payload: UserPayload) => {
+const signInStateChange = (state: State, payload: UserPayload) => {
   if (payload.token) {
     localStorage.setItem('jwt', payload.token);
   }
@@ -34,7 +34,7 @@ const handleSignInStateChange = (state: State, payload: UserPayload) => {
   };
 };
 
-const handleSaveUserInState = (state: State, payload: UserPayload) => {
+const saveUserInState = (state: State, payload: UserPayload) => {
   return {
     ...state,
     user: payload.user
@@ -44,9 +44,9 @@ const handleSaveUserInState = (state: State, payload: UserPayload) => {
 export const userReducer = (state = initialState, action: UserAction): State => {
   switch (action.type) {
     case ActionTypes.SIGN_IN:
-      return handleSignInStateChange(state, action.payload);
+      return signInStateChange(state, action.payload);
     case ActionTypes.SAVE_USER:
-      return handleSaveUserInState(state, action.payload);
+      return saveUserInState(state, action.payload);
 
     default:
       return state;

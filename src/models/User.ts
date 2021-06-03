@@ -1,3 +1,6 @@
+export interface UserState {
+  userReducer: UserReducer;
+}
 export interface UserReducer {
   user: User;
   token: string;
@@ -36,4 +39,9 @@ export interface UserPayload {
 export interface UserAction {
   type: string;
   payload: UserPayload;
+}
+
+export interface UserSignInAction {
+  type: string;
+  payload: SignInUser;
 }

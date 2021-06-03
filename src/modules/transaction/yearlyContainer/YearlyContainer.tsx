@@ -8,7 +8,7 @@ import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import YearlyTableRow from './components/YearlyTableRow';
 import classes from './YearlyStyle.module.css';
 import {UnitOfTime} from '../../../models/Clendar';
-import {getTransactionState} from '../../../helpers/transactionSelectors';
+import {getTransactionDate} from '../../../helpers/transactionSelectors';
 /* eslint-disable react-hooks/exhaustive-deps */
 
 const YearlyContainer = (): JSX.Element => {
@@ -16,7 +16,7 @@ const YearlyContainer = (): JSX.Element => {
   const [sumIncome, setSumIncome] = useState(0);
   const [sumExpense, setSumExpense] = useState(0);
 
-  const stateTransaction = useSelector(getTransactionState);
+  const transactionDate = useSelector(getTransactionDate);
   const setMonths = (months: Month[]) => {
     const year: Month[] = [];
     const newMonths: Month[] = months.filter((month) => month.expense > 0 || month.income > 0);
@@ -77,8 +77,8 @@ const YearlyContainer = (): JSX.Element => {
   };
 
   useEffect(() => {
-    getYear(stateTransaction.date);
-  }, [stateTransaction.date]);
+    getYear(transactionDate);
+  }, [transactionDate]);
 
   return (
     <div className="wrapper">
