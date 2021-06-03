@@ -4,30 +4,31 @@ import {UserType, ResponseUser, succsessMessages, UserErrors} from '../../models
 import User from '../../dbModels/user/user.model';
 
 export const getLoggedUser: RequestHandler = async (req: Request, res: Response) => {
+  let user: UserType | null;
+
   try {
     const {authorization} = req.headers;
     const userId: string = tokenDecoder(authorization);
 
-    await User.findById({_id: userId}, (err, user: UserType) => {
-      const {_id, username, email, type, createdAt, updatedAt} = user;
-
-      if (!user) return res.json({errorMSG: UserErrors.NOT_EXISTING_USER});
-
-      const foundUser: ResponseUser = {
-        _id,
-        username,
-        password: undefined,
-        email,
-        type,
-        createdAt,
-        updatedAt
-      };
-
-      return res.json({user: foundUser});
-    });
+    user = await User.findById({_id: userId}).populate('accounts');
   } catch (error) {
-    return res.json(error);
+    return res.json(error.message);
   }
+
+  if (!user) return res.json({errorMSG: UserErrors.NOT_EXISTING_USER});
+  const {_id, username, email, type, accounts, createdAt, updatedAt} = user;
+  const foundUser: ResponseUser = {
+    _id,
+    username,
+    password: undefined,
+    email,
+    type,
+    accounts,
+    createdAt,
+    updatedAt
+  };
+
+  return res.json({user: foundUser});
 };
 
 export const editUser: RequestHandler = async (req: Request, res: Response) => {
