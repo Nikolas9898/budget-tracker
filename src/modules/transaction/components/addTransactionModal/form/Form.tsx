@@ -18,7 +18,7 @@ type Props = {
 };
 type CustomInput = {
   value: string | number;
-  onClick: React.MouseEventHandler<HTMLInputElement> | undefined;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   const [isFeesOpen, setIsFeesOpen] = useState(false);
@@ -45,15 +45,19 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
     },
     [handleInputChange]
   );
-  const ExampleCustomInput: React.FC<CustomInput> = forwardRef(({value, onClick}) => (
-    <div className=" align-items-center ">
-      <input className={classes.input} onClick={onClick} value={value} />
-    </div>
-  ));
+
+  const ExampleCustomInput = forwardRef(
+    ({value, onClick}: CustomInput, ref: React.LegacyRef<HTMLButtonElement> | undefined) => (
+      <div className=" align-items-center ">
+        <button type="button" onClick={onClick} className={classes.input} ref={ref}>
+          {value}
+        </button>
+      </div>
+    )
+  );
 
   return (
     <>
-      {/* <InputTitles transaction={transaction} isFeesOpen={isFeesOpen} /> */}
       <div className="row  align-items-center justify-content-center mb-2">
         <div className={`col-3 align-items-start ${classes.title}`}>Day</div>
         <div className="col-8 ">
@@ -65,7 +69,6 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
             timeFormat="HH:mm"
             timeIntervals={15}
             timeCaption="time"
-            locale="pt-BR"
             customInput={React.createElement(ExampleCustomInput)}
           />
         </div>

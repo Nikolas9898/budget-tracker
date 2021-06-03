@@ -27,7 +27,8 @@ export const languageWords = {
   PLEASE_ENTER_VALID_EMAIL: 'Please enter a valid email.',
   PLEASE_ENTER_VALID_USERNAME: 'Please enter a valid username.',
   NO_MATCHING_PASSWORDS: 'The password does not match. ',
-  PLEASE_ENTER_VALID_PASSWORD: 'Please enter 6-20 characters [A-Z, a-z, 0-9 only].'
+  PLEASE_ENTER_VALID_PASSWORD: 'Please enter 6-20 characters [A-Z, a-z, 0-9 only].',
+  NO_DATA_AVAILABLE: 'No data available. '
 };
 
 export default languageWords;

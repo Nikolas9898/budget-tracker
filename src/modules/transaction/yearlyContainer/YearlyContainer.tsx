@@ -87,7 +87,7 @@ const YearlyContainer = (): JSX.Element => {
       <div className="container">
         <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
         {monthsInYear.map((month) => (
-          <YearlyTableRow month={month} />
+          <YearlyTableRow key={month.from.toString()} month={month} />
         ))}
       </div>
     </div>

@@ -29,22 +29,24 @@ td {
   margin: auto;
   width: 250px;
   font-size: 20px;
-  color: coral;
+  color: #60cd50;
   font-weight: bold;
   padding: 10px;
-  border: coral 5px solid;
+  border: #60cd50 5px solid;
   border-radius: 10px;
 }
 .income {
-  height: 60px;
-  color: dodgerblue;
+  color: #0160b2;
+  font-size: 25px;
   font-weight: bold;
+  padding: 10px;
   text-align: center;
 }
 .expense {
-  height: 60px;
+  font-size: 25px;
   color: coral;
   font-weight: bold;
+  padding: 10px;
   text-align: center;
 }
 .info_row {

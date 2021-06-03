@@ -1,44 +1,52 @@
 .wrapper_sideBar {
   min-width: 250px;
   max-width: 250px;
-  background: lightgrey;
+  background: #60cd50;
   color: #fff;
   transition: all 0.3s;
   min-height: 100vh;
+  box-shadow: 2px 2px 2px #c9bfbf;
 }
 .wrapper_sideBar_back {
   min-width: 80px;
   max-width: 80px;
   text-align: center;
-  background: lightgrey;
+  background: #60cd50;
   transition: all 0.3s;
   min-height: 100vh;
+  box-shadow: 2px 2px 2px #c9bfbf;
 }
 .sidebar_header {
-  padding: 20px;
   font-size: 30px;
   font-weight: bold;
-  color: #0160b2;
+  color: white;
   height: 150px;
-  align-items: center;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-bottom: 100px;
 }
-.close_button {
+.button_close_sidebar {
   font-size: 30px;
-  color: #0160b2;
-  margin-top: 20px;
+  color: white;
+  margin-top: 350px;
 }
-.close_button_open_sidebar {
+.button_open_sidebar {
   font-size: 30px;
   text-align: end;
-  padding: 20px;
-  color: #0160b2;
+  padding-right: 20px;
+  color: white;
+  margin-top: 350px;
 }
-.close_button svg {
+
+.button_open_sidebar svg {
   cursor: pointer;
 }
 
-.close_button_open_sidebar svg {
+.button_close_sidebar svg {
   cursor: pointer;
 }
 
@@ -51,14 +59,6 @@
 .content {
   padding: 20px 0;
   margin-top: 30px;
-  display: grid;
-  text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.small_sidebar_content {
-  padding: 20px 0;
-  margin-top: 50px;
   display: grid;
   text-decoration: none;
   white-space: nowrap;

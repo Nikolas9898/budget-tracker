@@ -37,14 +37,14 @@ td {
 .month_selected {
   width: 150px;
   font-size: 25px;
-  color: coral;
-  border: coral 2px solid;
+  color: #60cd50;
+  border: #60cd50 2px solid;
   border-radius: 10px;
   text-align: center;
 }
 .income {
   font-size: 25px;
-  color: dodgerblue;
+  color: #0160b2;
   font-weight: bold;
   padding: 10px;
   text-align: center;

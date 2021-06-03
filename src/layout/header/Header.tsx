@@ -12,13 +12,15 @@ const NavBar = (): JSX.Element => {
   const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);
 
   return (
-    <>
-      <nav className={`navbar navbar-expand-sm ${classes.container}`}>
-        <div className="container-fluid">
-          {/* <FontAwesomeIcon className={classes.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} /> */}
+    <nav className={`pe-3 ${classes.container}`}>
+      <div className="navbar navbar-expand-lg row justify-content-center align-items-center">
+        <div className="col" />
+        <div className="col text-center">
           <div className={`collapse navbar-collapse ${classes.page_title}`}>
             {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
           </div>
+        </div>
+        <div className="col d-flex justify-content-end">
           <div role="button" tabIndex={-1} className="dropdown">
             <div
               role="button"
@@ -38,8 +40,30 @@ const NavBar = (): JSX.Element => {
             <AccountMenu />
           </div>
         </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   );
 };
 export default NavBar;
+
+/* <div className={`collapse navbar-collapse ${classes.page_title}`}>
+            {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
+          </div>
+          <div role="button" tabIndex={-1} className="dropdown">
+            <div
+              role="button"
+              className={`dropdown-toggl ${classes.user_content}`}
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <div className={classes.user_email}>
+                <FontAwesomeIcon icon={faUser} />
+              </div>
+              <div className={classes.user_email}>{user.username}</div>
+              <div className={classes.caret_down}>
+                <FontAwesomeIcon icon={faCaretDown} />
+              </div>
+            </div>
+            <AccountMenu />
+          </div> */

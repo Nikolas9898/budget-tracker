@@ -11,11 +11,13 @@ import {getStatsInSpecificDatePeriod} from '../service/StatsService';
 const YearlyContainer = (): JSX.Element => {
   const [incomeStats, setIncomeStats] = useState<Stat[]>([]);
   const [expenseStats, setExpenseStats] = useState<Stat[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedIncome, setSelectedIncome] = useState<number | undefined>();
   const [selectedExpense, setSelectedExpense] = useState<number | undefined>();
   const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
 
   const getYearlyStats = async (date: Date) => {
+    setIsLoading(true);
     try {
       const from: Date = firstDateOfTheYear(date).toDate();
       const to: Date = lastDateOfTheYear(date).toDate();
@@ -26,6 +28,7 @@ const YearlyContainer = (): JSX.Element => {
 
       setIncomeStats(income);
       setExpenseStats(expense);
+      setIsLoading(false);
     } catch (e) {
       throw new Error(e);
     }
@@ -46,10 +49,12 @@ const YearlyContainer = (): JSX.Element => {
   return (
     <div className="wrapper">
       <NavBarMenu />
-      <div className="row justify-content-evenly">
-        <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />
-        <StatsForm stats={expenseStats} isIncome={false} selected={selectedExpense} handleSelect={handleSelect} />
-      </div>
+      {!isLoading && (
+        <div className="row justify-content-evenly ">
+          <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />
+          <StatsForm stats={expenseStats} isIncome={false} selected={selectedExpense} handleSelect={handleSelect} />
+        </div>
+      )}
     </div>
   );
 };

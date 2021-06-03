@@ -15,18 +15,20 @@
 .navBarBtn {
   color: white !important;
   font-weight: bold !important;
-  margin-right: 5px;
+  /* margin-right: 5px; */
   background: #0160b2 !important;
 }
 .navBarBtnActive {
   color: #0160b2 !important;
   background-color: white !important;
-  margin-right: 5px;
-
+  /* margin-right: 5px; */
   border: #0160b2 1px solid !important;
 }
 .navBarBtn:hover {
   color: #0160b2 !important;
   background-color: white !important;
   border: #0160b2 1px solid;
+}
+.add_button {
+  background: #60cd50 !important;
 }

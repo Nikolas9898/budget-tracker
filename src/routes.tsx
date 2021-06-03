@@ -1,10 +1,10 @@
 import React, {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import HomePage from './pages/homePage/HomePage';
 import LoginPage from './pages/loginPage/LoginPage';
-import WeeklyPage from './pages/transactionPage/WeeklyPage';
-import DailyPage from './pages/transactionPage/DailyPage';
-import YearlyPage from './pages/transactionPage/YearlyPage';
-import MonthlyPage from './pages/transactionPage/MonthlyPage';
+import WeeklyPage from './pages/transactionPages/WeeklyPage';
+import DailyPage from './pages/transactionPages/DailyPage';
+import YearlyPage from './pages/transactionPages/YearlyPage';
+import MonthlyPage from './pages/transactionPages/MonthlyPage';
 import WeeklyStatsPage from './pages/statsPage/WeeklyPage';
 import PeriodStatsPage from './pages/statsPage/PeriodPage';
 import YearlyStatsPage from './pages/statsPage/YearlyPage';

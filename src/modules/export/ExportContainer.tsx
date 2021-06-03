@@ -26,9 +26,7 @@ const ExportContainer = (): JSX.Element => {
     label: 'Income',
     value: 'income'
   });
-  const [selectedAccounts, setSelectedAccounts] = useState<OptionTypeBase | OptionsType<OptionTypeBase> | null>([
-    {label: 'Cash', value: 'cash'}
-  ]);
+  const [selectedAccounts, setSelectedAccounts] = useState<OptionTypeBase | OptionsType<OptionTypeBase> | null>([]);
   const [from, setFrom] = useState<Date>(Moment().toDate());
   const [to, setTo] = useState(Moment().toDate());
   const [error, setError] = useState('');
@@ -81,21 +79,30 @@ const ExportContainer = (): JSX.Element => {
       setError('');
     }
   }, [selectedType, selectedAccounts, from, to]);
-  const ExampleCustomInput: React.FC<CustomInput> = forwardRef(({value, onClick}) => (
-    <div className="row align-items-center" role="button" tabIndex={0} onKeyDown={() => onClick} onClick={onClick}>
-      <div className={`col-9 ps-4 `}>{value}</div>
-      <div className={`col-2  text-end `}>
-        <FontAwesomeIcon className={classes.calendar_icon} icon={faCalendarDay} />
+  const ExampleCustomInput = forwardRef(
+    ({value, onClick}: CustomInput, ref: React.LegacyRef<HTMLInputElement> | undefined) => (
+      <div
+        className="row align-items-center"
+        role="button"
+        tabIndex={0}
+        onKeyDown={() => onClick}
+        onClick={onClick}
+        ref={ref}
+      >
+        <div className={`col-9 ps-4 `}>{value}</div>
+        <div className={`col-2  text-end `}>
+          <FontAwesomeIcon className={classes.calendar_icon} icon={faCalendarDay} />
+        </div>
       </div>
-    </div>
-  ));
+    )
+  );
 
   const customControlStyles: CSSProperties = {
     backgroundColor: '#0160b2',
     color: 'white',
     height: '100%',
-    minHeight: '60px',
-    fontSize: '1.3rem',
+    minHeight: '50px',
+    fontSize: '1rem',
     borderRadius: '6px'
   };
 
@@ -105,13 +112,15 @@ const ExportContainer = (): JSX.Element => {
   };
   const customOptionStyle: CSSProperties = {
     color: 'white',
-    backgroundColor: 'coral',
-    fontSize: '1.3rem'
+    backgroundColor: '#60cd50',
+    fontSize: '1rem',
+    borderBottom: '2px solid white'
   };
   const customMenuStyle: CSSProperties = {
     color: 'white',
-    backgroundColor: 'coral',
+    backgroundColor: '#60cd50',
     fontSize: '1rem',
+    padding: '5px',
     border: '2px solid lightgrey'
   };
   const customSingleValueStyle: CSSProperties = {
@@ -123,6 +132,10 @@ const ExportContainer = (): JSX.Element => {
   };
   const customMultiValueRemove: CSSProperties = {
     color: 'black'
+  };
+  const customIndicator: CSSProperties = {
+    color: 'white',
+    cursor: 'pointer'
   };
   type IsMulti = true;
 
@@ -144,8 +157,8 @@ const ExportContainer = (): JSX.Element => {
       return {
         ...provided,
         ...customOptionStyle,
-        color: state.isFocused ? '#0160b2' : 'white',
-        backgroundColor: state.isFocused ? 'white' : 'coral'
+        fontWeight: state.isSelected ? 'bolder' : 'lighter',
+        backgroundColor: state.isSelected ? '#0160b2' : '#60cd50'
       };
     },
     menu: (provided) => {
@@ -177,28 +190,33 @@ const ExportContainer = (): JSX.Element => {
         ...provided,
         ...customMultiValue
       };
+    },
+    clearIndicator: () => {
+      return {
+        ...customIndicator
+      };
+    },
+    dropdownIndicator: (provided) => {
+      return {
+        ...provided,
+        ...customIndicator
+      };
     }
   };
   const ValueContainer = ({children, getValue, ...props}: any) => {
-    const {selectProps} = props;
-    const {inputValue} = selectProps;
-    const maxToShow = 1;
-    const {length} = getValue();
-    const displayChips = React.Children.toArray(children).slice(0, maxToShow);
-    const shouldBadgeShow = length > maxToShow;
-    const displayLength = length - maxToShow;
-    return (
+    const {hasValue} = props;
+    const nbValues = getValue().length;
+    if (!hasValue) {
       // eslint-disable-next-line react/jsx-props-no-spreading
-      <components.ValueContainer {...props}>
-        {!inputValue && displayChips}
-        <div>{shouldBadgeShow && `+ ${displayLength}`}</div>
-      </components.ValueContainer>
-    );
+      return <components.ValueContainer {...props}>{children}</components.ValueContainer>;
+    }
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <components.ValueContainer {...props}>{`${nbValues} accounts`}</components.ValueContainer>;
   };
   return (
     <div className="wrapper">
       <div className="container-xx mt-5 ">
-        <div className="row justify-content-between  align-items-end">
+        <div className="row justify-content-between ">
           <div className="col-xxl col-sm-12 col-lg-6 mb-2">
             <div className={classes.label}>Transaction Type</div>
             <Select
@@ -213,6 +231,7 @@ const ExportContainer = (): JSX.Element => {
             <div className={classes.label}>Account</div>
             <Select
               isMulti
+              hideSelectedOptions={false}
               value={selectedAccounts}
               styles={selectStyle}
               closeMenuOnSelect={false}
@@ -220,7 +239,7 @@ const ExportContainer = (): JSX.Element => {
               components={{ValueContainer}}
               options={accounts}
             />
-            <div style={{fontSize: '1.4rem'}}>{errorMsg(error)}</div>
+            <div className={classes.error_accout}>{errorMsg(error)}</div>
           </div>
           <div className="col-xxl col-sm-12 col-lg-6 mb-2">
             <div className={classes.label}>From</div>

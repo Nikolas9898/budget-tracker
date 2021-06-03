@@ -3,6 +3,7 @@ import Moment from 'moment';
 import {TransactionEventWithAmountNumber, TransactionWithAmountNumber} from '../../../../models/Transaction';
 import DailyInfoTableRow from './DailyInfoTableRow';
 import classes from '../MonthlyStyle.module.css';
+import languageWords from '../../../../helpers/LanguageConsts';
 
 type Props = {
   selectedTransaction: TransactionWithAmountNumber;
@@ -18,9 +19,9 @@ const DailyTransactions: React.FC<Props> = ({selectedTransaction, handleOpenEdit
       </div>
       <div className={classes.table_scroll}>
         {events.length === 0 ? (
-          <div>Този ден няма транзакции</div>
+          <div className="text-center">{languageWords.NO_DATA_AVAILABLE}</div>
         ) : (
-          <table className="table table-hover ">
+          <table className="table table-hover  ">
             <thead>
               <tr>
                 <th scope="col">Category</th>
@@ -30,9 +31,10 @@ const DailyTransactions: React.FC<Props> = ({selectedTransaction, handleOpenEdit
               </tr>
             </thead>
             <tbody>
-              {events.map((event) => (
-                <DailyInfoTableRow event={event} handleOpenEdit={handleOpenEdit} />
-              ))}
+              {events.map((event) => {
+                const {_id: eventId} = event;
+                return <DailyInfoTableRow key={eventId} event={event} handleOpenEdit={handleOpenEdit} />;
+              })}
             </tbody>
           </table>
         )}

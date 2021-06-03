@@ -64,27 +64,29 @@ const DailyContainer = (): JSX.Element => {
 
         {transactions
           .sort((a, b) => {
-            return Moment(a.createdAt).get(UnitOfTime.DATE) - Moment(b.createdAt).get(UnitOfTime.DATE);
+            return Moment(b.createdAt).get(UnitOfTime.DATE) - Moment(a.createdAt).get(UnitOfTime.DATE);
           })
-          .reverse()
-          .map((transaction: TransactionWithAmountNumber) => (
-            <div className={`row ${classes.table_container}`}>
-              <div className="col-12">
-                <DailyTableHeader transaction={transaction} />
-                {transaction.events.map((event: TransactionEventWithAmountNumber) => {
-                  const {_id: eventId} = event;
-                  return (
-                    <DailyTableRow
-                      key={eventId}
-                      transaction={transaction}
-                      transactionEvent={event}
-                      handleSelectEvent={handleSelectEvent}
-                    />
-                  );
-                })}
+          .map((transaction: TransactionWithAmountNumber) => {
+            const {_id: transactionId} = transaction;
+            return (
+              <div key={transactionId} className={`row ${classes.table_container}`}>
+                <div className="col-12">
+                  <DailyTableHeader transaction={transaction} />
+                  {transaction.events.map((event: TransactionEventWithAmountNumber) => {
+                    const {_id: eventId} = event;
+                    return (
+                      <DailyTableRow
+                        key={eventId}
+                        transaction={transaction}
+                        transactionEvent={event}
+                        handleSelectEvent={handleSelectEvent}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     </div>
   );

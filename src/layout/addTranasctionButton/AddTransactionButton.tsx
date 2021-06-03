@@ -94,8 +94,8 @@ const AddTransactionButton = (): JSX.Element => {
   const {isTransactionOpen} = stateTransaction;
 
   return (
-    <div className="col-md-2 col-lg text-end">
-      <button type="button" className="btn navBarBtn ml-2" onClick={handleOpenTransaction}>
+    <div>
+      <button type="button" className="btn add_button navBarBtn ml-2" onClick={handleOpenTransaction}>
         Add Transaction
       </button>
       {(isTransactionOpen || transactionId.length) > 0 && (

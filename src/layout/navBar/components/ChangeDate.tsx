@@ -40,7 +40,7 @@ const ChangeDate = (): JSX.Element => {
   }, [dispatch, location.pathname]);
 
   return (
-    <div className="col-md-2 col-md-4  d-flex justify-content-center">
+    <div className="d-flex justify-content-center">
       <button className="btn navBarBtn mr-2 " type="button" onClick={handlePreviousYearOrMonth}>
         <FontAwesomeIcon icon={faCaretLeft} />
       </button>

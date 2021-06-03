@@ -8,7 +8,7 @@ type Props = {
   event: TransactionEventWithAmountNumber;
 };
 const DailyInfoTableRow: React.FC<Props> = ({handleOpenEdit, event}) => {
-  const {category, from, account, to, type, amount} = event;
+  const {category, from, account, to, type, amount, currency} = event;
   const openEdit = useCallback(() => {
     handleOpenEdit(event);
   }, [event]);
@@ -23,10 +23,10 @@ const DailyInfoTableRow: React.FC<Props> = ({handleOpenEdit, event}) => {
         {to}
       </th>
       <th className={`text-${type === TransactionTypes.INCOME ? 'success' : 'dark  '}`}>
-        {isTransactionTypeIncome(type, amount)}
+        {isTransactionTypeIncome(type, amount)} {currency}
       </th>
       <th className={`text-${type === TransactionTypes.EXPENSE ? 'danger' : 'dark  '}`}>
-        {isTransactionTypeExpense(type, amount)}
+        {isTransactionTypeExpense(type, amount)} {currency}
       </th>
     </tr>
   );

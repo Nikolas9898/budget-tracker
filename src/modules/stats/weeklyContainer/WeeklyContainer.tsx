@@ -9,8 +9,8 @@ import {setStatColor} from '../../../helpers/StatHelper';
 import {Stat} from '../../../models/Stat';
 
 const WeeklyContainer = (): JSX.Element => {
-  // TODO/mockup state//
   const [incomeStats, setIncomeStats] = useState<Stat[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [expenseStats, setExpenseStats] = useState<Stat[]>([]);
   const [selectedIncome, setSelectedIncome] = useState<number | undefined>();
   const [selectedExpense, setSelectedExpense] = useState<number | undefined>();
@@ -24,15 +24,19 @@ const WeeklyContainer = (): JSX.Element => {
     }
   };
   const getMonthlyStats = async (date: Date) => {
+    setIsLoading(true);
     try {
-      const from: Date = Moment(date).set('day', -6).toDate();
-      const to: Date = Moment(date).set('day', 0).toDate();
+      const from: Date = Moment(date).set('day', 1).toDate();
+      const to: Date = Moment(date).set('day', 7).toDate();
+
       const response = await getStatsInSpecificDatePeriod(from, to);
+
       const income = setStatColor(response.data.incomeStats);
       const expense = setStatColor(response.data.expenseStats);
 
       setIncomeStats(income);
       setExpenseStats(expense);
+      setIsLoading(false);
     } catch (e) {
       throw new Error(e);
     }
@@ -44,10 +48,12 @@ const WeeklyContainer = (): JSX.Element => {
   return (
     <div className="wrapper">
       <NavBarMenu />
-      <div className="row justify-content-evenly">
-        <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />
-        <StatsForm stats={expenseStats} isIncome={false} selected={selectedExpense} handleSelect={handleSelect} />
-      </div>
+      {!isLoading && (
+        <div className="row justify-content-evenly ">
+          <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />
+          <StatsForm stats={expenseStats} isIncome={false} selected={selectedExpense} handleSelect={handleSelect} />
+        </div>
+      )}
     </div>
   );
 };

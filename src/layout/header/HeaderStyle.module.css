@@ -1,33 +1,25 @@
 .container {
   background: #0160b2;
-  height: 80px;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
+  height: 70px;
   min-width: 300px;
 }
-.menu_bar {
-  font-size: 40px;
-  color: white;
-  cursor: pointer;
-  justify-content: flex-start;
-}
 
-.dropdown {
-  position: relative;
-  display: block;
-}
 .user_content {
   cursor: pointer;
   color: white;
   display: flex;
   align-items: center;
   font-size: 1.7rem;
+  min-width: 310px;
+  display: flex;
+  justify-content: flex-end;
 }
 .user_email {
   padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 255px;
 }
 .caret_down {
   padding-left: 10px;
@@ -70,8 +62,7 @@
 }
 
 .page_title {
-  margin-left: 332px;
-  font-size: 30px;
+  font-size: 2rem;
   color: white;
   font-weight: bold;
   justify-content: center;

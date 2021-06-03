@@ -34,6 +34,7 @@ const Calendar: React.FC<Props> = ({calendarDates, date, transactions, handleOpe
       <div className="row ">
         {calendarDates.map((calendarDate: {date: Date}) => (
           <CalendarDate
+            key={calendarDate.date.toString()}
             calendarDate={calendarDate}
             transactions={transactions}
             date={date}

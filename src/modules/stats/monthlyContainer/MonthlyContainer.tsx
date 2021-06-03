@@ -11,6 +11,7 @@ import {Stat} from '../../../models/Stat';
 
 const MonthlyContainer = (): JSX.Element => {
   const [incomeStats, setIncomeStats] = useState<Stat[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [expenseStats, setExpenseStats] = useState<Stat[]>([]);
   const [selectedIncome, setSelectedIncome] = useState<number | undefined>();
   const [selectedExpense, setSelectedExpense] = useState<number | undefined>();
@@ -24,9 +25,11 @@ const MonthlyContainer = (): JSX.Element => {
     }
   };
   const getMonthlyStats = async (date: Date) => {
+    setIsLoading(true);
     try {
       const from: Date = firstDateOfTheMonth(date).toDate();
       const to: Date = lastDateOfTheMonth(date).toDate();
+
       const response = await getStatsInSpecificDatePeriod(from, to);
 
       const income = setStatColor(response.data.incomeStats);
@@ -34,6 +37,7 @@ const MonthlyContainer = (): JSX.Element => {
 
       setIncomeStats(income);
       setExpenseStats(expense);
+      setIsLoading(false);
     } catch (e) {
       throw new Error(e);
     }
@@ -45,11 +49,12 @@ const MonthlyContainer = (): JSX.Element => {
   return (
     <div className="wrapper">
       <NavBarMenu />
-
-      <div className="row justify-content-evenly ">
-        <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />
-        <StatsForm stats={expenseStats} isIncome={false} selected={selectedExpense} handleSelect={handleSelect} />
-      </div>
+      {!isLoading && (
+        <div className="row justify-content-evenly ">
+          <StatsForm stats={incomeStats} isIncome selected={selectedIncome} handleSelect={handleSelect} />
+          <StatsForm stats={expenseStats} isIncome={false} selected={selectedExpense} handleSelect={handleSelect} />
+        </div>
+      )}
     </div>
   );
 };

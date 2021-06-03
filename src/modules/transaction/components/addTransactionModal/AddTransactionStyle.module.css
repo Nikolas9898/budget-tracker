@@ -1,25 +1,3 @@
-.modal_wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1050;
-}
-.container {
-  width: 640px;
-  min-height: 400px;
-  text-align: center;
-  border: 120px solid #0160b2;
-  border-top: 50px solid #0160b2;
-  border-bottom: 50px solid #0160b2;
-  margin: 200px auto auto;
-  background: white;
-  /* top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
-}
-
 .content {
   display: flex;
   padding: 0 20px 0 20px;
@@ -32,9 +10,7 @@
 .title {
   font-size: 1.5rem;
 }
-.input_container {
-  /* height: 60px; */
-}
+
 .amount_container {
   display: flex;
   align-items: center;
@@ -67,15 +43,13 @@
 .save_button {
   padding: 10px 100px 10px 100px;
   border-radius: 5px;
-  background: coral;
+  background: #0160b2;
   font-size: 20px;
   color: white;
   font-weight: bold;
   cursor: pointer;
 }
-.save_button:hover {
-  background-color: chocolate;
-}
+
 .delete_button {
   padding: 10px 10px 10px 10px;
   border-radius: 5px;
@@ -85,12 +59,7 @@
   background: red;
   cursor: pointer;
 }
-.continue_button {
-  padding: 10px 20px 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
+
 .error_msg {
   color: red;
 }
@@ -111,9 +80,9 @@
 }
 .selected_tab {
   border-radius: 15px;
-  border: coral 2px solid;
+  border: #60cd50 2px solid;
   font-weight: bold;
-  color: coral;
+  color: #60cd50;
   text-decoration: none;
   background-color: white;
 }
@@ -123,7 +92,7 @@
   margin-left: 440px;
 }
 .close_button:hover {
-  color: coral;
+  color: #60cd50;
 }
 .input_description {
   width: 100%;

@@ -84,7 +84,7 @@ const WeeklyContainer = (): JSX.Element => {
         <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
 
         {weeksInMonth.map((week) => (
-          <WeeklyTableRow week={week} />
+          <WeeklyTableRow key={week.from.toString()} week={week} />
         ))}
       </div>
     </div>

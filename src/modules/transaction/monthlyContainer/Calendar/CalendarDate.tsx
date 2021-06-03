@@ -43,10 +43,10 @@ const CalendarDate: React.FC<Props> = ({calendarDate, transactions, date, handle
       {transactions.map((transaction) => {
         const {_id: transactionId, income, expense} = transaction;
         return isTheSameDate(calendarDate.date, transaction.createdAt) ? (
-          <div key={transactionId}>
-            <div className="text-success text-center">{(income / 100).toFixed(2)}</div>
-            <div className="text-danger text-center">{(expense / 100).toFixed(2)}</div>
-            <div className="text-muted text-center">{((income - expense) / 100).toFixed(2)}</div>
+          <div className="ps-3" key={transactionId}>
+            <div className={` text-center ${classes.calendar_date_income}`}>{(income / 100).toFixed(2)}</div>
+            <div className={` text-center ${classes.calendar_date_expense}`}>{(expense / 100).toFixed(2)}</div>
+            <div className={` text-center ${classes.calendar_date_total}`}>{((income - expense) / 100).toFixed(2)}</div>
           </div>
         ) : null;
       })}

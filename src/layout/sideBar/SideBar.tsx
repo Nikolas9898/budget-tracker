@@ -16,66 +16,69 @@ const SideBar = (): JSX.Element => {
 
   return (
     <nav className={isSideBarOpen ? classes.wrapper_sideBar : classes.wrapper_sideBar_back}>
-      <div className={classes.sidebar_header}>{isSideBarOpen ? 'Budget Tracker' : 'BT'}</div>
-      <div className={isSideBarOpen ? classes.close_button_open_sidebar : classes.close_button}>
+      <div className={classes.sidebar_header}>{isSideBarOpen ? 'Budget-Tracker' : 'BT'}</div>
+      <ul className={classes.content}>
+        {isSideBarOpen ? (
+          <>
+            <Link
+              to="/transaction/monthly"
+              className={location.pathname.includes(TransactionPage.TRANSACTION) ? classes.title_select : classes.title}
+            >
+              <FontAwesomeIcon icon={faBook} /> {languageWords.TRANSACTIONS}
+            </Link>
+
+            <Link
+              to="/stats/monthly"
+              className={location.pathname.includes(TransactionPage.STATS) ? classes.title_select : classes.title}
+            >
+              <FontAwesomeIcon icon={faChartBar} /> {languageWords.STATS}
+            </Link>
+
+            <Link
+              to="/export"
+              className={location.pathname.includes(TransactionPage.EXPORT) ? classes.title_select : classes.title}
+            >
+              <FontAwesomeIcon icon={faFileDownload} /> {languageWords.EXPORT}
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/transaction/monthly"
+              className={
+                location.pathname.includes(TransactionPage.TRANSACTION)
+                  ? classes.select_menu_icon
+                  : classes.menu_icon_container
+              }
+            >
+              <FontAwesomeIcon icon={faBook} />
+            </Link>
+            <Link
+              to="/stats/monthly"
+              className={
+                location.pathname.includes(TransactionPage.STATS)
+                  ? classes.select_menu_icon
+                  : classes.menu_icon_container
+              }
+            >
+              <FontAwesomeIcon icon={faChartBar} />
+            </Link>{' '}
+            <Link
+              to="/export"
+              className={
+                location.pathname.includes(TransactionPage.EXPORT)
+                  ? classes.select_menu_icon
+                  : classes.menu_icon_container
+              }
+            >
+              <FontAwesomeIcon icon={faFileDownload} />
+            </Link>{' '}
+          </>
+        )}
+      </ul>
+      <div className={isSideBarOpen ? classes.button_open_sidebar : classes.button_close_sidebar}>
         <FontAwesomeIcon icon={isSideBarOpen ? faChevronLeft : faChevronRight} onClick={closeSideBar} />
       </div>
-
-      {isSideBarOpen ? (
-        <ul className={classes.content}>
-          <Link
-            to="/transaction/monthly"
-            className={location.pathname.includes(TransactionPage.TRANSACTION) ? classes.title_select : classes.title}
-          >
-            <FontAwesomeIcon icon={faBook} /> {languageWords.TRANSACTIONS}
-          </Link>
-
-          <Link
-            to="/stats/monthly"
-            className={location.pathname.includes(TransactionPage.STATS) ? classes.title_select : classes.title}
-          >
-            <FontAwesomeIcon icon={faChartBar} /> {languageWords.STATS}
-          </Link>
-
-          <Link
-            to="/export"
-            className={location.pathname.includes(TransactionPage.EXPORT) ? classes.title_select : classes.title}
-          >
-            <FontAwesomeIcon icon={faFileDownload} /> {languageWords.EXPORT}
-          </Link>
-        </ul>
-      ) : (
-        <ul className={classes.small_sidebar_content}>
-          <Link
-            to="/transaction/monthly"
-            className={
-              location.pathname.includes(TransactionPage.TRANSACTION)
-                ? classes.select_menu_icon
-                : classes.menu_icon_container
-            }
-          >
-            <FontAwesomeIcon icon={faBook} />
-          </Link>{' '}
-          <Link
-            to="/stats/monthly"
-            className={
-              location.pathname.includes(TransactionPage.STATS) ? classes.select_menu_icon : classes.menu_icon_container
-            }
-          >
-            <FontAwesomeIcon icon={faChartBar} />
-          </Link>{' '}
-          <Link
-            to="/export"
-            className={
-              location.pathname.includes(TransactionPage.EXPORT)
-                ? classes.select_menu_icon
-                : classes.menu_icon_container
-            }
-          >
-            <FontAwesomeIcon icon={faFileDownload} />
-          </Link>{' '}
-        </ul>
-      )}
     </nav>
   );
 };

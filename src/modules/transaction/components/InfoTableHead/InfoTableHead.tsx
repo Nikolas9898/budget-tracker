@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from '../../weeklyContainer/WeeklyStyle.module.css';
+import classes from './InfoTableHeadStyle.module.css';
 
 type Props = {
   sumIncome: number;
@@ -8,7 +8,7 @@ type Props = {
 
 const InfoTableHead: React.FC<Props> = ({sumIncome, sumExpense}) => {
   return (
-    <div className="row justify-content-center text-center">
+    <div className="row justify-content-center text-center mt-5 mb-5">
       <div className="col-3">
         <h2>Income</h2>
         <h2 className={classes.income}>{(sumIncome / 100).toFixed(2)}</h2>

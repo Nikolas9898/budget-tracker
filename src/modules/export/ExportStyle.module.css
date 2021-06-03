@@ -1,11 +1,11 @@
 .label {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 500;
 }
 .input {
   width: 100%;
-  min-height: 60px;
-  font-size: 1.5rem;
+  min-height: 50px;
+  font-size: 1rem;
   background-color: #0160b2;
   color: white;
   display: flex;
@@ -16,7 +16,7 @@
 .title {
   padding-left: 10px;
   width: 85%;
-  font-size: 1.7rem;
+  font-size: 1rem;
   display: flex;
   flex-wrap: wrap;
 }
@@ -27,20 +27,25 @@
 }
 .export_button {
   width: 170px !important;
-  background-color: coral;
+  background-color: #60cd50;
   color: white;
-  font-size: 1.7rem;
+  font-size: 1.2rem;
   border-radius: 15px;
   text-decoration: none;
   padding: 17px;
+  text-align: center;
 }
 .export_disabled_button {
   width: 170px !important;
-  background-color: coral;
+  background-color: #60cd50;
   color: white;
-  font-size: 1.7rem;
+  font-size: 1.2rem;
   border-radius: 15px;
   border: none;
   text-decoration: none;
   padding: 17px;
+}
+.error_accout {
+  font-size: 0.9rem;
+  color: red;
 }

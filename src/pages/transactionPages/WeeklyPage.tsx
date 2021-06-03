@@ -1,5 +1,4 @@
 import React from 'react';
-import AddTransactionButton from '../../layout/addTranasctionButton/AddTransactionButton';
 import NavBar from '../../layout/header/Header';
 import SideBar from '../../layout/sideBar/SideBar';
 import WeeklyContainer from '../../modules/transaction/weeklyContainer/WeeklyContainer';
@@ -11,7 +10,6 @@ const WeeklyPage = (): JSX.Element => {
       <div style={{width: '100%'}}>
         <NavBar />
         <WeeklyContainer />
-        <AddTransactionButton />
       </div>
     </div>
   );
