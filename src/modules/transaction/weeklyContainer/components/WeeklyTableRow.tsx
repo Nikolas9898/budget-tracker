@@ -1,7 +1,7 @@
 import React from 'react';
 import Moment from 'moment';
-import classes from '../WeeklyStyle.module.css';
 import {UnitOfTime} from '../../../../models/Clendar';
+import classes from '../WeeklyStyle.module.css';
 
 type Props = {
   week: {from: Date; to: Date; income: number; expense: number};

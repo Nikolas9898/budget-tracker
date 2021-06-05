@@ -12,7 +12,7 @@ const NavBarMenu = (): JSX.Element => {
   return (
     <div className="row  mb-3 mt-3 ">
       <div className="col-5 pe-sm-5">
-        <div className="row   row-cols-xl-5 row-cols-lg-12">
+        <div className="row   row-cols-xl-5 row-cols-lg-12 align-items-center">
           {location.pathname.includes('transaction') ? (
             <Link
               to="/transaction/daily"
@@ -41,7 +41,7 @@ const NavBarMenu = (): JSX.Element => {
           </Link>
         </div>
       </div>
-      <div className="col-2 text-center">
+      <div className="col-2 d-flex text-center justify-content-center align-items-center">
         <ChangeDate />
       </div>
       <div className="col-5 d-flex justify-content-end">

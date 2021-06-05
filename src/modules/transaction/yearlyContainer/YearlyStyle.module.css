@@ -26,7 +26,7 @@ td {
 }
 .month {
   width: 150px;
-  font-size: 25px;
+  font-size: 1.6rem;
   color: dimgrey;
   border: dimgrey 2px solid;
   border-radius: 10px;
@@ -36,22 +36,22 @@ td {
 }
 .month_selected {
   width: 150px;
-  font-size: 25px;
+  font-size: 1.6rem;
   color: #60cd50;
   border: #60cd50 2px solid;
   border-radius: 10px;
   text-align: center;
 }
 .income {
-  font-size: 25px;
+  font-size: 1.6rem;
   color: #0160b2;
   font-weight: bold;
   padding: 10px;
   text-align: center;
 }
 .expense {
-  font-size: 25px;
-  color: coral;
+  font-size: 1.6rem;
+  color: red;
   font-weight: bold;
   padding: 10px;
   text-align: center;

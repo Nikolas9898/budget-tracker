@@ -16,7 +16,7 @@ td {
 .date {
   margin: auto;
   width: 250px;
-  font-size: 20px;
+  font-size: 1.6rem;
   color: dimgrey;
   font-weight: bold;
   padding: 10px;
@@ -28,7 +28,7 @@ td {
   text-align: center;
   margin: auto;
   width: 250px;
-  font-size: 20px;
+  font-size: 1.6rem;
   color: #60cd50;
   font-weight: bold;
   padding: 10px;
@@ -37,13 +37,13 @@ td {
 }
 .income {
   color: #0160b2;
-  font-size: 25px;
+  font-size: 1.6rem;
   font-weight: bold;
   padding: 10px;
   text-align: center;
 }
 .expense {
-  font-size: 25px;
+  font-size: 1.6rem;
   color: coral;
   font-weight: bold;
   padding: 10px;
@@ -58,14 +58,14 @@ td {
 .info_title {
   display: flex;
   align-items: center;
-  font-size: 25px;
+  font-size: 1.6rem;
   justify-content: space-evenly;
   color: dimgrey;
   font-weight: bold;
 }
 .total {
   height: 60px;
-  font-size: 25px;
+  font-size: 1.6rem;
   color: dimgrey;
   font-weight: bold;
   padding: 10px;

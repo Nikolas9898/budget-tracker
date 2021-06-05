@@ -5,9 +5,9 @@
 .input {
   width: 100%;
   min-height: 50px;
-  font-size: 1rem;
-  background-color: #0160b2;
-  color: white;
+  font-size: 1.2rem;
+  border: 2px solid #0160b2;
+  color: #0160b2;
   display: flex;
   align-items: center;
   border-radius: 6px;
@@ -16,7 +16,7 @@
 .title {
   padding-left: 10px;
   width: 85%;
-  font-size: 1rem;
+  font-size: 1.6rem;
   display: flex;
   flex-wrap: wrap;
 }
@@ -27,25 +27,28 @@
 }
 .export_button {
   width: 170px !important;
-  background-color: #60cd50;
+  background-color: #0160b2;
   color: white;
   font-size: 1.2rem;
   border-radius: 15px;
   text-decoration: none;
-  padding: 17px;
+  padding: 13px 5px 13px 5px;
   text-align: center;
+}
+.export_button:hover {
+  color: white;
 }
 .export_disabled_button {
   width: 170px !important;
-  background-color: #60cd50;
+  background-color: #0160b2;
   color: white;
   font-size: 1.2rem;
   border-radius: 15px;
   border: none;
   text-decoration: none;
-  padding: 17px;
+  padding: 13px 5px 13px 5px;
 }
 .error_accout {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   color: red;
 }

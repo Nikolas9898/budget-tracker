@@ -72,7 +72,7 @@ const StatsForm: React.FC<Props> = ({stats, isIncome, selected, handleSelect}) =
               <tbody>
                 {stats.map((stat: Stat, index: number) => (
                   <tr
-                    className={`border-bottom  ${index === selected ? 'table_row_selected' : 'table_row'}`}
+                    className={`${index === selected ? 'table_row_selected' : 'table_row'}`}
                     onMouseEnter={() => handleSelect({index, isIncome})}
                     onMouseLeave={() => handleSelect({index: undefined, isIncome})}
                   >

@@ -19,7 +19,7 @@ const InfoTableHead: React.FC<Props> = ({sumIncome, sumExpense}) => {
       </div>
       <div className="col-3">
         <h2>Total</h2>
-        <h2>{((sumIncome - sumExpense) / 100).toFixed(2)}</h2>
+        <h2 className={classes.total}>{((sumIncome - sumExpense) / 100).toFixed(2)}</h2>
       </div>
     </div>
   );

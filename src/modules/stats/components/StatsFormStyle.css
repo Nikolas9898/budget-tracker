@@ -30,10 +30,13 @@
   width: 90%;
   margin: auto;
   margin-top: 20px;
-  font-size: 1.5em;
+  font-size: 1.6rem;
   min-width: 400px;
 }
 
+.content_table tr {
+  border-bottom: lightgray 2px solid;
+}
 td {
   border-top: none;
   padding: 15px;
