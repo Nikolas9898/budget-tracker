@@ -24,6 +24,7 @@ import {
 import {
   addMoneyIfTransferWithFees,
   addMoneyToAccounts,
+  deleteMoneyInMoneyAccounts,
   editMoneyInMoneyAccounts
 } from '../../helpers/monneyAccountsHelpers/monneyAccountsHelpers';
 import MoneyAccounts from '../../dbModels/moneyAccounts/moneyAccounts.model';
@@ -31,7 +32,8 @@ import {MoneyAccount} from '../../models/user';
 
 export const createTransaction: RequestHandler = async (req: Request, res: Response) => {
   const userId: string = tokenDecoder(req.headers.authorization);
-  const {events, createdAt} = req.body;
+  const {createdAt} = req.body;
+  const events: TransactionEvent[] = req.body.events;
   const transaction: TransactionType | null = await Transaction.findOne({
     createdAt: createdAt,
     userId
@@ -48,7 +50,7 @@ export const createTransaction: RequestHandler = async (req: Request, res: Respo
       // here it makes expense and transfer
 
       const transfer = createTransferWithFees(events, createdAt, userId, income, expense);
-      const result = await addMoneyIfTransferWithFees(events, moneyAccounts);
+      const result = await addMoneyIfTransferWithFees(events[0], moneyAccounts);
 
       if (result.ok != 1) {
         return res.status(400).json(result);
@@ -59,7 +61,7 @@ export const createTransaction: RequestHandler = async (req: Request, res: Respo
       //here enters when there are not fees and just ordinary event
 
       const transaction = createOrdinaryEvent(events, createdAt, userId, income, expense);
-      const result = await addMoneyToAccounts(events, moneyAccounts);
+      const result = await addMoneyToAccounts(events[0], moneyAccounts);
 
       if (result.ok != 1) {
         return res.status(400).json(result);
@@ -76,7 +78,7 @@ export const createTransaction: RequestHandler = async (req: Request, res: Respo
       transaction.events.push(transfer.events[1]);
 
       calculateTotalExpenseAndIncome(transaction, income, expense);
-      const result = await addMoneyIfTransferWithFees(events, moneyAccounts);
+      const result = await addMoneyIfTransferWithFees(events[0], moneyAccounts);
 
       if (result.ok != 1) {
         return res.status(400).json(result);
@@ -87,7 +89,7 @@ export const createTransaction: RequestHandler = async (req: Request, res: Respo
       transaction.events.push(events[0]);
 
       calculateTotalExpenseAndIncome(transaction, income, expense);
-      const result = await addMoneyToAccounts(events, moneyAccounts);
+      const result = await addMoneyToAccounts(events[0], moneyAccounts);
 
       if (result.ok != 1) {
         return res.status(400).json(result);
@@ -196,8 +198,12 @@ export const editTransactionEvent: RequestHandler = async (req: Request, res: Re
     if (transaction)
       if (type === EventTypes.TRANSFER) {
         // when eventFrom body is transfer
-        console.log('Tova e za transfer', eventFromBody);
 
+        const result = await editMoneyInMoneyAccounts(eventFromBody, moneyAccounts, transaction.events, event_id);
+
+        if (result.ok != 1) {
+          return res.status(400).json(result);
+        }
         editIntoTransfer(transaction, event_id, eventFromBody);
 
         calculateTotalExpenseAndIncome(transaction, income, expense);
@@ -205,6 +211,12 @@ export const editTransactionEvent: RequestHandler = async (req: Request, res: Re
         saveAndSendResponse(transaction, res);
       } else {
         if (transferId) {
+          //TODO to fix when editing expense with transferId in it
+          const result = await editMoneyInMoneyAccounts(eventFromBody, moneyAccounts, transaction.events, event_id);
+
+          if (result.ok != 1) {
+            return res.status(400).json(result);
+          }
           await Promise.all(
             //enters when editing expense with transferId in it
             (transaction.events = transaction.events.map((oldEvent: TransactionEvent) => {
@@ -230,11 +242,11 @@ export const editTransactionEvent: RequestHandler = async (req: Request, res: Re
           saveAndSendResponse(transaction, res);
         } else {
           //when ordinary income or expense come from body
-
+          eventFromBody.fees = 0;
           const foundIndex = transaction.events.findIndex(
             (foundEvent: TransactionEvent) => foundEvent._id?.toString() === event_id
           );
-          const result = await editMoneyInMoneyAccounts(eventFromBody, moneyAccounts, transaction.events[foundIndex]);
+          const result = await editMoneyInMoneyAccounts(eventFromBody, moneyAccounts, transaction.events, event_id);
 
           if (result.ok != 1) {
             return res.status(400).json(result);
@@ -258,12 +270,14 @@ export const deleteTransactionEvent: RequestHandler = async (req: Request, res: 
   const event_id: string = req.params.event_id;
   const userId: string = tokenDecoder(req.headers.authorization);
   let transaction: TransactionType | null;
+  let moneyAccounts: MoneyAccount | null;
 
   try {
     transaction = await Transaction.findOne({
       _id: id,
       userId
     });
+    moneyAccounts = await MoneyAccounts.findOne({userId});
   } catch (error) {
     return res.json({errorMsg: error});
   }
@@ -272,6 +286,12 @@ export const deleteTransactionEvent: RequestHandler = async (req: Request, res: 
     return res.json({
       errorMsg: NO_EXISTING_TRANSACTION
     });
+  }
+
+  const result = await deleteMoneyInMoneyAccounts(moneyAccounts, transaction.events, event_id);
+
+  if (result.ok != 1) {
+    return res.status(400).json(result);
   }
 
   if (transaction.events.length === 1) {

@@ -10,7 +10,7 @@ import TransactionType, {
 } from '../../models/transactions';
 
 export const createTransferWithFees = (
-  events: TransactionEvent,
+  events: TransactionEvent[],
   createdAt: string,
   userId: string,
   income: number,
@@ -33,6 +33,9 @@ export const createTransferWithFees = (
       date: transfer.events[0].date,
       category: CATEGORY,
       account: transfer.events[0].from,
+      fees: 0,
+      from: '',
+      to: '',
       amount: transfer.events[0].fees,
       note: NOTE,
       description: transfer.events[0].description
@@ -47,7 +50,7 @@ export const createTransferWithFees = (
 };
 
 export const createOrdinaryEvent = (
-  events: [TransactionEvent],
+  events: TransactionEvent[],
   createdAt: string,
   userId: string,
   income: number,
@@ -114,6 +117,9 @@ export const editIntoTransfer = async (
           date: oldEvent.date,
           category: Expense.CATEGORY,
           account: from,
+          fees: 0,
+          from: '',
+          to: '',
           amount: fees,
           note: Expense.NOTE,
           description: oldEvent.description
@@ -126,7 +132,8 @@ export const editIntoTransfer = async (
         ...eventFromBody,
         _id: oldEvent._id,
         category: undefined,
-        account: undefined
+        account: '',
+        fees: 0
       };
     }
 

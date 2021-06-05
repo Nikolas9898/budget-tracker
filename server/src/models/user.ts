@@ -1,5 +1,4 @@
 import {Document} from 'mongoose';
-import {KeyStringNumber} from './stats';
 
 export interface UserType extends Document {
   _id: string;

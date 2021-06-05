@@ -1,5 +1,5 @@
 import {EventTypes, TransactionEvent} from '../../models/transactions';
-import {MoneyAccount} from '../../models/user';
+import {accounts, MoneyAccount} from '../../models/user';
 
 type ReplaceOneType = {
   nModified: number;
@@ -14,13 +14,12 @@ const getMoneyAccountsResultTemplate = (): {ok: number; error: string} => {
 };
 
 export const addMoneyToAccounts = async (
-  events: [TransactionEvent],
+  event: TransactionEvent,
   moneyAccounts: MoneyAccount | null
 ): Promise<{
   ok: number;
   error: string;
 }> => {
-  const event = events[0];
   const responseResult = getMoneyAccountsResultTemplate();
 
   if (moneyAccounts && event.type === EventTypes.TRANSFER) {
@@ -36,14 +35,13 @@ export const addMoneyToAccounts = async (
   }
 };
 export const addMoneyIfTransferWithFees = async (
-  events: [TransactionEvent],
+  event: TransactionEvent,
   moneyAccounts: MoneyAccount
 ): Promise<{
   ok: number;
   error: string;
 }> => {
   const {accounts} = moneyAccounts;
-  const event = events[0];
   const from = event.from ? event.from : '';
   const fees = event.fees ? event.fees : 0;
   const to = event.to ? event.to : '';
@@ -176,18 +174,90 @@ const addMoneyIfIncomme = async (
 export const editMoneyInMoneyAccounts = async (
   eventFromBody: TransactionEvent,
   moneyAccounts: MoneyAccount | null,
-  eventFromDB: TransactionEvent
+  events: TransactionEvent[],
+  event_id: string
 ): Promise<{
   ok: number;
   error: string;
 }> => {
   const responseResult = getMoneyAccountsResultTemplate();
+  const eventFromDB = getDbEvent(events, event_id);
 
   if (moneyAccounts && eventFromBody.type === EventTypes.INCOME) {
-    console.log('a;a;');
     return await editMoneyIfIncome(eventFromBody, moneyAccounts, eventFromDB);
   } else if (moneyAccounts && eventFromBody.type === EventTypes.EXPENSE) {
     return await editMoneyIfExpense(eventFromBody, moneyAccounts, eventFromDB);
+  } else if (moneyAccounts && eventFromBody.type === EventTypes.TRANSFER) {
+    return await editMoneyIfTransfer(eventFromBody, moneyAccounts, eventFromDB);
+  }
+
+  return responseResult;
+};
+
+const getDbEvent = (events: TransactionEvent[], event_id: string): TransactionEvent => {
+  const foundIndex = events.findIndex((foundEvent: TransactionEvent) => foundEvent._id?.toString() === event_id);
+  const eventFromDB = events[foundIndex];
+
+  return eventFromDB;
+};
+const editMoneyIfTransfer = async (
+  eventFromBody: TransactionEvent,
+  moneyAccounts: MoneyAccount,
+  eventFromDB: TransactionEvent
+): Promise<{ok: number; error: string}> => {
+  // const accountFromBody = eventFromBody.account;
+  const accountFromDB = eventFromDB.account;
+  const {accounts} = moneyAccounts;
+  const responseResult = getMoneyAccountsResultTemplate();
+
+  if (eventFromDB.type === EventTypes.INCOME) {
+    accounts[accountFromDB] -= eventFromDB.amount;
+    if (eventFromBody.fees > 0) accounts[eventFromBody.from] -= eventFromBody.fees;
+
+    if (accounts[eventFromBody.from] < 0) {
+      responseResult.error = `${NOT_ENOUGH_MONEY_IN} ${eventFromBody.from}`;
+      return responseResult;
+    }
+    accounts[eventFromBody.from] -= eventFromBody.amount;
+    accounts[eventFromBody.to] += eventFromBody.amount;
+  }
+
+  if (eventFromDB.type === EventTypes.EXPENSE) {
+    accounts[accountFromDB] += eventFromDB.amount;
+    accounts[eventFromBody.from] -= eventFromBody.amount;
+    accounts[eventFromBody.to] += eventFromBody.amount;
+    if (eventFromBody.fees > 0) accounts[eventFromBody.from] -= eventFromBody.fees;
+
+    if (accounts[eventFromBody.from] < 0) {
+      responseResult.error = `${NOT_ENOUGH_MONEY_IN} ${eventFromBody.from}`;
+      responseResult.ok = 0;
+      return responseResult;
+    }
+  }
+  //едитването от INCOME към transfer работи перфектно !!!
+  //едитването от EXPENSE към transfer работи перфектно !!!
+  //едитването от TRANSFER към transfer работи перфектно !!!
+  if (eventFromDB.type === EventTypes.TRANSFER) {
+    accounts[eventFromDB.from] += eventFromDB.amount;
+    accounts[eventFromDB.to] -= eventFromDB.amount;
+    accounts[eventFromBody.from] -= eventFromBody.amount;
+    if (eventFromBody.fees > 0) accounts[eventFromBody.from] -= eventFromBody.fees;
+
+    accounts[eventFromBody.to] += eventFromBody.amount;
+    if (accounts[eventFromBody.from] < 0) {
+      responseResult.error = `${NOT_ENOUGH_MONEY_IN} ${eventFromBody.from}`;
+      responseResult.ok = 0;
+      return responseResult;
+    }
+  }
+
+  try {
+    const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
+
+    responseResult.ok = result.nModified;
+    responseResult.error = '';
+  } catch (error) {
+    responseResult.error = error.message;
   }
 
   return responseResult;
@@ -197,13 +267,18 @@ const editMoneyIfIncome = async (
   moneyAccounts: MoneyAccount,
   eventFromDB: TransactionEvent
 ): Promise<{ok: number; error: string}> => {
-  const accountFromBody = eventFromBody.account ? eventFromBody.account : '';
-  const accountFromDB = eventFromDB.account ? eventFromDB.account : '';
+  const accountFromBody = eventFromBody.account;
+  const accountFromDB = eventFromDB.account;
   const {accounts} = moneyAccounts;
   const responseResult = getMoneyAccountsResultTemplate();
 
-  console.log(eventFromBody);
-  console.log(eventFromDB);
+  if (eventFromDB.type === EventTypes.TRANSFER && eventFromDB.from && eventFromDB.to) {
+    accounts[eventFromDB.to] -= eventFromDB.amount;
+    accounts[eventFromDB.from] += eventFromDB.amount;
+  }
+  if (eventFromDB.type === EventTypes.EXPENSE) {
+    accounts[accountFromDB] += eventFromDB.amount;
+  }
 
   if (eventFromDB.type === EventTypes.INCOME) {
     accounts[accountFromDB] -= eventFromDB.amount;
@@ -230,18 +305,134 @@ const editMoneyIfExpense = async (
   moneyAccounts: MoneyAccount,
   eventFromDB: TransactionEvent
 ): Promise<{ok: number; error: string}> => {
-  const accountFromBody = eventFromBody.account ? eventFromBody.account : '';
-  const accountFromDB = eventFromDB.account ? eventFromDB.account : '';
+  const accountFromBody = eventFromBody.account;
+  const accountFromDB = eventFromDB.account === '' ? eventFromDB.to : eventFromDB.account;
   const {accounts} = moneyAccounts;
   const responseResult = getMoneyAccountsResultTemplate();
 
-  if (accounts[accountFromBody] < eventFromBody.amount) {
+  if (eventFromDB.type === EventTypes.EXPENSE) {
+    accounts[accountFromDB] += eventFromDB.amount;
+    accounts[accountFromBody] -= eventFromBody.amount;
+  }
+
+  if (eventFromDB.account != eventFromBody.account && eventFromDB.type === EventTypes.INCOME) {
+    accounts[accountFromDB] += eventFromDB.amount;
+    accounts[accountFromBody] -= eventFromBody.amount;
+  }
+
+  if (eventFromDB.account === eventFromBody.account && eventFromDB.type === EventTypes.INCOME) {
+    accounts[accountFromDB] -= eventFromDB.amount;
+    accounts[accountFromBody] -= eventFromBody.amount;
+  }
+
+  if (eventFromDB.type === EventTypes.TRANSFER) {
+    accounts[eventFromDB.from] += eventFromDB.amount;
+    accounts[eventFromDB.to] -= eventFromDB.amount;
+    accounts[eventFromBody.account] -= eventFromBody.amount;
+  }
+
+  if (accounts[accountFromBody] < 0) {
     responseResult.ok = 0;
     responseResult.error = `${NOT_ENOUGH_MONEY_IN}${accountFromBody}`;
     return responseResult;
   }
 
-  accounts[accountFromBody] -= eventFromBody.amount;
+  try {
+    const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
+
+    responseResult.ok = result.nModified;
+    responseResult.error = '';
+  } catch (error) {
+    responseResult.error = error.message;
+  }
+
+  return responseResult;
+};
+
+export const deleteMoneyInMoneyAccounts = async (
+  // eventFromBody: TransactionEvent,
+  moneyAccounts: MoneyAccount | null,
+  events: TransactionEvent[],
+  event_id: string
+): Promise<{
+  ok: number;
+  error: string;
+}> => {
+  const responseResult = getMoneyAccountsResultTemplate();
+  const eventFromDB = getDbEvent(events, event_id);
+
+  if (eventFromDB.type === EventTypes.INCOME && moneyAccounts) {
+    return await deleteMoneyIfIncome(moneyAccounts, eventFromDB);
+  } else if (eventFromDB.type === EventTypes.EXPENSE && moneyAccounts) {
+    return await deleteMoneyIfExpense(moneyAccounts, eventFromDB);
+  } else if (eventFromDB.type === EventTypes.TRANSFER && moneyAccounts) {
+    return await deleteMoneyIfTransfer(moneyAccounts, eventFromDB);
+  }
+
+  return responseResult;
+};
+
+const deleteMoneyIfIncome = async (moneyAccounts: MoneyAccount, eventFromDB: TransactionEvent) => {
+  const responseResult = getMoneyAccountsResultTemplate();
+  const {accounts} = moneyAccounts;
+
+  accounts[eventFromDB.account] -= eventFromDB.amount;
+
+  if (accounts[eventFromDB.account] < 0) {
+    responseResult.error = `First delete other events then income`;
+    responseResult.ok = 0;
+    return responseResult;
+  }
+
+  try {
+    const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
+
+    responseResult.ok = result.nModified;
+    responseResult.error = '';
+  } catch (error) {
+    responseResult.error = error.message;
+  }
+
+  return responseResult;
+};
+const deleteMoneyIfExpense = async (moneyAccounts: MoneyAccount, eventFromDB: TransactionEvent) => {
+  const responseResult = getMoneyAccountsResultTemplate();
+  const {accounts} = moneyAccounts;
+
+  accounts[eventFromDB.account] += eventFromDB.amount;
+
+  if (accounts[eventFromDB.account] < 0) {
+    responseResult.error = `First delete other events then income`;
+    responseResult.ok = 0;
+    return responseResult;
+  }
+
+  try {
+    const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
+
+    responseResult.ok = result.nModified;
+    responseResult.error = '';
+  } catch (error) {
+    responseResult.error = error.message;
+  }
+
+  return responseResult;
+};
+const deleteMoneyIfTransfer = async (moneyAccounts: MoneyAccount, eventFromDB: TransactionEvent) => {
+  const responseResult = getMoneyAccountsResultTemplate();
+  const {accounts} = moneyAccounts;
+
+  console.log(eventFromDB);
+  console.log('pyrvo', accounts);
+
+  accounts[eventFromDB.from] += eventFromDB.amount;
+  accounts[eventFromDB.to] -= eventFromDB.amount;
+
+  if (accounts[eventFromDB.account] < 0 || accounts[eventFromDB.to] < 0) {
+    responseResult.error = `First delete other events then income`;
+    responseResult.ok = 0;
+    return responseResult;
+  }
 
   try {
     const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
