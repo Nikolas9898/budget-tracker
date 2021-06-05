@@ -2,7 +2,7 @@ import {RequestHandler, Request, Response} from 'express';
 import moment from 'moment';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
 import Transaction from '../../dbModels/transaction/transaction.model';
-import {MomentConstants, TransactionEvent} from '../../models/transactions';
+import {ExportEvent, MomentConstants, TransactionEvent} from '../../models/transactions';
 import {AggregatedTransactionType, EXPENSE_OR_INCOME, Filters} from '../../models/export';
 import {transformIntoEventsArray} from '../../helpers/exportHelpers/exportHelpers';
 
@@ -39,7 +39,7 @@ export const exportTransactionByFilters: RequestHandler = async (req: Request, r
             {$unwind: '$events'},
             {$match: {'events.type': `${type.toLowerCase()}`}}
           ]);
-    const eventsArray: TransactionEvent[] = [];
+    const eventsArray: ExportEvent[] = [];
 
     transformIntoEventsArray(eventsArray, transactions, filters);
 

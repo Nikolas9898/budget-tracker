@@ -1,85 +1,98 @@
 import jwt from 'jsonwebtoken';
 import {Request, RequestHandler, Response} from 'express';
 import User from '../../dbModels/user/user.model';
-import {UserType, ResponseUser, UserErrors} from '../../models/user';
+import MoneyAccounts from '../../dbModels/moneyAccounts/moneyAccounts.model';
+import {UserType, ResponseUser, UserErrors, accounts} from '../../models/user';
 import {addCategories} from '../categoryController/category.controller';
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
+  let user: UserType | null;
+
   try {
     const newUser = await new User({
       ...req.body
     });
+    const moneyAccounts = await new MoneyAccounts({userId: newUser._id, accounts});
 
+    newUser.accounts.push(moneyAccounts._id);
+
+    await moneyAccounts.save();
     await newUser.save();
-    await User.findOne({email: req.body.email}, (err, user: UserType) => {
-      const {password, _id, username, email, type, createdAt, updatedAt} = user;
-      const passMatch: boolean = password === req.body.password;
 
-      if (!passMatch) {
-        return res.json({errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD});
-      }
-
-      const foundUser: ResponseUser = {
-        _id,
-        username,
-        password: undefined,
-        email,
-        type,
-        createdAt,
-        updatedAt
-      };
-
-      addCategories(_id);
-
-      const token: string = jwt.sign(
-        {
-          sub: _id
-        },
-        'somesecretkeyforjsonwebtoken'
-      );
-
-      return res.json({user: foundUser, token});
-    });
+    user = await User.findOne({email: req.body.email}).populate('accounts');
   } catch (err) {
-    return res.status(400).json({errorMSG: err});
+    return res.status(400).json({errorMSG: err.message});
+  }
+  if (user) {
+    const {password, _id, username, email, type, accounts, createdAt, updatedAt} = user;
+    const passMatch: boolean = password === req.body.password;
+
+    if (!passMatch) {
+      return res.json({errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD});
+    }
+
+    const foundUser: ResponseUser = {
+      _id,
+      username,
+      password: undefined,
+      email,
+      type,
+      accounts,
+      createdAt,
+      updatedAt
+    };
+
+    addCategories(_id);
+
+    const token: string = jwt.sign(
+      {
+        sub: _id
+      },
+      'somesecretkeyforjsonwebtoken'
+    );
+
+    return res.json({user: foundUser, token});
   }
 };
 
 export const signIn: RequestHandler = async (req: Request, res: Response) => {
+  let user: UserType | null;
+
   try {
     const {email} = req.body;
 
-    await User.findOne({email}, (err, user: UserType) => {
-      if (!user) {
-        return res.json({errorMSG: UserErrors.NOT_EXISTING_USER});
-      }
-
-      const {password, _id, username, email, type, createdAt, updatedAt} = user;
-      const passMatch: boolean = password === req.body.password;
-
-      if (!passMatch) {
-        return res.json({errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD});
-      }
-
-      const foundUser: ResponseUser = {
-        _id,
-        username,
-        password: undefined,
-        email,
-        type,
-        createdAt,
-        updatedAt
-      };
-      const token: string = jwt.sign(
-        {
-          sub: user._id
-        },
-        'somesecretkeyforjsonwebtoken'
-      );
-
-      return res.json({user: foundUser, token});
-    });
+    user = await User.findOne({email}).populate('accounts');
   } catch (error) {
     return res.json({errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD});
   }
+
+  if (!user) {
+    return res.json({errorMSG: UserErrors.NOT_EXISTING_USER});
+  }
+
+  const {password, _id, username, email, type, createdAt, accounts, updatedAt} = user;
+  const passMatch: boolean = password === req.body.password;
+
+  if (!passMatch) {
+    return res.json({errorMSG: UserErrors.WRONG_EMAIL_OR_PASSWORD});
+  }
+
+  const foundUser: ResponseUser = {
+    _id,
+    username,
+    accounts,
+    password: undefined,
+    email,
+    type,
+    createdAt,
+    updatedAt
+  };
+  const token: string = jwt.sign(
+    {
+      sub: user._id
+    },
+    'somesecretkeyforjsonwebtoken'
+  );
+
+  return res.json({user: foundUser, token});
 };

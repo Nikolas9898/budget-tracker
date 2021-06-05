@@ -1,12 +1,12 @@
 import moment from 'moment';
 import {AggregatedTransactionType, Filters, MMMM_DO_YYYY} from '../../models/export';
-import {TransactionEvent} from '../../models/transactions';
+import {ExportEvent, TransactionEvent} from '../../models/transactions';
 
 export const transformIntoEventsArray = (
-  eventsArray: TransactionEvent[],
+  eventsArray: ExportEvent[],
   transactions: AggregatedTransactionType[],
   filters: Filters[]
-): TransactionEvent[] => {
+): ExportEvent[] => {
   transactions.forEach(({events}) => {
     delete events._id;
     delete events.transferId;

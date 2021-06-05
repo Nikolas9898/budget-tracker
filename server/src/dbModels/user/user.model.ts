@@ -32,7 +32,8 @@ const userSchema = new Schema(
     type: {
       type: String,
       required: true
-    }
+    },
+    accounts: [{type: Schema.Types.ObjectId, ref: 'MoneyAccounts'}]
   },
   {
     timestamps: true
