@@ -20,10 +20,10 @@ const initialState = {
     account: '',
     from: '',
     category: '',
-    fees: '0',
+    fees: '',
     transferId: '',
     to: '',
-    amount: '0',
+    amount: '',
     note: '',
     description: '',
     transactionId: ''

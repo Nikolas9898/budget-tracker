@@ -36,7 +36,6 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
             )}
           </div>
           <div className="col-xll-6 col-xl-6 align-self-center">
-            {/* <div>{transactionEvent.note}</div> */}
             {transactionEvent.type === TransactionTypes.TRANSFER ? (
               <h4>
                 {transactionEvent.from}
@@ -52,7 +51,7 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
       <h2 className="col-4 align-self-center ">
         {transactionEvent.type === TransactionTypes.INCOME ? (transactionEvent.amount / 100).toFixed(2) : null}
       </h2>
-      <div className="col-4 align-self-center">
+      <div className="col-4 ">
         <h2>
           {transactionEvent.type === TransactionTypes.EXPENSE || transactionEvent.type === TransactionTypes.TRANSFER
             ? (transactionEvent.amount / 100).toFixed(2)

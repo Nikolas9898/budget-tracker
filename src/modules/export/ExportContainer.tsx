@@ -89,8 +89,8 @@ const ExportContainer = (): JSX.Element => {
         onClick={onClick}
         ref={ref}
       >
-        <div className={`col-9 ps-4 `}>{value}</div>
-        <div className={`col-2  text-end `}>
+        <div className={`col-10 ps-4 `}>{value}</div>
+        <div className={`col-2 d-flex justify-content-end `}>
           <FontAwesomeIcon className={classes.calendar_icon} icon={faCalendarDay} />
         </div>
       </div>
@@ -98,43 +98,32 @@ const ExportContainer = (): JSX.Element => {
   );
 
   const customControlStyles: CSSProperties = {
-    backgroundColor: '#0160b2',
-    color: 'white',
     height: '100%',
     minHeight: '50px',
-    fontSize: '1rem',
-    borderRadius: '6px'
+    fontSize: '1.2rem',
+    borderRadius: '6px',
+    border: '2px solid #0160b2'
   };
 
   const customPlaceholderStyle: CSSProperties = {
-    fontSize: '1rem',
-    color: 'white'
+    fontSize: '1.2rem',
+    color: '#0160b2'
   };
   const customOptionStyle: CSSProperties = {
-    color: 'white',
-    backgroundColor: '#60cd50',
-    fontSize: '1rem',
-    borderBottom: '2px solid white'
+    color: '#0160b2',
+    fontSize: '1.2rem'
   };
   const customMenuStyle: CSSProperties = {
     color: 'white',
-    backgroundColor: '#60cd50',
-    fontSize: '1rem',
-    padding: '5px',
-    border: '2px solid lightgrey'
+    fontSize: '1.2rem',
+    border: '2px solid #0160b2'
   };
   const customSingleValueStyle: CSSProperties = {
-    color: 'white'
+    color: '#0160b2'
   };
-  const customMultiValue: CSSProperties = {
-    backgroundColor: 'white',
-    borderRadius: '5px'
-  };
-  const customMultiValueRemove: CSSProperties = {
-    color: 'black'
-  };
+
   const customIndicator: CSSProperties = {
-    color: 'white',
+    color: '#0160b2',
     cursor: 'pointer'
   };
   type IsMulti = true;
@@ -152,13 +141,16 @@ const ExportContainer = (): JSX.Element => {
         ...customPlaceholderStyle
       };
     },
-
+    indicatorSeparator: () => {
+      return {visible: 'none'};
+    },
     option: (provided, state) => {
       return {
         ...provided,
         ...customOptionStyle,
         fontWeight: state.isSelected ? 'bolder' : 'lighter',
-        backgroundColor: state.isSelected ? '#0160b2' : '#60cd50'
+        backgroundColor: state.isSelected ? '#0160b2' : 'white',
+        color: state.isSelected ? 'white' : '#0160b2'
       };
     },
     menu: (provided) => {
@@ -179,18 +171,7 @@ const ExportContainer = (): JSX.Element => {
         ...customSingleValueStyle
       };
     },
-    multiValueRemove: (provided) => {
-      return {
-        ...provided,
-        ...customMultiValueRemove
-      };
-    },
-    multiValue: (provided) => {
-      return {
-        ...provided,
-        ...customMultiValue
-      };
-    },
+
     clearIndicator: () => {
       return {
         ...customIndicator

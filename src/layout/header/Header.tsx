@@ -12,7 +12,7 @@ const NavBar = (): JSX.Element => {
   const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);
 
   return (
-    <nav className={`pe-3 ${classes.container}`}>
+    <nav className={`pe-3  align-items-center ${classes.container}`}>
       <div className="navbar navbar-expand-lg row justify-content-center align-items-center">
         <div className="col" />
         <div className="col text-center">
@@ -29,10 +29,16 @@ const NavBar = (): JSX.Element => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <div className={classes.user_email}>
-                <FontAwesomeIcon icon={faUser} />
+              <FontAwesomeIcon icon={faUser} />
+
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="left"
+                title={user.username}
+                className={classes.user_email}
+              >
+                {user.username}
               </div>
-              <div className={classes.user_email}>{user.username}</div>
               <div className={classes.caret_down}>
                 <FontAwesomeIcon icon={faCaretDown} />
               </div>
@@ -45,25 +51,3 @@ const NavBar = (): JSX.Element => {
   );
 };
 export default NavBar;
-
-/* <div className={`collapse navbar-collapse ${classes.page_title}`}>
-            {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
-          </div>
-          <div role="button" tabIndex={-1} className="dropdown">
-            <div
-              role="button"
-              className={`dropdown-toggl ${classes.user_content}`}
-              id="dropdownMenuButton1"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <div className={classes.user_email}>
-                <FontAwesomeIcon icon={faUser} />
-              </div>
-              <div className={classes.user_email}>{user.username}</div>
-              <div className={classes.caret_down}>
-                <FontAwesomeIcon icon={faCaretDown} />
-              </div>
-            </div>
-            <AccountMenu />
-          </div> */
