@@ -21,6 +21,22 @@ export interface TransactionEvent extends IObjectKeys {
   currency: string;
   transferId?: string;
   date: string;
+  fees: number;
+  from: string;
+  to: string;
+  account: string;
+  category: string | undefined;
+  amount: number;
+  note: string;
+  description: string;
+}
+
+export interface ExportEvent extends IObjectKeys {
+  _id?: string;
+  type: string;
+  currency: string;
+  transferId?: string;
+  date: string;
   fees?: number;
   from?: string;
   to?: string;
@@ -37,8 +53,8 @@ export interface TransferWithFees extends IObjectKeys {
   transferId?: string;
   date: string;
   fees: number;
-  from?: string;
-  to?: string;
+  from: string;
+  to: string;
   account: string | undefined;
   category: string | undefined;
   amount: number;
@@ -51,9 +67,9 @@ export type DummyExpenseEvent = {
   currency: string;
   transferId?: string;
   date: string;
-  fees?: number;
-  from?: string;
-  to?: string;
+  fees: number;
+  from: string;
+  to: string;
   account: string;
   category: string;
   amount: number;
