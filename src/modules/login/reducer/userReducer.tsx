@@ -1,32 +1,53 @@
-import {AnyAction} from 'redux';
-import {UserRegister} from '../../../models/User';
+import {User, UserAction, UserPayload} from '../../../models/User';
 import {ActionTypes} from '../actionTypes';
 
 export interface State {
-  user: UserRegister;
+  user: User;
   token: string;
   loading: boolean;
 }
 
 const initialState = {
-  user: {email: '', password: '', confirmPassword: ''},
+  user: {
+    email: '',
+    categories: [],
+    createdAt: '',
+    username: '',
+    updatedAt: '',
+    type: '',
+    id: ''
+  },
   token: '',
   loading: true
 };
 
-export const userReducer = (state = initialState, action: AnyAction): State => {
+const signInStateChange = (state: State, payload: UserPayload) => {
+  if (payload.token) {
+    localStorage.setItem('jwt', payload.token);
+  }
+
+  return {
+    ...state,
+    user: payload.user,
+    token: payload.token,
+    loading: false
+  };
+};
+
+const saveUserInState = (state: State, payload: UserPayload) => {
+  return {
+    ...state,
+    user: payload.user
+  };
+};
+
+export const userReducer = (state = initialState, action: UserAction): State => {
   switch (action.type) {
     case ActionTypes.SIGN_IN:
-      if (action.payload.token) {
-        localStorage.setItem('jwt', action.payload.token);
-      }
+      return signInStateChange(state, action.payload);
+    case ActionTypes.SAVE_USER:
+      return saveUserInState(state, action.payload);
 
-      return {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        loading: false
-      };
     default:
       return state;
   }

@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import Moment from 'moment';
 import {getYearlyOrWeekly} from '../service/TransactionService';
-import {Month, TransactionReducer} from '../../../models/Transaction';
-import {UserReducer} from '../../../models/User';
+import {Month} from '../../../models/Transaction';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import YearlyTableRow from './components/YearlyTableRow';
 import classes from './YearlyStyle.module.css';
 import {UnitOfTime} from '../../../models/Clendar';
+import {getTransactionDate} from '../../../helpers/transactionSelectors';
 /* eslint-disable react-hooks/exhaustive-deps */
 
 const YearlyContainer = (): JSX.Element => {
@@ -16,9 +16,7 @@ const YearlyContainer = (): JSX.Element => {
   const [sumIncome, setSumIncome] = useState(0);
   const [sumExpense, setSumExpense] = useState(0);
 
-  const stateTransaction = useSelector(
-    (state: {userReducer: UserReducer; transactionReducer: TransactionReducer}) => state.transactionReducer
-  );
+  const transactionDate = useSelector(getTransactionDate);
   const setMonths = (months: Month[]) => {
     const year: Month[] = [];
     const newMonths: Month[] = months.filter((month) => month.expense > 0 || month.income > 0);
@@ -79,8 +77,8 @@ const YearlyContainer = (): JSX.Element => {
   };
 
   useEffect(() => {
-    getYear(stateTransaction.date);
-  }, [stateTransaction.date]);
+    getYear(transactionDate);
+  }, [transactionDate]);
 
   return (
     <div className="wrapper">

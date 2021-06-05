@@ -4,15 +4,14 @@ import {faCaretDown, faBars, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
 import SideBar from '../sideBar/SideBar';
 import classes from './HeaderStyle.module.css';
-
-import {UserReducer} from '../../models/User';
 import AccountMenu from '../accountMenu/AccountMenu';
 import {getHeaderTitle} from '../../helpers/TransactionHelpers';
+import {getUserEmail} from '../../helpers/userSelectors';
 
 const NavBar = (): JSX.Element => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
-  const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);
+  const userEmail = useSelector(getUserEmail);
 
   return (
     <div>
@@ -24,7 +23,7 @@ const NavBar = (): JSX.Element => {
         <div className={classes.dropdown}>
           <div className={classes.user_content}>
             <FontAwesomeIcon className={classes.user_email} icon={faUser} />
-            <span className={classes.user_email}>{user.email}</span>
+            <span className={classes.user_email}>{userEmail}</span>
             <FontAwesomeIcon className={classes.caret_down} icon={faCaretDown} />
           </div>
           <AccountMenu />

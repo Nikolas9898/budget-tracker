@@ -1,4 +1,4 @@
-import {TransactionEvent} from '../../../models/Transaction';
+import {ChangeInputAction, SetTransactionAction, TransactionEvent, SetDateAction} from '../../../models/Transaction';
 import {HandleInputChange} from '../../../models/Function';
 import {ActionTypes} from '../actionTypes';
 
@@ -22,33 +22,15 @@ export const handlePreviousYear = (): {
 } => ({
   type: ActionTypes.HANDLE_PREVIOUS_YEAR
 });
-export const transactionInputChange = (
-  event: HandleInputChange
-): {
-  type: ActionTypes;
-  payload: {
-    name: string;
-    value: string | number | Date;
-  };
-} => ({
+export const transactionInputChange = (event: HandleInputChange): ChangeInputAction => ({
   type: ActionTypes.TRANSACTION_INPUT_CHANGE,
   payload: {name: event.target.name, value: event.target.value}
 });
-export const setTransaction = (
-  event: TransactionEvent
-): {
-  type: ActionTypes;
-  payload: TransactionEvent;
-} => ({
+export const setTransaction = (event: TransactionEvent): SetTransactionAction => ({
   type: ActionTypes.SET_TRANSACTION,
   payload: event
 });
-export const setDate = (
-  date: Date
-): {
-  type: ActionTypes;
-  payload: Date;
-} => ({
+export const setDate = (date: Date): SetDateAction => ({
   type: ActionTypes.SET_DATE,
   payload: date
 });

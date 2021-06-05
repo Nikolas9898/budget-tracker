@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Moment from 'moment';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
-import {TransactionReducer, TransactionTypes} from '../../models/Transaction';
+import {TransactionTypes} from '../../models/Transaction';
 import {
   transactionInputChange,
   setTransaction,
@@ -20,6 +20,7 @@ import {
 import classes from '../../modules/transaction/dailyContainer/DailyStyle.module.css';
 import {UnitOfTime} from '../../models/Clendar';
 import {getTransaction} from '../../helpers/TransactionHelpers';
+import {getTransactionState} from '../../helpers/transactionSelectors';
 
 const AddTransactionButton = (): JSX.Element => {
   const [errors, setErrors] = useState({
@@ -31,7 +32,7 @@ const AddTransactionButton = (): JSX.Element => {
   });
   const dispatch = useDispatch();
 
-  const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
+  const stateTransaction = useSelector(getTransactionState);
 
   const {transactionId, _id: transactionEventId} = stateTransaction.transactionEvent;
 

@@ -29,76 +29,104 @@ const initialState = {
     transactionId: ''
   }
 };
+
+const changeInput = (state: State, action: AnyAction) => {
+  if (action.payload.name === 'type') {
+    return {
+      ...state,
+      transactionEvent: {
+        ...state.transactionEvent,
+        [action.payload.name]: action.payload.value,
+        category: '',
+        to: ''
+      }
+    };
+  }
+  return {
+    ...state,
+    transactionEvent: {
+      ...state.transactionEvent,
+      [action.payload.name]: action.payload.value
+    }
+  };
+};
+
+const changeNextMonth = (state: State) => {
+  const nextMonth = Moment(state.date).add(1, UnitOfTime.MONTH);
+  return {
+    ...state,
+    date: nextMonth.toDate()
+  };
+};
+const changePreviousMonth = (state: State) => {
+  const previousMonth = Moment(state.date).add(-1, UnitOfTime.MONTH);
+  return {
+    ...state,
+    date: previousMonth.toDate()
+  };
+};
+
+const changeNextYear = (state: State) => {
+  const nextYear = Moment(state.date).add(1, UnitOfTime.YEAR).toDate();
+
+  return {
+    ...state,
+    date: nextYear
+  };
+};
+
+const changePreviousYear = (state: State) => {
+  const previousYear = Moment(state.date).add(-1, UnitOfTime.YEAR);
+  return {
+    ...state,
+    date: previousYear.toDate()
+  };
+};
+
+const setTransaction = (state: State, action: AnyAction) => {
+  return {
+    ...state,
+    transactionEvent: action.payload
+  };
+};
+
+const changeDate = (state: State, action: AnyAction) => {
+  return {
+    ...state,
+    date: action.payload
+  };
+};
+
+const setTransactionIsOpen = (state: State) => {
+  return {
+    ...state,
+    isTransactionOpen: !state.isTransactionOpen
+  };
+};
 export const transactionReducer = (state = initialState, action: AnyAction): State => {
   switch (action.type) {
     case ActionTypes.HANDLE_NEXT_MONTH: {
-      const nextMonth = Moment(state.date).add(1, UnitOfTime.MONTH);
-      return {
-        ...state,
-        date: nextMonth.toDate()
-      };
+      return changeNextMonth(state);
     }
-
     case ActionTypes.HANDLE_PREVIOUS_MONTH: {
-      const previousMonth = Moment(state.date).add(-1, UnitOfTime.MONTH);
-      return {
-        ...state,
-        date: previousMonth.toDate()
-      };
+      return changePreviousMonth(state);
     }
-
     case ActionTypes.HANDLE_NEXT_YEAR: {
-      const nextYear = Moment(state.date).add(1, UnitOfTime.YEAR).toDate();
-
-      return {
-        ...state,
-        date: nextYear
-      };
+      return changeNextYear(state);
     }
-
     case ActionTypes.HANDLE_PREVIOUS_YEAR: {
-      const previousYear = Moment(state.date).add(-1, UnitOfTime.YEAR);
-      return {
-        ...state,
-        date: previousYear.toDate()
-      };
+      return changePreviousYear(state);
     }
-
     case ActionTypes.TRANSACTION_INPUT_CHANGE:
-      if (action.payload.name === 'type') {
-        return {
-          ...state,
-          transactionEvent: {
-            ...state.transactionEvent,
-            [action.payload.name]: action.payload.value,
-            category: '',
-            to: ''
-          }
-        };
-      }
-      return {
-        ...state,
-        transactionEvent: {
-          ...state.transactionEvent,
-          [action.payload.name]: action.payload.value
-        }
-      };
-
+      return changeInput(state, action);
     case ActionTypes.SET_TRANSACTION:
-      return {
-        ...state,
-        transactionEvent: action.payload
-      };
+      return setTransaction(state, action);
+
     case ActionTypes.SET_DATE:
-      return {
-        ...state,
-        date: action.payload
-      };
+      return changeDate(state, action);
+
     case ActionTypes.SET_IS_TRANSACTION_OPEN:
-      return {
-        ...state,
-        isTransactionOpen: !state.isTransactionOpen
-      };
+      return setTransactionIsOpen(state);
     default:
       return state;
   }

@@ -1,3 +1,6 @@
+export interface UserState {
+  userReducer: UserReducer;
+}
 export interface UserReducer {
   user: User;
   token: string;
@@ -9,8 +12,8 @@ export interface User {
   email: string;
   type: string;
   categories: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 export interface UserRegister {
   email: string;
@@ -26,4 +29,19 @@ export interface SignInUser {
   updatedAt: string;
   type: string;
   id: string;
+}
+
+export interface UserPayload {
+  token: string;
+  user: User;
+}
+
+export interface UserAction {
+  type: string;
+  payload: UserPayload;
+}
+
+export interface UserSignInAction {
+  type: string;
+  payload: SignInUser;
 }

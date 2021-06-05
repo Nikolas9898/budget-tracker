@@ -8,16 +8,15 @@ import {
   handlePreviousMonth,
   handlePreviousYear
 } from '../../modules/transaction/actions/transactionActions';
-
-import {TransactionReducer} from '../../models/Transaction';
 import classes from './NavBarStyle.module.css';
 import languageWords from '../../helpers/LanguageConsts';
 import {isSelectedTitle, isTransactionContainer} from '../../helpers/TransactionHelpers';
+import {getTransactionDate} from '../../helpers/transactionSelectors';
 
 const NavBarMenu = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const date = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer.date);
+  const date = useSelector(getTransactionDate);
 
   const handlePreviousYearOrMonth = useCallback(() => {
     if (isSelectedTitle(location.pathname, 'yearly')) {
