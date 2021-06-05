@@ -6,6 +6,7 @@ import transactionRoutes from './routes/transaction/transaction.route';
 import authRoute from './routes/authentication/authentication.route';
 import categoryRoutes from './routes/category/category.routes';
 import exportRoutes from './routes/export/export.routes';
+import moneyAccountsRoutes from './routes/moneyAccounts/moneyAccounts.routes';
 
 const port = 5000;
 const app = express();
@@ -22,5 +23,6 @@ app.use(statsRoute);
 app.use(transactionRoutes);
 app.use(categoryRoutes);
 app.use(exportRoutes);
+app.use(moneyAccountsRoutes);
 
 export default app;

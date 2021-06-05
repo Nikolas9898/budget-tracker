@@ -34,4 +34,4 @@ export enum UserErrors {
 export enum succsessMessages {
   UPDATED_SUCCESSFULLY = 'Updated successfully'
 }
-export const accounts = {card: 0, cash: 0};
+export const accounts = {card: 0, cash: 0, accounts: 0};
