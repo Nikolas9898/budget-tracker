@@ -6,7 +6,8 @@ import {
   DELETE_TRANSACTION_EVENT,
   EDIT_TRANSACTION_EVENT,
   GET_YERALY_OR_WEEKLY,
-  SPECIFIC_DATE_PERIOD
+  SPECIFIC_DATE_PERIOD,
+  GET_USER_ACCOUNTS
 } from '../../../helpers/axiosRoutes.ts/transactionRoutes';
 import GET_LOGGED_USER from '../../../helpers/axiosRoutes.ts/userRoutes';
 import {ServiceTransaction, ServiceTransactionEvent} from '../../../models/Transaction';
@@ -47,4 +48,7 @@ export const deleteTransaction = async (selectedDayId: string, transactionId: st
 };
 export const getUserByJWToken = async (): Promise<AxiosResponse> => {
   return axiosConfig.get(`${GET_LOGGED_USER}`, config);
+};
+export const getAccounts = async (): Promise<AxiosResponse> => {
+  return axiosConfig.get(`${GET_USER_ACCOUNTS}`, config);
 };

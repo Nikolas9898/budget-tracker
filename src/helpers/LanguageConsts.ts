@@ -23,6 +23,7 @@ export const languageWords = {
   PLEASE_SELECT_A_CATEGORY: 'Please select a category',
   PLEASE_SELECT_TO: 'Please select to',
   PLEASE_ADD_AN_AMOUNT: 'Please add an amount',
+  THE_AMOUNT_IS_TOO_MUCH: 'The amount is too much',
   FEES_CAN_NOT_BE_GREATER: "Fees can't be greater then amount",
   PLEASE_ENTER_VALID_EMAIL: 'Please enter a valid email.',
   PLEASE_ENTER_VALID_USERNAME: 'Please enter a valid username.',

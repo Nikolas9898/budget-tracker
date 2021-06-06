@@ -1,4 +1,5 @@
 import {Moment} from 'moment';
+import {ActionTypes} from '../modules/transaction/actionTypes';
 
 export interface Transaction {
   _id: string;
@@ -111,4 +112,20 @@ export enum SelectInputTitle {
   TO = 'to',
   CATEGORY = 'category',
   ACCOUNT = 'account'
+}
+
+export interface ChangeInputAction {
+  type: ActionTypes;
+  payload: {
+    name: string;
+    value: string | number | Date;
+  };
+}
+export interface SetTransactionAction {
+  type: ActionTypes;
+  payload: TransactionEvent;
+}
+export interface SetDateAction {
+  type: ActionTypes;
+  payload: Date;
 }

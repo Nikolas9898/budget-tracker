@@ -9,11 +9,11 @@ import {
   Transaction,
   TransactionEvent,
   TransactionEventWithAmountNumber,
-  TransactionReducer,
   TransactionWithAmountNumber
 } from '../../../models/Transaction';
 import {Error} from '../../../models/Error';
 import '../../../scss/variables.scss';
+import DailyTransactions from './components/DailyTransactions';
 import {UnitOfTime} from '../../../models/Clendar';
 import {
   firstDateOfFirstWeekOfTheMonth,
@@ -22,7 +22,9 @@ import {
   firstDateOfTheMonth,
   lastDateOfTheMonth
 } from '../../../helpers/MomentHelpers';
-import DailyTransactions from './components/DailyTransactions';
+import {getTransactionState} from '../../../helpers/transactionSelectors';
+import {setAccount, setAccounts} from '../../login/actions/usersActions';
+import {getUserAccounts} from '../../../helpers/userSelectors';
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -50,7 +52,9 @@ const MonthlyContainer = (): JSX.Element => {
 
   const dispatch = useDispatch();
 
-  const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
+  const stateTransaction = useSelector(getTransactionState);
+  const stateUser = useSelector(getUserAccounts);
+  const {amount} = stateTransaction.transactionEvent;
   // eslint-disable-next-line react/state-in-constructor
 
   const getTransactions = async (date: Date) => {
@@ -85,8 +89,6 @@ const MonthlyContainer = (): JSX.Element => {
   };
 
   const handleOpenEdit = (event: TransactionEventWithAmountNumber) => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-
     const {_id: selectedTransactionId} = selectedTransaction;
 
     const Event: TransactionEvent = {
@@ -96,6 +98,7 @@ const MonthlyContainer = (): JSX.Element => {
       transactionId: selectedTransactionId
     };
 
+    dispatch(setAccount(Event));
     dispatch(setTransaction(Event));
     dispatch(setIsTransactionOpen());
   };

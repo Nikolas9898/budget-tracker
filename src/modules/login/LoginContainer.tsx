@@ -5,7 +5,7 @@ import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
 import SocialNetworks from './components/SocialNetworks';
 import {validateLogin} from '../../helpers/Validation';
-import {signIn} from './actions/usersActions';
+import {saveUser, signIn} from './actions/usersActions';
 import classes from './LoginContainerStyle.module.css';
 import axiosConfig from '../../axiosConfig';
 import {SIGN_IN, SIGN_UP} from '../../helpers/axiosRoutes.ts/userRoutes';
@@ -82,13 +82,13 @@ const LoginContainer = (): JSX.Element => {
       email: user.email,
       password: user.password,
       type: 'user',
-      currency: 'BG'
+      currency: 'BGN'
     };
     try {
       const signUp = await axiosConfig.post(`${SIGN_UP}`, newUser);
 
       if (signUp.data.user) {
-        dispatch(signIn(signUp.data));
+        dispatch(saveUser(signUp.data));
         window.location.pathname = '/';
         setErrors({email: '', password: '', confirmPassword: '', username: ''});
       }

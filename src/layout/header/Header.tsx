@@ -3,13 +3,12 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCaretDown, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
 import classes from './HeaderStyle.module.css';
-
-import {UserReducer} from '../../models/User';
 import AccountMenu from '../accountMenu/AccountMenu';
 import {getHeaderTitle} from '../../helpers/TransactionHelpers';
+import {getUserEmail} from '../../helpers/userSelectors';
 
 const NavBar = (): JSX.Element => {
-  const user = useSelector((state: {userReducer: UserReducer}) => state.userReducer.user);
+  const userEmail = useSelector(getUserEmail);
 
   return (
     <nav className={`pe-3  align-items-center ${classes.container}`}>
@@ -31,13 +30,8 @@ const NavBar = (): JSX.Element => {
             >
               <FontAwesomeIcon icon={faUser} />
 
-              <div
-                data-bs-toggle="tooltip"
-                data-bs-placement="left"
-                title={user.username}
-                className={classes.user_email}
-              >
-                {user.username}
+              <div data-bs-toggle="tooltip" data-bs-placement="left" title={userEmail} className={classes.user_email}>
+                {userEmail}
               </div>
               <div className={classes.caret_down}>
                 <FontAwesomeIcon icon={faCaretDown} />

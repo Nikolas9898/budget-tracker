@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Moment from 'moment';
-import {TransactionReducer, TransactionTypes} from '../../models/Transaction';
+import {TransactionTypes} from '../../models/Transaction';
 import {
   transactionInputChange,
   setTransaction,
@@ -13,11 +13,15 @@ import {validateTransaction} from '../../helpers/Validation';
 import {
   createTransactionRequest,
   deleteTransaction,
-  editTransaction
+  editTransaction,
+  getAccounts
 } from '../../modules/transaction/service/TransactionService';
 import '../navBar/NavBarStyle.css';
 import {UnitOfTime} from '../../models/Clendar';
 import {getTransaction} from '../../helpers/TransactionHelpers';
+import {getTransactionState} from '../../helpers/transactionSelectors';
+import {getUserAccounts} from '../../helpers/userSelectors';
+import {setAccounts} from '../../modules/login/actions/usersActions';
 
 const AddTransactionButton = (): JSX.Element => {
   const [errors, setErrors] = useState({
@@ -30,8 +34,8 @@ const AddTransactionButton = (): JSX.Element => {
   });
   const dispatch = useDispatch();
 
-  const stateTransaction = useSelector((state: {transactionReducer: TransactionReducer}) => state.transactionReducer);
-
+  const stateTransaction = useSelector(getTransactionState);
+  const userAccounts = useSelector(getUserAccounts);
   const {transactionId, _id: transactionEventId} = stateTransaction.transactionEvent;
 
   const clearState = () => {
@@ -55,7 +59,7 @@ const AddTransactionButton = (): JSX.Element => {
     );
   };
   const handleSave = async () => {
-    const validationErrors = validateTransaction(stateTransaction.transactionEvent);
+    const validationErrors = validateTransaction(stateTransaction.transactionEvent, userAccounts);
     const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
     if (!isValid) {
       setErrors(validationErrors);
@@ -64,15 +68,23 @@ const AddTransactionButton = (): JSX.Element => {
 
     const event = getTransaction(stateTransaction.transactionEvent);
     if (transactionId) {
-      await editTransaction(transactionId, transactionEventId, event.events[0]);
+      try {
+        await editTransaction(transactionId, transactionEventId, event.events[0]);
+      } catch (e) {
+        console.log(e.response.data.error);
+      }
     } else {
       await createTransactionRequest(event);
     }
+    const response = await getAccounts();
+    dispatch(setAccounts(response.data));
 
     clearState();
   };
   const handleDelete = async (eventId: string) => {
     await deleteTransaction(transactionId, eventId);
+    const response = await getAccounts();
+    dispatch(setAccounts(response.data));
     clearState();
   };
 

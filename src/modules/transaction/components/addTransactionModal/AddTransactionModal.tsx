@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import Moment from 'moment';
 import {Modal as BootstrapModal} from 'bootstrap';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import classes from './AddTransactionStyle.module.css';
 import {TransactionEvent, TransactionTypes} from '../../../../models/Transaction';
 import {Error} from '../../../../models/Error';
@@ -13,6 +13,10 @@ import {HandleInputChange} from '../../../../models/Function';
 import Form from './form/Form';
 import {setIsTransactionOpen} from '../../actions/transactionActions';
 import {validateTransaction} from '../../../../helpers/Validation';
+import {getUserAccounts} from '../../../../helpers/userSelectors';
+import {getTransactionState} from '../../../../helpers/transactionSelectors';
+import {setAccounts} from '../../../login/actions/usersActions';
+import {getAccounts} from '../../service/TransactionService';
 
 type Props = {
   transactionEvent: TransactionEvent;
@@ -47,10 +51,13 @@ const AddTransactionModal: React.FC<Props> = ({
         return 0;
     }
   };
-
+  const stateTransaction = useSelector(getTransactionState);
   const dispatch = useDispatch();
-
-  const handleOpen = useCallback(() => {
+  const userAccounts = useSelector(getUserAccounts);
+  const handleOpen = useCallback(async () => {
+    const response = await getAccounts();
+    console.log(response.data);
+    dispatch(setAccounts(response.data));
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isEditTransactionOpen ? handleOpenEdit(transactionEvent) : handleOpenTransaction(Moment().toDate());
   }, [handleOpenEdit, handleOpenTransaction, isEditTransactionOpen, transactionEvent]);
@@ -89,7 +96,7 @@ const AddTransactionModal: React.FC<Props> = ({
       myModalDom?.removeEventListener('hidden.bs.modal', onHiddenBsModal);
     };
   }, []);
-  const validationErrors = validateTransaction(transactionEvent);
+  const validationErrors = validateTransaction(transactionEvent, userAccounts);
   const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
   return (
     <div
