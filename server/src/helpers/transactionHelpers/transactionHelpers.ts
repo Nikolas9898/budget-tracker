@@ -86,6 +86,18 @@ export const removeTransactionEvent = async (
   const expense = 0;
   const income = 0;
   const newEvents: TransactionEvent[] = transaction.events.filter((event: TransactionEvent) => event._id != event_id);
+  const foundIndex = transaction.events.findIndex(
+    (foundEvent: TransactionEvent) => foundEvent._id?.toString() === event_id
+  );
+  const eventFromDB = transaction.events[foundIndex];
+
+  if (eventFromDB.transferId) {
+    const transferIndex = transaction.events.findIndex(
+      (foundEvent: TransactionEvent) => foundEvent._id?.toString() === eventFromDB.transferId
+    );
+
+    newEvents[transferIndex].fees = 0;
+  }
 
   transaction.events = newEvents;
 
