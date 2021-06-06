@@ -210,6 +210,10 @@ const editMoneyIfTransfer = async (
   const {accounts} = moneyAccounts;
   const responseResult = getMoneyAccountsResultTemplate();
 
+  console.log(eventFromBody);
+  console.log(eventFromDB);
+  console.log('pyrvi', accounts);
+
   if (eventFromDB.type === EventTypes.INCOME) {
     accounts[accountFromDB] -= eventFromDB.amount;
     if (eventFromBody.fees > 0) accounts[eventFromBody.from] -= eventFromBody.fees;
@@ -227,7 +231,6 @@ const editMoneyIfTransfer = async (
     accounts[eventFromBody.from] -= eventFromBody.amount;
     accounts[eventFromBody.to] += eventFromBody.amount;
     if (eventFromBody.fees > 0) accounts[eventFromBody.from] -= eventFromBody.fees;
-
     if (accounts[eventFromBody.from] < 0) {
       responseResult.error = `${NOT_ENOUGH_MONEY_IN} ${eventFromBody.from}`;
       responseResult.ok = 0;
@@ -241,7 +244,12 @@ const editMoneyIfTransfer = async (
     accounts[eventFromDB.from] += eventFromDB.amount;
     accounts[eventFromDB.to] -= eventFromDB.amount;
     accounts[eventFromBody.from] -= eventFromBody.amount;
-    if (eventFromBody.fees > 0) accounts[eventFromBody.from] -= eventFromBody.fees;
+    if (eventFromDB.fees > 0) {
+      accounts[eventFromDB.from] += eventFromDB.fees;
+    }
+    if (eventFromBody.fees > 0) {
+      accounts[eventFromBody.from] -= eventFromBody.fees;
+    }
 
     accounts[eventFromBody.to] += eventFromBody.amount;
     if (accounts[eventFromBody.from] < 0) {
@@ -250,15 +258,15 @@ const editMoneyIfTransfer = async (
       return responseResult;
     }
   }
+  console.log('editnati', accounts);
+  // try {
+  //   const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
 
-  try {
-    const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
-
-    responseResult.ok = result.nModified;
-    responseResult.error = '';
-  } catch (error) {
-    responseResult.error = error.message;
-  }
+  //   responseResult.ok = result.nModified;
+  //   responseResult.error = '';
+  // } catch (error) {
+  //   responseResult.error = error.message;
+  // }
 
   return responseResult;
 };
@@ -289,6 +297,13 @@ const editMoneyIfIncome = async (
   } else {
     accounts[accountFromBody] += eventFromBody.amount;
   }
+
+  if (accounts[accountFromDB] < 0) {
+    responseResult.error = `${NOT_ENOUGH_MONEY_IN} ${accountFromDB}`;
+    responseResult.ok = 0;
+    return responseResult;
+  }
+
   try {
     const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
 

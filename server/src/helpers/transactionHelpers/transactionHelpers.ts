@@ -132,8 +132,7 @@ export const editIntoTransfer = async (
         ...eventFromBody,
         _id: oldEvent._id,
         category: undefined,
-        account: '',
-        fees: 0
+        account: ''
       };
     }
 

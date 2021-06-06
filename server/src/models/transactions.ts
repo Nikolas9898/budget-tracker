@@ -81,7 +81,7 @@ export enum Expense {
   TYPE = 'expense',
   NOTE = 'fees',
   CATEGORY = 'other',
-  CURRENCY = 'BG'
+  CURRENCY = 'BGN'
 }
 
 export enum EventTypes {
