@@ -210,10 +210,6 @@ const editMoneyIfTransfer = async (
   const {accounts} = moneyAccounts;
   const responseResult = getMoneyAccountsResultTemplate();
 
-  console.log(eventFromBody);
-  console.log(eventFromDB);
-  console.log('pyrvi', accounts);
-
   if (eventFromDB.type === EventTypes.INCOME) {
     accounts[accountFromDB] -= eventFromDB.amount;
     if (eventFromBody.fees > 0) accounts[eventFromBody.from] -= eventFromBody.fees;
@@ -258,15 +254,14 @@ const editMoneyIfTransfer = async (
       return responseResult;
     }
   }
-  console.log('editnati', accounts);
-  // try {
-  //   const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
+  try {
+    const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
 
-  //   responseResult.ok = result.nModified;
-  //   responseResult.error = '';
-  // } catch (error) {
-  //   responseResult.error = error.message;
-  // }
+    responseResult.ok = result.nModified;
+    responseResult.error = '';
+  } catch (error) {
+    responseResult.error = error.message;
+  }
 
   return responseResult;
 };
