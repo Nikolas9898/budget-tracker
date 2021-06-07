@@ -254,10 +254,11 @@ const editMoneyIfTransfer = async (
       return responseResult;
     }
   }
-  try {
-    const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
 
-    responseResult.ok = result.nModified;
+  try {
+    // const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
+
+    responseResult.ok = 1;
     responseResult.error = '';
   } catch (error) {
     responseResult.error = error.message;
