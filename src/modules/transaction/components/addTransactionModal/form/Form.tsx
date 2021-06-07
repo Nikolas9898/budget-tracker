@@ -23,6 +23,10 @@ type CustomInput = {
 const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
   const [isFeesOpen, setIsFeesOpen] = useState(false);
 
+  // const accounts = Object.keys(useSelector(getUserAccounts).accounts);
+  // const categoriesIncome = useSelector(getCategoriesIncome);
+  // const categoriesExpense = useSelector(getCategoriesExpense).forEach((element) => element.name);
+
   // TODO/mockup state//
   const accounts = ['', 'cash', 'card', 'accounts'];
   const categoriesIncome = ['', 'salary', 'bonus', 'petty cash', 'other'];

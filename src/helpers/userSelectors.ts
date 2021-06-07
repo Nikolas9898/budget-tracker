@@ -18,3 +18,11 @@ export const getUserAccounts = createSelector(
   (state: UserState) => state,
   ({userReducer}) => userReducer.user.accounts[0]
 );
+export const getCategoriesIncome = createSelector(
+  (state: UserState) => state,
+  ({userReducer}) => userReducer.incomeCategories
+);
+export const getCategoriesExpense = createSelector(
+  (state: UserState) => state,
+  ({userReducer}) => userReducer.expenseCategories
+);

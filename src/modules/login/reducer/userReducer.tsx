@@ -21,6 +21,8 @@ const initialState = {
     type: '',
     id: ''
   },
+  expenseCategories: [],
+  incomeCategories: [],
   token: '',
   loading: true
 };
@@ -41,7 +43,9 @@ const signInStateChange = (state: State, payload: AnyAction) => {
 const saveUserInState = (state: State, payload: AnyAction) => {
   return {
     ...state,
-    user: payload.user
+    user: payload.user,
+    expenseCategories: payload.expenseCategories.expenseCategories,
+    incomeCategories: payload.incomeCategories.incomeCategories
   };
 };
 

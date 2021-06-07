@@ -5,8 +5,14 @@ export interface UserState {
 }
 export interface UserReducer {
   user: User;
+  expenseCategories: Categories[];
+  incomeCategories: Categories[];
   token: string;
   isLoading: boolean;
+}
+interface Categories {
+  _id: 'string';
+  name: string;
 }
 export interface User {
   id: string;
