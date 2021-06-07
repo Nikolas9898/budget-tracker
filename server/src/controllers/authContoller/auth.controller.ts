@@ -4,6 +4,8 @@ import User from '../../dbModels/user/user.model';
 import MoneyAccounts from '../../dbModels/moneyAccounts/moneyAccounts.model';
 import {UserType, ResponseUser, UserErrors, accounts} from '../../models/user';
 import {addCategories} from '../categoryController/category.controller';
+import ExpenseCategories from '../../dbModels/category/expenseCategory.model';
+import IncomeCategories from '../../dbModels/category/incomeCategory.model';
 
 export const signUp: RequestHandler = async (req: Request, res: Response) => {
   let user: UserType | null;
@@ -93,6 +95,8 @@ export const signIn: RequestHandler = async (req: Request, res: Response) => {
     },
     'somesecretkeyforjsonwebtoken'
   );
+  const expenseCategories = await ExpenseCategories.findOne({userId: foundUser._id});
+  const incomeCategories = await IncomeCategories.findOne({userId: foundUser._id});
 
-  return res.json({user: foundUser, token});
+  return res.json({user: foundUser, token, expenseCategories, incomeCategories});
 };
