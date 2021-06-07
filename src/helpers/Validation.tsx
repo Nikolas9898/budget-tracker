@@ -50,11 +50,11 @@ export const validateTransaction = (value: TransactionEvent, userAccounts: UserA
   if (type === TransactionTypes.TRANSFER && !from) {
     errors.from = languageWords.PLEASE_SELECT_FROM;
   }
-  if (!amount) {
+  if (!amount || parseFloat(amount) <= 0 || (amount.charAt(0) === '0' && amount.charAt(1) !== '.')) {
     errors.amount = languageWords.PLEASE_ADD_AN_AMOUNT;
   }
   if (fees)
-    if (parseFloat(fees) > parseFloat(amount)) {
+    if (parseFloat(fees) > parseFloat(amount) || parseFloat(amount) < 0) {
       errors.fees = languageWords.FEES_CAN_NOT_BE_GREATER;
     }
   return errors;

@@ -30,7 +30,7 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
 
   const selectOptions = (transactionType: string) => {
     if (transactionType === TransactionTypes.TRANSFER) {
-      return accounts;
+      return accounts.filter((element) => element !== transaction.from);
     }
     if (transactionType === TransactionTypes.INCOME) {
       return categoriesIncome;

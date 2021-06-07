@@ -2,6 +2,7 @@
   background: #0160b2;
   height: 70px;
   min-width: 300px;
+  display: grid;
 }
 
 .user_content {

@@ -1,8 +1,6 @@
 import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import languageWords from '../../helpers/LanguageConsts';
-import {useSelector} from 'react-redux';
-import {getTransactionDate} from '../../helpers/transactionSelectors';
 import {isSelectedTitle, isTransactionContainer} from '../../helpers/TransactionHelpers';
 import AddTransactionButton from '../addTranasctionButton/AddTransactionButton';
 import ChangeDate from './components/ChangeDate';
@@ -10,10 +8,10 @@ import './NavBarStyle.css';
 
 const NavBarMenu = (): JSX.Element => {
   const location = useLocation();
-  const date = useSelector(getTransactionDate);
+
   return (
     <div className="row  mb-3 mt-3 ">
-      <div className="col-5 pe-sm-5">
+      <div className="col-lg-5 pe-lg-5 col-sm-12">
         <div className="row   row-cols-xl-5 row-cols-lg-12 align-items-center">
           {location.pathname.includes('transaction') ? (
             <Link
@@ -43,10 +41,10 @@ const NavBarMenu = (): JSX.Element => {
           </Link>
         </div>
       </div>
-      <div className="col-2 d-flex text-center justify-content-center align-items-center">
+      <div className="col-lg-2 col-sm-12 mt-sm-2 d-flex text-center justify-content-center align-items-center">
         <ChangeDate />
       </div>
-      <div className="col-5 d-flex justify-content-end">
+      <div className="col-lg-5 col-sm-12 mt-sm-2 d-flex justify-content-end">
         <AddTransactionButton />
       </div>
     </div>

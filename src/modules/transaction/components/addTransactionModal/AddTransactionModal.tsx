@@ -14,7 +14,6 @@ import Form from './form/Form';
 import {setIsTransactionOpen} from '../../actions/transactionActions';
 import {validateTransaction} from '../../../../helpers/Validation';
 import {getUserAccounts} from '../../../../helpers/userSelectors';
-import {getTransactionState} from '../../../../helpers/transactionSelectors';
 import {setAccounts} from '../../../login/actions/usersActions';
 import {getAccounts} from '../../service/TransactionService';
 
@@ -51,12 +50,12 @@ const AddTransactionModal: React.FC<Props> = ({
         return 0;
     }
   };
-  const stateTransaction = useSelector(getTransactionState);
+
   const dispatch = useDispatch();
   const userAccounts = useSelector(getUserAccounts);
   const handleOpen = useCallback(async () => {
     const response = await getAccounts();
-    console.log(response.data);
+
     dispatch(setAccounts(response.data));
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isEditTransactionOpen ? handleOpenEdit(transactionEvent) : handleOpenTransaction(Moment().toDate());

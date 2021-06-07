@@ -11,7 +11,7 @@ const NavBar = (): JSX.Element => {
   const userEmail = useSelector(getUserEmail);
 
   return (
-    <nav className={`pe-3  align-items-center ${classes.container}`}>
+    <nav className={`pe-3  ${classes.container}`}>
       <div className="navbar navbar-expand-lg row justify-content-center align-items-center">
         <div className="col" />
         <div className="col text-center">
@@ -19,8 +19,8 @@ const NavBar = (): JSX.Element => {
             {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
           </div>
         </div>
-        <div className="col d-flex justify-content-end">
-          <div role="button" tabIndex={-1} className="dropdown">
+        <div className="col d-flex justify-content-end align-items-center">
+          <div className="dropdown">
             <div
               role="button"
               className={`dropdown-toggl ${classes.user_content}`}

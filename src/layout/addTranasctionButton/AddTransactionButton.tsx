@@ -68,11 +68,7 @@ const AddTransactionButton = (): JSX.Element => {
 
     const event = getTransaction(stateTransaction.transactionEvent);
     if (transactionId) {
-      try {
-        await editTransaction(transactionId, transactionEventId, event.events[0]);
-      } catch (e) {
-        console.log(e.response.data.error);
-      }
+      await editTransaction(transactionId, transactionEventId, event.events[0]);
     } else {
       await createTransactionRequest(event);
     }

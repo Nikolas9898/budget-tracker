@@ -1,3 +1,5 @@
+import {TransactionEvent} from './Transaction';
+
 export interface UserState {
   userReducer: UserReducer;
 }
@@ -56,4 +58,8 @@ export interface UserSignInAction {
 export interface UserSetAccounts {
   type: string;
   payload: UserAccounts;
+}
+export interface UserSetAccount {
+  type: string;
+  payload: TransactionEvent;
 }

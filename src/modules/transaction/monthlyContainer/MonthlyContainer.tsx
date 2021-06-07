@@ -23,8 +23,7 @@ import {
   lastDateOfTheMonth
 } from '../../../helpers/MomentHelpers';
 import {getTransactionState} from '../../../helpers/transactionSelectors';
-import {setAccount, setAccounts} from '../../login/actions/usersActions';
-import {getUserAccounts} from '../../../helpers/userSelectors';
+import {setAccount} from '../../login/actions/usersActions';
 
 type State = {
   isAddTransactionOpen: boolean;
@@ -53,8 +52,7 @@ const MonthlyContainer = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector(getTransactionState);
-  const stateUser = useSelector(getUserAccounts);
-  const {amount} = stateTransaction.transactionEvent;
+
   // eslint-disable-next-line react/state-in-constructor
 
   const getTransactions = async (date: Date) => {
@@ -169,7 +167,7 @@ const MonthlyContainer = (): JSX.Element => {
     <div className="wrapper">
       <NavBarMenu />
       <div className="row mt-5">
-        <div className="col-xxl-7 col-xl-12 pe-4  " style={{minWidth: '600px'}}>
+        <div className="col-xxl-7 col-xl-12 pe-4  ">
           <Calendar
             handleOpenInfoModal={handleOpenInfoModal}
             transactions={transactions}
