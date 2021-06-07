@@ -2,6 +2,8 @@ import {RequestHandler, Request, Response} from 'express';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
 import {UserType, ResponseUser, succsessMessages, UserErrors} from '../../models/user';
 import User from '../../dbModels/user/user.model';
+import ExpenseCategories from '../../dbModels/category/expenseCategory.model';
+import IncomeCategories from '../../dbModels/category/incomeCategory.model';
 
 export const getLoggedUser: RequestHandler = async (req: Request, res: Response) => {
   let user: UserType | null;
@@ -27,8 +29,10 @@ export const getLoggedUser: RequestHandler = async (req: Request, res: Response)
     createdAt,
     updatedAt
   };
+  const expenseCategories = await ExpenseCategories.findOne({userId: foundUser._id});
+  const incomeCategories = await IncomeCategories.findOne({userId: foundUser._id});
 
-  return res.json({user: foundUser});
+  return res.json({user: foundUser, expenseCategories, incomeCategories});
 };
 
 export const editUser: RequestHandler = async (req: Request, res: Response) => {
