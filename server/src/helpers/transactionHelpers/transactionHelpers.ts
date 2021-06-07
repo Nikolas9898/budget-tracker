@@ -86,6 +86,18 @@ export const removeTransactionEvent = async (
   const expense = 0;
   const income = 0;
   const newEvents: TransactionEvent[] = transaction.events.filter((event: TransactionEvent) => event._id != event_id);
+  const foundIndex = transaction.events.findIndex(
+    (foundEvent: TransactionEvent) => foundEvent._id?.toString() === event_id
+  );
+  const eventFromDB = transaction.events[foundIndex];
+
+  if (eventFromDB.transferId) {
+    const transferIndex = transaction.events.findIndex(
+      (foundEvent: TransactionEvent) => foundEvent._id?.toString() === eventFromDB.transferId
+    );
+
+    newEvents[transferIndex].fees = 0;
+  }
 
   transaction.events = newEvents;
 
@@ -105,13 +117,17 @@ export const editIntoTransfer = async (
 ): Promise<TransactionType> => {
   const {fees, from} = eventFromBody;
   let dummyExpenseEvent: TransactionEvent | undefined = undefined;
+  const expenseWithTransferIdIndex = transaction.events.findIndex(
+    (foundEvent: TransactionEvent) => foundEvent.transferId === event_id
+  );
 
   transaction.events = transaction.events.map((oldEvent: TransactionEvent) => {
     if (oldEvent._id?.toString() === event_id) {
       //when editing event into transfer with fees
+
       if (fees > 0 && oldEvent.fees == 0) {
         dummyExpenseEvent = {
-          transferId: oldEvent._id,
+          transferId: fees < 0 ? '' : oldEvent._id,
           type: Expense.TYPE,
           currency: Expense.CURRENCY,
           date: oldEvent.date,
@@ -126,8 +142,6 @@ export const editIntoTransfer = async (
         };
       }
 
-      // ordinary transfer
-
       oldEvent = {
         ...eventFromBody,
         _id: oldEvent._id,
@@ -136,13 +150,27 @@ export const editIntoTransfer = async (
       };
     }
 
+    // Opravi utre expence kato se premahne ot transfer!!!!!!!!!!!!!!!!!!!
+
     if (oldEvent.transferId === event_id) {
-      oldEvent.amount = fees;
+      if (fees <= 0) {
+        oldEvent.transferId = undefined;
+      } else {
+        oldEvent.amount = fees;
+      }
     }
 
     return oldEvent;
   });
   if (dummyExpenseEvent) transaction.events.push(dummyExpenseEvent);
+
+  if (expenseWithTransferIdIndex > 0 && fees <= 0) {
+    for (let i = 0; i < transaction.events.length; i++) {
+      if (i === expenseWithTransferIdIndex) {
+        transaction.events.splice(i, 1);
+      }
+    }
+  }
 
   return transaction;
 };

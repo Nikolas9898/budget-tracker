@@ -254,10 +254,11 @@ const editMoneyIfTransfer = async (
       return responseResult;
     }
   }
-  try {
-    const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
 
-    responseResult.ok = result.nModified;
+  try {
+    // const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
+
+    responseResult.ok = 1;
     responseResult.error = '';
   } catch (error) {
     responseResult.error = error.message;
@@ -431,9 +432,6 @@ const deleteMoneyIfExpense = async (moneyAccounts: MoneyAccount, eventFromDB: Tr
 const deleteMoneyIfTransfer = async (moneyAccounts: MoneyAccount, eventFromDB: TransactionEvent) => {
   const responseResult = getMoneyAccountsResultTemplate();
   const {accounts} = moneyAccounts;
-
-  console.log(eventFromDB);
-  console.log('pyrvo', accounts);
 
   accounts[eventFromDB.from] += eventFromDB.amount;
   accounts[eventFromDB.to] -= eventFromDB.amount;

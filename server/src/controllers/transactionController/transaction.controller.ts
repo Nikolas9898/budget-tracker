@@ -198,7 +198,6 @@ export const editTransactionEvent: RequestHandler = async (req: Request, res: Re
     if (transaction)
       if (type === EventTypes.TRANSFER) {
         // when eventFrom body is transfer
-
         const result = await editMoneyInMoneyAccounts(eventFromBody, moneyAccounts, transaction.events, event_id);
 
         if (result.ok != 1) {
