@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import {AnyAction} from 'redux';
+import {TransactionTypes} from '../../../models/Transaction';
 import {User, UserAccounts} from '../../../models/User';
 import {ActionTypes} from '../actionTypes';
 
@@ -61,7 +62,7 @@ const setAccounts = (state: State, payload: AnyAction) => {
 const setAccount = (state: State, payload: AnyAction) => {
   let setAcc: UserAccounts[] = [];
 
-  if (payload.type === 'income') {
+  if (payload.type === TransactionTypes.INCOME) {
     setAcc = [
       {
         ...state.user.accounts[0],
@@ -72,7 +73,7 @@ const setAccount = (state: State, payload: AnyAction) => {
       }
     ];
   }
-  if (payload.type === 'transfer') {
+  if (payload.type === TransactionTypes.TRANSFER) {
     setAcc = [
       {
         ...state.user.accounts[0],
@@ -84,7 +85,7 @@ const setAccount = (state: State, payload: AnyAction) => {
       }
     ];
   }
-  if (payload.type === 'expense') {
+  if (payload.type === TransactionTypes.EXPENSE) {
     setAcc = [
       {
         ...state.user.accounts[0],

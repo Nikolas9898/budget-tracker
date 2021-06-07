@@ -22,7 +22,7 @@ const initialState = {
     fees: '0',
     transferId: '',
     to: '',
-    amount: '0',
+    amount: '',
     note: '',
     description: '',
     transactionId: ''

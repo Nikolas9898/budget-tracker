@@ -5,10 +5,10 @@ import {useSelector} from 'react-redux';
 import classes from './HeaderStyle.module.css';
 import AccountMenu from '../accountMenu/AccountMenu';
 import {getHeaderTitle} from '../../helpers/TransactionHelpers';
-import {getUserEmail} from '../../helpers/userSelectors';
+import {getUsername} from '../../helpers/userSelectors';
 
 const NavBar = (): JSX.Element => {
-  const userEmail = useSelector(getUserEmail);
+  const username = useSelector(getUsername);
 
   return (
     <nav className={`pe-3  ${classes.container}`}>
@@ -30,8 +30,8 @@ const NavBar = (): JSX.Element => {
             >
               <FontAwesomeIcon icon={faUser} />
 
-              <div data-bs-toggle="tooltip" data-bs-placement="left" title={userEmail} className={classes.user_email}>
-                {userEmail}
+              <div data-bs-toggle="tooltip" data-bs-placement="left" title={username} className={classes.user_email}>
+                {username}
               </div>
               <div className={classes.caret_down}>
                 <FontAwesomeIcon icon={faCaretDown} />

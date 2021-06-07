@@ -10,6 +10,10 @@ export const getUserEmail = createSelector(
   (state: UserState) => state,
   ({userReducer}) => userReducer.user.email
 );
+export const getUsername = createSelector(
+  (state: UserState) => state,
+  ({userReducer}) => userReducer.user.username
+);
 export const getUserAccounts = createSelector(
   (state: UserState) => state,
   ({userReducer}) => userReducer.user.accounts[0]

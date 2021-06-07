@@ -25,7 +25,7 @@ const Form: React.FC<Props> = ({transaction, handleInputChange, errors}) => {
 
   // TODO/mockup state//
   const accounts = ['', 'cash', 'card', 'accounts'];
-  const categoriesIncome = [' ', 'salary', 'bonus', 'petty cash', 'other'];
+  const categoriesIncome = ['', 'salary', 'bonus', 'petty cash', 'other'];
   const categoriesExpense = ['', 'food', 'culture', 'socialLife', 'selfDevelopment', 'transportation', 'other'];
 
   const selectOptions = (transactionType: string) => {
