@@ -240,6 +240,7 @@ const editMoneyIfTransfer = async (
     accounts[eventFromDB.from] += eventFromDB.amount;
     accounts[eventFromDB.to] -= eventFromDB.amount;
     accounts[eventFromBody.from] -= eventFromBody.amount;
+
     if (eventFromDB.fees > 0) {
       accounts[eventFromDB.from] += eventFromDB.fees;
     }
@@ -256,7 +257,7 @@ const editMoneyIfTransfer = async (
   }
 
   try {
-    // const result: ReplaceOneType = await moneyAccounts.replaceOne(moneyAccounts);
+    await moneyAccounts.replaceOne(moneyAccounts);
 
     responseResult.ok = 1;
     responseResult.error = '';
