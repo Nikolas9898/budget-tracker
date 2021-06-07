@@ -96,7 +96,9 @@ export const removeTransactionEvent = async (
       (foundEvent: TransactionEvent) => foundEvent._id?.toString() === eventFromDB.transferId
     );
 
-    newEvents[transferIndex].fees = 0;
+    if (newEvents[transferIndex]) {
+      newEvents[transferIndex].fees = 0;
+    }
   }
 
   transaction.events = newEvents;
