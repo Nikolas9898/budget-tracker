@@ -5,9 +5,9 @@ import ExportContainer from '../../modules/export/ExportContainer';
 
 const ExportPage = (): JSX.Element => {
   return (
-    <div style={{display: 'flex'}}>
+    <div className="d-flex">
       <SideBar />
-      <div style={{width: '100%'}}>
+      <div className="w-100">
         <NavBar />
         <ExportContainer />
       </div>

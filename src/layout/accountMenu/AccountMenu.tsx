@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSignOutAlt, faCog, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
 import classes from '../header/HeaderStyle.module.css';
 import languageWords from '../../helpers/LanguageConsts';
 
@@ -12,7 +12,7 @@ const AccountMenu = (): JSX.Element => {
   };
   return (
     <div className={`dropdown-menu ${classes.dropdown_content}`} aria-labelledby="dropdownMenuButton1">
-      <Link to="/">
+      {/* <Link to="/">
         <FontAwesomeIcon icon={faUser} />
         <div>{languageWords.PROFILE}</div>
       </Link>
@@ -20,7 +20,7 @@ const AccountMenu = (): JSX.Element => {
       <Link to="/">
         <FontAwesomeIcon icon={faCog} />
         <div> {languageWords.SETTINGS}</div>
-      </Link>
+      </Link> */}
 
       <a type="button" href="/" onClick={handleExit}>
         <FontAwesomeIcon icon={faSignOutAlt} />

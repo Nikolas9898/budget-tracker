@@ -1,0 +1,20 @@
+.title {
+  font-size: 2.4rem;
+  color: #0160b2;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.account_container {
+  padding: 10px;
+  font-size: 1.4rem;
+  box-shadow: 10px 9px 13px -5px rgb(204 204 204);
+  border: #efebeb solid 2px;
+  border-radius: 5px;
+}
+
+.name {
+  color: #0160b2;
+  font-weight: bold;
+  border-bottom: 2px solid #0160b2;
+}

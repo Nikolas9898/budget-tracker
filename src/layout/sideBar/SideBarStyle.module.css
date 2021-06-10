@@ -1,7 +1,7 @@
 .wrapper_sideBar {
   min-width: 250px;
   max-width: 250px;
-  background: #60cd50;
+  background: #46bd36;
   color: #fff;
   transition: all 0.3s;
   min-height: 100vh;
@@ -11,7 +11,7 @@
   min-width: 80px;
   max-width: 80px;
   text-align: center;
-  background: #60cd50;
+  background: #46bd36;
   transition: all 0.3s;
   min-height: 100vh;
   box-shadow: 2px 2px 2px #c9bfbf;
@@ -32,14 +32,14 @@
 .button_close_sidebar {
   font-size: 30px;
   color: white;
-  margin-top: 430px;
+  margin-top: calc(100vh - 540px);
 }
 .button_open_sidebar {
   font-size: 30px;
   text-align: end;
   padding-right: 20px;
   color: white;
-  margin-top: 430px;
+  margin-top: calc(100vh - 540px);
 }
 
 .button_open_sidebar svg {

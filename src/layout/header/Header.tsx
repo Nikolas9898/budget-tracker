@@ -20,7 +20,7 @@ const NavBar = (): JSX.Element => {
           </div>
         </div>
         <div className="col d-flex justify-content-end align-items-center">
-          <div className="dropdown">
+          <div className="dropdown" data-bs-toggle="tooltip" data-bs-placement="left" title={username}>
             <div
               role="button"
               className={`dropdown-toggl ${classes.user_content}`}
@@ -30,9 +30,7 @@ const NavBar = (): JSX.Element => {
             >
               <FontAwesomeIcon icon={faUser} />
 
-              <div data-bs-toggle="tooltip" data-bs-placement="left" title={username} className={classes.user_email}>
-                {username}
-              </div>
+              <div className={classes.user_email}>{username}</div>
               <div className={classes.caret_down}>
                 <FontAwesomeIcon icon={faCaretDown} />
               </div>

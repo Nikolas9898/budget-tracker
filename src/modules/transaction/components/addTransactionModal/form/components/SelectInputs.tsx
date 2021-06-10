@@ -14,7 +14,9 @@ const SelectInput: React.FC<Props> = ({handleInputChange, options, transactionTy
     <>
       <select className={classes.input} value={selectValue} onChange={handleInputChange} name={transactionType}>
         {options.map((option) => (
-          <option value={option}>{option}</option>
+          <option value={option} key={option}>
+            {option}
+          </option>
         ))}
       </select>
     </>

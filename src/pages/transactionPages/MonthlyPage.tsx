@@ -5,9 +5,9 @@ import MonthlyContainer from '../../modules/transaction/monthlyContainer/Monthly
 
 const MonthlyPage = (): JSX.Element => {
   return (
-    <div style={{display: 'flex'}}>
+    <div className="d-flex">
       <SideBar />
-      <div style={{width: '100%'}}>
+      <div className="w-100">
         <NavBar />
         <MonthlyContainer />
       </div>

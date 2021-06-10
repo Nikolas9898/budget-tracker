@@ -80,9 +80,9 @@
 }
 .selected_tab {
   border-radius: 15px;
-  border: #60cd50 2px solid;
+  border: #46bd36 2px solid;
   font-weight: bold;
-  color: #60cd50;
+  color: #46bd36;
   text-decoration: none;
   background-color: white;
 }
@@ -92,7 +92,7 @@
   margin-left: 440px;
 }
 .close_button:hover {
-  color: #60cd50;
+  color: #46bd36;
 }
 .input_description {
   width: 100%;

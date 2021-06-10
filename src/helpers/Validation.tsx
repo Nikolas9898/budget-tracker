@@ -26,13 +26,17 @@ export const validateTransaction = (value: TransactionEvent, userAccounts: UserA
     if (eventId) {
       accountsName.forEach((element, index) => {
         if (total > accountsValue[index] && (account || from) === element) {
-          errors.amount = languageWords.THE_AMOUNT_IS_TOO_MUCH;
+          errors.amount = `${languageWords.THE_AMOUNT_IS_TOO_MUCH} ${element?.toLocaleUpperCase()} is ${(
+            accountsValue[index] / 100
+          ).toFixed(2)} BGN.`;
         }
       });
     } else {
       accountsName.forEach((element, index) => {
         if (total > accountsValue[index] && (account || from) === element) {
-          errors.amount = languageWords.THE_AMOUNT_IS_TOO_MUCH;
+          errors.amount = `${languageWords.THE_AMOUNT_IS_TOO_MUCH} ${element?.toLocaleUpperCase()} is ${(
+            accountsValue[index] / 100
+          ).toFixed(2)} BGN.`;
         }
       });
     }

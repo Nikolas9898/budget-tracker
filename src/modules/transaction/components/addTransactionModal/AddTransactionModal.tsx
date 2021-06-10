@@ -115,8 +115,6 @@ const AddTransactionModal: React.FC<Props> = ({
               onClick={handleOpen}
               icon={faTimesCircle}
             />
-
-            {/* <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" /> */}
           </div>
           <div className="modal-body justify-content-center ">
             <Tabs selectedTabClassName={classes.selected_tab} selectedIndex={ChooseCategory(transactionEvent.type)}>

@@ -17,6 +17,7 @@ const Routes = (): JSX.Element => {
       <Switch>
         <Route path="/authentication" exact component={LoginPage} />
         <Route path="/" exact component={HomePage} />
+        <Route path="/profile" exact component={HomePage} />
         <Route path="/transaction/monthly" exact component={MonthlyPage} />
         <Route path="/transaction/daily" exact component={DailyPage} />
         <Route path="/transaction/yearly" exact component={YearlyPage} />

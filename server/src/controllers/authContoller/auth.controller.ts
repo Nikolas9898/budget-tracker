@@ -43,9 +43,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
       createdAt,
       updatedAt
     };
-
-    addCategories(_id);
-
+    const {expenseCategories, incomeCategories} = await addCategories(_id);
     const token: string = jwt.sign(
       {
         sub: _id
@@ -53,7 +51,7 @@ export const signUp: RequestHandler = async (req: Request, res: Response) => {
       'somesecretkeyforjsonwebtoken'
     );
 
-    return res.json({user: foundUser, token});
+    return res.json({user: foundUser, token, expenseCategories, incomeCategories});
   }
 };
 

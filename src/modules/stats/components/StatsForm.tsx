@@ -51,7 +51,7 @@ const StatsForm: React.FC<Props> = ({stats, isIncome, selected, handleSelect}) =
               }}
               segmentsShift={(index) => (index === selected ? 6 : 1)}
               animate
-              label={({dataEntry}) => dataEntry.percentage.toFixed(1)}
+              label={({dataEntry}) => ` ${dataEntry.percentage.toFixed(1)} %`}
               labelPosition={100 - lineWidth / 2}
               labelStyle={{
                 fill: '#fff',

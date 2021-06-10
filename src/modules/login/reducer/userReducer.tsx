@@ -41,11 +41,15 @@ const signInStateChange = (state: State, payload: AnyAction) => {
 };
 
 const saveUserInState = (state: State, payload: AnyAction) => {
+  if (payload.token) {
+    localStorage.setItem('jwt', payload.token);
+  }
   return {
     ...state,
     user: payload.user,
     expenseCategories: payload.expenseCategories.expenseCategories,
-    incomeCategories: payload.incomeCategories.incomeCategories
+    incomeCategories: payload.incomeCategories.incomeCategories,
+    token: payload.token
   };
 };
 
