@@ -11,10 +11,10 @@ export const isSelectedTitle = (pathname: string, path: string): boolean =>
   pathname === `/transaction/${path}` || pathname === `/stats/${path}`;
 
 export const isTransactionTypeIncome = (type: string, amount: number): string =>
-  type === TransactionTypes.INCOME ? (amount / 100).toFixed(2) : '';
+  type === TransactionTypes.INCOME ? (amount / 100).toFixed(2) : '0.00';
 
 export const isTransactionTypeExpense = (type: string, amount: number): string =>
-  type === TransactionTypes.EXPENSE || type === TransactionTypes.TRANSFER ? (amount / 100).toFixed(2) : '';
+  type === TransactionTypes.EXPENSE || type === TransactionTypes.TRANSFER ? (amount / 100).toFixed(2) : '0.00';
 
 export const getHeaderTitle = (path: string): string => {
   switch (true) {

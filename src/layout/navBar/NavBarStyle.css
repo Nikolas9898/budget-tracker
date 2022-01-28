@@ -1,0 +1,38 @@
+.container_navigation {
+  background: #0160b2;
+  border-radius: 5px;
+}
+
+.btn-lg {
+  color: white;
+  text-decoration: none;
+}
+.date {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0 10px 0 7px;
+  align-items: center;
+  display: flex;
+}
+.navBarBtn {
+  color: white !important;
+  font-weight: bold !important;
+  background: #0160b2 !important;
+  font-size: 1.2rem;
+}
+.navBarBtn:hover {
+  color: #0160b2 !important;
+  background-color: white !important;
+  border: #0160b2 1px solid;
+}
+.navBarBtnActive {
+  color: #0160b2 !important;
+  background-color: white !important;
+  border: #0160b2 1px solid !important;
+  font-size: 1.2rem;
+}
+
+.add_button {
+  background: #60cd50 !important;
+  font-size: 1.2rem;
+}

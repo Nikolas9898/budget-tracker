@@ -3,12 +3,10 @@ import Moment from 'moment';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faAngleRight, faAngleLeft, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {faTimesCircle} from '@fortawesome/free-regular-svg-icons';
-import TableRow from './components/TableRow';
 import {TransactionEventWithAmountNumber, TransactionWithAmountNumber} from '../../../../models/Transaction';
-import styles from './infoModalStyle.module.css';
+import classes from './infoModalStyle.module.css';
 
 type Props = {
-  isInfoTransactionOpen: boolean;
   handleOpenTransaction: (date: Date) => void;
   handleOpenInfoModal: (date: Date) => void;
   handleDelete: (eventId: string) => void;
@@ -19,7 +17,6 @@ type Props = {
 };
 
 const InfoModal: React.FC<Props> = ({
-  isInfoTransactionOpen,
   handleOpenTransaction,
   handleDelete,
   handleOpenInfoModal,
@@ -33,33 +30,39 @@ const InfoModal: React.FC<Props> = ({
   }, [handleOpenInfoModal]);
   return (
     <>
-      {isInfoTransactionOpen ? (
-        <div className={styles.modal_wrapper}>
-          <div className={styles.wrapper_container}>
-            <FontAwesomeIcon onClick={handlePreviousDay} className={styles.change_date} icon={faAngleLeft} />
-            <div>
-              <FontAwesomeIcon onClick={openInfoModal} className={styles.close_button} icon={faTimesCircle} />
-              <div className={styles.container}>
-                <div className={styles.date}>{Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}</div>
-                <div className={styles.content}>
-                  <table>
-                    {selectedTransaction.events.map((event) => (
-                      <TableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
-                    ))}
-                  </table>
-                </div>
+      <div className={classes.modal_wrapper}>
+        <div className={`container row align-items-center ${classes.modal_container_wrapper}`}>
+          <FontAwesomeIcon
+            onClick={handlePreviousDay}
+            icon={faAngleLeft}
+            className={`col-2 ${classes.change_previous_date}`}
+          />
+          <div className={`col-8 ${classes.modal_info_wrapper}`}>
+            <FontAwesomeIcon onClick={openInfoModal} icon={faTimesCircle} className={classes.close_button} />
 
-                <FontAwesomeIcon
-                  onClick={() => handleOpenTransaction(Moment().toDate())}
-                  className={styles.add_button}
-                  icon={faPlusCircle}
-                />
-              </div>
+            <div className="text-center font-weight-bold">
+              {Moment(selectedTransaction.createdAt).format('DD.MM.YYYY(dddd)')}
             </div>
-            <FontAwesomeIcon onClick={handleNextDay} className={styles.change_date} icon={faAngleRight} />
+
+            {/* <table className="container mt-2">
+              {selectedTransaction.events.map((event) => (
+                <TableRow event={event} handleDelete={handleDelete} handleOpenEdit={handleOpenEdit} />
+              ))}
+            </table> */}
+
+            <FontAwesomeIcon
+              onClick={() => handleOpenTransaction(Moment().toDate())}
+              icon={faPlusCircle}
+              className={classes.add_button}
+            />
           </div>
+          <FontAwesomeIcon
+            onClick={handleNextDay}
+            icon={faAngleRight}
+            className={`col-2 ${classes.change_previous_date}`}
+          />
         </div>
-      ) : null}
+      </div>
     </>
   );
 };

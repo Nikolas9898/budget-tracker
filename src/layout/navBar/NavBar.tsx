@@ -1,81 +1,51 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import Moment from 'moment';
-import {
-  handleNextMonth,
-  handleNextYear,
-  handlePreviousMonth,
-  handlePreviousYear
-} from '../../modules/transaction/actions/transactionActions';
-import classes from './NavBarStyle.module.css';
 import languageWords from '../../helpers/LanguageConsts';
 import {isSelectedTitle, isTransactionContainer} from '../../helpers/TransactionHelpers';
-import {getTransactionDate} from '../../helpers/transactionSelectors';
+import AddTransactionButton from '../addTranasctionButton/AddTransactionButton';
+import ChangeDate from './components/ChangeDate';
+import './NavBarStyle.css';
 
 const NavBarMenu = (): JSX.Element => {
-  const dispatch = useDispatch();
   const location = useLocation();
-  const date = useSelector(getTransactionDate);
 
-  const handlePreviousYearOrMonth = useCallback(() => {
-    if (isSelectedTitle(location.pathname, 'yearly')) {
-      return dispatch(handlePreviousYear());
-    }
-    return dispatch(handlePreviousMonth());
-  }, [dispatch, location.pathname]);
-  const handleNextYearOrMonth = useCallback(() => {
-    if (isSelectedTitle(location.pathname, 'yearly')) {
-      return dispatch(handleNextYear());
-    }
-    return dispatch(handleNextMonth());
-  }, [dispatch, location.pathname]);
   return (
-    <div className={classes.container}>
-      <div className={classes.container_navigation}>
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/daily' : '/stats/daily'}
-          className={isSelectedTitle(location.pathname, 'daily') ? classes.title_selected : classes.title}
-        >
-          {languageWords.DAILY}
-        </Link>
-
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/weekly' : '/stats/weekly'}
-          className={isSelectedTitle(location.pathname, 'weekly') ? classes.title_selected : classes.title}
-        >
-          {languageWords.WEEKLY}
-        </Link>
-
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/monthly' : '/stats/monthly'}
-          className={isSelectedTitle(location.pathname, 'monthly') ? classes.title_selected : classes.title}
-        >
-          {languageWords.MONTHLY}
-        </Link>
-
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/yearly' : '/stats/yearly'}
-          className={isSelectedTitle(location.pathname, 'yearly') ? classes.title_selected : classes.title}
-        >
-          {languageWords.YEARLY}
-        </Link>
-
-        <Link
-          to={isTransactionContainer(location.pathname) ? '/transaction/period' : '/stats/period'}
-          className={isSelectedTitle(location.pathname, 'period') ? classes.title_selected : classes.title}
-        >
-          {languageWords.PERIOD}
-        </Link>
+    <div className="row  mb-3 mt-3 ">
+      <div className="col-lg-5 pe-lg-5 col-sm-12">
+        <div className="row   row-cols-xl-5 row-cols-lg-12 align-items-center">
+          {location.pathname.includes('transaction') ? (
+            <Link
+              to="/transaction/daily"
+              className={`m-1 btn ${isSelectedTitle(location.pathname, 'daily') ? 'navBarBtnActive' : 'navBarBtn'}`}
+            >
+              {languageWords.DAILY}
+            </Link>
+          ) : null}
+          <Link
+            to={isTransactionContainer(location.pathname) ? '/transaction/weekly' : '/stats/weekly'}
+            className={`m-1 btn ${isSelectedTitle(location.pathname, 'weekly') ? 'navBarBtnActive' : 'navBarBtn'}`}
+          >
+            {languageWords.WEEKLY}
+          </Link>
+          <Link
+            to={isTransactionContainer(location.pathname) ? '/transaction/monthly' : '/stats/monthly'}
+            className={`m-1 btn ${isSelectedTitle(location.pathname, 'monthly') ? 'navBarBtnActive' : 'navBarBtn'}`}
+          >
+            {languageWords.MONTHLY}
+          </Link>{' '}
+          <Link
+            to={isTransactionContainer(location.pathname) ? '/transaction/yearly' : '/stats/yearly'}
+            className={` m-1 btn ${isSelectedTitle(location.pathname, 'yearly') ? 'navBarBtnActive' : 'navBarBtn'}`}
+          >
+            {languageWords.YEARLY}
+          </Link>
+        </div>
       </div>
-      <div className={classes.change_month_content}>
-        <button type="button" className={classes.change_month_button} onClick={handlePreviousYearOrMonth}>
-          {'<'}
-        </button>
-        {isSelectedTitle(location.pathname, 'yearly') ? Moment(date).format('YYYY') : Moment(date).format('MMM YYYY')}
-        <button type="button" className={classes.change_month_button} onClick={handleNextYearOrMonth}>
-          {'>'}
-        </button>
+      <div className="col-lg-2 col-sm-12 mt-sm-2 d-flex text-center justify-content-center align-items-center">
+        <ChangeDate />
+      </div>
+      <div className="col-lg-5 col-sm-12 mt-sm-2 d-flex justify-content-end">
+        <AddTransactionButton />
       </div>
     </div>
   );

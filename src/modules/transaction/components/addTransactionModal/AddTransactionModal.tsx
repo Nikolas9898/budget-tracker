@@ -1,17 +1,23 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Tabs, TabList, TabPanel, Tab} from 'react-tabs';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import Moment from 'moment';
+import {Modal as BootstrapModal} from 'bootstrap';
+import {useDispatch, useSelector} from 'react-redux';
 import classes from './AddTransactionStyle.module.css';
 import {TransactionEvent, TransactionTypes} from '../../../../models/Transaction';
 import {Error} from '../../../../models/Error';
 import {HandleInputChange} from '../../../../models/Function';
 
 import Form from './form/Form';
+import {setIsTransactionOpen} from '../../actions/transactionActions';
+import {validateTransaction} from '../../../../helpers/Validation';
+import {getUserAccounts} from '../../../../helpers/userSelectors';
+import {setAccounts} from '../../../login/actions/usersActions';
+import {getAccounts} from '../../service/TransactionService';
 
 type Props = {
-  isAddTransactionOpen: boolean;
   transactionEvent: TransactionEvent;
   errors: Error;
   isEditTransactionOpen: boolean;
@@ -23,7 +29,6 @@ type Props = {
 };
 
 const AddTransactionModal: React.FC<Props> = ({
-  isAddTransactionOpen,
   transactionEvent,
   handleInputChange,
   errors,
@@ -46,7 +51,12 @@ const AddTransactionModal: React.FC<Props> = ({
     }
   };
 
-  const handleOpen = useCallback(() => {
+  const dispatch = useDispatch();
+  const userAccounts = useSelector(getUserAccounts);
+  const handleOpen = useCallback(async () => {
+    const response = await getAccounts();
+
+    dispatch(setAccounts(response.data));
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isEditTransactionOpen ? handleOpenEdit(transactionEvent) : handleOpenTransaction(Moment().toDate());
   }, [handleOpenEdit, handleOpenTransaction, isEditTransactionOpen, transactionEvent]);
@@ -70,22 +80,53 @@ const AddTransactionModal: React.FC<Props> = ({
 
     handleDelete(transactionEventId);
   }, [handleDelete, transactionEvent]);
+
+  const onHiddenBsModal = () => {
+    dispatch(setIsTransactionOpen());
+    handleOpen();
+  };
+  useEffect(() => {
+    const myModal = new BootstrapModal('#RealBootstrapModal');
+    myModal.show();
+
+    const myModalDom = document.getElementById('RealBootstrapModal');
+    myModalDom?.addEventListener('hidden.bs.modal', onHiddenBsModal);
+    return () => {
+      myModalDom?.removeEventListener('hidden.bs.modal', onHiddenBsModal);
+    };
+  }, []);
+  const validationErrors = validateTransaction(transactionEvent, userAccounts);
+  const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
   return (
-    <div>
-      {isAddTransactionOpen || isEditTransactionOpen ? (
-        <div className={classes.modal_wrapper}>
-          <div className={classes.container}>
-            <FontAwesomeIcon className={classes.close_button} onClick={handleOpen} icon={faTimesCircle} />
+    <div
+      className="modal fade"
+      id="RealBootstrapModal"
+      tabIndex={-1}
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header justify-content-center">
+            <FontAwesomeIcon
+              className={classes.close_button}
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onClick={handleOpen}
+              icon={faTimesCircle}
+            />
+          </div>
+          <div className="modal-body justify-content-center ">
             <Tabs selectedTabClassName={classes.selected_tab} selectedIndex={ChooseCategory(transactionEvent.type)}>
-              <TabList className={classes.tab_list}>
-                <Tab className={classes.tab} onClick={handleSetIncomeType}>
-                  <span>Income</span>
+              <TabList className="row p-0 justify-content-evenly">
+                <Tab className={`col-3  ${classes.tab}`} onClick={handleSetIncomeType}>
+                  Income
                 </Tab>
-                <Tab className={classes.tab} onClick={handleSetExpenseType}>
-                  <span>Expense</span>
+                <Tab className={`col-3 ${classes.tab}`} onClick={handleSetExpenseType}>
+                  Expense
                 </Tab>
-                <Tab className={classes.tab} onClick={handleSetTransferType}>
-                  <span>Transfer</span>
+                <Tab className={`col-3 ${classes.tab}`} onClick={handleSetTransferType}>
+                  Transfer
                 </Tab>
               </TabList>
 
@@ -99,34 +140,55 @@ const AddTransactionModal: React.FC<Props> = ({
                 <Form transaction={transactionEvent} handleInputChange={handleInputChange} errors={errors} />
               </TabPanel>
             </Tabs>
-            <input
-              type="text"
-              className={classes.input}
+
+            <textarea
+              className={classes.input_description}
+              placeholder="Description"
               name="description"
               value={transactionEvent.description}
               onChange={handleInputChange}
             />
-
+          </div>
+          <div className={`modal-footer justify-content-center ${classes.input_description}`}>
             {isEditTransactionOpen ? (
-              <div className={classes.buttons_content}>
-                <button type="button" className={classes.save_button} onClick={handleSave}>
-                  Save
-                </button>
-
-                <button type="button" className={classes.delete_button} onClick={handleDeleteTransaction}>
-                  Delete
-                </button>
+              <div className={`row ${classes.buttons_content}`}>
+                <div className="col">
+                  <button
+                    type="button"
+                    className={classes.save_button}
+                    data-bs-dismiss={isValid ? 'modal' : ''}
+                    onClick={handleSave}
+                  >
+                    Save
+                  </button>
+                </div>
+                <div className="col">
+                  {' '}
+                  <button
+                    type="button"
+                    className={classes.delete_button}
+                    data-bs-dismiss="modal"
+                    onClick={handleDeleteTransaction}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ) : (
               <div className={classes.buttons_content}>
-                <button type="button" className={classes.save_button} onClick={handleSave}>
+                <button
+                  type="button"
+                  className={classes.save_button}
+                  data-bs-dismiss={isValid ? 'modal' : ''}
+                  onClick={handleSave}
+                >
                   Save
                 </button>
               </div>
             )}
           </div>
         </div>
-      ) : null}
+      </div>
     </div>
   );
 };

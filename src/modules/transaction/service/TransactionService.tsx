@@ -1,11 +1,13 @@
 import {AxiosResponse} from 'axios';
+import moment from 'moment';
 import axiosConfig from '../../../axiosConfig';
 import {
   CREATE_TRANSACTION,
   DELETE_TRANSACTION_EVENT,
   EDIT_TRANSACTION_EVENT,
   GET_YERALY_OR_WEEKLY,
-  SPECIFIC_DATE_PERIOD
+  SPECIFIC_DATE_PERIOD,
+  GET_USER_ACCOUNTS
 } from '../../../helpers/axiosRoutes.ts/transactionRoutes';
 import GET_LOGGED_USER from '../../../helpers/axiosRoutes.ts/userRoutes';
 import {ServiceTransaction, ServiceTransactionEvent} from '../../../models/Transaction';
@@ -21,7 +23,7 @@ export const createTransactionRequest = async (data: ServiceTransaction): Promis
 };
 
 export const getSpecificDatePeriod = async (from: Date, to: Date): Promise<AxiosResponse> => {
-  return axiosConfig.get(`${SPECIFIC_DATE_PERIOD}/${from}/${to}`, config);
+  return axiosConfig.get(`${SPECIFIC_DATE_PERIOD}/${moment(from).toISOString()}/${moment(to).toISOString()}`, config);
 };
 
 export const getYearlyOrWeekly = async (
@@ -46,4 +48,7 @@ export const deleteTransaction = async (selectedDayId: string, transactionId: st
 };
 export const getUserByJWToken = async (): Promise<AxiosResponse> => {
   return axiosConfig.get(`${GET_LOGGED_USER}`, config);
+};
+export const getAccounts = async (): Promise<AxiosResponse> => {
+  return axiosConfig.get(`${GET_USER_ACCOUNTS}`, config);
 };

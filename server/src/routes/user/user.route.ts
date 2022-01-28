@@ -5,6 +5,6 @@ import * as userController from '../../controllers/userController/user.controlle
 const router = Router();
 
 router.get('/user/logged', tokenAuth, userController.getLoggedUser);
-router.put('/user/:id', tokenAuth, userController.editUser);
+router.put('/user/edit', tokenAuth, userController.editUser);
 
 export default router;

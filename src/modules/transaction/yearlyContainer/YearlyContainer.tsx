@@ -6,7 +6,6 @@ import {Month} from '../../../models/Transaction';
 import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import YearlyTableRow from './components/YearlyTableRow';
-import classes from './YearlyStyle.module.css';
 import {UnitOfTime} from '../../../models/Clendar';
 import {getTransactionDate} from '../../../helpers/transactionSelectors';
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -83,15 +82,11 @@ const YearlyContainer = (): JSX.Element => {
   return (
     <div className="wrapper">
       <NavBarMenu />
-      <div className={classes.container}>
-        <table className={classes.table}>
-          <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
-          <tbody>
-            {monthsInYear.map((month) => (
-              <YearlyTableRow month={month} />
-            ))}
-          </tbody>
-        </table>
+      <div className="container">
+        <InfoTableHead sumIncome={sumIncome} sumExpense={sumExpense} />
+        {monthsInYear.map((month) => (
+          <YearlyTableRow key={month.from.toString()} month={month} />
+        ))}
       </div>
     </div>
   );

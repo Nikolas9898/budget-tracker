@@ -5,9 +5,7 @@ import NavBarMenu from '../../../layout/navBar/NavBar';
 import InfoTableHead from '../components/InfoTableHead/InfoTableHead';
 import WeeklyTableRow from './components/WeeklyTableRow';
 import {getYearlyOrWeekly} from '../service/TransactionService';
-
 import {Month} from '../../../models/Transaction';
-import classes from './WeeklyStyle.module.css';
 import '../../../scss/variables.scss';
 import {UnitOfTime} from '../../../models/Clendar';
 import {
@@ -79,15 +77,12 @@ const WeeklyContainer = (): JSX.Element => {
   return (
     <div className="wrapper">
       <NavBarMenu />
-      <div className={classes.container}>
-        <table className={classes.table}>
-          <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
-          <tbody>
-            {weeksInMonth.map((week) => (
-              <WeeklyTableRow week={week} />
-            ))}
-          </tbody>
-        </table>
+      <div className="container">
+        <InfoTableHead sumExpense={sumExpense} sumIncome={sumIncome} />
+
+        {weeksInMonth.map((week) => (
+          <WeeklyTableRow key={week.from.toString()} week={week} />
+        ))}
       </div>
     </div>
   );

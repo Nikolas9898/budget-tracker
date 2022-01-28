@@ -1,36 +1,45 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faCaretDown, faBars, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faCaretDown, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
-import SideBar from '../sideBar/SideBar';
 import classes from './HeaderStyle.module.css';
 import AccountMenu from '../accountMenu/AccountMenu';
 import {getHeaderTitle} from '../../helpers/TransactionHelpers';
-import {getUserEmail} from '../../helpers/userSelectors';
+import {getUsername} from '../../helpers/userSelectors';
 
 const NavBar = (): JSX.Element => {
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-
-  const userEmail = useSelector(getUserEmail);
+  const username = useSelector(getUsername);
 
   return (
-    <div>
-      <nav className={classes.container}>
-        <FontAwesomeIcon className={classes.menu_bar} icon={faBars} onClick={() => setIsSideBarOpen(true)} />
-        <div className={classes.page_title}>
-          {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
-        </div>
-        <div className={classes.dropdown}>
-          <div className={classes.user_content}>
-            <FontAwesomeIcon className={classes.user_email} icon={faUser} />
-            <span className={classes.user_email}>{userEmail}</span>
-            <FontAwesomeIcon className={classes.caret_down} icon={faCaretDown} />
+    <nav className={`pe-3  ${classes.container}`}>
+      <div className="navbar navbar-expand-lg row justify-content-center align-items-center">
+        <div className="col" />
+        <div className="col text-center">
+          <div className={`collapse navbar-collapse ${classes.page_title}`}>
+            {window.location.pathname === '/' ? 'Budget-Tracker' : getHeaderTitle(window.location.pathname)}
           </div>
-          <AccountMenu />
         </div>
-      </nav>
-      <SideBar isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen} />
-    </div>
+        <div className="col d-flex justify-content-end align-items-center">
+          <div className="dropdown" data-bs-toggle="tooltip" data-bs-placement="left" title={username}>
+            <div
+              role="button"
+              className={`dropdown-toggl ${classes.user_content}`}
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <FontAwesomeIcon icon={faUser} />
+
+              <div className={classes.user_email}>{username}</div>
+              <div className={classes.caret_down}>
+                <FontAwesomeIcon icon={faCaretDown} />
+              </div>
+            </div>
+            <AccountMenu />
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 export default NavBar;

@@ -1,7 +1,3 @@
-.wrapper {
-  width: 90%;
-  margin: auto;
-}
 .container {
   margin: auto;
   width: 50%;
@@ -19,8 +15,8 @@ td {
 }
 .date {
   margin: auto;
-  width: 200px;
-  font-size: 20px;
+  width: 250px;
+  font-size: 1.6rem;
   color: dimgrey;
   font-weight: bold;
   padding: 10px;
@@ -31,25 +27,23 @@ td {
 .selected_date {
   text-align: center;
   margin: auto;
-  width: 200px;
-  font-size: 20px;
-  color: coral;
+  width: 250px;
+  font-size: 1.6rem;
+  color: #60cd50;
   font-weight: bold;
   padding: 10px;
-  border: coral 5px solid;
+  border: #60cd50 5px solid;
   border-radius: 10px;
 }
 .income {
-  height: 60px;
-  font-size: 25px;
-  color: dodgerblue;
+  color: #0160b2;
+  font-size: 1.6rem;
   font-weight: bold;
   padding: 10px;
   text-align: center;
 }
 .expense {
-  height: 60px;
-  font-size: 25px;
+  font-size: 1.6rem;
   color: coral;
   font-weight: bold;
   padding: 10px;
@@ -64,14 +58,14 @@ td {
 .info_title {
   display: flex;
   align-items: center;
-  font-size: 25px;
+  font-size: 1.6rem;
   justify-content: space-evenly;
   color: dimgrey;
   font-weight: bold;
 }
 .total {
   height: 60px;
-  font-size: 25px;
+  font-size: 1.6rem;
   color: dimgrey;
   font-weight: bold;
   padding: 10px;

@@ -6,6 +6,7 @@ type Props = {
   Submit: () => void;
   errors: {
     email: string;
+    username: string;
     password: string;
     confirmPassword: string;
   };
@@ -15,6 +16,16 @@ type Props = {
 const RegistrationForm: React.FC<Props> = ({Submit, errors, handleInput}) => {
   return (
     <div className={classes.login_content}>
+      <label htmlFor="Username" className={classes.login_label}>
+        {languageWords.USERNAME}
+
+        <input className={classes.input} name="username" onChange={handleInput} />
+      </label>
+      {errors.username && (
+        <div className={classes.error_msg}>
+          <span>{errors.username}</span>
+        </div>
+      )}
       <label htmlFor="Email" className={classes.login_label}>
         {languageWords.EMAIL}
 

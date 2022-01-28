@@ -1,25 +1,28 @@
-.wrapper {
-  width: 90%;
-  margin: auto;
-}
 .stats_container {
   display: flex;
 }
 .form_wrapper {
-  width: 50%;
-  margin: auto;
-  border: black solid 2px;
-  margin: 20px;
+  min-height: 300px;
+  border: #efebeb solid 2px;
+  margin: 40px 20px 10px 20px !important;
+  max-width: 700px !important;
+  border-radius: 5px;
+  -webkit-box-shadow: 10px 9px 13px -1px rgba(204, 204, 204, 1);
+  -moz-box-shadow: 10px 9px 13px -1px rgba(204, 204, 204, 1);
+  box-shadow: 10px 9px 13px -1px rgba(204, 204, 204, 1);
+}
+.form_wrapper svg {
+  width: 80%;
 }
 .pie_wrapper {
   width: 100%;
   margin: auto;
   height: 50%;
 }
-.title {
-  font-size: 20px;
+.title_stats {
+  font-size: 2rem;
   font-weight: bolder;
-  margin: 20px;
+  margin-top: 30px !important;
 }
 
 .content_table {
@@ -27,26 +30,41 @@
   width: 90%;
   margin: auto;
   margin-top: 20px;
-  font-size: 1.5em;
+  font-size: 1.6rem;
   min-width: 400px;
 }
 
+.content_table tr {
+  border-bottom: lightgray 2px solid;
+}
 td {
   border-top: none;
-  padding: 10px;
+  padding: 15px;
 }
 tr:last-of-type {
   border: none;
 }
-
-.percent_content {
-  width: 40px;
+.percent_container {
+  width: 50px !important;
 }
 .percent {
-  background-color: blue;
-  color: white;
-  padding: 10px;
+  width: 20px;
+  border-radius: 50%;
+  height: 20px;
 }
 .amount {
   text-align: right;
+}
+.table_row {
+  cursor: pointer;
+}
+
+.table_row_selected {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+.stats_error {
+  font-size: 2rem;
+  margin-top: 50px;
+  color: lightgray;
 }

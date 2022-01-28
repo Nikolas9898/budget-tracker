@@ -1,10 +1,12 @@
 import {RequestHandler, Request, Response} from 'express';
 import Category, {DUMMY_EXPENSE_CATEGORIES, DUMMY_INCOME_CATEGORIES} from '../../models/category';
-import ExpenseCategories from '../../dbModels/category/expenseCategory';
-import IncomeCategories from '../../dbModels/category/incomeCategory';
+import ExpenseCategories from '../../dbModels/category/expenseCategory.model';
+import IncomeCategories from '../../dbModels/category/incomeCategory.model';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
 
-export const addCategories = async (userId: string): Promise<unknown> => {
+export const addCategories = async (
+  userId: string
+): Promise<{expenseCategories: Category; incomeCategories: Category}> => {
   try {
     const expenseCategories: Category = await new ExpenseCategories({
       userId,
@@ -17,6 +19,8 @@ export const addCategories = async (userId: string): Promise<unknown> => {
 
     expenseCategories.save();
     incomeCategories.save();
+
+    return {expenseCategories, incomeCategories};
   } catch (error) {
     return error;
   }

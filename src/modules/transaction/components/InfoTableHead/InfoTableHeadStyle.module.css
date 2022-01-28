@@ -1,0 +1,11 @@
+.income {
+  color: #0160b2;
+  font-size: 2rem;
+}
+.expense {
+  color: red;
+  font-size: 2rem;
+}
+.total {
+  font-size: 2rem;
+}

@@ -12,7 +12,6 @@ export interface State {
 const initialState = {
   date: Moment().toDate(),
   isTransactionOpen: false,
-
   transactionEvent: {
     _id: '',
     type: 'income',
@@ -23,7 +22,7 @@ const initialState = {
     fees: '0',
     transferId: '',
     to: '',
-    amount: '0',
+    amount: '',
     note: '',
     description: '',
     transactionId: ''
@@ -38,7 +37,10 @@ const changeInput = (state: State, action: AnyAction) => {
         ...state.transactionEvent,
         [action.payload.name]: action.payload.value,
         category: '',
-        to: ''
+        to: '',
+        from: '',
+        account: '',
+        fees: '0'
       }
     };
   }
@@ -50,7 +52,6 @@ const changeInput = (state: State, action: AnyAction) => {
     }
   };
 };
-
 const changeNextMonth = (state: State) => {
   const nextMonth = Moment(state.date).add(1, UnitOfTime.MONTH);
   return {
@@ -105,6 +106,21 @@ const setTransactionIsOpen = (state: State) => {
 };
 export const transactionReducer = (state = initialState, action: AnyAction): State => {
   switch (action.type) {
+    case ActionTypes.HANDLE_NEXT_WEEK: {
+      const nextMonth = Moment(state.date).set('date', state.date.getDate() - 7);
+      return {
+        ...state,
+        date: nextMonth.toDate()
+      };
+    }
+
+    case ActionTypes.HANDLE_PREVIOUS_WEEK: {
+      const previousMonth = Moment(state.date).set('date', state.date.getDate() + 7);
+      return {
+        ...state,
+        date: previousMonth.toDate()
+      };
+    }
     case ActionTypes.HANDLE_NEXT_MONTH: {
       return changeNextMonth(state);
     }

@@ -1,7 +1,3 @@
-.wrapper {
-  margin: auto;
-  width: 90%;
-}
 .container {
   width: 60%;
   margin: auto;
@@ -64,27 +60,35 @@
   justify-content: space-between;
 }
 .calendar_date_box_container {
+  margin: 0.5%;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
   flex-basis: 13.2857%;
-  max-width: 13.2857%;
-  height: 100px;
+  max-width: 13.2857% !important;
+  height: 107px;
   border: #0160b2 solid 2px;
   cursor: pointer;
   margin-bottom: 10px;
 }
 .calendar_date_box_container_other_month {
+  margin: 0.5%;
   flex-basis: 13.2857%;
-  max-width: 13.2857%;
-  height: 100px;
+  max-width: 13.2857% !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  height: 107px;
   border: #0160b2 solid 2px;
   cursor: pointer;
   margin-bottom: 10px;
   background: lightgray;
 }
+
 .calendar_date {
-  padding: 5px;
+  padding: 2px;
 }
 .current_date {
-  padding: 5px;
+  padding: 2px;
+  font-weight: bolder;
   background: #0160b2;
   color: white;
 }
@@ -92,4 +96,37 @@
   font-size: 18px;
   padding-left: 10px;
   overflow: hidden;
+}
+.actions {
+  font-size: 2.4em;
+  z-index: 10000021;
+  cursor: pointer;
+}
+.table_scroll {
+  height: 670px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.table_scroll tr:last-child {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+}
+.calendar_date_income {
+  color: #0b9b17;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+}
+.calendar_date_expense {
+  color: #f13c0e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+}
+.calendar_date_total {
+  color: 'green';
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
 }

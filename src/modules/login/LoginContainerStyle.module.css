@@ -4,11 +4,12 @@
   max-width: 100%;
 }
 .login_form {
-  margin-top: 150px;
+  margin-top: 40px;
   width: 100%;
   background: #c9d6ef;
   height: 100%;
   border: #0160b2 solid 2px;
+  border-radius: 40px;
 }
 .tab_list {
   margin: auto;

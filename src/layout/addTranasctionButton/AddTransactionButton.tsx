@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Moment from 'moment';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {TransactionTypes} from '../../models/Transaction';
 import {
   transactionInputChange,
@@ -15,12 +13,15 @@ import {validateTransaction} from '../../helpers/Validation';
 import {
   createTransactionRequest,
   deleteTransaction,
-  editTransaction
+  editTransaction,
+  getAccounts
 } from '../../modules/transaction/service/TransactionService';
-import classes from '../../modules/transaction/dailyContainer/DailyStyle.module.css';
+import '../navBar/NavBarStyle.css';
 import {UnitOfTime} from '../../models/Clendar';
 import {getTransaction} from '../../helpers/TransactionHelpers';
 import {getTransactionState} from '../../helpers/transactionSelectors';
+import {getUserAccounts} from '../../helpers/userSelectors';
+import {setAccounts} from '../../modules/login/actions/usersActions';
 
 const AddTransactionButton = (): JSX.Element => {
   const [errors, setErrors] = useState({
@@ -28,17 +29,18 @@ const AddTransactionButton = (): JSX.Element => {
     from: '',
     category: '',
     to: '',
-    amount: ''
+    amount: '',
+    fees: ''
   });
   const dispatch = useDispatch();
 
   const stateTransaction = useSelector(getTransactionState);
-
+  const userAccounts = useSelector(getUserAccounts);
   const {transactionId, _id: transactionEventId} = stateTransaction.transactionEvent;
 
   const clearState = () => {
-    setErrors({account: '', from: '', category: '', to: '', amount: ''});
-    dispatch(setIsTransactionOpen());
+    setErrors({account: '', from: '', category: '', to: '', amount: '', fees: ''});
+    // dispatch(setIsTransactionOpen());
     dispatch(
       setTransaction({
         _id: '',
@@ -57,7 +59,7 @@ const AddTransactionButton = (): JSX.Element => {
     );
   };
   const handleSave = async () => {
-    const validationErrors = validateTransaction(stateTransaction.transactionEvent);
+    const validationErrors = validateTransaction(stateTransaction.transactionEvent, userAccounts);
     const isValid = Object.values(validationErrors).filter(Boolean).length <= 0;
     if (!isValid) {
       setErrors(validationErrors);
@@ -70,11 +72,15 @@ const AddTransactionButton = (): JSX.Element => {
     } else {
       await createTransactionRequest(event);
     }
+    const response = await getAccounts();
+    dispatch(setAccounts(response.data));
 
     clearState();
   };
   const handleDelete = async (eventId: string) => {
     await deleteTransaction(transactionId, eventId);
+    const response = await getAccounts();
+    dispatch(setAccounts(response.data));
     clearState();
   };
 
@@ -93,23 +99,26 @@ const AddTransactionButton = (): JSX.Element => {
       );
     }
   };
+  const {isTransactionOpen} = stateTransaction;
 
   return (
-    <>
-      <FontAwesomeIcon className={classes.add_button} icon={faPlusCircle} onClick={handleOpenTransaction} />
-
-      <AddTransactionModal
-        isAddTransactionOpen={stateTransaction.isTransactionOpen}
-        transactionEvent={stateTransaction.transactionEvent}
-        errors={errors}
-        isEditTransactionOpen={transactionId.length > 0}
-        handleInputChange={(event) => dispatch(transactionInputChange(event))}
-        handleSave={handleSave}
-        handleOpenTransaction={handleOpenTransaction}
-        handleOpenEdit={clearState}
-        handleDelete={handleDelete}
-      />
-    </>
+    <div>
+      <button type="button" className="btn add_button navBarBtn ml-2" onClick={handleOpenTransaction}>
+        Add Transaction
+      </button>
+      {(isTransactionOpen || transactionId.length) > 0 && (
+        <AddTransactionModal
+          transactionEvent={stateTransaction.transactionEvent}
+          errors={errors}
+          isEditTransactionOpen={transactionId.length > 0}
+          handleInputChange={(event) => dispatch(transactionInputChange(event))}
+          handleSave={handleSave}
+          handleOpenTransaction={handleOpenTransaction}
+          handleOpenEdit={clearState}
+          handleDelete={handleDelete}
+        />
+      )}
+    </div>
   );
 };
 

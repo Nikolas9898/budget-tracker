@@ -1,22 +1,3 @@
-.modal_wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1050;
-}
-.container {
-  width: 400px;
-  min-height: 400px;
-  text-align: center;
-  border: 120px solid #0160b2;
-  border-top: 50px solid #0160b2;
-  border-bottom: 50px solid #0160b2;
-  margin: 200px auto auto;
-  background: white;
-}
-
 .content {
   display: flex;
   padding: 0 20px 0 20px;
@@ -27,28 +8,29 @@
   font-size: 20px;
 }
 .title {
-  margin-bottom: 38px;
+  font-size: 1.5rem;
 }
-.input_container {
-  height: 60px;
-}
-.amount_container{
+
+.amount_container {
   display: flex;
   align-items: center;
 }
-.fees{
+.fees {
   padding: 5px;
   border: dimgrey solid 2px;
   color: dimgrey;
-  margin-left:7px;
+  margin-left: 7px;
   cursor: pointer;
   border-radius: 12px;
-
 }
 .input {
   font-size: 20px;
-  width: 98%;
+  width: 100%;
   margin-bottom: 5px;
+  height: 35px;
+  border: none;
+  background-color: white;
+  border-bottom: 2px solid lightgrey;
 }
 .description {
   width: 90%;
@@ -61,13 +43,14 @@
 .save_button {
   padding: 10px 100px 10px 100px;
   border-radius: 5px;
-  background: coral;
+  background: #0160b2;
   font-size: 20px;
   color: white;
   font-weight: bold;
   cursor: pointer;
 }
-.delete_button{
+
+.delete_button {
   padding: 10px 10px 10px 10px;
   border-radius: 5px;
   color: white;
@@ -76,40 +59,43 @@
   background: red;
   cursor: pointer;
 }
-.continue_button {
-  padding: 10px 20px 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
+
 .error_msg {
   color: red;
-}
-.selected_tab {
-  border-radius: 6px;
-  border: coral 2px solid;
-  font-weight: bold;
-  color: coral;
 }
 .tab_list {
   display: flex;
   justify-content: space-evenly;
 }
+
 .tab {
-  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   text-align: center;
   align-items: center;
   padding: 12px;
   cursor: pointer;
+  border-radius: 15px;
+  background-color: lightgrey;
+}
+.selected_tab {
+  border-radius: 15px;
+  border: #46bd36 2px solid;
+  font-weight: bold;
+  color: #46bd36;
+  text-decoration: none;
+  background-color: white;
 }
 .close_button {
   font-size: 30px;
   cursor: pointer;
-  margin-left: 370px;
+  margin-left: 440px;
 }
 .close_button:hover {
-  color: coral;
+  color: #46bd36;
+}
+.input_description {
+  width: 100%;
+  height: 100px;
+  margin-top: 20px;
 }

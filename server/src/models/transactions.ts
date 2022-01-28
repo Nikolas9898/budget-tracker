@@ -3,7 +3,7 @@ import {Document} from 'mongoose';
 export default interface TransactionType extends Document {
   _id: string;
   createdAt: Date;
-  events: Array<TransactionEvent>;
+  events: TransactionEvent[];
   userId: string;
   income: number;
   expense: number;
@@ -16,6 +16,22 @@ export interface IObjectKeys {
 }
 
 export interface TransactionEvent extends IObjectKeys {
+  _id?: string;
+  type: string;
+  currency: string;
+  transferId?: string;
+  date: string;
+  fees: number;
+  from: string;
+  to: string;
+  account: string;
+  category: string | undefined;
+  amount: number;
+  note: string;
+  description: string;
+}
+
+export interface ExportEvent extends IObjectKeys {
   _id?: string;
   type: string;
   currency: string;
@@ -37,8 +53,8 @@ export interface TransferWithFees extends IObjectKeys {
   transferId?: string;
   date: string;
   fees: number;
-  from?: string;
-  to?: string;
+  from: string;
+  to: string;
   account: string | undefined;
   category: string | undefined;
   amount: number;
@@ -51,9 +67,9 @@ export type DummyExpenseEvent = {
   currency: string;
   transferId?: string;
   date: string;
-  fees?: number;
-  from?: string;
-  to?: string;
+  fees: number;
+  from: string;
+  to: string;
   account: string;
   category: string;
   amount: number;
@@ -65,7 +81,7 @@ export enum Expense {
   TYPE = 'expense',
   NOTE = 'fees',
   CATEGORY = 'other',
-  CURRENCY = 'BG'
+  CURRENCY = 'BGN'
 }
 
 export enum EventTypes {

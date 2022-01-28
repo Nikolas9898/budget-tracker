@@ -2,32 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1cc0ffbc-a50f-4766-90ae-9ec2eaa22938" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/layout/navBarMenu/NavBarMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/layout/navBarMenu/NavBarMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/stats/dailyContainer/DailyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/stats/dailyContainer/DailyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/stats/monthlyContainer/MonthlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/stats/monthlyContainer/MonthlyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/stats/weeklyContainer/WeeklyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/stats/weeklyContainer/WeeklyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/stats/yearlyContainer/YearlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/stats/yearlyContainer/YearlyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/AddTransactionModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/addTransactionModal/form/Form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoModal/InfoModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoRow/InfoRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/components/infoRow/InfoRow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/DailyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/components/dailyTableRow/DailyTableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/dailyContainer/components/dailyTableRow/DailyTableRow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/NewCalendar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/MonthlyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/TransactionStyle.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/monthlyContainer/MonthlyStyle.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyTableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/weeklyContainer/WeeklyTableRow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyTableRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/modules/transaction/yearlyContainer/YearlyTableRow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/pages/transactionPage/MonthlyPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/pages/transactionPage/MonthlyPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/store/actions/transactionActions.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/store/reducers/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/store/reducers/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/store/reducers/transactionReducer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/desktop/store/types.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/store/types.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/helpers/transactionSelectors.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/helpers/userSelectors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/AuthProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layout/addTranasctionButton/AddTransactionButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layout/addTranasctionButton/AddTransactionButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layout/header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layout/header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layout/navBar/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layout/navBar/NavBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Transaction.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Transaction.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/User.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/login/LoginContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/login/LoginContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/login/actionTypes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/login/actionTypes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/login/actions/usersActions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/login/actions/usersActions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/login/reducer/userReducer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/login/reducer/userReducer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/transaction/actions/transactionActions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/transaction/actions/transactionActions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/transaction/dailyContainer/DailyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/transaction/dailyContainer/DailyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/transaction/monthlyContainer/MonthlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/transaction/monthlyContainer/MonthlyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/transaction/reducers/transactionReducer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/transaction/reducers/transactionReducer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/transaction/weeklyContainer/WeeklyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/transaction/weeklyContainer/WeeklyContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/transaction/yearlyContainer/YearlyContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/transaction/yearlyContainer/YearlyContainer.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,6 +113,7 @@
       <workItem from="1612986818421" duration="1501000" />
       <workItem from="1613255362463" duration="1064000" />
       <workItem from="1613342558307" duration="4000" />
+      <workItem from="1622926243305" duration="925000" />
     </task>
     <servers />
   </component>

@@ -1,15 +1,17 @@
 import React from 'react';
-import AddTransactionButton from '../../layout/addTranasctionButton/AddTransactionButton';
 import NavBar from '../../layout/header/Header';
+import SideBar from '../../layout/sideBar/SideBar';
 import WeeklyContainer from '../../modules/transaction/weeklyContainer/WeeklyContainer';
 
 const WeeklyPage = (): JSX.Element => {
   return (
-    <>
-      <NavBar />
-      <WeeklyContainer />
-      <AddTransactionButton />
-    </>
+    <div className="d-flex">
+      <SideBar />
+      <div className="w-100">
+        <NavBar />
+        <WeeklyContainer />
+      </div>
+    </div>
   );
 };
 

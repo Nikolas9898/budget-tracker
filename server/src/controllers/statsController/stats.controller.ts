@@ -2,7 +2,7 @@ import {RequestHandler, Request, Response} from 'express';
 import moment from 'moment';
 import {tokenDecoder} from '../../helpers/tokenDecoder';
 import Transaction from '../../dbModels/transaction/transaction.model';
-import {KeyStringNumber, SumStats} from '../../models/stats';
+import {colors, KeyStringNumber, SumStats} from '../../models/stats';
 import {EventTypes, MomentConstants} from '../../models/transactions';
 
 export const getStats: RequestHandler = async (req: Request, res: Response) => {
@@ -34,19 +34,19 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
       });
     });
 
-    Object.keys(income).forEach((key) => {
+    Object.keys(income).forEach((key, index) => {
       incomeStats.push({
         category: key,
         value: income[key],
-        color: generateRandomColor(),
+        color: colors[index],
         label: key
       });
     });
-    Object.keys(expense).forEach((key) => {
+    Object.keys(expense).forEach((key, index) => {
       expenseStats.push({
         category: key,
         value: expense[key],
-        color: generateRandomColor(),
+        color: colors[index],
         label: key
       });
     });
@@ -55,8 +55,4 @@ export const getStats: RequestHandler = async (req: Request, res: Response) => {
   } catch (error) {
     return res.json(error);
   }
-};
-
-const generateRandomColor = (): string => {
-  return '#' + Math.floor(Math.random() * 16777215).toString(16);
 };

@@ -1,5 +1,4 @@
 import React from 'react';
-import {errorMsg} from '../../../../../../helpers/Validation';
 import {HandleInputChange} from '../../../../../../models/Function';
 import classes from '../../AddTransactionStyle.module.css';
 
@@ -8,19 +7,19 @@ type Props = {
   options: string[];
   transactionType: string;
   selectValue: string | undefined;
-  error: string;
 };
 
-const SelectInput: React.FC<Props> = ({handleInputChange, options, transactionType, selectValue, error}) => {
+const SelectInput: React.FC<Props> = ({handleInputChange, options, transactionType, selectValue}) => {
   return (
-    <div className={classes.input_container}>
+    <>
       <select className={classes.input} value={selectValue} onChange={handleInputChange} name={transactionType}>
         {options.map((option) => (
-          <option value={option}>{option}</option>
+          <option value={option} key={option}>
+            {option}
+          </option>
         ))}
       </select>
-      {errorMsg(error)}
-    </div>
+    </>
   );
 };
 export default SelectInput;

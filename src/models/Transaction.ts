@@ -37,6 +37,7 @@ export interface TransactionEventWithAmountNumber {
   account?: string;
   from?: string;
   to?: string;
+  currency: string;
   category?: string;
   amount: number;
   fees: number;
@@ -97,7 +98,7 @@ export enum TransactionTypes {
   TRANSFER = 'transfer',
   INCOME = 'income',
   EXPENSE = 'expense',
-  CURRENCY = 'Bg'
+  CURRENCY = 'BGN'
 }
 export enum TransactionPage {
   TRANSACTION = 'transaction',

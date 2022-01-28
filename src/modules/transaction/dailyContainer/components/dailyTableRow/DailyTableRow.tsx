@@ -5,8 +5,6 @@ import {
   TransactionWithAmountNumber
 } from '../../../../../models/Transaction';
 
-import classes from './DailyTableRow.module.css';
-
 type Props = {
   handleSelectEvent: (transactionEvent: TransactionEventWithAmountNumber, transactionId: string) => void;
   transactionEvent: TransactionEventWithAmountNumber;
@@ -20,39 +18,47 @@ const DailyTableRow: React.FC<Props> = ({transactionEvent, handleSelectEvent, tr
     handleSelectEvent(transactionEvent, transactionId);
   }, [handleSelectEvent, transactionId, transactionEvent]);
   return (
-    <tr onClick={selectEvent}>
-      <td>
-        <div className={classes.account_container}>
-          <div className={classes.account}>
-            {transactionEvent.type === TransactionTypes.TRANSFER
-              ? TransactionTypes.TRANSFER
-              : transactionEvent.category}
-          </div>
-          <div className={classes.category}>
-            <div>{transactionEvent.note}</div>
+    <div
+      className="row align-self-center text-center "
+      style={{borderTop: '2px solid black', padding: '15px 0 15px 0'}}
+      role="button"
+      tabIndex={0}
+      onKeyDown={selectEvent}
+      onClick={selectEvent}
+    >
+      <div className="col-4 align-self-center ">
+        <div className="row justify-content-center ">
+          <div className="col-xxl-6 col-xl-6 align-self-center">
             {transactionEvent.type === TransactionTypes.TRANSFER ? (
-              <div>
+              <h2>{TransactionTypes.TRANSFER}</h2>
+            ) : (
+              <h2>{transactionEvent.category}</h2>
+            )}
+          </div>
+          <div className="col-xll-6 col-xl-6 align-self-center">
+            {transactionEvent.type === TransactionTypes.TRANSFER ? (
+              <h4>
                 {transactionEvent.from}
                 {' ---> '}
                 {transactionEvent.to}
-              </div>
+              </h4>
             ) : (
-              transactionEvent.account
+              <h2>{transactionEvent.account}</h2>
             )}
           </div>
         </div>
-      </td>
-      <td className={classes.income}>
+      </div>
+      <h2 className="col-4 align-self-center ">
         {transactionEvent.type === TransactionTypes.INCOME ? (transactionEvent.amount / 100).toFixed(2) : null}
-      </td>
-      <td className={transactionEvent.type === TransactionTypes.EXPENSE ? classes.expense : classes.transfer}>
-        <div>
+      </h2>
+      <div className="col-4 ">
+        <h2>
           {transactionEvent.type === TransactionTypes.EXPENSE || transactionEvent.type === TransactionTypes.TRANSFER
             ? (transactionEvent.amount / 100).toFixed(2)
             : null}
-        </div>
-      </td>
-    </tr>
+        </h2>
+      </div>
+    </div>
   );
 };
 

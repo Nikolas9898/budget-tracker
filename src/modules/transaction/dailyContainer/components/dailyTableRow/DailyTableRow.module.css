@@ -6,7 +6,6 @@ td {
 .account_container {
   height: 80px;
   width: 300px;
-  font-size: 20px;
   color: dimgrey;
   display: flex;
   align-items: center;
@@ -16,7 +15,6 @@ td {
 }
 .category {
   width: 450px;
-  font-size: 20px;
   color: dimgrey;
 }
 .income {
@@ -29,10 +27,11 @@ td {
 }
 .expense {
   text-align: center;
-  height: 80px;
-  width: 200px;
-  font-size: 25px;
-  color: coral;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: red;
   font-weight: bolder;
 }
 .transfer {

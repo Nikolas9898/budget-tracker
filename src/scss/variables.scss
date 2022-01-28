@@ -1,10 +1,14 @@
-$max_width_wrapper: 1500px;
+$first_color: #6ffb2e;
 $min_width_wrapper: 1000px;
 
 .wrapper {
-  margin: auto;
-  max-width: $max_width_wrapper;
-  min-height: $min_width_wrapper;
+  width: 100%;
+  padding: 0 40px 300px 40px;
+  overflow: auto;
+  min-height: 100vh;
+  max-height: 100vh;
+  margin-bottom: 100px;
+  min-width: 700px;
 }
 .stats_container {
   display: flex;
