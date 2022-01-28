@@ -20,6 +20,7 @@
     "@types/react-dom": "^16.9.10",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.0",
+    "concurrently": "^7.0.0",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "query-string": "^6.13.8",
@@ -43,7 +44,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"cd server && npm run dev\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -85,5 +86,6 @@
     "eslint-plugin-jest": "^24.3.4",
     "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1"
-  }
+  },
+  "proxy": "http://localhost:5000/"
 }
