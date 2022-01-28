@@ -1,0 +1,11 @@
+$max_width_wrapper: 1500px;
+$min_width_wrapper: 1000px;
+
+.wrapper {
+  margin: auto;
+  max-width: $max_width_wrapper;
+  min-height: $min_width_wrapper;
+}
+.stats_container {
+  display: flex;
+}
